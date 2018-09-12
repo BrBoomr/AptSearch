@@ -17,7 +17,7 @@
 		$servername = "localhost";
 		$username = "jerry";
 		$password = "jerry";
-		$dbname = "tenants";
+		$dbname = "assignment1";
 
 		/* create connection,
 		note this connection is using a mysqli connection,
@@ -32,23 +32,24 @@
 		/* build database query,
 		everything between SELECT and FROM are your table columns,
 		to the right of FROM is your table */
-		$sql = "SELECT id, first_name, surname, company FROM tenants";
+		// "*" is a wildcard, meaning all the columns are selected
+		$sql = "SELECT * FROM tenants";
 
 		/* query database */
 		$result = $conn->query($sql);
 
-		/* more than zero results */
 		if ($result->num_rows > 0) {
 		    /* fetch results */
 		    while($row = $result->fetch_assoc()) {
-					if (($row["id"] - 1) % 10 == 0) echo "<br>";
-		        echo "id: " . $row["id"].
-						" - Name: " . $row["first_name"]. " " . $row["last_name"].
-						" - Email  ".$row["email"]."<br>";
+					if (($row["tenant_id"] - 1) % 10 == 0) echo "<br>";
+				echo $row["tenant_id"]." ".$row["first_name"]." ". $row["last_name"]." ".$row["email"]
+				.$row["apartment_address"]." ".$row["phone"]." ". $row["landlord_id"]." ".$row["apartment_id"]
+				.$row["lease_start"]." ".$row["lease_end"]." ". $row["next_payment"]." ".$row["payment_amount"]."<br>";
 		    }
 		} else {
 		    echo "0 results";
 		}
+
 		$conn->close();
 		?>
 	</body>
