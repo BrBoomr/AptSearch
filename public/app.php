@@ -26,7 +26,7 @@ $app->get('/createUser', function ($request, $response, $args) {
 	$user = new User();
 	$user->setFirstName("Zhixiang");
 	$user->setLastName("Chen");
-	$user->setHashedpassword(password_hash("zchen", PASSWORD_DEFAULT));
+	$user->setPassword("zchen");
 	//$user->save();
 	echo ($user->getFirstName(). " created!");
 	return $response;

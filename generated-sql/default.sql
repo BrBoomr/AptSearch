@@ -65,22 +65,6 @@ CREATE TABLE `appliance`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- authentication
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `authentication`;
-
-CREATE TABLE `authentication`
-(
-    `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `Email` VARCHAR(128) NOT NULL,
-    `Password` VARCHAR(128) NOT NULL,
-    `UserID` INTEGER NOT NULL,
-    PRIMARY KEY (`ID`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
 -- cost
 -- ---------------------------------------------------------------------
 
