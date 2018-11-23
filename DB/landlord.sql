@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2018 at 11:51 PM
+-- Generation Time: Nov 24, 2018 at 12:20 AM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.8
 
@@ -41,6 +41,15 @@ CREATE TABLE `address` (
   `ApartmentID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `address`
+--
+
+INSERT INTO `address` (`ID`, `Timestamp`, `Continent`, `Country`, `State`, `City`, `Zip`, `StreetName`, `BuildingNumber`, `ApartmentID`) VALUES
+(1, '2018-11-21', 'America', 'USA', 'Texas', 'Edinburg', 78504, 'North Street apt.1 ', 1, 1),
+(2, '2018-11-23', 'America', 'USA', 'Texas', 'Edinburg', 78504, 'South Street apt. 2', 2, 2),
+(3, '2018-11-01', 'America', 'USA', 'Texas', 'Edinburg', 78504, 'Main Street', 0, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -73,20 +82,6 @@ CREATE TABLE `appliance` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `authentication`
---
-
-CREATE TABLE `authentication` (
-  `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
-  `Email` varchar(128) NOT NULL,
-  `Password` varchar(128) NOT NULL,
-  `UserID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `cost`
 --
 
@@ -109,9 +104,19 @@ CREATE TABLE `email` (
   `ID` int(11) NOT NULL,
   `Timestamp` date NOT NULL,
   `UserID` int(11) NOT NULL,
-  `Email` int(11) NOT NULL,
+  `Email` varchar(128) NOT NULL,
   `Description` enum('general','tenant','landlord','') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `email`
+--
+
+INSERT INTO `email` (`ID`, `Timestamp`, `UserID`, `Email`, `Description`) VALUES
+(1, '2018-11-01', 1, 'zChen@landlord.com', 'landlord'),
+(2, '2018-11-02', 2, 'jGuerrero@tenant.com', 'tenant'),
+(3, '2018-11-02', 3, 'bCancel@tenant.com', 'tenant'),
+(4, '2018-11-02', 4, 'jReyes@tenant.com', 'tenant');
 
 -- --------------------------------------------------------
 
@@ -268,6 +273,14 @@ CREATE TABLE `property` (
   `Details` varchar(256) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `property`
+--
+
+INSERT INTO `property` (`ID`, `Timestamp`, `LandlordID`, `AddressID`, `FPL`, `SquareFootage`, `Rooms`, `Bathrooms`, `Details`) VALUES
+(1, '2018-11-23', 1, 1, NULL, 256, 2, 1, 'Basic two-room apartment.'),
+(2, '2018-11-23', 1, 2, NULL, 324, 3, 2, 'Family sized apartment.');
+
 -- --------------------------------------------------------
 
 --
@@ -285,6 +298,15 @@ CREATE TABLE `tenant` (
   `ActualEnd` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `tenant`
+--
+
+INSERT INTO `tenant` (`ID`, `Timestamp`, `UserID`, `PropertyID`, `Name`, `Start`, `End`, `ActualEnd`) VALUES
+(3, '2018-11-20', 4, 1, 'Jafet Reyes', '2018-11-01', NULL, NULL),
+(4, '2018-11-20', 2, 1, 'Jerry Guerrero', '2018-11-02', NULL, NULL),
+(5, '2018-11-01', 3, 2, 'Bryan Cancel', '2018-11-14', NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -293,11 +315,22 @@ CREATE TABLE `tenant` (
 
 CREATE TABLE `user` (
   `ID` int(11) NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `FirstName` varchar(128) NOT NULL,
   `MiddleName` varchar(128) DEFAULT NULL,
   `LastName` varchar(128) NOT NULL,
   `HashedPassword` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`ID`, `Timestamp`, `FirstName`, `MiddleName`, `LastName`, `HashedPassword`) VALUES
+(1, '2018-11-23 16:17:16', 'Zhixiang', NULL, 'Chen', '$2y$10$z3Irwx9vFQPuD6OckTjjU.ABguqddVy66TS2b2vjn8bqkuZV4H8nC'),
+(2, '2018-11-23 16:14:53', 'Jerry', NULL, 'Guerrero', '$2y$10$zUA9KZ0nFzsIKMdskPhs..8Ujo6M3lssq5Vc00gCCabd.TwP1z/gS'),
+(3, '2018-11-23 16:15:14', 'Bryan', NULL, 'Cancel', '$2y$10$14SljgkT4E0XqnobubyjHud3MFmW4iEM2xeRGcHk4kcoAol8XfZu2'),
+(4, '2018-11-23 16:14:39', 'Jafet', NULL, 'Reyes', '$2y$10$O5PghuVN8GZCF7UorQULWOXGn5UmSvNBoasmSuRr6N155z9jOOspy');
 
 -- --------------------------------------------------------
 
@@ -337,12 +370,6 @@ ALTER TABLE `amenity`
 --
 ALTER TABLE `appliance`
   ADD KEY `PropertyID` (`PropertyID`);
-
---
--- Indexes for table `authentication`
---
-ALTER TABLE `authentication`
-  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `cost`
@@ -460,18 +487,12 @@ ALTER TABLE `utility`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `amenity`
 --
 ALTER TABLE `amenity`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `authentication`
---
-ALTER TABLE `authentication`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -484,7 +505,7 @@ ALTER TABLE `cost`
 -- AUTO_INCREMENT for table `email`
 --
 ALTER TABLE `email`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `fee`
@@ -544,19 +565,19 @@ ALTER TABLE `picture`
 -- AUTO_INCREMENT for table `property`
 --
 ALTER TABLE `property`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tenant`
 --
 ALTER TABLE `tenant`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `utility`
