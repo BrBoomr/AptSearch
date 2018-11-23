@@ -79,7 +79,7 @@
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
     <column name="UserID" phpName="Userid" type="INTEGER" required="true"/>
-    <column name="Email" phpName="Email" type="INTEGER" required="true"/>
+    <column name="Email" phpName="Email" type="VARCHAR" size="128" required="true"/>
     <column name="Description" phpName="Description" type="CHAR" sqlType="enum('general','tenant','landlord','')"/>
     <foreign-key foreignTable="user" name="email_ibfk_1">
       <reference local="UserID" foreign="ID"/>
@@ -311,6 +311,7 @@
   </table>
   <table name="user" idMethod="native" phpName="User">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="FirstName" phpName="Firstname" type="VARCHAR" size="128" required="true"/>
     <column name="MiddleName" phpName="Middlename" type="VARCHAR" size="128"/>
     <column name="LastName" phpName="Lastname" type="VARCHAR" size="128" required="true"/>

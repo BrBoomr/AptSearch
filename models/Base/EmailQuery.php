@@ -58,7 +58,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEmail findOneById(int $ID) Return the first ChildEmail filtered by the ID column
  * @method     ChildEmail findOneByTimestamp(string $Timestamp) Return the first ChildEmail filtered by the Timestamp column
  * @method     ChildEmail findOneByUserid(int $UserID) Return the first ChildEmail filtered by the UserID column
- * @method     ChildEmail findOneByEmail(int $Email) Return the first ChildEmail filtered by the Email column
+ * @method     ChildEmail findOneByEmail(string $Email) Return the first ChildEmail filtered by the Email column
  * @method     ChildEmail findOneByDescription(string $Description) Return the first ChildEmail filtered by the Description column *
 
  * @method     ChildEmail requirePk($key, ConnectionInterface $con = null) Return the ChildEmail by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -67,14 +67,14 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEmail requireOneById(int $ID) Return the first ChildEmail filtered by the ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEmail requireOneByTimestamp(string $Timestamp) Return the first ChildEmail filtered by the Timestamp column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEmail requireOneByUserid(int $UserID) Return the first ChildEmail filtered by the UserID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildEmail requireOneByEmail(int $Email) Return the first ChildEmail filtered by the Email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildEmail requireOneByEmail(string $Email) Return the first ChildEmail filtered by the Email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEmail requireOneByDescription(string $Description) Return the first ChildEmail filtered by the Description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildEmail[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildEmail objects based on current ModelCriteria
  * @method     ChildEmail[]|ObjectCollection findById(int $ID) Return ChildEmail objects filtered by the ID column
  * @method     ChildEmail[]|ObjectCollection findByTimestamp(string $Timestamp) Return ChildEmail objects filtered by the Timestamp column
  * @method     ChildEmail[]|ObjectCollection findByUserid(int $UserID) Return ChildEmail objects filtered by the UserID column
- * @method     ChildEmail[]|ObjectCollection findByEmail(int $Email) Return ChildEmail objects filtered by the Email column
+ * @method     ChildEmail[]|ObjectCollection findByEmail(string $Email) Return ChildEmail objects filtered by the Email column
  * @method     ChildEmail[]|ObjectCollection findByDescription(string $Description) Return ChildEmail objects filtered by the Description column
  * @method     ChildEmail[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
@@ -396,35 +396,19 @@ abstract class EmailQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByEmail(1234); // WHERE Email = 1234
-     * $query->filterByEmail(array(12, 34)); // WHERE Email IN (12, 34)
-     * $query->filterByEmail(array('min' => 12)); // WHERE Email > 12
+     * $query->filterByEmail('fooValue');   // WHERE Email = 'fooValue'
+     * $query->filterByEmail('%fooValue%', Criteria::LIKE); // WHERE Email LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $email The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $email The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildEmailQuery The current query, for fluid interface
      */
     public function filterByEmail($email = null, $comparison = null)
     {
-        if (is_array($email)) {
-            $useMinMax = false;
-            if (isset($email['min'])) {
-                $this->addUsingAlias(EmailTableMap::COL_EMAIL, $email['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($email['max'])) {
-                $this->addUsingAlias(EmailTableMap::COL_EMAIL, $email['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($email)) {
                 $comparison = Criteria::IN;
             }
         }

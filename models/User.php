@@ -14,5 +14,18 @@ use Base\User as BaseUser;
  */
 class User extends BaseUser
 {
+    /**
+     * @param String $password
+     */
+    public function setPassword($password){
+        $this->setHashedpassword(password_hash($password, PASSWORD_DEFAULT));
+    }
 
+    /**
+     * @param String $password
+     */
+    public function login($password){
+        $hash = $this->getHashedpassword();
+        return password_verify($password,$hash);
+    }
 }

@@ -112,7 +112,7 @@ CREATE TABLE `email`
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
     `Timestamp` DATE NOT NULL,
     `UserID` INTEGER NOT NULL,
-    `Email` INTEGER NOT NULL,
+    `Email` VARCHAR(128) NOT NULL,
     `Description` enum('general','tenant','landlord',''),
     PRIMARY KEY (`ID`),
     INDEX `UserID` (`UserID`),
@@ -384,6 +384,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`
 (
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
+    `Timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `FirstName` VARCHAR(128) NOT NULL,
     `MiddleName` VARCHAR(128),
     `LastName` VARCHAR(128) NOT NULL,

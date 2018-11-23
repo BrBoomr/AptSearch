@@ -21,12 +21,14 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  * @method     ChildUserQuery orderById($order = Criteria::ASC) Order by the ID column
+ * @method     ChildUserQuery orderByTimestamp($order = Criteria::ASC) Order by the Timestamp column
  * @method     ChildUserQuery orderByFirstname($order = Criteria::ASC) Order by the FirstName column
  * @method     ChildUserQuery orderByMiddlename($order = Criteria::ASC) Order by the MiddleName column
  * @method     ChildUserQuery orderByLastname($order = Criteria::ASC) Order by the LastName column
  * @method     ChildUserQuery orderByHashedpassword($order = Criteria::ASC) Order by the HashedPassword column
  *
  * @method     ChildUserQuery groupById() Group by the ID column
+ * @method     ChildUserQuery groupByTimestamp() Group by the Timestamp column
  * @method     ChildUserQuery groupByFirstname() Group by the FirstName column
  * @method     ChildUserQuery groupByMiddlename() Group by the MiddleName column
  * @method     ChildUserQuery groupByLastname() Group by the LastName column
@@ -136,6 +138,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUser findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUser matching the query, or a new ChildUser object populated from the query conditions when no match is found
  *
  * @method     ChildUser findOneById(int $ID) Return the first ChildUser filtered by the ID column
+ * @method     ChildUser findOneByTimestamp(string $Timestamp) Return the first ChildUser filtered by the Timestamp column
  * @method     ChildUser findOneByFirstname(string $FirstName) Return the first ChildUser filtered by the FirstName column
  * @method     ChildUser findOneByMiddlename(string $MiddleName) Return the first ChildUser filtered by the MiddleName column
  * @method     ChildUser findOneByLastname(string $LastName) Return the first ChildUser filtered by the LastName column
@@ -145,6 +148,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUser requireOne(ConnectionInterface $con = null) Return the first ChildUser matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildUser requireOneById(int $ID) Return the first ChildUser filtered by the ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUser requireOneByTimestamp(string $Timestamp) Return the first ChildUser filtered by the Timestamp column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOneByFirstname(string $FirstName) Return the first ChildUser filtered by the FirstName column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOneByMiddlename(string $MiddleName) Return the first ChildUser filtered by the MiddleName column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOneByLastname(string $LastName) Return the first ChildUser filtered by the LastName column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -152,6 +156,7 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildUser[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildUser objects based on current ModelCriteria
  * @method     ChildUser[]|ObjectCollection findById(int $ID) Return ChildUser objects filtered by the ID column
+ * @method     ChildUser[]|ObjectCollection findByTimestamp(string $Timestamp) Return ChildUser objects filtered by the Timestamp column
  * @method     ChildUser[]|ObjectCollection findByFirstname(string $FirstName) Return ChildUser objects filtered by the FirstName column
  * @method     ChildUser[]|ObjectCollection findByMiddlename(string $MiddleName) Return ChildUser objects filtered by the MiddleName column
  * @method     ChildUser[]|ObjectCollection findByLastname(string $LastName) Return ChildUser objects filtered by the LastName column
@@ -254,7 +259,7 @@ abstract class UserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT ID, FirstName, MiddleName, LastName, HashedPassword FROM user WHERE ID = :p0';
+        $sql = 'SELECT ID, Timestamp, FirstName, MiddleName, LastName, HashedPassword FROM user WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -383,6 +388,49 @@ abstract class UserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UserTableMap::COL_ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the Timestamp column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByTimestamp('2011-03-14'); // WHERE Timestamp = '2011-03-14'
+     * $query->filterByTimestamp('now'); // WHERE Timestamp = '2011-03-14'
+     * $query->filterByTimestamp(array('max' => 'yesterday')); // WHERE Timestamp > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $timestamp The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildUserQuery The current query, for fluid interface
+     */
+    public function filterByTimestamp($timestamp = null, $comparison = null)
+    {
+        if (is_array($timestamp)) {
+            $useMinMax = false;
+            if (isset($timestamp['min'])) {
+                $this->addUsingAlias(UserTableMap::COL_TIMESTAMP, $timestamp['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($timestamp['max'])) {
+                $this->addUsingAlias(UserTableMap::COL_TIMESTAMP, $timestamp['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(UserTableMap::COL_TIMESTAMP, $timestamp, $comparison);
     }
 
     /**

@@ -149,7 +149,7 @@ class EmailTableMap extends TableMap
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
         $this->addForeignKey('UserID', 'Userid', 'INTEGER', 'user', 'ID', true, null, null);
-        $this->addColumn('Email', 'Email', 'INTEGER', true, null, null);
+        $this->addColumn('Email', 'Email', 'VARCHAR', true, 128, null);
         $this->addColumn('Description', 'Description', 'CHAR', false, null, null);
     } // initialize()
 
