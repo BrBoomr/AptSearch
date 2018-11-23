@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+  <table name="address" idMethod="native" phpName="Address">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Continent" phpName="Continent" type="VARCHAR" size="128" required="true"/>
+    <column name="Country" phpName="Country" type="VARCHAR" size="128" required="true"/>
+    <column name="State" phpName="State" type="VARCHAR" size="128"/>
+    <column name="City" phpName="City" type="VARCHAR" size="128" required="true"/>
+    <column name="Zip" phpName="Zip" type="INTEGER"/>
+    <column name="StreetName" phpName="Streetname" type="VARCHAR" size="128" required="true"/>
+    <column name="BuildingNumber" phpName="Buildingnumber" type="INTEGER" required="true"/>
+    <column name="ApartmentID" phpName="Apartmentid" type="INTEGER"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="amenity" idMethod="native" phpName="Amenity">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
+    <column name="Name" phpName="Name" type="VARCHAR" size="56" required="true"/>
+    <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>
+    <column name="Private" phpName="Private" type="BOOLEAN" size="1" required="true"/>
+    <foreign-key foreignTable="property" name="amenity_ibfk_1">
+      <reference local="PropertyID" foreign="ID"/>
+    </foreign-key>
+    <index name="PropertyID">
+      <index-column name="PropertyID"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="appliance" idMethod="native" phpName="Appliance">
+    <column name="ID" phpName="Id" type="INTEGER" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Name" phpName="Name" type="VARCHAR" size="128" required="true"/>
+    <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>
+    <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="property" name="appliance_ibfk_1">
+      <reference local="PropertyID" foreign="ID"/>
+    </foreign-key>
+    <index name="PropertyID">
+      <index-column name="PropertyID"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="authentication" idMethod="native" phpName="Authentication">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Email" phpName="Email" type="VARCHAR" size="128" required="true"/>
+    <column name="Password" phpName="Password" type="VARCHAR" size="128" required="true"/>
+    <column name="UserID" phpName="Userid" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="cost" idMethod="native" phpName="Cost">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
+    <column name="Name" phpName="Name" type="VARCHAR" size="56" required="true"/>
+    <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>
+    <column name="Cost" phpName="Cost" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="property" name="cost_ibfk_1">
+      <reference local="PropertyID" foreign="ID"/>
+    </foreign-key>
+    <index name="PropertyID">
+      <index-column name="PropertyID"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="email" idMethod="native" phpName="Email">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="UserID" phpName="Userid" type="INTEGER" required="true"/>
+    <column name="Email" phpName="Email" type="INTEGER" required="true"/>
+    <column name="Description" phpName="Description" type="CHAR" sqlType="enum('general','tenant','landlord','')"/>
+    <foreign-key foreignTable="user" name="email_ibfk_1">
+      <reference local="UserID" foreign="ID"/>
+    </foreign-key>
+    <index name="UserID">
+      <index-column name="UserID"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="fee" idMethod="native" phpName="Fee">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
+    <column name="Name" phpName="Name" type="VARCHAR" size="56" required="true"/>
+    <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>
+    <column name="Cost" phpName="Cost" type="INTEGER" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="issue" idMethod="native" phpName="Issue">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
+    <column name="Name" phpName="Name" type="VARCHAR" size="56" required="true"/>
+    <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>
+    <column name="Found" phpName="Found" type="DATE" required="true"/>
+    <column name="Repaired" phpName="Repaired" type="DATE" required="true"/>
+    <column name="Cost" phpName="Cost" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="property" name="issue_ibfk_1">
+      <reference local="PropertyID" foreign="ID"/>
+    </foreign-key>
+    <index name="PropertyID">
+      <index-column name="PropertyID"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="limitation" idMethod="native" phpName="Limitation">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
+    <column name="Name" phpName="Name" type="VARCHAR" size="56" required="true"/>
+    <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>
+    <foreign-key foreignTable="property" name="limitation_ibfk_1">
+      <reference local="PropertyID" foreign="ID"/>
+    </foreign-key>
+    <index name="PropertyID">
+      <index-column name="PropertyID"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="lives" idMethod="native" phpName="Lives">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="UserID" phpName="Userid" type="INTEGER" required="true"/>
+    <column name="Name" phpName="Name" type="VARCHAR" size="128" required="true"/>
+    <column name="TenantRelation" phpName="Tenantrelation" type="VARCHAR" size="128" required="true"/>
+    <column name="Start" phpName="Start" type="DATE" required="true"/>
+    <column name="End" phpName="End" type="DATE" required="true"/>
+    <column name="ActualEnd" phpName="Actualend" type="DATE" required="true"/>
+    <foreign-key foreignTable="user" name="lives_ibfk_1">
+      <reference local="UserID" foreign="ID"/>
+    </foreign-key>
+    <index name="UserID">
+      <index-column name="UserID"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="money" idMethod="native" phpName="Money">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="UserID" phpName="Userid" type="INTEGER" required="true"/>
+    <column name="Send" phpName="Send" type="BOOLEAN" size="1" required="true"/>
+    <column name="Receive" phpName="Receive" type="BOOLEAN" size="1" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="owed" idMethod="native" phpName="Owed">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="INTEGER" required="true"/>
+    <column name="SenderID" phpName="Senderid" type="INTEGER" required="true"/>
+    <column name="ReceiverID" phpName="Receiverid" type="INTEGER" required="true"/>
+    <column name="Amount" phpName="Amount" type="INTEGER" required="true"/>
+    <column name="DateDue" phpName="Datedue" type="DATE" required="true"/>
+    <column name="Name" phpName="Name" type="VARCHAR" size="56" required="true"/>
+    <column name="Details" phpName="Details" type="VARCHAR" size="128" required="true"/>
+    <column name="PaymentID" phpName="Paymentid" type="INTEGER"/>
+    <foreign-key foreignTable="payment" name="owed_ibfk_1">
+      <reference local="PaymentID" foreign="ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="user" name="owed_ibfk_2">
+      <reference local="ReceiverID" foreign="ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="user" name="owed_ibfk_3">
+      <reference local="SenderID" foreign="ID"/>
+    </foreign-key>
+    <index name="PaymentID">
+      <index-column name="PaymentID"/>
+    </index>
+    <index name="ReceiverID">
+      <index-column name="ReceiverID"/>
+    </index>
+    <index name="SenderID">
+      <index-column name="SenderID"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="payment" idMethod="native" phpName="Payment">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="SenderID" phpName="Senderid" type="INTEGER" required="true"/>
+    <column name="ReceiverID" phpName="Receiverid" type="INTEGER" required="true"/>
+    <column name="OwedID" phpName="Owedid" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="user" name="payment_ibfk_1">
+      <reference local="ReceiverID" foreign="ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="user" name="payment_ibfk_2">
+      <reference local="SenderID" foreign="ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="owed" name="payment_ibfk_3">
+      <reference local="OwedID" foreign="ID"/>
+    </foreign-key>
+    <index name="ReceiverID">
+      <index-column name="ReceiverID"/>
+    </index>
+    <index name="SenderID">
+      <index-column name="SenderID"/>
+    </index>
+    <index name="OwedID">
+      <index-column name="OwedID"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="phone" idMethod="native" phpName="Phone">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="UserID" phpName="Userid" type="INTEGER" required="true"/>
+    <column name="Number" phpName="Number" type="VARCHAR" size="64" required="true"/>
+    <column name="Description" phpName="Description" type="CHAR" sqlType="enum('work','home','cell','')" required="true"/>
+    <foreign-key foreignTable="user" name="phone_ibfk_1">
+      <reference local="UserID" foreign="ID"/>
+    </foreign-key>
+    <index name="UserID">
+      <index-column name="UserID"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="picture" idMethod="native" phpName="Picture">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
+    <column name="Link" phpName="Link" type="VARCHAR" size="128" required="true"/>
+    <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>
+    <foreign-key foreignTable="property" name="picture_ibfk_1">
+      <reference local="PropertyID" foreign="ID"/>
+    </foreign-key>
+    <index name="PropertyID">
+      <index-column name="PropertyID"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="property" idMethod="native" phpName="Property">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="LandlordID" phpName="Landlordid" type="INTEGER" required="true"/>
+    <column name="AddressID" phpName="Addressid" type="INTEGER" required="true"/>
+    <column name="FPL" phpName="Fpl" type="INTEGER"/>
+    <column name="SquareFootage" phpName="Squarefootage" type="INTEGER" required="true"/>
+    <column name="Rooms" phpName="Rooms" type="INTEGER" required="true"/>
+    <column name="Bathrooms" phpName="Bathrooms" type="INTEGER" required="true"/>
+    <column name="Details" phpName="Details" type="VARCHAR" size="256"/>
+    <foreign-key foreignTable="address" name="property_ibfk_1">
+      <reference local="AddressID" foreign="ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="user" name="property_ibfk_2">
+      <reference local="LandlordID" foreign="ID"/>
+    </foreign-key>
+    <index name="AddressID">
+      <index-column name="AddressID"/>
+    </index>
+    <index name="LandlordID">
+      <index-column name="LandlordID"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="tenant" idMethod="native" phpName="Tenant">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="UserID" phpName="Userid" type="INTEGER" required="true"/>
+    <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
+    <column name="Name" phpName="Name" type="VARCHAR" size="128" required="true"/>
+    <column name="Start" phpName="Start" type="DATE" required="true"/>
+    <column name="End" phpName="End" type="DATE"/>
+    <column name="ActualEnd" phpName="Actualend" type="DATE"/>
+    <foreign-key foreignTable="property" name="tenant_ibfk_1">
+      <reference local="PropertyID" foreign="ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="user" name="tenant_ibfk_2">
+      <reference local="UserID" foreign="ID"/>
+    </foreign-key>
+    <index name="PropertyID">
+      <index-column name="PropertyID"/>
+    </index>
+    <index name="UserID">
+      <index-column name="UserID"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="user" idMethod="native" phpName="User">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="FirstName" phpName="Firstname" type="VARCHAR" size="128" required="true"/>
+    <column name="MiddleName" phpName="Middlename" type="VARCHAR" size="128"/>
+    <column name="LastName" phpName="Lastname" type="VARCHAR" size="128" required="true"/>
+    <column name="HashedPassword" phpName="Hashedpassword" type="VARCHAR" size="256" required="true"/>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+  <table name="utility" idMethod="native" phpName="Utility">
+    <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
+    <column name="Name" phpName="Name" type="VARCHAR" size="56" required="true"/>
+    <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>
+    <column name="Included" phpName="Included" type="BOOLEAN" size="1" required="true"/>
+    <column name="Cost" phpName="Cost" type="INTEGER" required="true"/>
+    <foreign-key foreignTable="property" name="utility_ibfk_1">
+      <reference local="PropertyID" foreign="ID"/>
+    </foreign-key>
+    <index name="PropertyID">
+      <index-column name="PropertyID"/>
+    </index>
+    <vendor type="mysql">
+      <parameter name="Engine" value="InnoDB"/>
+    </vendor>
+  </table>
+</database>
