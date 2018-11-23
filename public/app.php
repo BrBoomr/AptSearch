@@ -33,6 +33,7 @@ $app->get('/createUser', function ($request, $response, $args) {
 });
 // home page route
 $app->get('/', function ($request, $response, $args) {
+	$this->view->render($response, "index.html");
 	return $response;
 });
 
