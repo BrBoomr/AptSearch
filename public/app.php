@@ -36,6 +36,11 @@ $app->get('/', function ($request, $response, $args) {
 	$this->view->render($response, "index.html");
 	return $response;
 });
+// The route for testing out the new login page
+$app->get('/loginTest', function ($request, $response, $args) {
+	$this->view->render($response, "login.html");
+	return $response;
+});
 
 //login verification route
 $app->get('/login', function ($request, $response, $args) {
