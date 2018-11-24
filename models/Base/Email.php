@@ -87,7 +87,7 @@ abstract class Email implements ActiveRecordInterface
     /**
      * The value for the email field.
      *
-     * @var        int
+     * @var        string
      */
     protected $email;
 
@@ -379,7 +379,7 @@ abstract class Email implements ActiveRecordInterface
     /**
      * Get the [email] column value.
      *
-     * @return int
+     * @return string
      */
     public function getEmail()
     {
@@ -463,13 +463,13 @@ abstract class Email implements ActiveRecordInterface
     /**
      * Set the value of [email] column.
      *
-     * @param int $v new value
+     * @param string $v new value
      * @return $this|\Email The current object (for fluent API support)
      */
     public function setEmail($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
         if ($this->email !== $v) {
@@ -549,7 +549,7 @@ abstract class Email implements ActiveRecordInterface
             $this->userid = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : EmailTableMap::translateFieldName('Email', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->email = (null !== $col) ? (int) $col : null;
+            $this->email = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : EmailTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
             $this->description = (null !== $col) ? (string) $col : null;
@@ -814,7 +814,7 @@ abstract class Email implements ActiveRecordInterface
                         $stmt->bindValue($identifier, $this->userid, PDO::PARAM_INT);
                         break;
                     case 'Email':
-                        $stmt->bindValue($identifier, $this->email, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
                         break;
                     case 'Description':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);

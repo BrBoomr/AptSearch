@@ -18,6 +18,7 @@ use \Tenant as ChildTenant;
 use \TenantQuery as ChildTenantQuery;
 use \User as ChildUser;
 use \UserQuery as ChildUserQuery;
+use \DateTime;
 use \Exception;
 use \PDO;
 use Map\EmailTableMap;
@@ -40,6 +41,7 @@ use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
+use Propel\Runtime\Util\PropelDateTime;
 
 /**
  * Base class that represents a row from the 'user' table.
@@ -88,6 +90,14 @@ abstract class User implements ActiveRecordInterface
      * @var        int
      */
     protected $id;
+
+    /**
+     * The value for the timestamp field.
+     *
+     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
+     * @var        DateTime
+     */
+    protected $timestamp;
 
     /**
      * The value for the firstname field.
@@ -234,10 +244,22 @@ abstract class User implements ActiveRecordInterface
     protected $tenantsScheduledForDeletion = null;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
+     */
+    public function applyDefaultValues()
+    {
+    }
+
+    /**
      * Initializes internal state of Base\User object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -469,6 +491,26 @@ abstract class User implements ActiveRecordInterface
     }
 
     /**
+     * Get the [optionally formatted] temporal [timestamp] column value.
+     *
+     *
+     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw DateTime object will be returned.
+     *
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getTimestamp($format = NULL)
+    {
+        if ($format === null) {
+            return $this->timestamp;
+        } else {
+            return $this->timestamp instanceof \DateTimeInterface ? $this->timestamp->format($format) : null;
+        }
+    }
+
+    /**
      * Get the [firstname] column value.
      *
      * @return string
@@ -527,6 +569,26 @@ abstract class User implements ActiveRecordInterface
 
         return $this;
     } // setId()
+
+    /**
+     * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
+     *
+     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
+     *               Empty strings are treated as NULL.
+     * @return $this|\User The current object (for fluent API support)
+     */
+    public function setTimestamp($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->timestamp !== null || $dt !== null) {
+            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->timestamp->format("Y-m-d H:i:s.u")) {
+                $this->timestamp = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[UserTableMap::COL_TIMESTAMP] = true;
+            }
+        } // if either are not null
+
+        return $this;
+    } // setTimestamp()
 
     /**
      * Set the value of [firstname] column.
@@ -647,16 +709,22 @@ abstract class User implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : UserTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : UserTableMap::translateFieldName('Firstname', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : UserTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00 00:00:00') {
+                $col = null;
+            }
+            $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : UserTableMap::translateFieldName('Firstname', TableMap::TYPE_PHPNAME, $indexType)];
             $this->firstname = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : UserTableMap::translateFieldName('Middlename', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : UserTableMap::translateFieldName('Middlename', TableMap::TYPE_PHPNAME, $indexType)];
             $this->middlename = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : UserTableMap::translateFieldName('Lastname', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : UserTableMap::translateFieldName('Lastname', TableMap::TYPE_PHPNAME, $indexType)];
             $this->lastname = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : UserTableMap::translateFieldName('Hashedpassword', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : UserTableMap::translateFieldName('Hashedpassword', TableMap::TYPE_PHPNAME, $indexType)];
             $this->hashedpassword = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -666,7 +734,7 @@ abstract class User implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = UserTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = UserTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\User'), 0, $e);
@@ -1041,6 +1109,9 @@ abstract class User implements ActiveRecordInterface
         if ($this->isColumnModified(UserTableMap::COL_ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
+        if ($this->isColumnModified(UserTableMap::COL_TIMESTAMP)) {
+            $modifiedColumns[':p' . $index++]  = 'Timestamp';
+        }
         if ($this->isColumnModified(UserTableMap::COL_FIRSTNAME)) {
             $modifiedColumns[':p' . $index++]  = 'FirstName';
         }
@@ -1066,6 +1137,9 @@ abstract class User implements ActiveRecordInterface
                 switch ($columnName) {
                     case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
+                    case 'Timestamp':
+                        $stmt->bindValue($identifier, $this->timestamp ? $this->timestamp->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
                     case 'FirstName':
                         $stmt->bindValue($identifier, $this->firstname, PDO::PARAM_STR);
@@ -1145,15 +1219,18 @@ abstract class User implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getFirstname();
+                return $this->getTimestamp();
                 break;
             case 2:
-                return $this->getMiddlename();
+                return $this->getFirstname();
                 break;
             case 3:
-                return $this->getLastname();
+                return $this->getMiddlename();
                 break;
             case 4:
+                return $this->getLastname();
+                break;
+            case 5:
                 return $this->getHashedpassword();
                 break;
             default:
@@ -1187,11 +1264,16 @@ abstract class User implements ActiveRecordInterface
         $keys = UserTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getFirstname(),
-            $keys[2] => $this->getMiddlename(),
-            $keys[3] => $this->getLastname(),
-            $keys[4] => $this->getHashedpassword(),
+            $keys[1] => $this->getTimestamp(),
+            $keys[2] => $this->getFirstname(),
+            $keys[3] => $this->getMiddlename(),
+            $keys[4] => $this->getLastname(),
+            $keys[5] => $this->getHashedpassword(),
         );
+        if ($result[$keys[1]] instanceof \DateTimeInterface) {
+            $result[$keys[1]] = $result[$keys[1]]->format('c');
+        }
+
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
@@ -1371,15 +1453,18 @@ abstract class User implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setFirstname($value);
+                $this->setTimestamp($value);
                 break;
             case 2:
-                $this->setMiddlename($value);
+                $this->setFirstname($value);
                 break;
             case 3:
-                $this->setLastname($value);
+                $this->setMiddlename($value);
                 break;
             case 4:
+                $this->setLastname($value);
+                break;
+            case 5:
                 $this->setHashedpassword($value);
                 break;
         } // switch()
@@ -1412,16 +1497,19 @@ abstract class User implements ActiveRecordInterface
             $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setFirstname($arr[$keys[1]]);
+            $this->setTimestamp($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setMiddlename($arr[$keys[2]]);
+            $this->setFirstname($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setLastname($arr[$keys[3]]);
+            $this->setMiddlename($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setHashedpassword($arr[$keys[4]]);
+            $this->setLastname($arr[$keys[4]]);
+        }
+        if (array_key_exists($keys[5], $arr)) {
+            $this->setHashedpassword($arr[$keys[5]]);
         }
     }
 
@@ -1466,6 +1554,9 @@ abstract class User implements ActiveRecordInterface
 
         if ($this->isColumnModified(UserTableMap::COL_ID)) {
             $criteria->add(UserTableMap::COL_ID, $this->id);
+        }
+        if ($this->isColumnModified(UserTableMap::COL_TIMESTAMP)) {
+            $criteria->add(UserTableMap::COL_TIMESTAMP, $this->timestamp);
         }
         if ($this->isColumnModified(UserTableMap::COL_FIRSTNAME)) {
             $criteria->add(UserTableMap::COL_FIRSTNAME, $this->firstname);
@@ -1565,6 +1656,7 @@ abstract class User implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setTimestamp($this->getTimestamp());
         $copyObj->setFirstname($this->getFirstname());
         $copyObj->setMiddlename($this->getMiddlename());
         $copyObj->setLastname($this->getLastname());
@@ -3891,12 +3983,14 @@ abstract class User implements ActiveRecordInterface
     public function clear()
     {
         $this->id = null;
+        $this->timestamp = null;
         $this->firstname = null;
         $this->middlename = null;
         $this->lastname = null;
         $this->hashedpassword = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

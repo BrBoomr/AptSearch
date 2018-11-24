@@ -1,7 +1,7 @@
-vendor
+﻿vendor/*
 composer.json
 propel.yml.dist
 generated-conf
 generated-sql
-models/Base
-models/Map
+models/Base/*
+models/Map/*
