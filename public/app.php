@@ -37,18 +37,24 @@ $app->get('/', function ($request, $response, $args) {
 	return $response;
 });
 // The route for testing out the new login page
-$app->get('/loginTest', function ($request, $response, $args) {
+$app->get('/login', function ($request, $response, $args) {
 	$this->view->render($response, "login.html");
 	return $response;
 });
 
 //login verification route
-$app->get('/login', function ($request, $response, $args) {
+$app->post('/login_verification', function ($request, $response, $args) {
+	
 	// get the data from the post body
-	$email = $this->request->getParam('email');
-	$password = $this->request->getParam('password');
+	$email = $request->getParsedBody()['email'];
+	$password = $request->getParsedBody()['password'];
 	//find user object in database
 	$email = EmailQuery::create()->findOneByEmail($email);
+	// If null is not caught, the following query will return a 500 error
+	if (is_null($email)){
+		$arr["verified"]="false";
+		return json_encode($arr);
+	}
 	$user = UserQuery::create()->findPk($email->getUserid());
 	if($user && $user->login($password)){
 		// store in session

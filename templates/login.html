@@ -1,48 +1,56 @@
-{% extends 'layout.html' %}
-{% block css %}<link rel="stylesheet" href="{{base_url()}}/../../css/login.css">{% endblock %}
+{% extends 'layout.html' %} {% block css %}
+<link rel="stylesheet" href="{{base_url()}}/../../css/login.css">{% endblock %} {% block content %}
 
-{% block content %}
 <div class="container login-container">
-        <div class="row">
-            <div class="col-md-6 login-form-1">
-                <h3>Login</h3>
-                <form>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Your Email" value="" />
-                    </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control" placeholder="Your Password" value="" />
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" class="btnSubmit" value="Login" />
-                    </div>
-                    <div class="form-group">
-                        <!-- <a href="#" class="ForgetPwd">Forget Password?</a> -->
-                    </div>
-                </form>
-            </div>
-            <div class="col-md-6 login-form-2">
-                <h3>Signup</h3>
-                <form>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Your Email" value="" />
-                    </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control" placeholder="Your Password" value="" />
-                    </div>
-                    <div class="form-group">
-                            <input type="password" class="form-control" placeholder="Confirm Password *" value="" />
-                        </div>
-                    <div class="form-group">
-                        <input type="submit" class="btnSubmit" value="Login" />
-                    </div>
-                    <div class="form-group">
+    <div class="row">
+        <div class="col-md-6 login-form-1">
+            <h3>Login</h3>
+            <form>
+                <div class="form-group">
+                    <input id="loginEmail" type="text" class="form-control" placeholder="Email" value="" />
+                </div>
+                <div class="form-group">
+                    <input id="loginPassword" type="password" class="form-control" placeholder="Password" value="" />
+                </div>
+                <div class="form-group">
 
-                        <!-- <a href="#" class="ForgetPwd" value="Login">Forget Password?</a> -->
+                    <input id="loginSubmit" type="submit" class="btnSubmit" value="Login" />
+                </div>
+                <div class="form-group">
+                    <!-- Error message for incorrect logins that can be closed -->
+                    <div id = "loginError" class="alert alert-danger alert-dismissible" style="display:none;">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Incorrect Login</strong>
                     </div>
-                </form>
-            </div>
+                    <!-- <a href="#" class="ForgetPwd">Forget Password?</a> -->
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 login-form-2">
+            <h3>Sign up</h3>
+            <form>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Email" value="" />
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Password" value="" />
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Confirm Password" value="" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btnSubmit" value="Sign up" />
+                </div>
+                <div class="form-group">
+                        <div id = "errorCard" class="alert alert-danger alert-dismissible" style="display:none;">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Incorrect Login</strong>
+                            </div>
+                    <!-- <a href="#" class="ForgetPwd" value="Login">Forget Password?</a> -->
+                </div>
+            </form>
         </div>
     </div>
-{% endblock %}
+</div>
 
+{% endblock %}
