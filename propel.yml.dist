@@ -9,7 +9,7 @@
 propel:
     paths:
         # The directory where Propel expects to find your `schema.xml` file.
-        schemaDir: C:\xampp\htdocs\CSCI-4333\Project
+        schemaDir: C:\xampp\htdocs\database_project\Database_Project
 
         # The directory where Propel should output generated object model classes.
         phpDir: models

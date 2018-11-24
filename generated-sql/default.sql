@@ -65,6 +65,22 @@ CREATE TABLE `appliance`
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
+-- authentication
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `authentication`;
+
+CREATE TABLE `authentication`
+(
+    `ID` INTEGER NOT NULL AUTO_INCREMENT,
+    `Timestamp` DATE NOT NULL,
+    `Email` VARCHAR(128) NOT NULL,
+    `Password` VARCHAR(128) NOT NULL,
+    `UserID` INTEGER NOT NULL,
+    PRIMARY KEY (`ID`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
 -- cost
 -- ---------------------------------------------------------------------
 
@@ -96,7 +112,7 @@ CREATE TABLE `email`
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
     `Timestamp` DATE NOT NULL,
     `UserID` INTEGER NOT NULL,
-    `Email` VARCHAR(128) NOT NULL,
+    `Email` INTEGER NOT NULL,
     `Description` enum('general','tenant','landlord',''),
     PRIMARY KEY (`ID`),
     INDEX `UserID` (`UserID`),
@@ -368,7 +384,6 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`
 (
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `FirstName` VARCHAR(128) NOT NULL,
     `MiddleName` VARCHAR(128),
     `LastName` VARCHAR(128) NOT NULL,
