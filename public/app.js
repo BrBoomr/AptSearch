@@ -53,6 +53,7 @@ $("#registerSubmit").click(function(){
                     method: "get",
                     url: baseurl + "/success_register",
                     dataType: "text",
+                    //In this context, r is simply the rendered view from the PHP backend.
                     success: function (r) {
                         console.log("Successfuly Registered!")
                         $("body").html(r)
@@ -60,16 +61,24 @@ $("#registerSubmit").click(function(){
                 });
             }
             else if(response['mismatch'] == 'true'){
-                console.log("Passwords mismatch")
+                //console.log("Passwords mismatch")
+                $("#registerError").removeClass("d-none")
+                $("#registerError").text("Passwords Do Not Match!")
             }
             else if(response['invalid'] == 'true'){
-                console.log("Fields Cannot Be Empty!")
+                //console.log("Fields Cannot Be Empty!")
+                $("#registerError").removeClass("d-none")
+                $("#registerError").text("Fields Cannot Be Empty!")
             }
             else if(response['duplicate']== 'true'){
-                console.log("Email already in use!")
+                //console.log("Email already in use!")
+                $("#registerError").removeClass("d-none")
+                $("#registerError").text("Email Already In Use!")
             }
             else{
-                console.log("All's fucked")
+                //console.log("All's fucked")
+                $("#registerError").removeClass("d-none")
+                $("#registerError").text("You Broke Something, Go Away!")
                 //Internal Error Handling.
             }
         }

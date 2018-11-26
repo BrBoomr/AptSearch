@@ -82,6 +82,11 @@ function createUser($firstName, $lastName, $email, $password){
 	$newEmail = new Email();
 	$newEmail->setEmail($email);
 	$newEmail->setUserid((string)$newUser->getId());
+	/**
+	 * I suggest we parse through email for the substring after the @ symbol
+	 * We must first verify it is valid within the enum, return an error message in the verification done before.
+	 * Otherwise, grab that substring and set it here.
+	 */
 	$newEmail->setDescription("tenant");
 
 	$newEmail->save();
@@ -112,10 +117,17 @@ $app->get('/register_verification', function ($request, $response, $args) {
 		//$code["duplicate"]='true';
 		return json_encode(["duplicate"=>'true']);
 	}
+
+	//Create the user and it's respective email.
 	createUser($firstName,$lastName,$email,$password);
 	return json_encode(["verified"=>"true"]);
 });
 
+/**
+ * Maybe we can make this a post request.
+ * Send the user object as a param and correctly display to page.
+ * Just a suggestion. I believe it would look like '/success_register/{user}
+ */
 $app->get('/success_register', function ($request, $response, $args) {
 	//echo "Success!</br>";
 	$this->view->render($response, "login.html");
