@@ -11,15 +11,7 @@ $('#loginSubmit').click(function(){
         dataType: "json",
         success: function (response) {
             if(response['verified'] == "true"){
-                $.ajax({
-                    method: "post",
-                    url: baseurl + "/success_login",
-                    data: {"userID" : response['userID']},
-                    dataType: "text",
-                    success: function (r) {
-                        $("body").html(r)
-                    }
-                });
+                loginPage(response['userID'])
             }
             else{
                 $('#loginError').show()
@@ -49,16 +41,7 @@ $("#registerSubmit").click(function(){
         dataType: "json",
         success: function (response) {
             if(response['verified']=='true'){
-                $.ajax({
-                    method: "get",
-                    url: baseurl + "/success_register",
-                    dataType: "text",
-                    //In this context, r is simply the rendered view from the PHP backend.
-                    success: function (r) {
-                        console.log("Successfuly Registered!")
-                        $("body").html(r)
-                    }
-                });
+                loginPage(response["userID"])
             }
             else if(response['mismatch'] == 'true'){
                 //console.log("Passwords mismatch")
@@ -88,3 +71,17 @@ $("#registerSubmit").click(function(){
 $(".close").click(function(){
     $(this).parent().hide()
 });
+
+//Renders index.html with a specific userID in mind. This is done after both logging in and successfully registering an account(which automatically logs them in)
+function loginPage(userID){
+    $.ajax({
+        method: "post",
+        url: baseurl + "/success_login",
+        data: {"userID" : userID},
+        dataType: "text",
+        success: function (r) {
+            $("body").html(r)
+            $("p").attr("userid",userID) //Assigns the tag the current user's ID. Not sure how we can use this yet.
+        }
+    });
+}

@@ -90,6 +90,7 @@ function createUser($firstName, $lastName, $email, $password){
 	$newEmail->setDescription("tenant");
 
 	$newEmail->save();
+	return $newUser->getId();
 }
 $app->get('/register_verification', function ($request, $response, $args) {
 	$firstName = $this->request->getParam("firstName");
@@ -119,19 +120,8 @@ $app->get('/register_verification', function ($request, $response, $args) {
 	}
 
 	//Create the user and it's respective email.
-	createUser($firstName,$lastName,$email,$password);
-	return json_encode(["verified"=>"true"]);
-});
-
-/**
- * Maybe we can make this a post request.
- * Send the user object as a param and correctly display to page.
- * Just a suggestion. I believe it would look like '/success_register/{user}
- */
-$app->get('/success_register', function ($request, $response, $args) {
-	//echo "Success!</br>";
-	$this->view->render($response, "login.html");
-	return $response;
+	$userID = createUser($firstName,$lastName,$email,$password);
+	return json_encode(["verified"=>"true", "userID"=>$userID]);
 });
 
 $app->run();
