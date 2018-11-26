@@ -162,7 +162,7 @@ class LivesTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
+        $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
         $this->addForeignKey('UserID', 'Userid', 'INTEGER', 'user', 'ID', true, null, null);
         $this->addColumn('Name', 'Name', 'VARCHAR', true, 128, null);
         $this->addColumn('TenantRelation', 'Tenantrelation', 'VARCHAR', true, 128, null);

@@ -148,7 +148,7 @@ class ApplianceTableMap extends TableMap
         $this->setUseIdGenerator(false);
         // columns
         $this->addColumn('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
+        $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
         $this->addColumn('Name', 'Name', 'VARCHAR', true, 128, null);
         $this->addColumn('Description', 'Description', 'VARCHAR', true, 128, null);
         $this->addForeignKey('PropertyID', 'Propertyid', 'INTEGER', 'property', 'ID', true, null, null);

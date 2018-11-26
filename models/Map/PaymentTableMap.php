@@ -147,7 +147,7 @@ class PaymentTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
+        $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
         $this->addForeignKey('SenderID', 'Senderid', 'INTEGER', 'user', 'ID', true, null, null);
         $this->addForeignKey('ReceiverID', 'Receiverid', 'INTEGER', 'user', 'ID', true, null, null);
         $this->addForeignKey('OwedID', 'Owedid', 'INTEGER', 'owed', 'ID', true, null, null);

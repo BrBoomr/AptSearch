@@ -73,17 +73,18 @@ $app->post("/success_login",function($request,$response,$args){
 ///////REGISTER ROUTES////////
 //////////////////////////////
 function createUser($firstName, $lastName, $email, $password){
-	$user = new User();
-	$user->setFirstName($firstName);
-	$user->setLastName($lastName);
-	$user->setPassword($password);
+	$newUser = new User();
+	$newUser->setFirstName($firstName);
+	$newUser->setLastName($lastName);
+	$newUser->setPassword($password);
+	$newUser->save();
 
-	$email = new Email();
-	$email->setEmail($email);
-	$email->setUserid($user->getId());
-	$email->setDescription("tenant");
-	$user->save();
-	$email->save();
+	$newEmail = new Email();
+	$newEmail->setEmail($email);
+	$newEmail->setUserid((string)$newUser->getId());
+	$newEmail->setDescription("tenant");
+
+	$newEmail->save();
 }
 $app->get('/register_verification', function ($request, $response, $args) {
 	$firstName = $this->request->getParam("firstName");
@@ -106,8 +107,8 @@ $app->get('/register_verification', function ($request, $response, $args) {
 		return json_encode( ["mismatch"=>'true'] );
 	}
 	//CHECK IF EMAIL IS ALREADY IN USE
-	$email = EmailQuery::create()->findOneByEmail($email);
-	if($email){
+	$check_email = EmailQuery::create()->findOneByEmail($email);
+	if($check_email){
 		//$code["duplicate"]='true';
 		return json_encode(["duplicate"=>'true']);
 	}
