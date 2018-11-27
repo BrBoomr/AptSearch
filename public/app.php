@@ -65,14 +65,16 @@ $app->post('/login_verification', function ($request, $response, $args) {
 
 $app->post("/success_login",function($request,$response,$args){
 	$userID = $this->request->getParam('userID');
-	$this->view->render($response, "index.html", ['user'=>UserQuery::create()->findPk($userID)]);
+	$user = UserQuery::create()->findPk($userID);
+	//$userType = EmailQuery::create()->findOneByAuthorid($userID)->getDescription();
+	$this->view->render($response, "index.html", ['user'=>$user]);
 	return $response;
 });
 
 //////////////////////////////
 ///////REGISTER ROUTES////////
 //////////////////////////////
-function createUser($firstName, $lastName, $email, $password){
+function createUser($firstName, $lastName, $email, $type, $password){
 	$newUser = new User();
 	$newUser->setFirstName($firstName);
 	$newUser->setLastName($lastName);
@@ -82,12 +84,7 @@ function createUser($firstName, $lastName, $email, $password){
 	$newEmail = new Email();
 	$newEmail->setEmail($email);
 	$newEmail->setUserid((string)$newUser->getId());
-	/**
-	 * I suggest we parse through email for the substring after the @ symbol
-	 * We must first verify it is valid within the enum, return an error message in the verification done before.
-	 * Otherwise, grab that substring and set it here.
-	 */
-	$newEmail->setDescription("tenant");
+	$newEmail->setDescription($type);
 
 	$newEmail->save();
 	return $newUser->getId();
@@ -96,6 +93,8 @@ $app->get('/register_verification', function ($request, $response, $args) {
 	$firstName = $this->request->getParam("firstName");
 	$lastName = $this->request->getParam("lastName");
 	$email = $this->request->getParam("email");
+	$type = $this->request->getParam("type");
+	$type = $type ? "landlord" : "tenant";
 	$password = $this->request->getParam("password");
 	$confirm = $this->request->getParam("confirm");
 
@@ -120,7 +119,7 @@ $app->get('/register_verification', function ($request, $response, $args) {
 	}
 
 	//Create the user and it's respective email.
-	$userID = createUser($firstName,$lastName,$email,$password);
+	$userID = createUser($firstName,$lastName,$email,$type,$password);
 	return json_encode(["verified"=>"true", "userID"=>$userID]);
 });
 

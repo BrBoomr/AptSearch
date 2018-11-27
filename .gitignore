@@ -1,6 +1,9 @@
 ﻿vendor/*
 composer.json
+composer.lock
+propel.yml
 propel.yml.dist
+schema.xml
 generated-conf
 generated-sql
 models/Base/*

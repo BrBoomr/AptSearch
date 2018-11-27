@@ -26,16 +26,19 @@ $("#registerSubmit").click(function(){
     registerFirstName = $("#registerFirstName").val()
     registerLastName = $("#registerLastName").val()
     registerEmail = $("#registerEmail").val()
+    //Using attr() here does not work. prop() gets the CURRENT value of a checkbox
+    registerType = $("#landlordCheck").prop("checked")
     registerPassword = $("#registerPassword").val()
     confirmPassword = $("#confirmPassword").val()
     //registration.push(registerFirstName,registerLastName,registerEmail,registerPassword,confirmPassword)
-
+    console.log(registerType)
     $.ajax({
         method: "get",
         url: baseurl + "/register_verification",
         data: {"firstName" : registerFirstName,
                 "lastName" : registerLastName,
                 "email" : registerEmail,
+                "type" : registerType,
                 "password" : registerPassword,
                 "confirm" : confirmPassword},
         dataType: "json",
