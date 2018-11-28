@@ -24,7 +24,12 @@ $container['view'] = function($container) {
 };
 // home page route
 $app->get('/', function ($request, $response, $args) {
-	$this->view->render($response, "index.html", ['user'=>$_SESSION['user']]);
+	if(isset($_SESSION['user'])){
+		$this->view->render($response, "index.html", ['user'=>$_SESSION['user']]);
+	}
+	else{
+		$this->view->render($response, "index.html");
+	}
 	return $response;
 });
 
@@ -38,7 +43,9 @@ $app->get('/login', function ($request, $response, $args) {
 	$this->view->render($response, "login.html");
 	return $response;
 });
-
+$app->post('/logout', function ($request, $response, $args) {
+	session_destroy();
+});
 //login verification route
 $app->post('/login_verification', function ($request, $response, $args) {
 	$email = $this->request->getParam("email");

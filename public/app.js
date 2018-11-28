@@ -71,6 +71,17 @@ $(".close").click(function(){
     $(this).parent().hide()
 });
 
+$("#logoutButton").click(function(){
+    $.ajax({
+        method : "post",
+        url: baseurl + "/logout",
+        dataType: "text",
+        success: function (response) {
+            window.location.replace(baseurl + "/")
+        }
+    });
+})
+
 //Renders index.html with a specific userID in mind. This is done after both logging in and successfully registering an account(which automatically logs them in)
 function loginPage(userID){
     $.ajax({
