@@ -6,11 +6,11 @@
 
 {% block styles %}
     <!--style sheet-->
-    <link rel="stylesheet" href="../../TEMPLATES/authentication/css/authentication.css">
+    <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/authentication/css/authentication.css">
 {% endblock %}
 
 {% block scripts %}
     <!--javascript connection but go before logic-->
-    <script src="../../TEMPLATES/authentication/javascript/authenticationConnection.js"></script>
-    <script src="../../TEMPLATES/authentication/javascript/authenticationLogic.js"></script>
+    <script src="{{ base_url() }}/../../TEMPLATES/authentication/javascript/authenticationConnection.js"></script>
+    <script src="{{ base_url() }}/../../TEMPLATES/authentication/javascript/authenticationLogic.js"></script>
 {% endblock %}

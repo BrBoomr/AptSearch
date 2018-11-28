@@ -6,11 +6,11 @@
 
 {% block styles %}
     <!--style sheet-->
-    <link rel="stylesheet" href="../../TEMPLATES/search/css/search.css">
+    <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/search/css/search.css">
 {% endblock %}
 
 {% block scripts %}
     <!--javascript connection but go before logic-->
-    <script src="../../TEMPLATES/search/javascript/searchConnection.js"></script>
-    <script src="../../TEMPLATES/search/javascript/searchLogic.js"></script>
+    <script src="{{ base_url() }}/../../TEMPLATES/search/javascript/searchConnection.js"></script>
+    <script src="{{ base_url() }}/../../TEMPLATES/search/javascript/searchLogic.js"></script>
 {% endblock %}

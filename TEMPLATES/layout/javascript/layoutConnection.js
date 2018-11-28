@@ -1,1 +1,14 @@
-console.log("layout's connection file loaded")
+/*
+#navbarText
+#loginSpan
+#loginButton
+#greetSpan
+#logoutButton
+
+
+#nav
+#body
+#footer
+
+#mainDiv
+*/
