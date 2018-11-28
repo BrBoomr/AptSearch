@@ -31,7 +31,7 @@
                 {% else %}
                 <!--GREET-->
                 <span class="navbar-text" id ="greetSpan">
-                    <p userid = "{{ user.getPrimaryKey() }}">Welcome, {{ user.getFirstName() }}</p>
+                    <p userid = "{{ user.getPrimaryKey() }}">Welcome, {{ user.getName() }}</p>
                     <button type="button" class="btn btn-primary btn-sm" id="logoutButton">
                         <a href="{{base_url()}}">Logout</a>
                     </button>
