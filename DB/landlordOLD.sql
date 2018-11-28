@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 24, 2018 at 12:20 AM
+-- Generation Time: Nov 26, 2018 at 04:00 AM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.8
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `address` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Continent` varchar(128) NOT NULL,
   `Country` varchar(128) NOT NULL,
   `State` varchar(128) DEFAULT NULL,
@@ -46,9 +46,9 @@ CREATE TABLE `address` (
 --
 
 INSERT INTO `address` (`ID`, `Timestamp`, `Continent`, `Country`, `State`, `City`, `Zip`, `StreetName`, `BuildingNumber`, `ApartmentID`) VALUES
-(1, '2018-11-21', 'America', 'USA', 'Texas', 'Edinburg', 78504, 'North Street apt.1 ', 1, 1),
-(2, '2018-11-23', 'America', 'USA', 'Texas', 'Edinburg', 78504, 'South Street apt. 2', 2, 2),
-(3, '2018-11-01', 'America', 'USA', 'Texas', 'Edinburg', 78504, 'Main Street', 0, NULL);
+(1, '2018-11-21 00:00:00', 'America', 'USA', 'Texas', 'Edinburg', 78504, 'North Street apt.1 ', 1, 1),
+(2, '2018-11-23 00:00:00', 'America', 'USA', 'Texas', 'Edinburg', 78504, 'South Street apt. 2', 2, 2),
+(3, '2018-11-01 00:00:00', 'America', 'USA', 'Texas', 'Edinburg', 78504, 'Main Street', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -58,7 +58,7 @@ INSERT INTO `address` (`ID`, `Timestamp`, `Continent`, `Country`, `State`, `City
 
 CREATE TABLE `amenity` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `PropertyID` int(11) NOT NULL,
   `Name` varchar(56) NOT NULL,
   `Description` varchar(128) NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE `amenity` (
 
 CREATE TABLE `appliance` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Name` varchar(128) NOT NULL,
   `Description` varchar(128) NOT NULL,
   `PropertyID` int(11) NOT NULL
@@ -87,7 +87,7 @@ CREATE TABLE `appliance` (
 
 CREATE TABLE `cost` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `PropertyID` int(11) NOT NULL,
   `Name` varchar(56) NOT NULL,
   `Description` varchar(128) NOT NULL,
@@ -102,7 +102,7 @@ CREATE TABLE `cost` (
 
 CREATE TABLE `email` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `UserID` int(11) NOT NULL,
   `Email` varchar(128) NOT NULL,
   `Description` enum('general','tenant','landlord','') DEFAULT NULL
@@ -113,10 +113,10 @@ CREATE TABLE `email` (
 --
 
 INSERT INTO `email` (`ID`, `Timestamp`, `UserID`, `Email`, `Description`) VALUES
-(1, '2018-11-01', 1, 'zChen@landlord.com', 'landlord'),
-(2, '2018-11-02', 2, 'jGuerrero@tenant.com', 'tenant'),
-(3, '2018-11-02', 3, 'bCancel@tenant.com', 'tenant'),
-(4, '2018-11-02', 4, 'jReyes@tenant.com', 'tenant');
+(1, '2018-11-01 00:00:00', 1, 'zChen@landlord.com', 'landlord'),
+(2, '2018-11-02 00:00:00', 2, 'jGuerrero@tenant.com', 'tenant'),
+(3, '2018-11-02 00:00:00', 3, 'bCancel@tenant.com', 'tenant'),
+(4, '2018-11-02 00:00:00', 4, 'jReyes@tenant.com', 'tenant');
 
 -- --------------------------------------------------------
 
@@ -126,7 +126,7 @@ INSERT INTO `email` (`ID`, `Timestamp`, `UserID`, `Email`, `Description`) VALUES
 
 CREATE TABLE `fee` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `PropertyID` int(11) NOT NULL,
   `Name` varchar(56) NOT NULL,
   `Description` varchar(128) NOT NULL,
@@ -141,7 +141,7 @@ CREATE TABLE `fee` (
 
 CREATE TABLE `issue` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `PropertyID` int(11) NOT NULL,
   `Name` varchar(56) NOT NULL,
   `Description` varchar(128) NOT NULL,
@@ -158,7 +158,7 @@ CREATE TABLE `issue` (
 
 CREATE TABLE `limitation` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `PropertyID` int(11) NOT NULL,
   `Name` varchar(56) NOT NULL,
   `Description` varchar(128) NOT NULL
@@ -172,7 +172,7 @@ CREATE TABLE `limitation` (
 
 CREATE TABLE `lives` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `UserID` int(11) NOT NULL,
   `Name` varchar(128) NOT NULL,
   `TenantRelation` varchar(128) NOT NULL,
@@ -189,7 +189,7 @@ CREATE TABLE `lives` (
 
 CREATE TABLE `money` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `UserID` int(11) NOT NULL,
   `Send` tinyint(1) NOT NULL,
   `Receive` tinyint(1) NOT NULL
@@ -203,7 +203,7 @@ CREATE TABLE `money` (
 
 CREATE TABLE `owed` (
   `ID` int(11) NOT NULL,
-  `Timestamp` int(11) NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `SenderID` int(11) NOT NULL,
   `ReceiverID` int(11) NOT NULL,
   `Amount` int(11) NOT NULL,
@@ -221,7 +221,7 @@ CREATE TABLE `owed` (
 
 CREATE TABLE `payment` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `SenderID` int(11) NOT NULL,
   `ReceiverID` int(11) NOT NULL,
   `OwedID` int(11) NOT NULL
@@ -235,7 +235,7 @@ CREATE TABLE `payment` (
 
 CREATE TABLE `phone` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `UserID` int(11) NOT NULL,
   `Number` varchar(64) NOT NULL,
   `Description` enum('work','home','cell','') NOT NULL
@@ -249,7 +249,7 @@ CREATE TABLE `phone` (
 
 CREATE TABLE `picture` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `PropertyID` int(11) NOT NULL,
   `Link` varchar(128) NOT NULL,
   `Description` varchar(128) NOT NULL
@@ -263,7 +263,7 @@ CREATE TABLE `picture` (
 
 CREATE TABLE `property` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `LandlordID` int(11) NOT NULL,
   `AddressID` int(11) NOT NULL,
   `FPL` int(11) DEFAULT NULL COMMENT 'Floor Plan Link',
@@ -278,8 +278,8 @@ CREATE TABLE `property` (
 --
 
 INSERT INTO `property` (`ID`, `Timestamp`, `LandlordID`, `AddressID`, `FPL`, `SquareFootage`, `Rooms`, `Bathrooms`, `Details`) VALUES
-(1, '2018-11-23', 1, 1, NULL, 256, 2, 1, 'Basic two-room apartment.'),
-(2, '2018-11-23', 1, 2, NULL, 324, 3, 2, 'Family sized apartment.');
+(1, '2018-11-23 00:00:00', 1, 1, NULL, 256, 2, 1, 'Basic two-room apartment.'),
+(2, '2018-11-23 00:00:00', 1, 2, NULL, 324, 3, 2, 'Family sized apartment.');
 
 -- --------------------------------------------------------
 
@@ -289,7 +289,7 @@ INSERT INTO `property` (`ID`, `Timestamp`, `LandlordID`, `AddressID`, `FPL`, `Sq
 
 CREATE TABLE `tenant` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `UserID` int(11) NOT NULL,
   `PropertyID` int(11) NOT NULL,
   `Name` varchar(128) NOT NULL,
@@ -303,9 +303,9 @@ CREATE TABLE `tenant` (
 --
 
 INSERT INTO `tenant` (`ID`, `Timestamp`, `UserID`, `PropertyID`, `Name`, `Start`, `End`, `ActualEnd`) VALUES
-(3, '2018-11-20', 4, 1, 'Jafet Reyes', '2018-11-01', NULL, NULL),
-(4, '2018-11-20', 2, 1, 'Jerry Guerrero', '2018-11-02', NULL, NULL),
-(5, '2018-11-01', 3, 2, 'Bryan Cancel', '2018-11-14', NULL, NULL);
+(3, '2018-11-20 00:00:00', 4, 1, 'Jafet Reyes', '2018-11-01', NULL, NULL),
+(4, '2018-11-20 00:00:00', 2, 1, 'Jerry Guerrero', '2018-11-02', NULL, NULL),
+(5, '2018-11-01 00:00:00', 3, 2, 'Bryan Cancel', '2018-11-14', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -340,7 +340,7 @@ INSERT INTO `user` (`ID`, `Timestamp`, `FirstName`, `MiddleName`, `LastName`, `H
 
 CREATE TABLE `utility` (
   `ID` int(11) NOT NULL,
-  `Timestamp` date NOT NULL,
+  `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `PropertyID` int(11) NOT NULL,
   `Name` varchar(56) NOT NULL,
   `Description` varchar(128) NOT NULL,

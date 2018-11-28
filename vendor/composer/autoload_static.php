@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit8bf40c0af614b8c0f446327d0abf0467
+class ComposerStaticInitabb7065e1da46710c57d4bfb1b16f60a
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
@@ -160,10 +160,13 @@ class ComposerStaticInit8bf40c0af614b8c0f446327d0abf0467
         'Base\\AmenitytypeQuery' => __DIR__ . '/../..' . '/models/Base/AmenitytypeQuery.php',
         'Base\\Appliance' => __DIR__ . '/../..' . '/models/Base/Appliance.php',
         'Base\\ApplianceQuery' => __DIR__ . '/../..' . '/models/Base/ApplianceQuery.php',
+<<<<<<< HEAD
         'Base\\Appliancetype' => __DIR__ . '/../..' . '/models/Base/Appliancetype.php',
         'Base\\AppliancetypeQuery' => __DIR__ . '/../..' . '/models/Base/AppliancetypeQuery.php',
         'Base\\Continenttype' => __DIR__ . '/../..' . '/models/Base/Continenttype.php',
         'Base\\ContinenttypeQuery' => __DIR__ . '/../..' . '/models/Base/ContinenttypeQuery.php',
+=======
+>>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
         'Base\\Cost' => __DIR__ . '/../..' . '/models/Base/Cost.php',
         'Base\\CostQuery' => __DIR__ . '/../..' . '/models/Base/CostQuery.php',
         'Base\\Countrytype' => __DIR__ . '/../..' . '/models/Base/Countrytype.php',
@@ -222,8 +225,11 @@ class ComposerStaticInit8bf40c0af614b8c0f446327d0abf0467
         'Map\\AmenityTableMap' => __DIR__ . '/../..' . '/models/Map/AmenityTableMap.php',
         'Map\\AmenitytypeTableMap' => __DIR__ . '/../..' . '/models/Map/AmenitytypeTableMap.php',
         'Map\\ApplianceTableMap' => __DIR__ . '/../..' . '/models/Map/ApplianceTableMap.php',
+<<<<<<< HEAD
         'Map\\AppliancetypeTableMap' => __DIR__ . '/../..' . '/models/Map/AppliancetypeTableMap.php',
         'Map\\ContinenttypeTableMap' => __DIR__ . '/../..' . '/models/Map/ContinenttypeTableMap.php',
+=======
+>>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
         'Map\\CostTableMap' => __DIR__ . '/../..' . '/models/Map/CostTableMap.php',
         'Map\\CountrytypeTableMap' => __DIR__ . '/../..' . '/models/Map/CountrytypeTableMap.php',
         'Map\\EmailTableMap' => __DIR__ . '/../..' . '/models/Map/EmailTableMap.php',
@@ -272,10 +278,10 @@ class ComposerStaticInit8bf40c0af614b8c0f446327d0abf0467
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit8bf40c0af614b8c0f446327d0abf0467::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit8bf40c0af614b8c0f446327d0abf0467::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit8bf40c0af614b8c0f446327d0abf0467::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit8bf40c0af614b8c0f446327d0abf0467::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitabb7065e1da46710c57d4bfb1b16f60a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitabb7065e1da46710c57d4bfb1b16f60a::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitabb7065e1da46710c57d4bfb1b16f60a::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitabb7065e1da46710c57d4bfb1b16f60a::$classMap;
 
         }, null, ClassLoader::class);
     }

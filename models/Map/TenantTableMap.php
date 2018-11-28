@@ -2,8 +2,8 @@
 
 namespace Map;
 
-use \Address;
-use \AddressQuery;
+use \Tenant;
+use \TenantQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -16,7 +16,7 @@ use Propel\Runtime\Map\TableMapTrait;
 
 
 /**
- * This class defines the structure of the 'address' table.
+ * This class defines the structure of the 'tenant' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class AddressTableMap extends TableMap
+class TenantTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class AddressTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.AddressTableMap';
+    const CLASS_NAME = '.Map.TenantTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +44,22 @@ class AddressTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'address';
+    const TABLE_NAME = 'tenant';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Address';
+    const OM_CLASS = '\\Tenant';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Address';
+    const CLASS_DEFAULT = 'Tenant';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 8;
 
     /**
      * The number of lazy-loaded columns
@@ -69,52 +69,47 @@ class AddressTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /**
      * the column name for the ID field
      */
-    const COL_ID = 'address.ID';
+    const COL_ID = 'tenant.ID';
 
     /**
-     * the column name for the continentTypeID field
+     * the column name for the Timestamp field
      */
-    const COL_CONTINENTTYPEID = 'address.continentTypeID';
+    const COL_TIMESTAMP = 'tenant.Timestamp';
 
     /**
-     * the column name for the countryTypeID field
+     * the column name for the UserID field
      */
-    const COL_COUNTRYTYPEID = 'address.countryTypeID';
+    const COL_USERID = 'tenant.UserID';
 
     /**
-     * the column name for the state field
+     * the column name for the PropertyID field
      */
-    const COL_STATE = 'address.state';
+    const COL_PROPERTYID = 'tenant.PropertyID';
 
     /**
-     * the column name for the locality field
+     * the column name for the Name field
      */
-    const COL_LOCALITY = 'address.locality';
+    const COL_NAME = 'tenant.Name';
 
     /**
-     * the column name for the zipCode field
+     * the column name for the Start field
      */
-    const COL_ZIPCODE = 'address.zipCode';
+    const COL_START = 'tenant.Start';
 
     /**
-     * the column name for the streetName field
+     * the column name for the End field
      */
-    const COL_STREETNAME = 'address.streetName';
+    const COL_END = 'tenant.End';
 
     /**
-     * the column name for the buildingIndentifier field
+     * the column name for the ActualEnd field
      */
-    const COL_BUILDINGINDENTIFIER = 'address.buildingIndentifier';
-
-    /**
-     * the column name for the apartmentIdentifier field
-     */
-    const COL_APARTMENTIDENTIFIER = 'address.apartmentIdentifier';
+    const COL_ACTUALEND = 'tenant.ActualEnd';
 
     /**
      * The default string format for model objects of the related table
@@ -128,11 +123,11 @@ class AddressTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Continenttypeid', 'Countrytypeid', 'State', 'Locality', 'Zipcode', 'Streetname', 'Buildingindentifier', 'Apartmentidentifier', ),
-        self::TYPE_CAMELNAME     => array('id', 'continenttypeid', 'countrytypeid', 'state', 'locality', 'zipcode', 'streetname', 'buildingindentifier', 'apartmentidentifier', ),
-        self::TYPE_COLNAME       => array(AddressTableMap::COL_ID, AddressTableMap::COL_CONTINENTTYPEID, AddressTableMap::COL_COUNTRYTYPEID, AddressTableMap::COL_STATE, AddressTableMap::COL_LOCALITY, AddressTableMap::COL_ZIPCODE, AddressTableMap::COL_STREETNAME, AddressTableMap::COL_BUILDINGINDENTIFIER, AddressTableMap::COL_APARTMENTIDENTIFIER, ),
-        self::TYPE_FIELDNAME     => array('ID', 'continentTypeID', 'countryTypeID', 'state', 'locality', 'zipCode', 'streetName', 'buildingIndentifier', 'apartmentIdentifier', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        self::TYPE_PHPNAME       => array('Id', 'Timestamp', 'Userid', 'Propertyid', 'Name', 'Start', 'End', 'Actualend', ),
+        self::TYPE_CAMELNAME     => array('id', 'timestamp', 'userid', 'propertyid', 'name', 'start', 'end', 'actualend', ),
+        self::TYPE_COLNAME       => array(TenantTableMap::COL_ID, TenantTableMap::COL_TIMESTAMP, TenantTableMap::COL_USERID, TenantTableMap::COL_PROPERTYID, TenantTableMap::COL_NAME, TenantTableMap::COL_START, TenantTableMap::COL_END, TenantTableMap::COL_ACTUALEND, ),
+        self::TYPE_FIELDNAME     => array('ID', 'Timestamp', 'UserID', 'PropertyID', 'Name', 'Start', 'End', 'ActualEnd', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -142,11 +137,11 @@ class AddressTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Continenttypeid' => 1, 'Countrytypeid' => 2, 'State' => 3, 'Locality' => 4, 'Zipcode' => 5, 'Streetname' => 6, 'Buildingindentifier' => 7, 'Apartmentidentifier' => 8, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'continenttypeid' => 1, 'countrytypeid' => 2, 'state' => 3, 'locality' => 4, 'zipcode' => 5, 'streetname' => 6, 'buildingindentifier' => 7, 'apartmentidentifier' => 8, ),
-        self::TYPE_COLNAME       => array(AddressTableMap::COL_ID => 0, AddressTableMap::COL_CONTINENTTYPEID => 1, AddressTableMap::COL_COUNTRYTYPEID => 2, AddressTableMap::COL_STATE => 3, AddressTableMap::COL_LOCALITY => 4, AddressTableMap::COL_ZIPCODE => 5, AddressTableMap::COL_STREETNAME => 6, AddressTableMap::COL_BUILDINGINDENTIFIER => 7, AddressTableMap::COL_APARTMENTIDENTIFIER => 8, ),
-        self::TYPE_FIELDNAME     => array('ID' => 0, 'continentTypeID' => 1, 'countryTypeID' => 2, 'state' => 3, 'locality' => 4, 'zipCode' => 5, 'streetName' => 6, 'buildingIndentifier' => 7, 'apartmentIdentifier' => 8, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Timestamp' => 1, 'Userid' => 2, 'Propertyid' => 3, 'Name' => 4, 'Start' => 5, 'End' => 6, 'Actualend' => 7, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'timestamp' => 1, 'userid' => 2, 'propertyid' => 3, 'name' => 4, 'start' => 5, 'end' => 6, 'actualend' => 7, ),
+        self::TYPE_COLNAME       => array(TenantTableMap::COL_ID => 0, TenantTableMap::COL_TIMESTAMP => 1, TenantTableMap::COL_USERID => 2, TenantTableMap::COL_PROPERTYID => 3, TenantTableMap::COL_NAME => 4, TenantTableMap::COL_START => 5, TenantTableMap::COL_END => 6, TenantTableMap::COL_ACTUALEND => 7, ),
+        self::TYPE_FIELDNAME     => array('ID' => 0, 'Timestamp' => 1, 'UserID' => 2, 'PropertyID' => 3, 'Name' => 4, 'Start' => 5, 'End' => 6, 'ActualEnd' => 7, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -159,34 +154,21 @@ class AddressTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('address');
-        $this->setPhpName('Address');
+        $this->setName('tenant');
+        $this->setPhpName('Tenant');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Address');
+        $this->setClassName('\\Tenant');
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-<<<<<<< HEAD
-        $this->addColumn('continentTypeID', 'Continenttypeid', 'INTEGER', true, null, null);
-        $this->addColumn('countryTypeID', 'Countrytypeid', 'INTEGER', true, null, null);
-        $this->addColumn('state', 'State', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('locality', 'Locality', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('zipCode', 'Zipcode', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('streetName', 'Streetname', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('buildingIndentifier', 'Buildingindentifier', 'LONGVARCHAR', false, null, null);
-        $this->addColumn('apartmentIdentifier', 'Apartmentidentifier', 'LONGVARCHAR', false, null, null);
-=======
         $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
-        $this->addColumn('Continent', 'Continent', 'VARCHAR', true, 128, null);
-        $this->addColumn('Country', 'Country', 'VARCHAR', true, 128, null);
-        $this->addColumn('State', 'State', 'VARCHAR', false, 128, null);
-        $this->addColumn('City', 'City', 'VARCHAR', true, 128, null);
-        $this->addColumn('Zip', 'Zip', 'INTEGER', false, null, null);
-        $this->addColumn('StreetName', 'Streetname', 'VARCHAR', true, 128, null);
-        $this->addColumn('BuildingNumber', 'Buildingnumber', 'INTEGER', true, null, null);
-        $this->addColumn('ApartmentID', 'Apartmentid', 'INTEGER', false, null, null);
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
+        $this->addForeignKey('UserID', 'Userid', 'INTEGER', 'user', 'ID', true, null, null);
+        $this->addForeignKey('PropertyID', 'Propertyid', 'INTEGER', 'property', 'ID', true, null, null);
+        $this->addColumn('Name', 'Name', 'VARCHAR', true, 128, null);
+        $this->addColumn('Start', 'Start', 'DATE', true, null, null);
+        $this->addColumn('End', 'End', 'DATE', false, null, null);
+        $this->addColumn('ActualEnd', 'Actualend', 'DATE', false, null, null);
     } // initialize()
 
     /**
@@ -194,6 +176,20 @@ class AddressTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Property', '\\Property', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':PropertyID',
+    1 => ':ID',
+  ),
+), null, null, null, false);
+        $this->addRelation('User', '\\User', RelationMap::MANY_TO_ONE, array (
+  0 =>
+  array (
+    0 => ':UserID',
+    1 => ':ID',
+  ),
+), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -253,7 +249,7 @@ class AddressTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? AddressTableMap::CLASS_DEFAULT : AddressTableMap::OM_CLASS;
+        return $withPrefix ? TenantTableMap::CLASS_DEFAULT : TenantTableMap::OM_CLASS;
     }
 
     /**
@@ -267,22 +263,22 @@ class AddressTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Address object, last column rank)
+     * @return array           (Tenant object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = AddressTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = AddressTableMap::getInstanceFromPool($key))) {
+        $key = TenantTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = TenantTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + AddressTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + TenantTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = AddressTableMap::OM_CLASS;
-            /** @var Address $obj */
+            $cls = TenantTableMap::OM_CLASS;
+            /** @var Tenant $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            AddressTableMap::addInstanceToPool($obj, $key);
+            TenantTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -305,18 +301,18 @@ class AddressTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = AddressTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = AddressTableMap::getInstanceFromPool($key))) {
+            $key = TenantTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = TenantTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Address $obj */
+                /** @var Tenant $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                AddressTableMap::addInstanceToPool($obj, $key);
+                TenantTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -337,25 +333,23 @@ class AddressTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(AddressTableMap::COL_ID);
-            $criteria->addSelectColumn(AddressTableMap::COL_CONTINENTTYPEID);
-            $criteria->addSelectColumn(AddressTableMap::COL_COUNTRYTYPEID);
-            $criteria->addSelectColumn(AddressTableMap::COL_STATE);
-            $criteria->addSelectColumn(AddressTableMap::COL_LOCALITY);
-            $criteria->addSelectColumn(AddressTableMap::COL_ZIPCODE);
-            $criteria->addSelectColumn(AddressTableMap::COL_STREETNAME);
-            $criteria->addSelectColumn(AddressTableMap::COL_BUILDINGINDENTIFIER);
-            $criteria->addSelectColumn(AddressTableMap::COL_APARTMENTIDENTIFIER);
+            $criteria->addSelectColumn(TenantTableMap::COL_ID);
+            $criteria->addSelectColumn(TenantTableMap::COL_TIMESTAMP);
+            $criteria->addSelectColumn(TenantTableMap::COL_USERID);
+            $criteria->addSelectColumn(TenantTableMap::COL_PROPERTYID);
+            $criteria->addSelectColumn(TenantTableMap::COL_NAME);
+            $criteria->addSelectColumn(TenantTableMap::COL_START);
+            $criteria->addSelectColumn(TenantTableMap::COL_END);
+            $criteria->addSelectColumn(TenantTableMap::COL_ACTUALEND);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.continentTypeID');
-            $criteria->addSelectColumn($alias . '.countryTypeID');
-            $criteria->addSelectColumn($alias . '.state');
-            $criteria->addSelectColumn($alias . '.locality');
-            $criteria->addSelectColumn($alias . '.zipCode');
-            $criteria->addSelectColumn($alias . '.streetName');
-            $criteria->addSelectColumn($alias . '.buildingIndentifier');
-            $criteria->addSelectColumn($alias . '.apartmentIdentifier');
+            $criteria->addSelectColumn($alias . '.Timestamp');
+            $criteria->addSelectColumn($alias . '.UserID');
+            $criteria->addSelectColumn($alias . '.PropertyID');
+            $criteria->addSelectColumn($alias . '.Name');
+            $criteria->addSelectColumn($alias . '.Start');
+            $criteria->addSelectColumn($alias . '.End');
+            $criteria->addSelectColumn($alias . '.ActualEnd');
         }
     }
 
@@ -368,7 +362,7 @@ class AddressTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(AddressTableMap::DATABASE_NAME)->getTable(AddressTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(TenantTableMap::DATABASE_NAME)->getTable(TenantTableMap::TABLE_NAME);
     }
 
     /**
@@ -376,16 +370,16 @@ class AddressTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(AddressTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(AddressTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new AddressTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(TenantTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(TenantTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new TenantTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Address or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Tenant or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Address object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Tenant object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -396,27 +390,27 @@ class AddressTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(AddressTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(TenantTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Address) { // it's a model object
+        } elseif ($values instanceof \Tenant) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(AddressTableMap::DATABASE_NAME);
-            $criteria->add(AddressTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(TenantTableMap::DATABASE_NAME);
+            $criteria->add(TenantTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
-        $query = AddressQuery::create()->mergeWith($criteria);
+        $query = TenantQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            AddressTableMap::clearInstancePool();
+            TenantTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                AddressTableMap::removeInstanceFromPool($singleval);
+                TenantTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -424,20 +418,20 @@ class AddressTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the address table.
+     * Deletes all rows from the tenant table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return AddressQuery::create()->doDeleteAll($con);
+        return TenantQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Address or Criteria object.
+     * Performs an INSERT on the database, given a Tenant or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Address object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Tenant object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -446,22 +440,22 @@ class AddressTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(AddressTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(TenantTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Address object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Tenant object
         }
 
-        if ($criteria->containsKey(AddressTableMap::COL_ID) && $criteria->keyContainsValue(AddressTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.AddressTableMap::COL_ID.')');
+        if ($criteria->containsKey(TenantTableMap::COL_ID) && $criteria->keyContainsValue(TenantTableMap::COL_ID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.TenantTableMap::COL_ID.')');
         }
 
 
         // Set the correct dbName
-        $query = AddressQuery::create()->mergeWith($criteria);
+        $query = TenantQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -470,7 +464,7 @@ class AddressTableMap extends TableMap
         });
     }
 
-} // AddressTableMap
+} // TenantTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-AddressTableMap::buildTableMap();
+TenantTableMap::buildTableMap();

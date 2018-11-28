@@ -2,35 +2,44 @@
 
 namespace Base;
 
-use \AddressQuery as ChildAddressQuery;
+use \Owed as ChildOwed;
+use \OwedQuery as ChildOwedQuery;
+use \Payment as ChildPayment;
+use \PaymentQuery as ChildPaymentQuery;
+use \User as ChildUser;
+use \UserQuery as ChildUserQuery;
+use \DateTime;
 use \Exception;
 use \PDO;
-use Map\AddressTableMap;
+use Map\OwedTableMap;
+use Map\PaymentTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
+use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
+use Propel\Runtime\Util\PropelDateTime;
 
 /**
- * Base class that represents a row from the 'address' table.
+ * Base class that represents a row from the 'payment' table.
  *
  *
  *
  * @package    propel.generator..Base
  */
-abstract class Address implements ActiveRecordInterface
+abstract class Payment implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\Map\\AddressTableMap';
+    const TABLE_MAP = '\\Map\\PaymentTableMap';
 
 
     /**
@@ -67,72 +76,54 @@ abstract class Address implements ActiveRecordInterface
     protected $id;
 
     /**
-     * The value for the continenttypeid field.
+     * The value for the timestamp field.
      *
-<<<<<<< HEAD
-     * @var        int
-=======
      * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
      * @var        DateTime
      */
     protected $timestamp;
 
     /**
-     * The value for the continent field.
-     *
-     * @var        string
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
-     */
-    protected $continenttypeid;
-
-    /**
-     * The value for the countrytypeid field.
+     * The value for the senderid field.
      *
      * @var        int
      */
-    protected $countrytypeid;
+    protected $senderid;
 
     /**
-     * The value for the state field.
+     * The value for the receiverid field.
      *
-     * @var        string
+     * @var        int
      */
-    protected $state;
+    protected $receiverid;
 
     /**
-     * The value for the locality field.
+     * The value for the owedid field.
      *
-     * @var        string
+     * @var        int
      */
-    protected $locality;
+    protected $owedid;
 
     /**
-     * The value for the zipcode field.
-     *
-     * @var        string
+     * @var        ChildUser
      */
-    protected $zipcode;
+    protected $aUserRelatedByReceiverid;
 
     /**
-     * The value for the streetname field.
-     *
-     * @var        string
+     * @var        ChildUser
      */
-    protected $streetname;
+    protected $aUserRelatedBySenderid;
 
     /**
-     * The value for the buildingindentifier field.
-     *
-     * @var        string
+     * @var        ChildOwed
      */
-    protected $buildingindentifier;
+    protected $aOwedRelatedByOwedid;
 
     /**
-     * The value for the apartmentidentifier field.
-     *
-     * @var        string
+     * @var        ObjectCollection|ChildOwed[] Collection to store aggregation of ChildOwed objects.
      */
-    protected $apartmentidentifier;
+    protected $collOwedsRelatedByPaymentid;
+    protected $collOwedsRelatedByPaymentidPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -143,12 +134,10 @@ abstract class Address implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-<<<<<<< HEAD
-=======
      * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildProperty[]
+     * @var ObjectCollection|ChildOwed[]
      */
-    protected $propertiesScheduledForDeletion = null;
+    protected $owedsRelatedByPaymentidScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -161,8 +150,7 @@ abstract class Address implements ActiveRecordInterface
     }
 
     /**
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
-     * Initializes internal state of Base\Address object.
+     * Initializes internal state of Base\Payment object.
      * @see applyDefaults()
      */
     public function __construct()
@@ -259,9 +247,9 @@ abstract class Address implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>Address</code> instance.  If
-     * <code>obj</code> is an instance of <code>Address</code>, delegates to
-     * <code>equals(Address)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>Payment</code> instance.  If
+     * <code>obj</code> is an instance of <code>Payment</code>, delegates to
+     * <code>equals(Payment)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -327,7 +315,7 @@ abstract class Address implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return $this|Address The current object, for fluid interface
+     * @return $this|Payment The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -399,9 +387,6 @@ abstract class Address implements ActiveRecordInterface
     }
 
     /**
-<<<<<<< HEAD
-     * Get the [continenttypeid] column value.
-=======
      * Get the [optionally formatted] temporal [timestamp] column value.
      *
      *
@@ -422,91 +407,40 @@ abstract class Address implements ActiveRecordInterface
     }
 
     /**
-     * Get the [continent] column value.
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
+     * Get the [senderid] column value.
      *
      * @return int
      */
-    public function getContinenttypeid()
+    public function getSenderid()
     {
-        return $this->continenttypeid;
+        return $this->senderid;
     }
 
     /**
-     * Get the [countrytypeid] column value.
+     * Get the [receiverid] column value.
      *
      * @return int
      */
-    public function getCountrytypeid()
+    public function getReceiverid()
     {
-        return $this->countrytypeid;
+        return $this->receiverid;
     }
 
     /**
-     * Get the [state] column value.
+     * Get the [owedid] column value.
      *
-     * @return string
+     * @return int
      */
-    public function getState()
+    public function getOwedid()
     {
-        return $this->state;
-    }
-
-    /**
-     * Get the [locality] column value.
-     *
-     * @return string
-     */
-    public function getLocality()
-    {
-        return $this->locality;
-    }
-
-    /**
-     * Get the [zipcode] column value.
-     *
-     * @return string
-     */
-    public function getZipcode()
-    {
-        return $this->zipcode;
-    }
-
-    /**
-     * Get the [streetname] column value.
-     *
-     * @return string
-     */
-    public function getStreetname()
-    {
-        return $this->streetname;
-    }
-
-    /**
-     * Get the [buildingindentifier] column value.
-     *
-     * @return string
-     */
-    public function getBuildingindentifier()
-    {
-        return $this->buildingindentifier;
-    }
-
-    /**
-     * Get the [apartmentidentifier] column value.
-     *
-     * @return string
-     */
-    public function getApartmentidentifier()
-    {
-        return $this->apartmentidentifier;
+        return $this->owedid;
     }
 
     /**
      * Set the value of [id] column.
      *
      * @param int $v new value
-     * @return $this|\Address The current object (for fluent API support)
+     * @return $this|\Payment The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -516,21 +450,18 @@ abstract class Address implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[AddressTableMap::COL_ID] = true;
+            $this->modifiedColumns[PaymentTableMap::COL_ID] = true;
         }
 
         return $this;
     } // setId()
 
     /**
-     * Set the value of [continenttypeid] column.
+     * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
      *
-<<<<<<< HEAD
-     * @param int $v new value
-=======
      * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
      *               Empty strings are treated as NULL.
-     * @return $this|\Address The current object (for fluent API support)
+     * @return $this|\Payment The current object (for fluent API support)
      */
     public function setTimestamp($v)
     {
@@ -538,7 +469,7 @@ abstract class Address implements ActiveRecordInterface
         if ($this->timestamp !== null || $dt !== null) {
             if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->timestamp->format("Y-m-d H:i:s.u")) {
                 $this->timestamp = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[AddressTableMap::COL_TIMESTAMP] = true;
+                $this->modifiedColumns[PaymentTableMap::COL_TIMESTAMP] = true;
             }
         } // if either are not null
 
@@ -546,165 +477,76 @@ abstract class Address implements ActiveRecordInterface
     } // setTimestamp()
 
     /**
-     * Set the value of [continent] column.
-     *
-     * @param string $v new value
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
-     * @return $this|\Address The current object (for fluent API support)
-     */
-    public function setContinenttypeid($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->continenttypeid !== $v) {
-            $this->continenttypeid = $v;
-            $this->modifiedColumns[AddressTableMap::COL_CONTINENTTYPEID] = true;
-        }
-
-        return $this;
-    } // setContinenttypeid()
-
-    /**
-     * Set the value of [countrytypeid] column.
+     * Set the value of [senderid] column.
      *
      * @param int $v new value
-     * @return $this|\Address The current object (for fluent API support)
+     * @return $this|\Payment The current object (for fluent API support)
      */
-    public function setCountrytypeid($v)
+    public function setSenderid($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->countrytypeid !== $v) {
-            $this->countrytypeid = $v;
-            $this->modifiedColumns[AddressTableMap::COL_COUNTRYTYPEID] = true;
+        if ($this->senderid !== $v) {
+            $this->senderid = $v;
+            $this->modifiedColumns[PaymentTableMap::COL_SENDERID] = true;
+        }
+
+        if ($this->aUserRelatedBySenderid !== null && $this->aUserRelatedBySenderid->getId() !== $v) {
+            $this->aUserRelatedBySenderid = null;
         }
 
         return $this;
-    } // setCountrytypeid()
+    } // setSenderid()
 
     /**
-     * Set the value of [state] column.
+     * Set the value of [receiverid] column.
      *
-     * @param string $v new value
-     * @return $this|\Address The current object (for fluent API support)
+     * @param int $v new value
+     * @return $this|\Payment The current object (for fluent API support)
      */
-    public function setState($v)
+    public function setReceiverid($v)
     {
         if ($v !== null) {
-            $v = (string) $v;
+            $v = (int) $v;
         }
 
-        if ($this->state !== $v) {
-            $this->state = $v;
-            $this->modifiedColumns[AddressTableMap::COL_STATE] = true;
+        if ($this->receiverid !== $v) {
+            $this->receiverid = $v;
+            $this->modifiedColumns[PaymentTableMap::COL_RECEIVERID] = true;
+        }
+
+        if ($this->aUserRelatedByReceiverid !== null && $this->aUserRelatedByReceiverid->getId() !== $v) {
+            $this->aUserRelatedByReceiverid = null;
         }
 
         return $this;
-    } // setState()
+    } // setReceiverid()
 
     /**
-     * Set the value of [locality] column.
+     * Set the value of [owedid] column.
      *
-     * @param string $v new value
-     * @return $this|\Address The current object (for fluent API support)
+     * @param int $v new value
+     * @return $this|\Payment The current object (for fluent API support)
      */
-    public function setLocality($v)
+    public function setOwedid($v)
     {
         if ($v !== null) {
-            $v = (string) $v;
+            $v = (int) $v;
         }
 
-        if ($this->locality !== $v) {
-            $this->locality = $v;
-            $this->modifiedColumns[AddressTableMap::COL_LOCALITY] = true;
+        if ($this->owedid !== $v) {
+            $this->owedid = $v;
+            $this->modifiedColumns[PaymentTableMap::COL_OWEDID] = true;
+        }
+
+        if ($this->aOwedRelatedByOwedid !== null && $this->aOwedRelatedByOwedid->getId() !== $v) {
+            $this->aOwedRelatedByOwedid = null;
         }
 
         return $this;
-    } // setLocality()
-
-    /**
-     * Set the value of [zipcode] column.
-     *
-     * @param string $v new value
-     * @return $this|\Address The current object (for fluent API support)
-     */
-    public function setZipcode($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->zipcode !== $v) {
-            $this->zipcode = $v;
-            $this->modifiedColumns[AddressTableMap::COL_ZIPCODE] = true;
-        }
-
-        return $this;
-    } // setZipcode()
-
-    /**
-     * Set the value of [streetname] column.
-     *
-     * @param string $v new value
-     * @return $this|\Address The current object (for fluent API support)
-     */
-    public function setStreetname($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->streetname !== $v) {
-            $this->streetname = $v;
-            $this->modifiedColumns[AddressTableMap::COL_STREETNAME] = true;
-        }
-
-        return $this;
-    } // setStreetname()
-
-    /**
-     * Set the value of [buildingindentifier] column.
-     *
-     * @param string $v new value
-     * @return $this|\Address The current object (for fluent API support)
-     */
-    public function setBuildingindentifier($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->buildingindentifier !== $v) {
-            $this->buildingindentifier = $v;
-            $this->modifiedColumns[AddressTableMap::COL_BUILDINGINDENTIFIER] = true;
-        }
-
-        return $this;
-    } // setBuildingindentifier()
-
-    /**
-     * Set the value of [apartmentidentifier] column.
-     *
-     * @param string $v new value
-     * @return $this|\Address The current object (for fluent API support)
-     */
-    public function setApartmentidentifier($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->apartmentidentifier !== $v) {
-            $this->apartmentidentifier = $v;
-            $this->modifiedColumns[AddressTableMap::COL_APARTMENTIDENTIFIER] = true;
-        }
-
-        return $this;
-    } // setApartmentidentifier()
+    } // setOwedid()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -742,43 +584,23 @@ abstract class Address implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : AddressTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : PaymentTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-<<<<<<< HEAD
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : AddressTableMap::translateFieldName('Continenttypeid', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->continenttypeid = (null !== $col) ? (int) $col : null;
-=======
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : AddressTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PaymentTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : AddressTableMap::translateFieldName('Continent', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->continent = (null !== $col) ? (string) $col : null;
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PaymentTableMap::translateFieldName('Senderid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->senderid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : AddressTableMap::translateFieldName('Countrytypeid', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->countrytypeid = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PaymentTableMap::translateFieldName('Receiverid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->receiverid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : AddressTableMap::translateFieldName('State', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->state = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : AddressTableMap::translateFieldName('Locality', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->locality = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : AddressTableMap::translateFieldName('Zipcode', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->zipcode = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : AddressTableMap::translateFieldName('Streetname', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->streetname = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : AddressTableMap::translateFieldName('Buildingindentifier', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->buildingindentifier = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : AddressTableMap::translateFieldName('Apartmentidentifier', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->apartmentidentifier = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PaymentTableMap::translateFieldName('Owedid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->owedid = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -787,10 +609,10 @@ abstract class Address implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 9; // 9 = AddressTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = PaymentTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException(sprintf('Error populating %s object', '\\Address'), 0, $e);
+            throw new PropelException(sprintf('Error populating %s object', '\\Payment'), 0, $e);
         }
     }
 
@@ -809,6 +631,15 @@ abstract class Address implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aUserRelatedBySenderid !== null && $this->senderid !== $this->aUserRelatedBySenderid->getId()) {
+            $this->aUserRelatedBySenderid = null;
+        }
+        if ($this->aUserRelatedByReceiverid !== null && $this->receiverid !== $this->aUserRelatedByReceiverid->getId()) {
+            $this->aUserRelatedByReceiverid = null;
+        }
+        if ($this->aOwedRelatedByOwedid !== null && $this->owedid !== $this->aOwedRelatedByOwedid->getId()) {
+            $this->aOwedRelatedByOwedid = null;
+        }
     } // ensureConsistency
 
     /**
@@ -832,13 +663,13 @@ abstract class Address implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(AddressTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(PaymentTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildAddressQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildPaymentQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -847,6 +678,11 @@ abstract class Address implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
+
+            $this->aUserRelatedByReceiverid = null;
+            $this->aUserRelatedBySenderid = null;
+            $this->aOwedRelatedByOwedid = null;
+            $this->collOwedsRelatedByPaymentid = null;
 
         } // if (deep)
     }
@@ -857,8 +693,8 @@ abstract class Address implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see Address::setDeleted()
-     * @see Address::isDeleted()
+     * @see Payment::setDeleted()
+     * @see Payment::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -867,11 +703,11 @@ abstract class Address implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(AddressTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PaymentTableMap::DATABASE_NAME);
         }
 
         $con->transaction(function () use ($con) {
-            $deleteQuery = ChildAddressQuery::create()
+            $deleteQuery = ChildPaymentQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -906,7 +742,7 @@ abstract class Address implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(AddressTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(PaymentTableMap::DATABASE_NAME);
         }
 
         return $con->transaction(function () use ($con) {
@@ -925,7 +761,7 @@ abstract class Address implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                AddressTableMap::addInstanceToPool($this);
+                PaymentTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -951,6 +787,32 @@ abstract class Address implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aUserRelatedByReceiverid !== null) {
+                if ($this->aUserRelatedByReceiverid->isModified() || $this->aUserRelatedByReceiverid->isNew()) {
+                    $affectedRows += $this->aUserRelatedByReceiverid->save($con);
+                }
+                $this->setUserRelatedByReceiverid($this->aUserRelatedByReceiverid);
+            }
+
+            if ($this->aUserRelatedBySenderid !== null) {
+                if ($this->aUserRelatedBySenderid->isModified() || $this->aUserRelatedBySenderid->isNew()) {
+                    $affectedRows += $this->aUserRelatedBySenderid->save($con);
+                }
+                $this->setUserRelatedBySenderid($this->aUserRelatedBySenderid);
+            }
+
+            if ($this->aOwedRelatedByOwedid !== null) {
+                if ($this->aOwedRelatedByOwedid->isModified() || $this->aOwedRelatedByOwedid->isNew()) {
+                    $affectedRows += $this->aOwedRelatedByOwedid->save($con);
+                }
+                $this->setOwedRelatedByOwedid($this->aOwedRelatedByOwedid);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -960,6 +822,24 @@ abstract class Address implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
+            }
+
+            if ($this->owedsRelatedByPaymentidScheduledForDeletion !== null) {
+                if (!$this->owedsRelatedByPaymentidScheduledForDeletion->isEmpty()) {
+                    foreach ($this->owedsRelatedByPaymentidScheduledForDeletion as $owedRelatedByPaymentid) {
+                        // need to save related object because we set the relation to null
+                        $owedRelatedByPaymentid->save($con);
+                    }
+                    $this->owedsRelatedByPaymentidScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collOwedsRelatedByPaymentid !== null) {
+                foreach ($this->collOwedsRelatedByPaymentid as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -982,42 +862,30 @@ abstract class Address implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[AddressTableMap::COL_ID] = true;
+        $this->modifiedColumns[PaymentTableMap::COL_ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . AddressTableMap::COL_ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PaymentTableMap::COL_ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(AddressTableMap::COL_ID)) {
+        if ($this->isColumnModified(PaymentTableMap::COL_ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(AddressTableMap::COL_CONTINENTTYPEID)) {
-            $modifiedColumns[':p' . $index++]  = 'continentTypeID';
+        if ($this->isColumnModified(PaymentTableMap::COL_TIMESTAMP)) {
+            $modifiedColumns[':p' . $index++]  = 'Timestamp';
         }
-        if ($this->isColumnModified(AddressTableMap::COL_COUNTRYTYPEID)) {
-            $modifiedColumns[':p' . $index++]  = 'countryTypeID';
+        if ($this->isColumnModified(PaymentTableMap::COL_SENDERID)) {
+            $modifiedColumns[':p' . $index++]  = 'SenderID';
         }
-        if ($this->isColumnModified(AddressTableMap::COL_STATE)) {
-            $modifiedColumns[':p' . $index++]  = 'state';
+        if ($this->isColumnModified(PaymentTableMap::COL_RECEIVERID)) {
+            $modifiedColumns[':p' . $index++]  = 'ReceiverID';
         }
-        if ($this->isColumnModified(AddressTableMap::COL_LOCALITY)) {
-            $modifiedColumns[':p' . $index++]  = 'locality';
-        }
-        if ($this->isColumnModified(AddressTableMap::COL_ZIPCODE)) {
-            $modifiedColumns[':p' . $index++]  = 'zipCode';
-        }
-        if ($this->isColumnModified(AddressTableMap::COL_STREETNAME)) {
-            $modifiedColumns[':p' . $index++]  = 'streetName';
-        }
-        if ($this->isColumnModified(AddressTableMap::COL_BUILDINGINDENTIFIER)) {
-            $modifiedColumns[':p' . $index++]  = 'buildingIndentifier';
-        }
-        if ($this->isColumnModified(AddressTableMap::COL_APARTMENTIDENTIFIER)) {
-            $modifiedColumns[':p' . $index++]  = 'apartmentIdentifier';
+        if ($this->isColumnModified(PaymentTableMap::COL_OWEDID)) {
+            $modifiedColumns[':p' . $index++]  = 'OwedID';
         }
 
         $sql = sprintf(
-            'INSERT INTO address (%s) VALUES (%s)',
+            'INSERT INTO payment (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -1029,29 +897,17 @@ abstract class Address implements ActiveRecordInterface
                     case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'continentTypeID':
-                        $stmt->bindValue($identifier, $this->continenttypeid, PDO::PARAM_INT);
+                    case 'Timestamp':
+                        $stmt->bindValue($identifier, $this->timestamp ? $this->timestamp->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
-                    case 'countryTypeID':
-                        $stmt->bindValue($identifier, $this->countrytypeid, PDO::PARAM_INT);
+                    case 'SenderID':
+                        $stmt->bindValue($identifier, $this->senderid, PDO::PARAM_INT);
                         break;
-                    case 'state':
-                        $stmt->bindValue($identifier, $this->state, PDO::PARAM_STR);
+                    case 'ReceiverID':
+                        $stmt->bindValue($identifier, $this->receiverid, PDO::PARAM_INT);
                         break;
-                    case 'locality':
-                        $stmt->bindValue($identifier, $this->locality, PDO::PARAM_STR);
-                        break;
-                    case 'zipCode':
-                        $stmt->bindValue($identifier, $this->zipcode, PDO::PARAM_STR);
-                        break;
-                    case 'streetName':
-                        $stmt->bindValue($identifier, $this->streetname, PDO::PARAM_STR);
-                        break;
-                    case 'buildingIndentifier':
-                        $stmt->bindValue($identifier, $this->buildingindentifier, PDO::PARAM_STR);
-                        break;
-                    case 'apartmentIdentifier':
-                        $stmt->bindValue($identifier, $this->apartmentidentifier, PDO::PARAM_STR);
+                    case 'OwedID':
+                        $stmt->bindValue($identifier, $this->owedid, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1099,7 +955,7 @@ abstract class Address implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = AddressTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = PaymentTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -1119,28 +975,16 @@ abstract class Address implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getContinenttypeid();
+                return $this->getTimestamp();
                 break;
             case 2:
-                return $this->getCountrytypeid();
+                return $this->getSenderid();
                 break;
             case 3:
-                return $this->getState();
+                return $this->getReceiverid();
                 break;
             case 4:
-                return $this->getLocality();
-                break;
-            case 5:
-                return $this->getZipcode();
-                break;
-            case 6:
-                return $this->getStreetname();
-                break;
-            case 7:
-                return $this->getBuildingindentifier();
-                break;
-            case 8:
-                return $this->getApartmentidentifier();
+                return $this->getOwedid();
                 break;
             default:
                 return null;
@@ -1159,33 +1003,96 @@ abstract class Address implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
 
-        if (isset($alreadyDumpedObjects['Address'][$this->hashCode()])) {
+        if (isset($alreadyDumpedObjects['Payment'][$this->hashCode()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Address'][$this->hashCode()] = true;
-        $keys = AddressTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['Payment'][$this->hashCode()] = true;
+        $keys = PaymentTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getContinenttypeid(),
-            $keys[2] => $this->getCountrytypeid(),
-            $keys[3] => $this->getState(),
-            $keys[4] => $this->getLocality(),
-            $keys[5] => $this->getZipcode(),
-            $keys[6] => $this->getStreetname(),
-            $keys[7] => $this->getBuildingindentifier(),
-            $keys[8] => $this->getApartmentidentifier(),
+            $keys[1] => $this->getTimestamp(),
+            $keys[2] => $this->getSenderid(),
+            $keys[3] => $this->getReceiverid(),
+            $keys[4] => $this->getOwedid(),
         );
+        if ($result[$keys[1]] instanceof \DateTimeInterface) {
+            $result[$keys[1]] = $result[$keys[1]]->format('c');
+        }
+
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aUserRelatedByReceiverid) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'user';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'user';
+                        break;
+                    default:
+                        $key = 'User';
+                }
+
+                $result[$key] = $this->aUserRelatedByReceiverid->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aUserRelatedBySenderid) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'user';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'user';
+                        break;
+                    default:
+                        $key = 'User';
+                }
+
+                $result[$key] = $this->aUserRelatedBySenderid->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aOwedRelatedByOwedid) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'owed';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'owed';
+                        break;
+                    default:
+                        $key = 'Owed';
+                }
+
+                $result[$key] = $this->aOwedRelatedByOwedid->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collOwedsRelatedByPaymentid) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'oweds';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'oweds';
+                        break;
+                    default:
+                        $key = 'Oweds';
+                }
+
+                $result[$key] = $this->collOwedsRelatedByPaymentid->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -1199,11 +1106,11 @@ abstract class Address implements ActiveRecordInterface
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\Address
+     * @return $this|\Payment
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = AddressTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = PaymentTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -1214,7 +1121,7 @@ abstract class Address implements ActiveRecordInterface
      *
      * @param  int $pos position in xml schema
      * @param  mixed $value field value
-     * @return $this|\Address
+     * @return $this|\Payment
      */
     public function setByPosition($pos, $value)
     {
@@ -1223,28 +1130,16 @@ abstract class Address implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setContinenttypeid($value);
+                $this->setTimestamp($value);
                 break;
             case 2:
-                $this->setCountrytypeid($value);
+                $this->setSenderid($value);
                 break;
             case 3:
-                $this->setState($value);
+                $this->setReceiverid($value);
                 break;
             case 4:
-                $this->setLocality($value);
-                break;
-            case 5:
-                $this->setZipcode($value);
-                break;
-            case 6:
-                $this->setStreetname($value);
-                break;
-            case 7:
-                $this->setBuildingindentifier($value);
-                break;
-            case 8:
-                $this->setApartmentidentifier($value);
+                $this->setOwedid($value);
                 break;
         } // switch()
 
@@ -1270,34 +1165,22 @@ abstract class Address implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = AddressTableMap::getFieldNames($keyType);
+        $keys = PaymentTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
             $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setContinenttypeid($arr[$keys[1]]);
+            $this->setTimestamp($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setCountrytypeid($arr[$keys[2]]);
+            $this->setSenderid($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setState($arr[$keys[3]]);
+            $this->setReceiverid($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setLocality($arr[$keys[4]]);
-        }
-        if (array_key_exists($keys[5], $arr)) {
-            $this->setZipcode($arr[$keys[5]]);
-        }
-        if (array_key_exists($keys[6], $arr)) {
-            $this->setStreetname($arr[$keys[6]]);
-        }
-        if (array_key_exists($keys[7], $arr)) {
-            $this->setBuildingindentifier($arr[$keys[7]]);
-        }
-        if (array_key_exists($keys[8], $arr)) {
-            $this->setApartmentidentifier($arr[$keys[8]]);
+            $this->setOwedid($arr[$keys[4]]);
         }
     }
 
@@ -1318,7 +1201,7 @@ abstract class Address implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\Address The current object, for fluid interface
+     * @return $this|\Payment The current object, for fluid interface
      */
     public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
     {
@@ -1338,34 +1221,22 @@ abstract class Address implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(AddressTableMap::DATABASE_NAME);
+        $criteria = new Criteria(PaymentTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(AddressTableMap::COL_ID)) {
-            $criteria->add(AddressTableMap::COL_ID, $this->id);
+        if ($this->isColumnModified(PaymentTableMap::COL_ID)) {
+            $criteria->add(PaymentTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(AddressTableMap::COL_CONTINENTTYPEID)) {
-            $criteria->add(AddressTableMap::COL_CONTINENTTYPEID, $this->continenttypeid);
+        if ($this->isColumnModified(PaymentTableMap::COL_TIMESTAMP)) {
+            $criteria->add(PaymentTableMap::COL_TIMESTAMP, $this->timestamp);
         }
-        if ($this->isColumnModified(AddressTableMap::COL_COUNTRYTYPEID)) {
-            $criteria->add(AddressTableMap::COL_COUNTRYTYPEID, $this->countrytypeid);
+        if ($this->isColumnModified(PaymentTableMap::COL_SENDERID)) {
+            $criteria->add(PaymentTableMap::COL_SENDERID, $this->senderid);
         }
-        if ($this->isColumnModified(AddressTableMap::COL_STATE)) {
-            $criteria->add(AddressTableMap::COL_STATE, $this->state);
+        if ($this->isColumnModified(PaymentTableMap::COL_RECEIVERID)) {
+            $criteria->add(PaymentTableMap::COL_RECEIVERID, $this->receiverid);
         }
-        if ($this->isColumnModified(AddressTableMap::COL_LOCALITY)) {
-            $criteria->add(AddressTableMap::COL_LOCALITY, $this->locality);
-        }
-        if ($this->isColumnModified(AddressTableMap::COL_ZIPCODE)) {
-            $criteria->add(AddressTableMap::COL_ZIPCODE, $this->zipcode);
-        }
-        if ($this->isColumnModified(AddressTableMap::COL_STREETNAME)) {
-            $criteria->add(AddressTableMap::COL_STREETNAME, $this->streetname);
-        }
-        if ($this->isColumnModified(AddressTableMap::COL_BUILDINGINDENTIFIER)) {
-            $criteria->add(AddressTableMap::COL_BUILDINGINDENTIFIER, $this->buildingindentifier);
-        }
-        if ($this->isColumnModified(AddressTableMap::COL_APARTMENTIDENTIFIER)) {
-            $criteria->add(AddressTableMap::COL_APARTMENTIDENTIFIER, $this->apartmentidentifier);
+        if ($this->isColumnModified(PaymentTableMap::COL_OWEDID)) {
+            $criteria->add(PaymentTableMap::COL_OWEDID, $this->owedid);
         }
 
         return $criteria;
@@ -1383,8 +1254,8 @@ abstract class Address implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildAddressQuery::create();
-        $criteria->add(AddressTableMap::COL_ID, $this->id);
+        $criteria = ChildPaymentQuery::create();
+        $criteria->add(PaymentTableMap::COL_ID, $this->id);
 
         return $criteria;
     }
@@ -1446,21 +1317,31 @@ abstract class Address implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Address (or compatible) type.
+     * @param      object $copyObj An object of \Payment (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setContinenttypeid($this->getContinenttypeid());
-        $copyObj->setCountrytypeid($this->getCountrytypeid());
-        $copyObj->setState($this->getState());
-        $copyObj->setLocality($this->getLocality());
-        $copyObj->setZipcode($this->getZipcode());
-        $copyObj->setStreetname($this->getStreetname());
-        $copyObj->setBuildingindentifier($this->getBuildingindentifier());
-        $copyObj->setApartmentidentifier($this->getApartmentidentifier());
+        $copyObj->setTimestamp($this->getTimestamp());
+        $copyObj->setSenderid($this->getSenderid());
+        $copyObj->setReceiverid($this->getReceiverid());
+        $copyObj->setOwedid($this->getOwedid());
+
+        if ($deepCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+
+            foreach ($this->getOwedsRelatedByPaymentid() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addOwedRelatedByPaymentid($relObj->copy($deepCopy));
+                }
+            }
+
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1476,7 +1357,7 @@ abstract class Address implements ActiveRecordInterface
      * objects.
      *
      * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \Address Clone of current object.
+     * @return \Payment Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1490,21 +1371,471 @@ abstract class Address implements ActiveRecordInterface
     }
 
     /**
+     * Declares an association between this object and a ChildUser object.
+     *
+     * @param  ChildUser $v
+     * @return $this|\Payment The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setUserRelatedByReceiverid(ChildUser $v = null)
+    {
+        if ($v === null) {
+            $this->setReceiverid(NULL);
+        } else {
+            $this->setReceiverid($v->getId());
+        }
+
+        $this->aUserRelatedByReceiverid = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildUser object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPaymentRelatedByReceiverid($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildUser object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildUser The associated ChildUser object.
+     * @throws PropelException
+     */
+    public function getUserRelatedByReceiverid(ConnectionInterface $con = null)
+    {
+        if ($this->aUserRelatedByReceiverid === null && ($this->receiverid != 0)) {
+            $this->aUserRelatedByReceiverid = ChildUserQuery::create()->findPk($this->receiverid, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aUserRelatedByReceiverid->addPaymentsRelatedByReceiverid($this);
+             */
+        }
+
+        return $this->aUserRelatedByReceiverid;
+    }
+
+    /**
+     * Declares an association between this object and a ChildUser object.
+     *
+     * @param  ChildUser $v
+     * @return $this|\Payment The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setUserRelatedBySenderid(ChildUser $v = null)
+    {
+        if ($v === null) {
+            $this->setSenderid(NULL);
+        } else {
+            $this->setSenderid($v->getId());
+        }
+
+        $this->aUserRelatedBySenderid = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildUser object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPaymentRelatedBySenderid($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildUser object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildUser The associated ChildUser object.
+     * @throws PropelException
+     */
+    public function getUserRelatedBySenderid(ConnectionInterface $con = null)
+    {
+        if ($this->aUserRelatedBySenderid === null && ($this->senderid != 0)) {
+            $this->aUserRelatedBySenderid = ChildUserQuery::create()->findPk($this->senderid, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aUserRelatedBySenderid->addPaymentsRelatedBySenderid($this);
+             */
+        }
+
+        return $this->aUserRelatedBySenderid;
+    }
+
+    /**
+     * Declares an association between this object and a ChildOwed object.
+     *
+     * @param  ChildOwed $v
+     * @return $this|\Payment The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setOwedRelatedByOwedid(ChildOwed $v = null)
+    {
+        if ($v === null) {
+            $this->setOwedid(NULL);
+        } else {
+            $this->setOwedid($v->getId());
+        }
+
+        $this->aOwedRelatedByOwedid = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildOwed object, it will not be re-added.
+        if ($v !== null) {
+            $v->addPaymentRelatedByOwedid($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildOwed object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildOwed The associated ChildOwed object.
+     * @throws PropelException
+     */
+    public function getOwedRelatedByOwedid(ConnectionInterface $con = null)
+    {
+        if ($this->aOwedRelatedByOwedid === null && ($this->owedid != 0)) {
+            $this->aOwedRelatedByOwedid = ChildOwedQuery::create()->findPk($this->owedid, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aOwedRelatedByOwedid->addPaymentsRelatedByOwedid($this);
+             */
+        }
+
+        return $this->aOwedRelatedByOwedid;
+    }
+
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param      string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('OwedRelatedByPaymentid' == $relationName) {
+            $this->initOwedsRelatedByPaymentid();
+            return;
+        }
+    }
+
+    /**
+     * Clears out the collOwedsRelatedByPaymentid collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addOwedsRelatedByPaymentid()
+     */
+    public function clearOwedsRelatedByPaymentid()
+    {
+        $this->collOwedsRelatedByPaymentid = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collOwedsRelatedByPaymentid collection loaded partially.
+     */
+    public function resetPartialOwedsRelatedByPaymentid($v = true)
+    {
+        $this->collOwedsRelatedByPaymentidPartial = $v;
+    }
+
+    /**
+     * Initializes the collOwedsRelatedByPaymentid collection.
+     *
+     * By default this just sets the collOwedsRelatedByPaymentid collection to an empty array (like clearcollOwedsRelatedByPaymentid());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initOwedsRelatedByPaymentid($overrideExisting = true)
+    {
+        if (null !== $this->collOwedsRelatedByPaymentid && !$overrideExisting) {
+            return;
+        }
+
+        $collectionClassName = OwedTableMap::getTableMap()->getCollectionClassName();
+
+        $this->collOwedsRelatedByPaymentid = new $collectionClassName;
+        $this->collOwedsRelatedByPaymentid->setModel('\Owed');
+    }
+
+    /**
+     * Gets an array of ChildOwed objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildPayment is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return ObjectCollection|ChildOwed[] List of ChildOwed objects
+     * @throws PropelException
+     */
+    public function getOwedsRelatedByPaymentid(Criteria $criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collOwedsRelatedByPaymentidPartial && !$this->isNew();
+        if (null === $this->collOwedsRelatedByPaymentid || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collOwedsRelatedByPaymentid) {
+                // return empty collection
+                $this->initOwedsRelatedByPaymentid();
+            } else {
+                $collOwedsRelatedByPaymentid = ChildOwedQuery::create(null, $criteria)
+                    ->filterByPaymentRelatedByPaymentid($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collOwedsRelatedByPaymentidPartial && count($collOwedsRelatedByPaymentid)) {
+                        $this->initOwedsRelatedByPaymentid(false);
+
+                        foreach ($collOwedsRelatedByPaymentid as $obj) {
+                            if (false == $this->collOwedsRelatedByPaymentid->contains($obj)) {
+                                $this->collOwedsRelatedByPaymentid->append($obj);
+                            }
+                        }
+
+                        $this->collOwedsRelatedByPaymentidPartial = true;
+                    }
+
+                    return $collOwedsRelatedByPaymentid;
+                }
+
+                if ($partial && $this->collOwedsRelatedByPaymentid) {
+                    foreach ($this->collOwedsRelatedByPaymentid as $obj) {
+                        if ($obj->isNew()) {
+                            $collOwedsRelatedByPaymentid[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collOwedsRelatedByPaymentid = $collOwedsRelatedByPaymentid;
+                $this->collOwedsRelatedByPaymentidPartial = false;
+            }
+        }
+
+        return $this->collOwedsRelatedByPaymentid;
+    }
+
+    /**
+     * Sets a collection of ChildOwed objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $owedsRelatedByPaymentid A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return $this|ChildPayment The current object (for fluent API support)
+     */
+    public function setOwedsRelatedByPaymentid(Collection $owedsRelatedByPaymentid, ConnectionInterface $con = null)
+    {
+        /** @var ChildOwed[] $owedsRelatedByPaymentidToDelete */
+        $owedsRelatedByPaymentidToDelete = $this->getOwedsRelatedByPaymentid(new Criteria(), $con)->diff($owedsRelatedByPaymentid);
+
+
+        $this->owedsRelatedByPaymentidScheduledForDeletion = $owedsRelatedByPaymentidToDelete;
+
+        foreach ($owedsRelatedByPaymentidToDelete as $owedRelatedByPaymentidRemoved) {
+            $owedRelatedByPaymentidRemoved->setPaymentRelatedByPaymentid(null);
+        }
+
+        $this->collOwedsRelatedByPaymentid = null;
+        foreach ($owedsRelatedByPaymentid as $owedRelatedByPaymentid) {
+            $this->addOwedRelatedByPaymentid($owedRelatedByPaymentid);
+        }
+
+        $this->collOwedsRelatedByPaymentid = $owedsRelatedByPaymentid;
+        $this->collOwedsRelatedByPaymentidPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Owed objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related Owed objects.
+     * @throws PropelException
+     */
+    public function countOwedsRelatedByPaymentid(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collOwedsRelatedByPaymentidPartial && !$this->isNew();
+        if (null === $this->collOwedsRelatedByPaymentid || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collOwedsRelatedByPaymentid) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getOwedsRelatedByPaymentid());
+            }
+
+            $query = ChildOwedQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPaymentRelatedByPaymentid($this)
+                ->count($con);
+        }
+
+        return count($this->collOwedsRelatedByPaymentid);
+    }
+
+    /**
+     * Method called to associate a ChildOwed object to this object
+     * through the ChildOwed foreign key attribute.
+     *
+     * @param  ChildOwed $l ChildOwed
+     * @return $this|\Payment The current object (for fluent API support)
+     */
+    public function addOwedRelatedByPaymentid(ChildOwed $l)
+    {
+        if ($this->collOwedsRelatedByPaymentid === null) {
+            $this->initOwedsRelatedByPaymentid();
+            $this->collOwedsRelatedByPaymentidPartial = true;
+        }
+
+        if (!$this->collOwedsRelatedByPaymentid->contains($l)) {
+            $this->doAddOwedRelatedByPaymentid($l);
+
+            if ($this->owedsRelatedByPaymentidScheduledForDeletion and $this->owedsRelatedByPaymentidScheduledForDeletion->contains($l)) {
+                $this->owedsRelatedByPaymentidScheduledForDeletion->remove($this->owedsRelatedByPaymentidScheduledForDeletion->search($l));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ChildOwed $owedRelatedByPaymentid The ChildOwed object to add.
+     */
+    protected function doAddOwedRelatedByPaymentid(ChildOwed $owedRelatedByPaymentid)
+    {
+        $this->collOwedsRelatedByPaymentid[]= $owedRelatedByPaymentid;
+        $owedRelatedByPaymentid->setPaymentRelatedByPaymentid($this);
+    }
+
+    /**
+     * @param  ChildOwed $owedRelatedByPaymentid The ChildOwed object to remove.
+     * @return $this|ChildPayment The current object (for fluent API support)
+     */
+    public function removeOwedRelatedByPaymentid(ChildOwed $owedRelatedByPaymentid)
+    {
+        if ($this->getOwedsRelatedByPaymentid()->contains($owedRelatedByPaymentid)) {
+            $pos = $this->collOwedsRelatedByPaymentid->search($owedRelatedByPaymentid);
+            $this->collOwedsRelatedByPaymentid->remove($pos);
+            if (null === $this->owedsRelatedByPaymentidScheduledForDeletion) {
+                $this->owedsRelatedByPaymentidScheduledForDeletion = clone $this->collOwedsRelatedByPaymentid;
+                $this->owedsRelatedByPaymentidScheduledForDeletion->clear();
+            }
+            $this->owedsRelatedByPaymentidScheduledForDeletion[]= $owedRelatedByPaymentid;
+            $owedRelatedByPaymentid->setPaymentRelatedByPaymentid(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Payment is new, it will return
+     * an empty collection; or if this Payment has previously
+     * been saved, it will retrieve related OwedsRelatedByPaymentid from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Payment.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildOwed[] List of ChildOwed objects
+     */
+    public function getOwedsRelatedByPaymentidJoinUserRelatedByReceiverid(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildOwedQuery::create(null, $criteria);
+        $query->joinWith('UserRelatedByReceiverid', $joinBehavior);
+
+        return $this->getOwedsRelatedByPaymentid($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Payment is new, it will return
+     * an empty collection; or if this Payment has previously
+     * been saved, it will retrieve related OwedsRelatedByPaymentid from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Payment.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildOwed[] List of ChildOwed objects
+     */
+    public function getOwedsRelatedByPaymentidJoinUserRelatedBySenderid(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildOwedQuery::create(null, $criteria);
+        $query->joinWith('UserRelatedBySenderid', $joinBehavior);
+
+        return $this->getOwedsRelatedByPaymentid($query, $con);
+    }
+
+    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
+        if (null !== $this->aUserRelatedByReceiverid) {
+            $this->aUserRelatedByReceiverid->removePaymentRelatedByReceiverid($this);
+        }
+        if (null !== $this->aUserRelatedBySenderid) {
+            $this->aUserRelatedBySenderid->removePaymentRelatedBySenderid($this);
+        }
+        if (null !== $this->aOwedRelatedByOwedid) {
+            $this->aOwedRelatedByOwedid->removePaymentRelatedByOwedid($this);
+        }
         $this->id = null;
-        $this->continenttypeid = null;
-        $this->countrytypeid = null;
-        $this->state = null;
-        $this->locality = null;
-        $this->zipcode = null;
-        $this->streetname = null;
-        $this->buildingindentifier = null;
-        $this->apartmentidentifier = null;
+        $this->timestamp = null;
+        $this->senderid = null;
+        $this->receiverid = null;
+        $this->owedid = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();
@@ -1524,8 +1855,17 @@ abstract class Address implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
+            if ($this->collOwedsRelatedByPaymentid) {
+                foreach ($this->collOwedsRelatedByPaymentid as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
+        $this->collOwedsRelatedByPaymentid = null;
+        $this->aUserRelatedByReceiverid = null;
+        $this->aUserRelatedBySenderid = null;
+        $this->aOwedRelatedByOwedid = null;
     }
 
     /**
@@ -1535,7 +1875,7 @@ abstract class Address implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(AddressTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(PaymentTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

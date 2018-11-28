@@ -26,10 +26,13 @@ return array(
     'Base\\AmenitytypeQuery' => $baseDir . '/models/Base/AmenitytypeQuery.php',
     'Base\\Appliance' => $baseDir . '/models/Base/Appliance.php',
     'Base\\ApplianceQuery' => $baseDir . '/models/Base/ApplianceQuery.php',
+<<<<<<< HEAD
     'Base\\Appliancetype' => $baseDir . '/models/Base/Appliancetype.php',
     'Base\\AppliancetypeQuery' => $baseDir . '/models/Base/AppliancetypeQuery.php',
     'Base\\Continenttype' => $baseDir . '/models/Base/Continenttype.php',
     'Base\\ContinenttypeQuery' => $baseDir . '/models/Base/ContinenttypeQuery.php',
+=======
+>>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
     'Base\\Cost' => $baseDir . '/models/Base/Cost.php',
     'Base\\CostQuery' => $baseDir . '/models/Base/CostQuery.php',
     'Base\\Countrytype' => $baseDir . '/models/Base/Countrytype.php',
@@ -88,8 +91,11 @@ return array(
     'Map\\AmenityTableMap' => $baseDir . '/models/Map/AmenityTableMap.php',
     'Map\\AmenitytypeTableMap' => $baseDir . '/models/Map/AmenitytypeTableMap.php',
     'Map\\ApplianceTableMap' => $baseDir . '/models/Map/ApplianceTableMap.php',
+<<<<<<< HEAD
     'Map\\AppliancetypeTableMap' => $baseDir . '/models/Map/AppliancetypeTableMap.php',
     'Map\\ContinenttypeTableMap' => $baseDir . '/models/Map/ContinenttypeTableMap.php',
+=======
+>>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
     'Map\\CostTableMap' => $baseDir . '/models/Map/CostTableMap.php',
     'Map\\CountrytypeTableMap' => $baseDir . '/models/Map/CountrytypeTableMap.php',
     'Map\\EmailTableMap' => $baseDir . '/models/Map/EmailTableMap.php',

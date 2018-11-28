@@ -156,6 +156,7 @@ class PhoneTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
+<<<<<<< HEAD
         $this->addPrimaryKey('phoneNumberID', 'Phonenumberid', 'INTEGER', true, null, null);
         $this->addColumn('userID', 'Userid', 'INTEGER', true, null, null);
         $this->addColumn('addDate', 'Adddate', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
@@ -163,6 +164,13 @@ class PhoneTableMap extends TableMap
         $this->addColumn('number', 'Number', 'LONGVARCHAR', true, null, null);
         $this->addColumn('extension', 'Extension', 'LONGVARCHAR', false, null, null);
         $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
+=======
+        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
+        $this->addForeignKey('UserID', 'Userid', 'INTEGER', 'user', 'ID', true, null, null);
+        $this->addColumn('Number', 'Number', 'VARCHAR', true, 64, null);
+        $this->addColumn('Description', 'Description', 'CHAR', true, null, null);
+>>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
     } // initialize()
 
     /**

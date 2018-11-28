@@ -141,10 +141,19 @@ class AmenityTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
+<<<<<<< HEAD
         $this->addPrimaryKey('amenityNumberID', 'Amenitynumberid', 'INTEGER', true, null, null);
         $this->addColumn('propertyID', 'Propertyid', 'INTEGER', true, null, null);
         $this->addColumn('amenityTypeID', 'Amenitytypeid', 'INTEGER', true, null, null);
         $this->addColumn('details', 'Details', 'LONGVARCHAR', false, null, null);
+=======
+        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
+        $this->addForeignKey('PropertyID', 'Propertyid', 'INTEGER', 'property', 'ID', true, null, null);
+        $this->addColumn('Name', 'Name', 'VARCHAR', true, 56, null);
+        $this->addColumn('Description', 'Description', 'VARCHAR', true, 128, null);
+        $this->addColumn('Private', 'Private', 'BOOLEAN', true, 1, null);
+>>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
     } // initialize()
 
     /**

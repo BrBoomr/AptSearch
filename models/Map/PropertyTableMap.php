@@ -182,6 +182,7 @@ class PropertyTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+<<<<<<< HEAD
         $this->addColumn('addressID', 'Addressid', 'INTEGER', true, null, null);
         $this->addColumn('userID', 'Userid', 'INTEGER', true, null, null);
         $this->addColumn('addDate', 'Adddate', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
@@ -193,6 +194,16 @@ class PropertyTableMap extends TableMap
         $this->addColumn('bedroomCount', 'Bedroomcount', 'INTEGER', true, null, null);
         $this->addColumn('bathroomCount', 'Bathroomcount', 'INTEGER', true, null, null);
         $this->addColumn('details', 'Details', 'LONGVARCHAR', false, null, null);
+=======
+        $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
+        $this->addForeignKey('LandlordID', 'Landlordid', 'INTEGER', 'user', 'ID', true, null, null);
+        $this->addForeignKey('AddressID', 'Addressid', 'INTEGER', 'address', 'ID', true, null, null);
+        $this->addColumn('FPL', 'Fpl', 'INTEGER', false, null, null);
+        $this->addColumn('SquareFootage', 'Squarefootage', 'INTEGER', true, null, null);
+        $this->addColumn('Rooms', 'Rooms', 'INTEGER', true, null, null);
+        $this->addColumn('Bathrooms', 'Bathrooms', 'INTEGER', true, null, null);
+        $this->addColumn('Details', 'Details', 'VARCHAR', false, 256, null);
+>>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
     } // initialize()
 
     /**

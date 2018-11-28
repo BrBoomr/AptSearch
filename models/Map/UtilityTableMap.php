@@ -156,6 +156,7 @@ class UtilityTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
+<<<<<<< HEAD
         $this->addPrimaryKey('utilityNumberID', 'Utilitynumberid', 'INTEGER', true, null, null);
         $this->addColumn('propertyID', 'Propertyid', 'INTEGER', true, null, null);
         $this->addColumn('utilityTypeID', 'Utilitytypeid', 'INTEGER', true, null, null);
@@ -163,6 +164,15 @@ class UtilityTableMap extends TableMap
         $this->addColumn('available', 'Available', 'BOOLEAN', true, 1, true);
         $this->addColumn('includedInRent', 'Includedinrent', 'BOOLEAN', true, 1, true);
         $this->addColumn('expectedCostPerMonth', 'Expectedcostpermonth', 'DOUBLE', true, null, 0);
+=======
+        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
+        $this->addForeignKey('PropertyID', 'Propertyid', 'INTEGER', 'property', 'ID', true, null, null);
+        $this->addColumn('Name', 'Name', 'VARCHAR', true, 56, null);
+        $this->addColumn('Description', 'Description', 'VARCHAR', true, 128, null);
+        $this->addColumn('Included', 'Included', 'BOOLEAN', true, 1, null);
+        $this->addColumn('Cost', 'Cost', 'INTEGER', true, null, null);
+>>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
     } // initialize()
 
     /**
