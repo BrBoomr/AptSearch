@@ -65,9 +65,32 @@ function createUser($name, $email, $password){
 	$newUser->setEmail($email);
 	$newUser->setPassword($password);
 	$newUser->save();
+	return $newUser->getId();
 }
 $app->get('/register_verification', function ($request, $response, $args) {
+	$name = $this->request->getParam("name");
+	$email = $this->request->getParam("email");
+	$password = $this->request->getParam("password");
+	$confirm = $this->request->getParam("confirm");
 
+	$fields = array($name,$email,$password,$confirm);
+	foreach($fields as $field){
+		if(empty($field)){
+			return json_encode(['invalid'=>'true']);
+		}
+	}
+
+	if($password != $confirm){
+		//$code["invalid"]='true';
+		return json_encode( ["mismatch"=>'true'] );
+	}
+
+	$check_user = UserQuery::create()->findOneByEmail($email);
+	if($check_user){
+		return json_encode(['duplicate'=>'true']);
+	}
+	$userID=createUser($name,$email,$password);
+	return json_encode(['verified'=>'true','userID'=>$userID]);
 });
 
 $app->run();
