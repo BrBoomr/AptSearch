@@ -5,7 +5,7 @@ require '../generated-conf/config.php';
 //////////////////////
 // Slim Setup
 //////////////////////
-
+session_start();
 $settings = ['displayErrorDetails' => true];
 
 $app = new \Slim\App(['settings' => $settings]);
@@ -24,7 +24,7 @@ $container['view'] = function($container) {
 };
 // home page route
 $app->get('/', function ($request, $response, $args) {
-	$this->view->render($response, "index.html");
+	$this->view->render($response, "index.html", ['user'=>$_SESSION['user']]);
 	return $response;
 });
 
@@ -52,8 +52,7 @@ $app->post('/login_verification', function ($request, $response, $args) {
 
 $app->post("/success_login",function($request,$response,$args){
 	$userID = $this->request->getParam('userID');
-	$this->view->render($response, "index.html", ['user'=>UserQuery::create()->findPk($userID)]);
-	return $response;
+	$_SESSION['user']=UserQuery::create()->findPk($userID);
 });
 
 //////////////////////////////

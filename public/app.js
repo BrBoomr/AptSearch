@@ -79,8 +79,9 @@ function loginPage(userID){
         data: {"userID" : userID},
         dataType: "text",
         success: function (r) {
-            $("body").html(r)
-            $("p").attr("userid",userID) //Assigns the tag the current user's ID. Not sure how we can use this yet.
+            //$("body").html(r)
+            //$("p").attr("userid",userID) //Assigns the tag the current user's ID. Not sure how we can use this yet.
+            window.location.replace(baseurl + "/")
         }
     });
 }
