@@ -1,3 +1,58 @@
+/*since the body might have a larger min height than what is in it
+center align the mainDiv in the body within the body*/
+
+#body{
+    display: table;
+}
+
 #mainDiv {
     background-color: red;
+    display: table-cell;
+    vertical-align: middle;
 }
+
+/*for scroll to top button*/
+
+#scrollToTop { /*default button style*/
+    /*unchanging*/
+    display: table; 
+    background-color: #000000;
+    text-align: center;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    height: 50px;
+    width: 50px;
+    transition: background-color .3s, opacity .5s, visibility .5s;
+    z-index: 1000;
+    /*changing*/
+    opacity: 0;
+    visibility: hidden;
+}
+
+#scrollToTop.show { /*button style when its visible*/
+    opacity: 1;
+    visibility: visible;
+}
+
+#scrollToTop::after { /*what shows inside the button*/
+    display: table-cell;
+    vertical-align: middle;
+    content: "\f077"; /*chevron*/
+    font-family: FontAwesome;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 2em;
+    line-height: 100%;
+    color: #FFFFFF;
+}
+
+#scrollToTop:hover { /*button when hovered*/
+    cursor: pointer;
+    opacity: .75;
+}
+
+#scrollToTop:active { /*button when click is held*/
+    opacity: .5;
+}
+
