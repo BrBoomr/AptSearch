@@ -2,28 +2,21 @@
 
 namespace Base;
 
-use \Address as ChildAddress;
 use \AddressQuery as ChildAddressQuery;
-use \Property as ChildProperty;
-use \PropertyQuery as ChildPropertyQuery;
-use \DateTime;
 use \Exception;
 use \PDO;
 use Map\AddressTableMap;
-use Map\PropertyTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
-use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
-use Propel\Runtime\Util\PropelDateTime;
 
 /**
  * Base class that represents a row from the 'address' table.
@@ -74,25 +67,18 @@ abstract class Address implements ActiveRecordInterface
     protected $id;
 
     /**
-     * The value for the timestamp field.
+     * The value for the continenttypeid field.
      *
-     * @var        DateTime
+     * @var        int
      */
-    protected $timestamp;
+    protected $continenttypeid;
 
     /**
-     * The value for the continent field.
+     * The value for the countrytypeid field.
      *
-     * @var        string
+     * @var        int
      */
-    protected $continent;
-
-    /**
-     * The value for the country field.
-     *
-     * @var        string
-     */
-    protected $country;
+    protected $countrytypeid;
 
     /**
      * The value for the state field.
@@ -102,18 +88,18 @@ abstract class Address implements ActiveRecordInterface
     protected $state;
 
     /**
-     * The value for the city field.
+     * The value for the locality field.
      *
      * @var        string
      */
-    protected $city;
+    protected $locality;
 
     /**
-     * The value for the zip field.
+     * The value for the zipcode field.
      *
-     * @var        int
+     * @var        string
      */
-    protected $zip;
+    protected $zipcode;
 
     /**
      * The value for the streetname field.
@@ -123,24 +109,18 @@ abstract class Address implements ActiveRecordInterface
     protected $streetname;
 
     /**
-     * The value for the buildingnumber field.
+     * The value for the buildingindentifier field.
      *
-     * @var        int
+     * @var        string
      */
-    protected $buildingnumber;
+    protected $buildingindentifier;
 
     /**
-     * The value for the apartmentid field.
+     * The value for the apartmentidentifier field.
      *
-     * @var        int
+     * @var        string
      */
-    protected $apartmentid;
-
-    /**
-     * @var        ObjectCollection|ChildProperty[] Collection to store aggregation of ChildProperty objects.
-     */
-    protected $collProperties;
-    protected $collPropertiesPartial;
+    protected $apartmentidentifier;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -149,12 +129,6 @@ abstract class Address implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildProperty[]
-     */
-    protected $propertiesScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Base\Address object.
@@ -392,43 +366,23 @@ abstract class Address implements ActiveRecordInterface
     }
 
     /**
-     * Get the [optionally formatted] temporal [timestamp] column value.
+     * Get the [continenttypeid] column value.
      *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
+     * @return int
      */
-    public function getTimestamp($format = NULL)
+    public function getContinenttypeid()
     {
-        if ($format === null) {
-            return $this->timestamp;
-        } else {
-            return $this->timestamp instanceof \DateTimeInterface ? $this->timestamp->format($format) : null;
-        }
+        return $this->continenttypeid;
     }
 
     /**
-     * Get the [continent] column value.
+     * Get the [countrytypeid] column value.
      *
-     * @return string
+     * @return int
      */
-    public function getContinent()
+    public function getCountrytypeid()
     {
-        return $this->continent;
-    }
-
-    /**
-     * Get the [country] column value.
-     *
-     * @return string
-     */
-    public function getCountry()
-    {
-        return $this->country;
+        return $this->countrytypeid;
     }
 
     /**
@@ -442,23 +396,23 @@ abstract class Address implements ActiveRecordInterface
     }
 
     /**
-     * Get the [city] column value.
+     * Get the [locality] column value.
      *
      * @return string
      */
-    public function getCity()
+    public function getLocality()
     {
-        return $this->city;
+        return $this->locality;
     }
 
     /**
-     * Get the [zip] column value.
+     * Get the [zipcode] column value.
      *
-     * @return int
+     * @return string
      */
-    public function getZip()
+    public function getZipcode()
     {
-        return $this->zip;
+        return $this->zipcode;
     }
 
     /**
@@ -472,23 +426,23 @@ abstract class Address implements ActiveRecordInterface
     }
 
     /**
-     * Get the [buildingnumber] column value.
+     * Get the [buildingindentifier] column value.
      *
-     * @return int
+     * @return string
      */
-    public function getBuildingnumber()
+    public function getBuildingindentifier()
     {
-        return $this->buildingnumber;
+        return $this->buildingindentifier;
     }
 
     /**
-     * Get the [apartmentid] column value.
+     * Get the [apartmentidentifier] column value.
      *
-     * @return int
+     * @return string
      */
-    public function getApartmentid()
+    public function getApartmentidentifier()
     {
-        return $this->apartmentid;
+        return $this->apartmentidentifier;
     }
 
     /**
@@ -512,64 +466,44 @@ abstract class Address implements ActiveRecordInterface
     } // setId()
 
     /**
-     * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
+     * Set the value of [continenttypeid] column.
      *
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
+     * @param int $v new value
      * @return $this|\Address The current object (for fluent API support)
      */
-    public function setTimestamp($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->timestamp !== null || $dt !== null) {
-            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d") !== $this->timestamp->format("Y-m-d")) {
-                $this->timestamp = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[AddressTableMap::COL_TIMESTAMP] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setTimestamp()
-
-    /**
-     * Set the value of [continent] column.
-     *
-     * @param string $v new value
-     * @return $this|\Address The current object (for fluent API support)
-     */
-    public function setContinent($v)
+    public function setContinenttypeid($v)
     {
         if ($v !== null) {
-            $v = (string) $v;
+            $v = (int) $v;
         }
 
-        if ($this->continent !== $v) {
-            $this->continent = $v;
-            $this->modifiedColumns[AddressTableMap::COL_CONTINENT] = true;
+        if ($this->continenttypeid !== $v) {
+            $this->continenttypeid = $v;
+            $this->modifiedColumns[AddressTableMap::COL_CONTINENTTYPEID] = true;
         }
 
         return $this;
-    } // setContinent()
+    } // setContinenttypeid()
 
     /**
-     * Set the value of [country] column.
+     * Set the value of [countrytypeid] column.
      *
-     * @param string $v new value
+     * @param int $v new value
      * @return $this|\Address The current object (for fluent API support)
      */
-    public function setCountry($v)
+    public function setCountrytypeid($v)
     {
         if ($v !== null) {
-            $v = (string) $v;
+            $v = (int) $v;
         }
 
-        if ($this->country !== $v) {
-            $this->country = $v;
-            $this->modifiedColumns[AddressTableMap::COL_COUNTRY] = true;
+        if ($this->countrytypeid !== $v) {
+            $this->countrytypeid = $v;
+            $this->modifiedColumns[AddressTableMap::COL_COUNTRYTYPEID] = true;
         }
 
         return $this;
-    } // setCountry()
+    } // setCountrytypeid()
 
     /**
      * Set the value of [state] column.
@@ -592,44 +526,44 @@ abstract class Address implements ActiveRecordInterface
     } // setState()
 
     /**
-     * Set the value of [city] column.
+     * Set the value of [locality] column.
      *
      * @param string $v new value
      * @return $this|\Address The current object (for fluent API support)
      */
-    public function setCity($v)
+    public function setLocality($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->city !== $v) {
-            $this->city = $v;
-            $this->modifiedColumns[AddressTableMap::COL_CITY] = true;
+        if ($this->locality !== $v) {
+            $this->locality = $v;
+            $this->modifiedColumns[AddressTableMap::COL_LOCALITY] = true;
         }
 
         return $this;
-    } // setCity()
+    } // setLocality()
 
     /**
-     * Set the value of [zip] column.
+     * Set the value of [zipcode] column.
      *
-     * @param int $v new value
+     * @param string $v new value
      * @return $this|\Address The current object (for fluent API support)
      */
-    public function setZip($v)
+    public function setZipcode($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
-        if ($this->zip !== $v) {
-            $this->zip = $v;
-            $this->modifiedColumns[AddressTableMap::COL_ZIP] = true;
+        if ($this->zipcode !== $v) {
+            $this->zipcode = $v;
+            $this->modifiedColumns[AddressTableMap::COL_ZIPCODE] = true;
         }
 
         return $this;
-    } // setZip()
+    } // setZipcode()
 
     /**
      * Set the value of [streetname] column.
@@ -652,44 +586,44 @@ abstract class Address implements ActiveRecordInterface
     } // setStreetname()
 
     /**
-     * Set the value of [buildingnumber] column.
+     * Set the value of [buildingindentifier] column.
      *
-     * @param int $v new value
+     * @param string $v new value
      * @return $this|\Address The current object (for fluent API support)
      */
-    public function setBuildingnumber($v)
+    public function setBuildingindentifier($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
-        if ($this->buildingnumber !== $v) {
-            $this->buildingnumber = $v;
-            $this->modifiedColumns[AddressTableMap::COL_BUILDINGNUMBER] = true;
+        if ($this->buildingindentifier !== $v) {
+            $this->buildingindentifier = $v;
+            $this->modifiedColumns[AddressTableMap::COL_BUILDINGINDENTIFIER] = true;
         }
 
         return $this;
-    } // setBuildingnumber()
+    } // setBuildingindentifier()
 
     /**
-     * Set the value of [apartmentid] column.
+     * Set the value of [apartmentidentifier] column.
      *
-     * @param int $v new value
+     * @param string $v new value
      * @return $this|\Address The current object (for fluent API support)
      */
-    public function setApartmentid($v)
+    public function setApartmentidentifier($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
-        if ($this->apartmentid !== $v) {
-            $this->apartmentid = $v;
-            $this->modifiedColumns[AddressTableMap::COL_APARTMENTID] = true;
+        if ($this->apartmentidentifier !== $v) {
+            $this->apartmentidentifier = $v;
+            $this->modifiedColumns[AddressTableMap::COL_APARTMENTIDENTIFIER] = true;
         }
 
         return $this;
-    } // setApartmentid()
+    } // setApartmentidentifier()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -730,35 +664,29 @@ abstract class Address implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : AddressTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : AddressTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00') {
-                $col = null;
-            }
-            $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : AddressTableMap::translateFieldName('Continenttypeid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->continenttypeid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : AddressTableMap::translateFieldName('Continent', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->continent = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : AddressTableMap::translateFieldName('Countrytypeid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->countrytypeid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : AddressTableMap::translateFieldName('Country', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->country = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : AddressTableMap::translateFieldName('State', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : AddressTableMap::translateFieldName('State', TableMap::TYPE_PHPNAME, $indexType)];
             $this->state = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : AddressTableMap::translateFieldName('City', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->city = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : AddressTableMap::translateFieldName('Locality', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->locality = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : AddressTableMap::translateFieldName('Zip', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->zip = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : AddressTableMap::translateFieldName('Zipcode', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->zipcode = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : AddressTableMap::translateFieldName('Streetname', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : AddressTableMap::translateFieldName('Streetname', TableMap::TYPE_PHPNAME, $indexType)];
             $this->streetname = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : AddressTableMap::translateFieldName('Buildingnumber', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->buildingnumber = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : AddressTableMap::translateFieldName('Buildingindentifier', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->buildingindentifier = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : AddressTableMap::translateFieldName('Apartmentid', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->apartmentid = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : AddressTableMap::translateFieldName('Apartmentidentifier', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->apartmentidentifier = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -767,7 +695,7 @@ abstract class Address implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 10; // 10 = AddressTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = AddressTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Address'), 0, $e);
@@ -827,8 +755,6 @@ abstract class Address implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
-
-            $this->collProperties = null;
 
         } // if (deep)
     }
@@ -944,23 +870,6 @@ abstract class Address implements ActiveRecordInterface
                 $this->resetModified();
             }
 
-            if ($this->propertiesScheduledForDeletion !== null) {
-                if (!$this->propertiesScheduledForDeletion->isEmpty()) {
-                    \PropertyQuery::create()
-                        ->filterByPrimaryKeys($this->propertiesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->propertiesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collProperties !== null) {
-                foreach ($this->collProperties as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
             $this->alreadyInSave = false;
 
         }
@@ -990,32 +899,29 @@ abstract class Address implements ActiveRecordInterface
         if ($this->isColumnModified(AddressTableMap::COL_ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(AddressTableMap::COL_TIMESTAMP)) {
-            $modifiedColumns[':p' . $index++]  = 'Timestamp';
+        if ($this->isColumnModified(AddressTableMap::COL_CONTINENTTYPEID)) {
+            $modifiedColumns[':p' . $index++]  = 'continentTypeID';
         }
-        if ($this->isColumnModified(AddressTableMap::COL_CONTINENT)) {
-            $modifiedColumns[':p' . $index++]  = 'Continent';
-        }
-        if ($this->isColumnModified(AddressTableMap::COL_COUNTRY)) {
-            $modifiedColumns[':p' . $index++]  = 'Country';
+        if ($this->isColumnModified(AddressTableMap::COL_COUNTRYTYPEID)) {
+            $modifiedColumns[':p' . $index++]  = 'countryTypeID';
         }
         if ($this->isColumnModified(AddressTableMap::COL_STATE)) {
-            $modifiedColumns[':p' . $index++]  = 'State';
+            $modifiedColumns[':p' . $index++]  = 'state';
         }
-        if ($this->isColumnModified(AddressTableMap::COL_CITY)) {
-            $modifiedColumns[':p' . $index++]  = 'City';
+        if ($this->isColumnModified(AddressTableMap::COL_LOCALITY)) {
+            $modifiedColumns[':p' . $index++]  = 'locality';
         }
-        if ($this->isColumnModified(AddressTableMap::COL_ZIP)) {
-            $modifiedColumns[':p' . $index++]  = 'Zip';
+        if ($this->isColumnModified(AddressTableMap::COL_ZIPCODE)) {
+            $modifiedColumns[':p' . $index++]  = 'zipCode';
         }
         if ($this->isColumnModified(AddressTableMap::COL_STREETNAME)) {
-            $modifiedColumns[':p' . $index++]  = 'StreetName';
+            $modifiedColumns[':p' . $index++]  = 'streetName';
         }
-        if ($this->isColumnModified(AddressTableMap::COL_BUILDINGNUMBER)) {
-            $modifiedColumns[':p' . $index++]  = 'BuildingNumber';
+        if ($this->isColumnModified(AddressTableMap::COL_BUILDINGINDENTIFIER)) {
+            $modifiedColumns[':p' . $index++]  = 'buildingIndentifier';
         }
-        if ($this->isColumnModified(AddressTableMap::COL_APARTMENTID)) {
-            $modifiedColumns[':p' . $index++]  = 'ApartmentID';
+        if ($this->isColumnModified(AddressTableMap::COL_APARTMENTIDENTIFIER)) {
+            $modifiedColumns[':p' . $index++]  = 'apartmentIdentifier';
         }
 
         $sql = sprintf(
@@ -1031,32 +937,29 @@ abstract class Address implements ActiveRecordInterface
                     case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'Timestamp':
-                        $stmt->bindValue($identifier, $this->timestamp ? $this->timestamp->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
+                    case 'continentTypeID':
+                        $stmt->bindValue($identifier, $this->continenttypeid, PDO::PARAM_INT);
                         break;
-                    case 'Continent':
-                        $stmt->bindValue($identifier, $this->continent, PDO::PARAM_STR);
+                    case 'countryTypeID':
+                        $stmt->bindValue($identifier, $this->countrytypeid, PDO::PARAM_INT);
                         break;
-                    case 'Country':
-                        $stmt->bindValue($identifier, $this->country, PDO::PARAM_STR);
-                        break;
-                    case 'State':
+                    case 'state':
                         $stmt->bindValue($identifier, $this->state, PDO::PARAM_STR);
                         break;
-                    case 'City':
-                        $stmt->bindValue($identifier, $this->city, PDO::PARAM_STR);
+                    case 'locality':
+                        $stmt->bindValue($identifier, $this->locality, PDO::PARAM_STR);
                         break;
-                    case 'Zip':
-                        $stmt->bindValue($identifier, $this->zip, PDO::PARAM_INT);
+                    case 'zipCode':
+                        $stmt->bindValue($identifier, $this->zipcode, PDO::PARAM_STR);
                         break;
-                    case 'StreetName':
+                    case 'streetName':
                         $stmt->bindValue($identifier, $this->streetname, PDO::PARAM_STR);
                         break;
-                    case 'BuildingNumber':
-                        $stmt->bindValue($identifier, $this->buildingnumber, PDO::PARAM_INT);
+                    case 'buildingIndentifier':
+                        $stmt->bindValue($identifier, $this->buildingindentifier, PDO::PARAM_STR);
                         break;
-                    case 'ApartmentID':
-                        $stmt->bindValue($identifier, $this->apartmentid, PDO::PARAM_INT);
+                    case 'apartmentIdentifier':
+                        $stmt->bindValue($identifier, $this->apartmentidentifier, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1124,31 +1027,28 @@ abstract class Address implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getTimestamp();
+                return $this->getContinenttypeid();
                 break;
             case 2:
-                return $this->getContinent();
+                return $this->getCountrytypeid();
                 break;
             case 3:
-                return $this->getCountry();
-                break;
-            case 4:
                 return $this->getState();
                 break;
+            case 4:
+                return $this->getLocality();
+                break;
             case 5:
-                return $this->getCity();
+                return $this->getZipcode();
                 break;
             case 6:
-                return $this->getZip();
-                break;
-            case 7:
                 return $this->getStreetname();
                 break;
-            case 8:
-                return $this->getBuildingnumber();
+            case 7:
+                return $this->getBuildingindentifier();
                 break;
-            case 9:
-                return $this->getApartmentid();
+            case 8:
+                return $this->getApartmentidentifier();
                 break;
             default:
                 return null;
@@ -1167,11 +1067,10 @@ abstract class Address implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
         if (isset($alreadyDumpedObjects['Address'][$this->hashCode()])) {
@@ -1181,42 +1080,20 @@ abstract class Address implements ActiveRecordInterface
         $keys = AddressTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getTimestamp(),
-            $keys[2] => $this->getContinent(),
-            $keys[3] => $this->getCountry(),
-            $keys[4] => $this->getState(),
-            $keys[5] => $this->getCity(),
-            $keys[6] => $this->getZip(),
-            $keys[7] => $this->getStreetname(),
-            $keys[8] => $this->getBuildingnumber(),
-            $keys[9] => $this->getApartmentid(),
+            $keys[1] => $this->getContinenttypeid(),
+            $keys[2] => $this->getCountrytypeid(),
+            $keys[3] => $this->getState(),
+            $keys[4] => $this->getLocality(),
+            $keys[5] => $this->getZipcode(),
+            $keys[6] => $this->getStreetname(),
+            $keys[7] => $this->getBuildingindentifier(),
+            $keys[8] => $this->getApartmentidentifier(),
         );
-        if ($result[$keys[1]] instanceof \DateTimeInterface) {
-            $result[$keys[1]] = $result[$keys[1]]->format('c');
-        }
-
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
-        if ($includeForeignObjects) {
-            if (null !== $this->collProperties) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'properties';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'properties';
-                        break;
-                    default:
-                        $key = 'Properties';
-                }
-
-                $result[$key] = $this->collProperties->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-        }
 
         return $result;
     }
@@ -1254,31 +1131,28 @@ abstract class Address implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setTimestamp($value);
+                $this->setContinenttypeid($value);
                 break;
             case 2:
-                $this->setContinent($value);
+                $this->setCountrytypeid($value);
                 break;
             case 3:
-                $this->setCountry($value);
-                break;
-            case 4:
                 $this->setState($value);
                 break;
+            case 4:
+                $this->setLocality($value);
+                break;
             case 5:
-                $this->setCity($value);
+                $this->setZipcode($value);
                 break;
             case 6:
-                $this->setZip($value);
-                break;
-            case 7:
                 $this->setStreetname($value);
                 break;
-            case 8:
-                $this->setBuildingnumber($value);
+            case 7:
+                $this->setBuildingindentifier($value);
                 break;
-            case 9:
-                $this->setApartmentid($value);
+            case 8:
+                $this->setApartmentidentifier($value);
                 break;
         } // switch()
 
@@ -1310,31 +1184,28 @@ abstract class Address implements ActiveRecordInterface
             $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setTimestamp($arr[$keys[1]]);
+            $this->setContinenttypeid($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setContinent($arr[$keys[2]]);
+            $this->setCountrytypeid($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setCountry($arr[$keys[3]]);
+            $this->setState($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setState($arr[$keys[4]]);
+            $this->setLocality($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setCity($arr[$keys[5]]);
+            $this->setZipcode($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setZip($arr[$keys[6]]);
+            $this->setStreetname($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setStreetname($arr[$keys[7]]);
+            $this->setBuildingindentifier($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setBuildingnumber($arr[$keys[8]]);
-        }
-        if (array_key_exists($keys[9], $arr)) {
-            $this->setApartmentid($arr[$keys[9]]);
+            $this->setApartmentidentifier($arr[$keys[8]]);
         }
     }
 
@@ -1380,32 +1251,29 @@ abstract class Address implements ActiveRecordInterface
         if ($this->isColumnModified(AddressTableMap::COL_ID)) {
             $criteria->add(AddressTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(AddressTableMap::COL_TIMESTAMP)) {
-            $criteria->add(AddressTableMap::COL_TIMESTAMP, $this->timestamp);
+        if ($this->isColumnModified(AddressTableMap::COL_CONTINENTTYPEID)) {
+            $criteria->add(AddressTableMap::COL_CONTINENTTYPEID, $this->continenttypeid);
         }
-        if ($this->isColumnModified(AddressTableMap::COL_CONTINENT)) {
-            $criteria->add(AddressTableMap::COL_CONTINENT, $this->continent);
-        }
-        if ($this->isColumnModified(AddressTableMap::COL_COUNTRY)) {
-            $criteria->add(AddressTableMap::COL_COUNTRY, $this->country);
+        if ($this->isColumnModified(AddressTableMap::COL_COUNTRYTYPEID)) {
+            $criteria->add(AddressTableMap::COL_COUNTRYTYPEID, $this->countrytypeid);
         }
         if ($this->isColumnModified(AddressTableMap::COL_STATE)) {
             $criteria->add(AddressTableMap::COL_STATE, $this->state);
         }
-        if ($this->isColumnModified(AddressTableMap::COL_CITY)) {
-            $criteria->add(AddressTableMap::COL_CITY, $this->city);
+        if ($this->isColumnModified(AddressTableMap::COL_LOCALITY)) {
+            $criteria->add(AddressTableMap::COL_LOCALITY, $this->locality);
         }
-        if ($this->isColumnModified(AddressTableMap::COL_ZIP)) {
-            $criteria->add(AddressTableMap::COL_ZIP, $this->zip);
+        if ($this->isColumnModified(AddressTableMap::COL_ZIPCODE)) {
+            $criteria->add(AddressTableMap::COL_ZIPCODE, $this->zipcode);
         }
         if ($this->isColumnModified(AddressTableMap::COL_STREETNAME)) {
             $criteria->add(AddressTableMap::COL_STREETNAME, $this->streetname);
         }
-        if ($this->isColumnModified(AddressTableMap::COL_BUILDINGNUMBER)) {
-            $criteria->add(AddressTableMap::COL_BUILDINGNUMBER, $this->buildingnumber);
+        if ($this->isColumnModified(AddressTableMap::COL_BUILDINGINDENTIFIER)) {
+            $criteria->add(AddressTableMap::COL_BUILDINGINDENTIFIER, $this->buildingindentifier);
         }
-        if ($this->isColumnModified(AddressTableMap::COL_APARTMENTID)) {
-            $criteria->add(AddressTableMap::COL_APARTMENTID, $this->apartmentid);
+        if ($this->isColumnModified(AddressTableMap::COL_APARTMENTIDENTIFIER)) {
+            $criteria->add(AddressTableMap::COL_APARTMENTIDENTIFIER, $this->apartmentidentifier);
         }
 
         return $criteria;
@@ -1493,29 +1361,14 @@ abstract class Address implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setTimestamp($this->getTimestamp());
-        $copyObj->setContinent($this->getContinent());
-        $copyObj->setCountry($this->getCountry());
+        $copyObj->setContinenttypeid($this->getContinenttypeid());
+        $copyObj->setCountrytypeid($this->getCountrytypeid());
         $copyObj->setState($this->getState());
-        $copyObj->setCity($this->getCity());
-        $copyObj->setZip($this->getZip());
+        $copyObj->setLocality($this->getLocality());
+        $copyObj->setZipcode($this->getZipcode());
         $copyObj->setStreetname($this->getStreetname());
-        $copyObj->setBuildingnumber($this->getBuildingnumber());
-        $copyObj->setApartmentid($this->getApartmentid());
-
-        if ($deepCopy) {
-            // important: temporarily setNew(false) because this affects the behavior of
-            // the getter/setter methods for fkey referrer objects.
-            $copyObj->setNew(false);
-
-            foreach ($this->getProperties() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addProperty($relObj->copy($deepCopy));
-                }
-            }
-
-        } // if ($deepCopy)
-
+        $copyObj->setBuildingindentifier($this->getBuildingindentifier());
+        $copyObj->setApartmentidentifier($this->getApartmentidentifier());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1544,273 +1397,6 @@ abstract class Address implements ActiveRecordInterface
         return $copyObj;
     }
 
-
-    /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
-     *
-     * @param      string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('Property' == $relationName) {
-            $this->initProperties();
-            return;
-        }
-    }
-
-    /**
-     * Clears out the collProperties collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addProperties()
-     */
-    public function clearProperties()
-    {
-        $this->collProperties = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collProperties collection loaded partially.
-     */
-    public function resetPartialProperties($v = true)
-    {
-        $this->collPropertiesPartial = $v;
-    }
-
-    /**
-     * Initializes the collProperties collection.
-     *
-     * By default this just sets the collProperties collection to an empty array (like clearcollProperties());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initProperties($overrideExisting = true)
-    {
-        if (null !== $this->collProperties && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = PropertyTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collProperties = new $collectionClassName;
-        $this->collProperties->setModel('\Property');
-    }
-
-    /**
-     * Gets an array of ChildProperty objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildAddress is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildProperty[] List of ChildProperty objects
-     * @throws PropelException
-     */
-    public function getProperties(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collPropertiesPartial && !$this->isNew();
-        if (null === $this->collProperties || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collProperties) {
-                // return empty collection
-                $this->initProperties();
-            } else {
-                $collProperties = ChildPropertyQuery::create(null, $criteria)
-                    ->filterByAddress($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collPropertiesPartial && count($collProperties)) {
-                        $this->initProperties(false);
-
-                        foreach ($collProperties as $obj) {
-                            if (false == $this->collProperties->contains($obj)) {
-                                $this->collProperties->append($obj);
-                            }
-                        }
-
-                        $this->collPropertiesPartial = true;
-                    }
-
-                    return $collProperties;
-                }
-
-                if ($partial && $this->collProperties) {
-                    foreach ($this->collProperties as $obj) {
-                        if ($obj->isNew()) {
-                            $collProperties[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collProperties = $collProperties;
-                $this->collPropertiesPartial = false;
-            }
-        }
-
-        return $this->collProperties;
-    }
-
-    /**
-     * Sets a collection of ChildProperty objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $properties A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildAddress The current object (for fluent API support)
-     */
-    public function setProperties(Collection $properties, ConnectionInterface $con = null)
-    {
-        /** @var ChildProperty[] $propertiesToDelete */
-        $propertiesToDelete = $this->getProperties(new Criteria(), $con)->diff($properties);
-
-
-        $this->propertiesScheduledForDeletion = $propertiesToDelete;
-
-        foreach ($propertiesToDelete as $propertyRemoved) {
-            $propertyRemoved->setAddress(null);
-        }
-
-        $this->collProperties = null;
-        foreach ($properties as $property) {
-            $this->addProperty($property);
-        }
-
-        $this->collProperties = $properties;
-        $this->collPropertiesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Property objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Property objects.
-     * @throws PropelException
-     */
-    public function countProperties(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collPropertiesPartial && !$this->isNew();
-        if (null === $this->collProperties || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collProperties) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getProperties());
-            }
-
-            $query = ChildPropertyQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByAddress($this)
-                ->count($con);
-        }
-
-        return count($this->collProperties);
-    }
-
-    /**
-     * Method called to associate a ChildProperty object to this object
-     * through the ChildProperty foreign key attribute.
-     *
-     * @param  ChildProperty $l ChildProperty
-     * @return $this|\Address The current object (for fluent API support)
-     */
-    public function addProperty(ChildProperty $l)
-    {
-        if ($this->collProperties === null) {
-            $this->initProperties();
-            $this->collPropertiesPartial = true;
-        }
-
-        if (!$this->collProperties->contains($l)) {
-            $this->doAddProperty($l);
-
-            if ($this->propertiesScheduledForDeletion and $this->propertiesScheduledForDeletion->contains($l)) {
-                $this->propertiesScheduledForDeletion->remove($this->propertiesScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildProperty $property The ChildProperty object to add.
-     */
-    protected function doAddProperty(ChildProperty $property)
-    {
-        $this->collProperties[]= $property;
-        $property->setAddress($this);
-    }
-
-    /**
-     * @param  ChildProperty $property The ChildProperty object to remove.
-     * @return $this|ChildAddress The current object (for fluent API support)
-     */
-    public function removeProperty(ChildProperty $property)
-    {
-        if ($this->getProperties()->contains($property)) {
-            $pos = $this->collProperties->search($property);
-            $this->collProperties->remove($pos);
-            if (null === $this->propertiesScheduledForDeletion) {
-                $this->propertiesScheduledForDeletion = clone $this->collProperties;
-                $this->propertiesScheduledForDeletion->clear();
-            }
-            $this->propertiesScheduledForDeletion[]= clone $property;
-            $property->setAddress(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Address is new, it will return
-     * an empty collection; or if this Address has previously
-     * been saved, it will retrieve related Properties from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Address.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildProperty[] List of ChildProperty objects
-     */
-    public function getPropertiesJoinUser(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildPropertyQuery::create(null, $criteria);
-        $query->joinWith('User', $joinBehavior);
-
-        return $this->getProperties($query, $con);
-    }
-
     /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
@@ -1819,15 +1405,14 @@ abstract class Address implements ActiveRecordInterface
     public function clear()
     {
         $this->id = null;
-        $this->timestamp = null;
-        $this->continent = null;
-        $this->country = null;
+        $this->continenttypeid = null;
+        $this->countrytypeid = null;
         $this->state = null;
-        $this->city = null;
-        $this->zip = null;
+        $this->locality = null;
+        $this->zipcode = null;
         $this->streetname = null;
-        $this->buildingnumber = null;
-        $this->apartmentid = null;
+        $this->buildingindentifier = null;
+        $this->apartmentidentifier = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1846,14 +1431,8 @@ abstract class Address implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collProperties) {
-                foreach ($this->collProperties as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
         } // if ($deep)
 
-        $this->collProperties = null;
     }
 
     /**

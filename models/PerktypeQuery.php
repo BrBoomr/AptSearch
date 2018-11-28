@@ -1,9 +1,9 @@
 <?php
 
-use Base\EmailQuery as BaseEmailQuery;
+use Base\PerktypeQuery as BasePerktypeQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'email' table.
+ * Skeleton subclass for performing query and update operations on the 'perktype' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\EmailQuery as BaseEmailQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class EmailQuery extends BaseEmailQuery
+class PerktypeQuery extends BasePerktypeQuery
 {
 
 }

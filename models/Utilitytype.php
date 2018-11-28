@@ -1,9 +1,9 @@
 <?php
 
-use Base\TenantQuery as BaseTenantQuery;
+use Base\Utilitytype as BaseUtilitytype;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'tenant' table.
+ * Skeleton subclass for representing a row from the 'utilitytype' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\TenantQuery as BaseTenantQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class TenantQuery extends BaseTenantQuery
+class Utilitytype extends BaseUtilitytype
 {
 
 }

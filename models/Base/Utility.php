@@ -2,10 +2,7 @@
 
 namespace Base;
 
-use \Property as ChildProperty;
-use \PropertyQuery as ChildPropertyQuery;
 use \UtilityQuery as ChildUtilityQuery;
-use \DateTime;
 use \Exception;
 use \PDO;
 use Map\UtilityTableMap;
@@ -20,7 +17,6 @@ use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
-use Propel\Runtime\Util\PropelDateTime;
 
 /**
  * Base class that represents a row from the 'utility' table.
@@ -64,18 +60,11 @@ abstract class Utility implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the id field.
+     * The value for the utilitynumberid field.
      *
      * @var        int
      */
-    protected $id;
-
-    /**
-     * The value for the timestamp field.
-     *
-     * @var        DateTime
-     */
-    protected $timestamp;
+    protected $utilitynumberid;
 
     /**
      * The value for the propertyid field.
@@ -85,37 +74,42 @@ abstract class Utility implements ActiveRecordInterface
     protected $propertyid;
 
     /**
-     * The value for the name field.
-     *
-     * @var        string
-     */
-    protected $name;
-
-    /**
-     * The value for the description field.
-     *
-     * @var        string
-     */
-    protected $description;
-
-    /**
-     * The value for the included field.
-     *
-     * @var        boolean
-     */
-    protected $included;
-
-    /**
-     * The value for the cost field.
+     * The value for the utilitytypeid field.
      *
      * @var        int
      */
-    protected $cost;
+    protected $utilitytypeid;
 
     /**
-     * @var        ChildProperty
+     * The value for the details field.
+     *
+     * @var        string
      */
-    protected $aProperty;
+    protected $details;
+
+    /**
+     * The value for the available field.
+     *
+     * Note: this column has a database default value of: true
+     * @var        boolean
+     */
+    protected $available;
+
+    /**
+     * The value for the includedinrent field.
+     *
+     * Note: this column has a database default value of: true
+     * @var        boolean
+     */
+    protected $includedinrent;
+
+    /**
+     * The value for the expectedcostpermonth field.
+     *
+     * Note: this column has a database default value of: 0.0
+     * @var        double
+     */
+    protected $expectedcostpermonth;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -126,10 +120,25 @@ abstract class Utility implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
+     */
+    public function applyDefaultValues()
+    {
+        $this->available = true;
+        $this->includedinrent = true;
+        $this->expectedcostpermonth = 0.0;
+    }
+
+    /**
      * Initializes internal state of Base\Utility object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -351,33 +360,13 @@ abstract class Utility implements ActiveRecordInterface
     }
 
     /**
-     * Get the [id] column value.
+     * Get the [utilitynumberid] column value.
      *
      * @return int
      */
-    public function getId()
+    public function getUtilitynumberid()
     {
-        return $this->id;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [timestamp] column value.
-     *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getTimestamp($format = NULL)
-    {
-        if ($format === null) {
-            return $this->timestamp;
-        } else {
-            return $this->timestamp instanceof \DateTimeInterface ? $this->timestamp->format($format) : null;
-        }
+        return $this->utilitynumberid;
     }
 
     /**
@@ -391,94 +380,94 @@ abstract class Utility implements ActiveRecordInterface
     }
 
     /**
-     * Get the [name] column value.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Get the [description] column value.
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Get the [included] column value.
-     *
-     * @return boolean
-     */
-    public function getIncluded()
-    {
-        return $this->included;
-    }
-
-    /**
-     * Get the [included] column value.
-     *
-     * @return boolean
-     */
-    public function isIncluded()
-    {
-        return $this->getIncluded();
-    }
-
-    /**
-     * Get the [cost] column value.
+     * Get the [utilitytypeid] column value.
      *
      * @return int
      */
-    public function getCost()
+    public function getUtilitytypeid()
     {
-        return $this->cost;
+        return $this->utilitytypeid;
     }
 
     /**
-     * Set the value of [id] column.
+     * Get the [details] column value.
+     *
+     * @return string
+     */
+    public function getDetails()
+    {
+        return $this->details;
+    }
+
+    /**
+     * Get the [available] column value.
+     *
+     * @return boolean
+     */
+    public function getAvailable()
+    {
+        return $this->available;
+    }
+
+    /**
+     * Get the [available] column value.
+     *
+     * @return boolean
+     */
+    public function isAvailable()
+    {
+        return $this->getAvailable();
+    }
+
+    /**
+     * Get the [includedinrent] column value.
+     *
+     * @return boolean
+     */
+    public function getIncludedinrent()
+    {
+        return $this->includedinrent;
+    }
+
+    /**
+     * Get the [includedinrent] column value.
+     *
+     * @return boolean
+     */
+    public function isIncludedinrent()
+    {
+        return $this->getIncludedinrent();
+    }
+
+    /**
+     * Get the [expectedcostpermonth] column value.
+     *
+     * @return double
+     */
+    public function getExpectedcostpermonth()
+    {
+        return $this->expectedcostpermonth;
+    }
+
+    /**
+     * Set the value of [utilitynumberid] column.
      *
      * @param int $v new value
      * @return $this|\Utility The current object (for fluent API support)
      */
-    public function setId($v)
+    public function setUtilitynumberid($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id !== $v) {
-            $this->id = $v;
-            $this->modifiedColumns[UtilityTableMap::COL_ID] = true;
+        if ($this->utilitynumberid !== $v) {
+            $this->utilitynumberid = $v;
+            $this->modifiedColumns[UtilityTableMap::COL_UTILITYNUMBERID] = true;
         }
 
         return $this;
-    } // setId()
-
-    /**
-     * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
-     *
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
-     * @return $this|\Utility The current object (for fluent API support)
-     */
-    public function setTimestamp($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->timestamp !== null || $dt !== null) {
-            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d") !== $this->timestamp->format("Y-m-d")) {
-                $this->timestamp = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[UtilityTableMap::COL_TIMESTAMP] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setTimestamp()
+    } // setUtilitynumberid()
 
     /**
      * Set the value of [propertyid] column.
@@ -497,55 +486,51 @@ abstract class Utility implements ActiveRecordInterface
             $this->modifiedColumns[UtilityTableMap::COL_PROPERTYID] = true;
         }
 
-        if ($this->aProperty !== null && $this->aProperty->getId() !== $v) {
-            $this->aProperty = null;
-        }
-
         return $this;
     } // setPropertyid()
 
     /**
-     * Set the value of [name] column.
+     * Set the value of [utilitytypeid] column.
+     *
+     * @param int $v new value
+     * @return $this|\Utility The current object (for fluent API support)
+     */
+    public function setUtilitytypeid($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->utilitytypeid !== $v) {
+            $this->utilitytypeid = $v;
+            $this->modifiedColumns[UtilityTableMap::COL_UTILITYTYPEID] = true;
+        }
+
+        return $this;
+    } // setUtilitytypeid()
+
+    /**
+     * Set the value of [details] column.
      *
      * @param string $v new value
      * @return $this|\Utility The current object (for fluent API support)
      */
-    public function setName($v)
+    public function setDetails($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->name !== $v) {
-            $this->name = $v;
-            $this->modifiedColumns[UtilityTableMap::COL_NAME] = true;
+        if ($this->details !== $v) {
+            $this->details = $v;
+            $this->modifiedColumns[UtilityTableMap::COL_DETAILS] = true;
         }
 
         return $this;
-    } // setName()
+    } // setDetails()
 
     /**
-     * Set the value of [description] column.
-     *
-     * @param string $v new value
-     * @return $this|\Utility The current object (for fluent API support)
-     */
-    public function setDescription($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->description !== $v) {
-            $this->description = $v;
-            $this->modifiedColumns[UtilityTableMap::COL_DESCRIPTION] = true;
-        }
-
-        return $this;
-    } // setDescription()
-
-    /**
-     * Sets the value of the [included] column.
+     * Sets the value of the [available] column.
      * Non-boolean arguments are converted using the following rules:
      *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
@@ -554,7 +539,7 @@ abstract class Utility implements ActiveRecordInterface
      * @param  boolean|integer|string $v The new value
      * @return $this|\Utility The current object (for fluent API support)
      */
-    public function setIncluded($v)
+    public function setAvailable($v)
     {
         if ($v !== null) {
             if (is_string($v)) {
@@ -564,33 +549,61 @@ abstract class Utility implements ActiveRecordInterface
             }
         }
 
-        if ($this->included !== $v) {
-            $this->included = $v;
-            $this->modifiedColumns[UtilityTableMap::COL_INCLUDED] = true;
+        if ($this->available !== $v) {
+            $this->available = $v;
+            $this->modifiedColumns[UtilityTableMap::COL_AVAILABLE] = true;
         }
 
         return $this;
-    } // setIncluded()
+    } // setAvailable()
 
     /**
-     * Set the value of [cost] column.
+     * Sets the value of the [includedinrent] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
      *
-     * @param int $v new value
+     * @param  boolean|integer|string $v The new value
      * @return $this|\Utility The current object (for fluent API support)
      */
-    public function setCost($v)
+    public function setIncludedinrent($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
         }
 
-        if ($this->cost !== $v) {
-            $this->cost = $v;
-            $this->modifiedColumns[UtilityTableMap::COL_COST] = true;
+        if ($this->includedinrent !== $v) {
+            $this->includedinrent = $v;
+            $this->modifiedColumns[UtilityTableMap::COL_INCLUDEDINRENT] = true;
         }
 
         return $this;
-    } // setCost()
+    } // setIncludedinrent()
+
+    /**
+     * Set the value of [expectedcostpermonth] column.
+     *
+     * @param double $v new value
+     * @return $this|\Utility The current object (for fluent API support)
+     */
+    public function setExpectedcostpermonth($v)
+    {
+        if ($v !== null) {
+            $v = (double) $v;
+        }
+
+        if ($this->expectedcostpermonth !== $v) {
+            $this->expectedcostpermonth = $v;
+            $this->modifiedColumns[UtilityTableMap::COL_EXPECTEDCOSTPERMONTH] = true;
+        }
+
+        return $this;
+    } // setExpectedcostpermonth()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -602,6 +615,18 @@ abstract class Utility implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->available !== true) {
+                return false;
+            }
+
+            if ($this->includedinrent !== true) {
+                return false;
+            }
+
+            if ($this->expectedcostpermonth !== 0.0) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
@@ -628,29 +653,26 @@ abstract class Utility implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : UtilityTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : UtilityTableMap::translateFieldName('Utilitynumberid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->utilitynumberid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : UtilityTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00') {
-                $col = null;
-            }
-            $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : UtilityTableMap::translateFieldName('Propertyid', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : UtilityTableMap::translateFieldName('Propertyid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->propertyid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : UtilityTableMap::translateFieldName('Name', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->name = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : UtilityTableMap::translateFieldName('Utilitytypeid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->utilitytypeid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : UtilityTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->description = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : UtilityTableMap::translateFieldName('Details', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->details = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : UtilityTableMap::translateFieldName('Included', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->included = (null !== $col) ? (boolean) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : UtilityTableMap::translateFieldName('Available', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->available = (null !== $col) ? (boolean) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : UtilityTableMap::translateFieldName('Cost', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->cost = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : UtilityTableMap::translateFieldName('Includedinrent', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->includedinrent = (null !== $col) ? (boolean) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : UtilityTableMap::translateFieldName('Expectedcostpermonth', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->expectedcostpermonth = (null !== $col) ? (double) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -681,9 +703,6 @@ abstract class Utility implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aProperty !== null && $this->propertyid !== $this->aProperty->getId()) {
-            $this->aProperty = null;
-        }
     } // ensureConsistency
 
     /**
@@ -723,7 +742,6 @@ abstract class Utility implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aProperty = null;
         } // if (deep)
     }
 
@@ -827,18 +845,6 @@ abstract class Utility implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aProperty !== null) {
-                if ($this->aProperty->isModified() || $this->aProperty->isNew()) {
-                    $affectedRows += $this->aProperty->save($con);
-                }
-                $this->setProperty($this->aProperty);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -870,32 +876,32 @@ abstract class Utility implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[UtilityTableMap::COL_ID] = true;
-        if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . UtilityTableMap::COL_ID . ')');
+        $this->modifiedColumns[UtilityTableMap::COL_UTILITYNUMBERID] = true;
+        if (null !== $this->utilitynumberid) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . UtilityTableMap::COL_UTILITYNUMBERID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(UtilityTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'ID';
-        }
-        if ($this->isColumnModified(UtilityTableMap::COL_TIMESTAMP)) {
-            $modifiedColumns[':p' . $index++]  = 'Timestamp';
+        if ($this->isColumnModified(UtilityTableMap::COL_UTILITYNUMBERID)) {
+            $modifiedColumns[':p' . $index++]  = 'utilityNumberID';
         }
         if ($this->isColumnModified(UtilityTableMap::COL_PROPERTYID)) {
-            $modifiedColumns[':p' . $index++]  = 'PropertyID';
+            $modifiedColumns[':p' . $index++]  = 'propertyID';
         }
-        if ($this->isColumnModified(UtilityTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'Name';
+        if ($this->isColumnModified(UtilityTableMap::COL_UTILITYTYPEID)) {
+            $modifiedColumns[':p' . $index++]  = 'utilityTypeID';
         }
-        if ($this->isColumnModified(UtilityTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'Description';
+        if ($this->isColumnModified(UtilityTableMap::COL_DETAILS)) {
+            $modifiedColumns[':p' . $index++]  = 'details';
         }
-        if ($this->isColumnModified(UtilityTableMap::COL_INCLUDED)) {
-            $modifiedColumns[':p' . $index++]  = 'Included';
+        if ($this->isColumnModified(UtilityTableMap::COL_AVAILABLE)) {
+            $modifiedColumns[':p' . $index++]  = 'available';
         }
-        if ($this->isColumnModified(UtilityTableMap::COL_COST)) {
-            $modifiedColumns[':p' . $index++]  = 'Cost';
+        if ($this->isColumnModified(UtilityTableMap::COL_INCLUDEDINRENT)) {
+            $modifiedColumns[':p' . $index++]  = 'includedInRent';
+        }
+        if ($this->isColumnModified(UtilityTableMap::COL_EXPECTEDCOSTPERMONTH)) {
+            $modifiedColumns[':p' . $index++]  = 'expectedCostPerMonth';
         }
 
         $sql = sprintf(
@@ -908,26 +914,26 @@ abstract class Utility implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':
-                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                    case 'utilityNumberID':
+                        $stmt->bindValue($identifier, $this->utilitynumberid, PDO::PARAM_INT);
                         break;
-                    case 'Timestamp':
-                        $stmt->bindValue($identifier, $this->timestamp ? $this->timestamp->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
-                        break;
-                    case 'PropertyID':
+                    case 'propertyID':
                         $stmt->bindValue($identifier, $this->propertyid, PDO::PARAM_INT);
                         break;
-                    case 'Name':
-                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
+                    case 'utilityTypeID':
+                        $stmt->bindValue($identifier, $this->utilitytypeid, PDO::PARAM_INT);
                         break;
-                    case 'Description':
-                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                    case 'details':
+                        $stmt->bindValue($identifier, $this->details, PDO::PARAM_STR);
                         break;
-                    case 'Included':
-                        $stmt->bindValue($identifier, (int) $this->included, PDO::PARAM_INT);
+                    case 'available':
+                        $stmt->bindValue($identifier, (int) $this->available, PDO::PARAM_INT);
                         break;
-                    case 'Cost':
-                        $stmt->bindValue($identifier, $this->cost, PDO::PARAM_INT);
+                    case 'includedInRent':
+                        $stmt->bindValue($identifier, (int) $this->includedinrent, PDO::PARAM_INT);
+                        break;
+                    case 'expectedCostPerMonth':
+                        $stmt->bindValue($identifier, $this->expectedcostpermonth, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -942,7 +948,7 @@ abstract class Utility implements ActiveRecordInterface
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', 0, $e);
         }
-        $this->setId($pk);
+        $this->setUtilitynumberid($pk);
 
         $this->setNew(false);
     }
@@ -992,25 +998,25 @@ abstract class Utility implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getId();
+                return $this->getUtilitynumberid();
                 break;
             case 1:
-                return $this->getTimestamp();
-                break;
-            case 2:
                 return $this->getPropertyid();
                 break;
+            case 2:
+                return $this->getUtilitytypeid();
+                break;
             case 3:
-                return $this->getName();
+                return $this->getDetails();
                 break;
             case 4:
-                return $this->getDescription();
+                return $this->getAvailable();
                 break;
             case 5:
-                return $this->getIncluded();
+                return $this->getIncludedinrent();
                 break;
             case 6:
-                return $this->getCost();
+                return $this->getExpectedcostpermonth();
                 break;
             default:
                 return null;
@@ -1029,11 +1035,10 @@ abstract class Utility implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
         if (isset($alreadyDumpedObjects['Utility'][$this->hashCode()])) {
@@ -1042,40 +1047,19 @@ abstract class Utility implements ActiveRecordInterface
         $alreadyDumpedObjects['Utility'][$this->hashCode()] = true;
         $keys = UtilityTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getId(),
-            $keys[1] => $this->getTimestamp(),
-            $keys[2] => $this->getPropertyid(),
-            $keys[3] => $this->getName(),
-            $keys[4] => $this->getDescription(),
-            $keys[5] => $this->getIncluded(),
-            $keys[6] => $this->getCost(),
+            $keys[0] => $this->getUtilitynumberid(),
+            $keys[1] => $this->getPropertyid(),
+            $keys[2] => $this->getUtilitytypeid(),
+            $keys[3] => $this->getDetails(),
+            $keys[4] => $this->getAvailable(),
+            $keys[5] => $this->getIncludedinrent(),
+            $keys[6] => $this->getExpectedcostpermonth(),
         );
-        if ($result[$keys[1]] instanceof \DateTimeInterface) {
-            $result[$keys[1]] = $result[$keys[1]]->format('c');
-        }
-
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
-        if ($includeForeignObjects) {
-            if (null !== $this->aProperty) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'property';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'property';
-                        break;
-                    default:
-                        $key = 'Property';
-                }
-
-                $result[$key] = $this->aProperty->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-        }
 
         return $result;
     }
@@ -1110,25 +1094,25 @@ abstract class Utility implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setId($value);
+                $this->setUtilitynumberid($value);
                 break;
             case 1:
-                $this->setTimestamp($value);
-                break;
-            case 2:
                 $this->setPropertyid($value);
                 break;
+            case 2:
+                $this->setUtilitytypeid($value);
+                break;
             case 3:
-                $this->setName($value);
+                $this->setDetails($value);
                 break;
             case 4:
-                $this->setDescription($value);
+                $this->setAvailable($value);
                 break;
             case 5:
-                $this->setIncluded($value);
+                $this->setIncludedinrent($value);
                 break;
             case 6:
-                $this->setCost($value);
+                $this->setExpectedcostpermonth($value);
                 break;
         } // switch()
 
@@ -1157,25 +1141,25 @@ abstract class Utility implements ActiveRecordInterface
         $keys = UtilityTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setId($arr[$keys[0]]);
+            $this->setUtilitynumberid($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setTimestamp($arr[$keys[1]]);
+            $this->setPropertyid($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setPropertyid($arr[$keys[2]]);
+            $this->setUtilitytypeid($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setName($arr[$keys[3]]);
+            $this->setDetails($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setDescription($arr[$keys[4]]);
+            $this->setAvailable($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setIncluded($arr[$keys[5]]);
+            $this->setIncludedinrent($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setCost($arr[$keys[6]]);
+            $this->setExpectedcostpermonth($arr[$keys[6]]);
         }
     }
 
@@ -1218,26 +1202,26 @@ abstract class Utility implements ActiveRecordInterface
     {
         $criteria = new Criteria(UtilityTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(UtilityTableMap::COL_ID)) {
-            $criteria->add(UtilityTableMap::COL_ID, $this->id);
-        }
-        if ($this->isColumnModified(UtilityTableMap::COL_TIMESTAMP)) {
-            $criteria->add(UtilityTableMap::COL_TIMESTAMP, $this->timestamp);
+        if ($this->isColumnModified(UtilityTableMap::COL_UTILITYNUMBERID)) {
+            $criteria->add(UtilityTableMap::COL_UTILITYNUMBERID, $this->utilitynumberid);
         }
         if ($this->isColumnModified(UtilityTableMap::COL_PROPERTYID)) {
             $criteria->add(UtilityTableMap::COL_PROPERTYID, $this->propertyid);
         }
-        if ($this->isColumnModified(UtilityTableMap::COL_NAME)) {
-            $criteria->add(UtilityTableMap::COL_NAME, $this->name);
+        if ($this->isColumnModified(UtilityTableMap::COL_UTILITYTYPEID)) {
+            $criteria->add(UtilityTableMap::COL_UTILITYTYPEID, $this->utilitytypeid);
         }
-        if ($this->isColumnModified(UtilityTableMap::COL_DESCRIPTION)) {
-            $criteria->add(UtilityTableMap::COL_DESCRIPTION, $this->description);
+        if ($this->isColumnModified(UtilityTableMap::COL_DETAILS)) {
+            $criteria->add(UtilityTableMap::COL_DETAILS, $this->details);
         }
-        if ($this->isColumnModified(UtilityTableMap::COL_INCLUDED)) {
-            $criteria->add(UtilityTableMap::COL_INCLUDED, $this->included);
+        if ($this->isColumnModified(UtilityTableMap::COL_AVAILABLE)) {
+            $criteria->add(UtilityTableMap::COL_AVAILABLE, $this->available);
         }
-        if ($this->isColumnModified(UtilityTableMap::COL_COST)) {
-            $criteria->add(UtilityTableMap::COL_COST, $this->cost);
+        if ($this->isColumnModified(UtilityTableMap::COL_INCLUDEDINRENT)) {
+            $criteria->add(UtilityTableMap::COL_INCLUDEDINRENT, $this->includedinrent);
+        }
+        if ($this->isColumnModified(UtilityTableMap::COL_EXPECTEDCOSTPERMONTH)) {
+            $criteria->add(UtilityTableMap::COL_EXPECTEDCOSTPERMONTH, $this->expectedcostpermonth);
         }
 
         return $criteria;
@@ -1256,7 +1240,7 @@ abstract class Utility implements ActiveRecordInterface
     public function buildPkeyCriteria()
     {
         $criteria = ChildUtilityQuery::create();
-        $criteria->add(UtilityTableMap::COL_ID, $this->id);
+        $criteria->add(UtilityTableMap::COL_UTILITYNUMBERID, $this->utilitynumberid);
 
         return $criteria;
     }
@@ -1269,7 +1253,7 @@ abstract class Utility implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getId();
+        $validPk = null !== $this->getUtilitynumberid();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1289,18 +1273,18 @@ abstract class Utility implements ActiveRecordInterface
      */
     public function getPrimaryKey()
     {
-        return $this->getId();
+        return $this->getUtilitynumberid();
     }
 
     /**
-     * Generic method to set the primary key (id column).
+     * Generic method to set the primary key (utilitynumberid column).
      *
      * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setId($key);
+        $this->setUtilitynumberid($key);
     }
 
     /**
@@ -1309,7 +1293,7 @@ abstract class Utility implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getId();
+        return null === $this->getUtilitynumberid();
     }
 
     /**
@@ -1325,15 +1309,15 @@ abstract class Utility implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setTimestamp($this->getTimestamp());
         $copyObj->setPropertyid($this->getPropertyid());
-        $copyObj->setName($this->getName());
-        $copyObj->setDescription($this->getDescription());
-        $copyObj->setIncluded($this->getIncluded());
-        $copyObj->setCost($this->getCost());
+        $copyObj->setUtilitytypeid($this->getUtilitytypeid());
+        $copyObj->setDetails($this->getDetails());
+        $copyObj->setAvailable($this->getAvailable());
+        $copyObj->setIncludedinrent($this->getIncludedinrent());
+        $copyObj->setExpectedcostpermonth($this->getExpectedcostpermonth());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setUtilitynumberid(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1360,75 +1344,22 @@ abstract class Utility implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildProperty object.
-     *
-     * @param  ChildProperty $v
-     * @return $this|\Utility The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setProperty(ChildProperty $v = null)
-    {
-        if ($v === null) {
-            $this->setPropertyid(NULL);
-        } else {
-            $this->setPropertyid($v->getId());
-        }
-
-        $this->aProperty = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildProperty object, it will not be re-added.
-        if ($v !== null) {
-            $v->addUtility($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildProperty object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildProperty The associated ChildProperty object.
-     * @throws PropelException
-     */
-    public function getProperty(ConnectionInterface $con = null)
-    {
-        if ($this->aProperty === null && ($this->propertyid != 0)) {
-            $this->aProperty = ChildPropertyQuery::create()->findPk($this->propertyid, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aProperty->addUtilities($this);
-             */
-        }
-
-        return $this->aProperty;
-    }
-
-    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
-        if (null !== $this->aProperty) {
-            $this->aProperty->removeUtility($this);
-        }
-        $this->id = null;
-        $this->timestamp = null;
+        $this->utilitynumberid = null;
         $this->propertyid = null;
-        $this->name = null;
-        $this->description = null;
-        $this->included = null;
-        $this->cost = null;
+        $this->utilitytypeid = null;
+        $this->details = null;
+        $this->available = null;
+        $this->includedinrent = null;
+        $this->expectedcostpermonth = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1447,7 +1378,6 @@ abstract class Utility implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aProperty = null;
     }
 
     /**

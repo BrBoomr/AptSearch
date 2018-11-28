@@ -1,9 +1,9 @@
 <?php
 
-use Base\FeeQuery as BaseFeeQuery;
+use Base\AmenitytypeQuery as BaseAmenitytypeQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'fee' table.
+ * Skeleton subclass for performing query and update operations on the 'amenitytype' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\FeeQuery as BaseFeeQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class FeeQuery extends BaseFeeQuery
+class AmenitytypeQuery extends BaseAmenitytypeQuery
 {
 
 }

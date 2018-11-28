@@ -1,9 +1,9 @@
 <?php
 
-use Base\Owed as BaseOwed;
+use Base\Perk as BasePerk;
 
 /**
- * Skeleton subclass for representing a row from the 'owed' table.
+ * Skeleton subclass for representing a row from the 'perk' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\Owed as BaseOwed;
  * long as it does not already exist in the output directory.
  *
  */
-class Owed extends BaseOwed
+class Perk extends BasePerk
 {
 
 }

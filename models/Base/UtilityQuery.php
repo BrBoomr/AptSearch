@@ -10,7 +10,6 @@ use Map\UtilityTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -20,21 +19,21 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  *
- * @method     ChildUtilityQuery orderById($order = Criteria::ASC) Order by the ID column
- * @method     ChildUtilityQuery orderByTimestamp($order = Criteria::ASC) Order by the Timestamp column
- * @method     ChildUtilityQuery orderByPropertyid($order = Criteria::ASC) Order by the PropertyID column
- * @method     ChildUtilityQuery orderByName($order = Criteria::ASC) Order by the Name column
- * @method     ChildUtilityQuery orderByDescription($order = Criteria::ASC) Order by the Description column
- * @method     ChildUtilityQuery orderByIncluded($order = Criteria::ASC) Order by the Included column
- * @method     ChildUtilityQuery orderByCost($order = Criteria::ASC) Order by the Cost column
+ * @method     ChildUtilityQuery orderByUtilitynumberid($order = Criteria::ASC) Order by the utilityNumberID column
+ * @method     ChildUtilityQuery orderByPropertyid($order = Criteria::ASC) Order by the propertyID column
+ * @method     ChildUtilityQuery orderByUtilitytypeid($order = Criteria::ASC) Order by the utilityTypeID column
+ * @method     ChildUtilityQuery orderByDetails($order = Criteria::ASC) Order by the details column
+ * @method     ChildUtilityQuery orderByAvailable($order = Criteria::ASC) Order by the available column
+ * @method     ChildUtilityQuery orderByIncludedinrent($order = Criteria::ASC) Order by the includedInRent column
+ * @method     ChildUtilityQuery orderByExpectedcostpermonth($order = Criteria::ASC) Order by the expectedCostPerMonth column
  *
- * @method     ChildUtilityQuery groupById() Group by the ID column
- * @method     ChildUtilityQuery groupByTimestamp() Group by the Timestamp column
- * @method     ChildUtilityQuery groupByPropertyid() Group by the PropertyID column
- * @method     ChildUtilityQuery groupByName() Group by the Name column
- * @method     ChildUtilityQuery groupByDescription() Group by the Description column
- * @method     ChildUtilityQuery groupByIncluded() Group by the Included column
- * @method     ChildUtilityQuery groupByCost() Group by the Cost column
+ * @method     ChildUtilityQuery groupByUtilitynumberid() Group by the utilityNumberID column
+ * @method     ChildUtilityQuery groupByPropertyid() Group by the propertyID column
+ * @method     ChildUtilityQuery groupByUtilitytypeid() Group by the utilityTypeID column
+ * @method     ChildUtilityQuery groupByDetails() Group by the details column
+ * @method     ChildUtilityQuery groupByAvailable() Group by the available column
+ * @method     ChildUtilityQuery groupByIncludedinrent() Group by the includedInRent column
+ * @method     ChildUtilityQuery groupByExpectedcostpermonth() Group by the expectedCostPerMonth column
  *
  * @method     ChildUtilityQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildUtilityQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -44,48 +43,36 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUtilityQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildUtilityQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildUtilityQuery leftJoinProperty($relationAlias = null) Adds a LEFT JOIN clause to the query using the Property relation
- * @method     ChildUtilityQuery rightJoinProperty($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Property relation
- * @method     ChildUtilityQuery innerJoinProperty($relationAlias = null) Adds a INNER JOIN clause to the query using the Property relation
- *
- * @method     ChildUtilityQuery joinWithProperty($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Property relation
- *
- * @method     ChildUtilityQuery leftJoinWithProperty() Adds a LEFT JOIN clause and with to the query using the Property relation
- * @method     ChildUtilityQuery rightJoinWithProperty() Adds a RIGHT JOIN clause and with to the query using the Property relation
- * @method     ChildUtilityQuery innerJoinWithProperty() Adds a INNER JOIN clause and with to the query using the Property relation
- *
- * @method     \PropertyQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
- *
  * @method     ChildUtility findOne(ConnectionInterface $con = null) Return the first ChildUtility matching the query
  * @method     ChildUtility findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUtility matching the query, or a new ChildUtility object populated from the query conditions when no match is found
  *
- * @method     ChildUtility findOneById(int $ID) Return the first ChildUtility filtered by the ID column
- * @method     ChildUtility findOneByTimestamp(string $Timestamp) Return the first ChildUtility filtered by the Timestamp column
- * @method     ChildUtility findOneByPropertyid(int $PropertyID) Return the first ChildUtility filtered by the PropertyID column
- * @method     ChildUtility findOneByName(string $Name) Return the first ChildUtility filtered by the Name column
- * @method     ChildUtility findOneByDescription(string $Description) Return the first ChildUtility filtered by the Description column
- * @method     ChildUtility findOneByIncluded(boolean $Included) Return the first ChildUtility filtered by the Included column
- * @method     ChildUtility findOneByCost(int $Cost) Return the first ChildUtility filtered by the Cost column *
+ * @method     ChildUtility findOneByUtilitynumberid(int $utilityNumberID) Return the first ChildUtility filtered by the utilityNumberID column
+ * @method     ChildUtility findOneByPropertyid(int $propertyID) Return the first ChildUtility filtered by the propertyID column
+ * @method     ChildUtility findOneByUtilitytypeid(int $utilityTypeID) Return the first ChildUtility filtered by the utilityTypeID column
+ * @method     ChildUtility findOneByDetails(string $details) Return the first ChildUtility filtered by the details column
+ * @method     ChildUtility findOneByAvailable(boolean $available) Return the first ChildUtility filtered by the available column
+ * @method     ChildUtility findOneByIncludedinrent(boolean $includedInRent) Return the first ChildUtility filtered by the includedInRent column
+ * @method     ChildUtility findOneByExpectedcostpermonth(double $expectedCostPerMonth) Return the first ChildUtility filtered by the expectedCostPerMonth column *
 
  * @method     ChildUtility requirePk($key, ConnectionInterface $con = null) Return the ChildUtility by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUtility requireOne(ConnectionInterface $con = null) Return the first ChildUtility matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildUtility requireOneById(int $ID) Return the first ChildUtility filtered by the ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUtility requireOneByTimestamp(string $Timestamp) Return the first ChildUtility filtered by the Timestamp column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUtility requireOneByPropertyid(int $PropertyID) Return the first ChildUtility filtered by the PropertyID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUtility requireOneByName(string $Name) Return the first ChildUtility filtered by the Name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUtility requireOneByDescription(string $Description) Return the first ChildUtility filtered by the Description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUtility requireOneByIncluded(boolean $Included) Return the first ChildUtility filtered by the Included column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUtility requireOneByCost(int $Cost) Return the first ChildUtility filtered by the Cost column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUtility requireOneByUtilitynumberid(int $utilityNumberID) Return the first ChildUtility filtered by the utilityNumberID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUtility requireOneByPropertyid(int $propertyID) Return the first ChildUtility filtered by the propertyID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUtility requireOneByUtilitytypeid(int $utilityTypeID) Return the first ChildUtility filtered by the utilityTypeID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUtility requireOneByDetails(string $details) Return the first ChildUtility filtered by the details column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUtility requireOneByAvailable(boolean $available) Return the first ChildUtility filtered by the available column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUtility requireOneByIncludedinrent(boolean $includedInRent) Return the first ChildUtility filtered by the includedInRent column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUtility requireOneByExpectedcostpermonth(double $expectedCostPerMonth) Return the first ChildUtility filtered by the expectedCostPerMonth column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildUtility[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildUtility objects based on current ModelCriteria
- * @method     ChildUtility[]|ObjectCollection findById(int $ID) Return ChildUtility objects filtered by the ID column
- * @method     ChildUtility[]|ObjectCollection findByTimestamp(string $Timestamp) Return ChildUtility objects filtered by the Timestamp column
- * @method     ChildUtility[]|ObjectCollection findByPropertyid(int $PropertyID) Return ChildUtility objects filtered by the PropertyID column
- * @method     ChildUtility[]|ObjectCollection findByName(string $Name) Return ChildUtility objects filtered by the Name column
- * @method     ChildUtility[]|ObjectCollection findByDescription(string $Description) Return ChildUtility objects filtered by the Description column
- * @method     ChildUtility[]|ObjectCollection findByIncluded(boolean $Included) Return ChildUtility objects filtered by the Included column
- * @method     ChildUtility[]|ObjectCollection findByCost(int $Cost) Return ChildUtility objects filtered by the Cost column
+ * @method     ChildUtility[]|ObjectCollection findByUtilitynumberid(int $utilityNumberID) Return ChildUtility objects filtered by the utilityNumberID column
+ * @method     ChildUtility[]|ObjectCollection findByPropertyid(int $propertyID) Return ChildUtility objects filtered by the propertyID column
+ * @method     ChildUtility[]|ObjectCollection findByUtilitytypeid(int $utilityTypeID) Return ChildUtility objects filtered by the utilityTypeID column
+ * @method     ChildUtility[]|ObjectCollection findByDetails(string $details) Return ChildUtility objects filtered by the details column
+ * @method     ChildUtility[]|ObjectCollection findByAvailable(boolean $available) Return ChildUtility objects filtered by the available column
+ * @method     ChildUtility[]|ObjectCollection findByIncludedinrent(boolean $includedInRent) Return ChildUtility objects filtered by the includedInRent column
+ * @method     ChildUtility[]|ObjectCollection findByExpectedcostpermonth(double $expectedCostPerMonth) Return ChildUtility objects filtered by the expectedCostPerMonth column
  * @method     ChildUtility[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -184,7 +171,7 @@ abstract class UtilityQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT ID, Timestamp, PropertyID, Name, Description, Included, Cost FROM utility WHERE ID = :p0';
+        $sql = 'SELECT utilityNumberID, propertyID, utilityTypeID, details, available, includedInRent, expectedCostPerMonth FROM utility WHERE utilityNumberID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -258,7 +245,7 @@ abstract class UtilityQuery extends ModelCriteria
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(UtilityTableMap::COL_ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(UtilityTableMap::COL_UTILITYNUMBERID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -271,20 +258,20 @@ abstract class UtilityQuery extends ModelCriteria
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(UtilityTableMap::COL_ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(UtilityTableMap::COL_UTILITYNUMBERID, $keys, Criteria::IN);
     }
 
     /**
-     * Filter the query on the ID column
+     * Filter the query on the utilityNumberID column
      *
      * Example usage:
      * <code>
-     * $query->filterById(1234); // WHERE ID = 1234
-     * $query->filterById(array(12, 34)); // WHERE ID IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE ID > 12
+     * $query->filterByUtilitynumberid(1234); // WHERE utilityNumberID = 1234
+     * $query->filterByUtilitynumberid(array(12, 34)); // WHERE utilityNumberID IN (12, 34)
+     * $query->filterByUtilitynumberid(array('min' => 12)); // WHERE utilityNumberID > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param     mixed $utilitynumberid The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -292,16 +279,16 @@ abstract class UtilityQuery extends ModelCriteria
      *
      * @return $this|ChildUtilityQuery The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterByUtilitynumberid($utilitynumberid = null, $comparison = null)
     {
-        if (is_array($id)) {
+        if (is_array($utilitynumberid)) {
             $useMinMax = false;
-            if (isset($id['min'])) {
-                $this->addUsingAlias(UtilityTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
+            if (isset($utilitynumberid['min'])) {
+                $this->addUsingAlias(UtilityTableMap::COL_UTILITYNUMBERID, $utilitynumberid['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($id['max'])) {
-                $this->addUsingAlias(UtilityTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
+            if (isset($utilitynumberid['max'])) {
+                $this->addUsingAlias(UtilityTableMap::COL_UTILITYNUMBERID, $utilitynumberid['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -312,63 +299,18 @@ abstract class UtilityQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UtilityTableMap::COL_ID, $id, $comparison);
+        return $this->addUsingAlias(UtilityTableMap::COL_UTILITYNUMBERID, $utilitynumberid, $comparison);
     }
 
     /**
-     * Filter the query on the Timestamp column
+     * Filter the query on the propertyID column
      *
      * Example usage:
      * <code>
-     * $query->filterByTimestamp('2011-03-14'); // WHERE Timestamp = '2011-03-14'
-     * $query->filterByTimestamp('now'); // WHERE Timestamp = '2011-03-14'
-     * $query->filterByTimestamp(array('max' => 'yesterday')); // WHERE Timestamp > '2011-03-13'
+     * $query->filterByPropertyid(1234); // WHERE propertyID = 1234
+     * $query->filterByPropertyid(array(12, 34)); // WHERE propertyID IN (12, 34)
+     * $query->filterByPropertyid(array('min' => 12)); // WHERE propertyID > 12
      * </code>
-     *
-     * @param     mixed $timestamp The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildUtilityQuery The current query, for fluid interface
-     */
-    public function filterByTimestamp($timestamp = null, $comparison = null)
-    {
-        if (is_array($timestamp)) {
-            $useMinMax = false;
-            if (isset($timestamp['min'])) {
-                $this->addUsingAlias(UtilityTableMap::COL_TIMESTAMP, $timestamp['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($timestamp['max'])) {
-                $this->addUsingAlias(UtilityTableMap::COL_TIMESTAMP, $timestamp['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(UtilityTableMap::COL_TIMESTAMP, $timestamp, $comparison);
-    }
-
-    /**
-     * Filter the query on the PropertyID column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPropertyid(1234); // WHERE PropertyID = 1234
-     * $query->filterByPropertyid(array(12, 34)); // WHERE PropertyID IN (12, 34)
-     * $query->filterByPropertyid(array('min' => 12)); // WHERE PropertyID > 12
-     * </code>
-     *
-     * @see       filterByProperty()
      *
      * @param     mixed $propertyid The value to use as filter.
      *              Use scalar values for equality.
@@ -402,93 +344,16 @@ abstract class UtilityQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the Name column
+     * Filter the query on the utilityTypeID column
      *
      * Example usage:
      * <code>
-     * $query->filterByName('fooValue');   // WHERE Name = 'fooValue'
-     * $query->filterByName('%fooValue%', Criteria::LIKE); // WHERE Name LIKE '%fooValue%'
+     * $query->filterByUtilitytypeid(1234); // WHERE utilityTypeID = 1234
+     * $query->filterByUtilitytypeid(array(12, 34)); // WHERE utilityTypeID IN (12, 34)
+     * $query->filterByUtilitytypeid(array('min' => 12)); // WHERE utilityTypeID > 12
      * </code>
      *
-     * @param     string $name The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildUtilityQuery The current query, for fluid interface
-     */
-    public function filterByName($name = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($name)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(UtilityTableMap::COL_NAME, $name, $comparison);
-    }
-
-    /**
-     * Filter the query on the Description column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByDescription('fooValue');   // WHERE Description = 'fooValue'
-     * $query->filterByDescription('%fooValue%', Criteria::LIKE); // WHERE Description LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $description The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildUtilityQuery The current query, for fluid interface
-     */
-    public function filterByDescription($description = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($description)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(UtilityTableMap::COL_DESCRIPTION, $description, $comparison);
-    }
-
-    /**
-     * Filter the query on the Included column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByIncluded(true); // WHERE Included = true
-     * $query->filterByIncluded('yes'); // WHERE Included = true
-     * </code>
-     *
-     * @param     boolean|string $included The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildUtilityQuery The current query, for fluid interface
-     */
-    public function filterByIncluded($included = null, $comparison = null)
-    {
-        if (is_string($included)) {
-            $included = in_array(strtolower($included), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(UtilityTableMap::COL_INCLUDED, $included, $comparison);
-    }
-
-    /**
-     * Filter the query on the Cost column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCost(1234); // WHERE Cost = 1234
-     * $query->filterByCost(array(12, 34)); // WHERE Cost IN (12, 34)
-     * $query->filterByCost(array('min' => 12)); // WHERE Cost > 12
-     * </code>
-     *
-     * @param     mixed $cost The value to use as filter.
+     * @param     mixed $utilitytypeid The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -496,16 +361,16 @@ abstract class UtilityQuery extends ModelCriteria
      *
      * @return $this|ChildUtilityQuery The current query, for fluid interface
      */
-    public function filterByCost($cost = null, $comparison = null)
+    public function filterByUtilitytypeid($utilitytypeid = null, $comparison = null)
     {
-        if (is_array($cost)) {
+        if (is_array($utilitytypeid)) {
             $useMinMax = false;
-            if (isset($cost['min'])) {
-                $this->addUsingAlias(UtilityTableMap::COL_COST, $cost['min'], Criteria::GREATER_EQUAL);
+            if (isset($utilitytypeid['min'])) {
+                $this->addUsingAlias(UtilityTableMap::COL_UTILITYTYPEID, $utilitytypeid['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($cost['max'])) {
-                $this->addUsingAlias(UtilityTableMap::COL_COST, $cost['max'], Criteria::LESS_EQUAL);
+            if (isset($utilitytypeid['max'])) {
+                $this->addUsingAlias(UtilityTableMap::COL_UTILITYTYPEID, $utilitytypeid['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -516,84 +381,127 @@ abstract class UtilityQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UtilityTableMap::COL_COST, $cost, $comparison);
+        return $this->addUsingAlias(UtilityTableMap::COL_UTILITYTYPEID, $utilitytypeid, $comparison);
     }
 
     /**
-     * Filter the query by a related \Property object
+     * Filter the query on the details column
      *
-     * @param \Property|ObjectCollection $property The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * Example usage:
+     * <code>
+     * $query->filterByDetails('fooValue');   // WHERE details = 'fooValue'
+     * $query->filterByDetails('%fooValue%', Criteria::LIKE); // WHERE details LIKE '%fooValue%'
+     * </code>
      *
-     * @throws \Propel\Runtime\Exception\PropelException
-     *
-     * @return ChildUtilityQuery The current query, for fluid interface
-     */
-    public function filterByProperty($property, $comparison = null)
-    {
-        if ($property instanceof \Property) {
-            return $this
-                ->addUsingAlias(UtilityTableMap::COL_PROPERTYID, $property->getId(), $comparison);
-        } elseif ($property instanceof ObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(UtilityTableMap::COL_PROPERTYID, $property->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByProperty() only accepts arguments of type \Property or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Property relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param     string $details The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildUtilityQuery The current query, for fluid interface
      */
-    public function joinProperty($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function filterByDetails($details = null, $comparison = null)
     {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Property');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
+        if (null === $comparison) {
+            if (is_array($details)) {
+                $comparison = Criteria::IN;
+            }
         }
 
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Property');
-        }
-
-        return $this;
+        return $this->addUsingAlias(UtilityTableMap::COL_DETAILS, $details, $comparison);
     }
 
     /**
-     * Use the Property relation Property object
+     * Filter the query on the available column
      *
-     * @see useQuery()
+     * Example usage:
+     * <code>
+     * $query->filterByAvailable(true); // WHERE available = true
+     * $query->filterByAvailable('yes'); // WHERE available = true
+     * </code>
      *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param     boolean|string $available The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return \PropertyQuery A secondary query class using the current class as primary query
+     * @return $this|ChildUtilityQuery The current query, for fluid interface
      */
-    public function usePropertyQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function filterByAvailable($available = null, $comparison = null)
     {
-        return $this
-            ->joinProperty($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Property', '\PropertyQuery');
+        if (is_string($available)) {
+            $available = in_array(strtolower($available), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(UtilityTableMap::COL_AVAILABLE, $available, $comparison);
+    }
+
+    /**
+     * Filter the query on the includedInRent column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByIncludedinrent(true); // WHERE includedInRent = true
+     * $query->filterByIncludedinrent('yes'); // WHERE includedInRent = true
+     * </code>
+     *
+     * @param     boolean|string $includedinrent The value to use as filter.
+     *              Non-boolean arguments are converted using the following rules:
+     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildUtilityQuery The current query, for fluid interface
+     */
+    public function filterByIncludedinrent($includedinrent = null, $comparison = null)
+    {
+        if (is_string($includedinrent)) {
+            $includedinrent = in_array(strtolower($includedinrent), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+        }
+
+        return $this->addUsingAlias(UtilityTableMap::COL_INCLUDEDINRENT, $includedinrent, $comparison);
+    }
+
+    /**
+     * Filter the query on the expectedCostPerMonth column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByExpectedcostpermonth(1234); // WHERE expectedCostPerMonth = 1234
+     * $query->filterByExpectedcostpermonth(array(12, 34)); // WHERE expectedCostPerMonth IN (12, 34)
+     * $query->filterByExpectedcostpermonth(array('min' => 12)); // WHERE expectedCostPerMonth > 12
+     * </code>
+     *
+     * @param     mixed $expectedcostpermonth The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildUtilityQuery The current query, for fluid interface
+     */
+    public function filterByExpectedcostpermonth($expectedcostpermonth = null, $comparison = null)
+    {
+        if (is_array($expectedcostpermonth)) {
+            $useMinMax = false;
+            if (isset($expectedcostpermonth['min'])) {
+                $this->addUsingAlias(UtilityTableMap::COL_EXPECTEDCOSTPERMONTH, $expectedcostpermonth['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($expectedcostpermonth['max'])) {
+                $this->addUsingAlias(UtilityTableMap::COL_EXPECTEDCOSTPERMONTH, $expectedcostpermonth['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(UtilityTableMap::COL_EXPECTEDCOSTPERMONTH, $expectedcostpermonth, $comparison);
     }
 
     /**
@@ -606,7 +514,7 @@ abstract class UtilityQuery extends ModelCriteria
     public function prune($utility = null)
     {
         if ($utility) {
-            $this->addUsingAlias(UtilityTableMap::COL_ID, $utility->getId(), Criteria::NOT_EQUAL);
+            $this->addUsingAlias(UtilityTableMap::COL_UTILITYNUMBERID, $utility->getUtilitynumberid(), Criteria::NOT_EQUAL);
         }
 
         return $this;

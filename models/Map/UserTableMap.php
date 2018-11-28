@@ -59,7 +59,7 @@ class UserTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 5;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class UserTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 5;
 
     /**
      * the column name for the ID field
@@ -77,29 +77,24 @@ class UserTableMap extends TableMap
     const COL_ID = 'user.ID';
 
     /**
-     * the column name for the Timestamp field
+     * the column name for the addDate field
      */
-    const COL_TIMESTAMP = 'user.Timestamp';
+    const COL_ADDDATE = 'user.addDate';
 
     /**
-     * the column name for the FirstName field
+     * the column name for the email field
      */
-    const COL_FIRSTNAME = 'user.FirstName';
+    const COL_EMAIL = 'user.email';
 
     /**
-     * the column name for the MiddleName field
+     * the column name for the encryptedPassword field
      */
-    const COL_MIDDLENAME = 'user.MiddleName';
+    const COL_ENCRYPTEDPASSWORD = 'user.encryptedPassword';
 
     /**
-     * the column name for the LastName field
+     * the column name for the name field
      */
-    const COL_LASTNAME = 'user.LastName';
-
-    /**
-     * the column name for the HashedPassword field
-     */
-    const COL_HASHEDPASSWORD = 'user.HashedPassword';
+    const COL_NAME = 'user.name';
 
     /**
      * The default string format for model objects of the related table
@@ -113,11 +108,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Timestamp', 'Firstname', 'Middlename', 'Lastname', 'Hashedpassword', ),
-        self::TYPE_CAMELNAME     => array('id', 'timestamp', 'firstname', 'middlename', 'lastname', 'hashedpassword', ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_ID, UserTableMap::COL_TIMESTAMP, UserTableMap::COL_FIRSTNAME, UserTableMap::COL_MIDDLENAME, UserTableMap::COL_LASTNAME, UserTableMap::COL_HASHEDPASSWORD, ),
-        self::TYPE_FIELDNAME     => array('ID', 'Timestamp', 'FirstName', 'MiddleName', 'LastName', 'HashedPassword', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id', 'Adddate', 'Email', 'Encryptedpassword', 'Name', ),
+        self::TYPE_CAMELNAME     => array('id', 'adddate', 'email', 'encryptedpassword', 'name', ),
+        self::TYPE_COLNAME       => array(UserTableMap::COL_ID, UserTableMap::COL_ADDDATE, UserTableMap::COL_EMAIL, UserTableMap::COL_ENCRYPTEDPASSWORD, UserTableMap::COL_NAME, ),
+        self::TYPE_FIELDNAME     => array('ID', 'addDate', 'email', 'encryptedPassword', 'name', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -127,11 +122,11 @@ class UserTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Timestamp' => 1, 'Firstname' => 2, 'Middlename' => 3, 'Lastname' => 4, 'Hashedpassword' => 5, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'timestamp' => 1, 'firstname' => 2, 'middlename' => 3, 'lastname' => 4, 'hashedpassword' => 5, ),
-        self::TYPE_COLNAME       => array(UserTableMap::COL_ID => 0, UserTableMap::COL_TIMESTAMP => 1, UserTableMap::COL_FIRSTNAME => 2, UserTableMap::COL_MIDDLENAME => 3, UserTableMap::COL_LASTNAME => 4, UserTableMap::COL_HASHEDPASSWORD => 5, ),
-        self::TYPE_FIELDNAME     => array('ID' => 0, 'Timestamp' => 1, 'FirstName' => 2, 'MiddleName' => 3, 'LastName' => 4, 'HashedPassword' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Adddate' => 1, 'Email' => 2, 'Encryptedpassword' => 3, 'Name' => 4, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'adddate' => 1, 'email' => 2, 'encryptedpassword' => 3, 'name' => 4, ),
+        self::TYPE_COLNAME       => array(UserTableMap::COL_ID => 0, UserTableMap::COL_ADDDATE => 1, UserTableMap::COL_EMAIL => 2, UserTableMap::COL_ENCRYPTEDPASSWORD => 3, UserTableMap::COL_NAME => 4, ),
+        self::TYPE_FIELDNAME     => array('ID' => 0, 'addDate' => 1, 'email' => 2, 'encryptedPassword' => 3, 'name' => 4, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
     /**
@@ -152,11 +147,10 @@ class UserTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
-        $this->addColumn('FirstName', 'Firstname', 'VARCHAR', true, 128, null);
-        $this->addColumn('MiddleName', 'Middlename', 'VARCHAR', false, 128, null);
-        $this->addColumn('LastName', 'Lastname', 'VARCHAR', true, 128, null);
-        $this->addColumn('HashedPassword', 'Hashedpassword', 'VARCHAR', true, 256, null);
+        $this->addColumn('addDate', 'Adddate', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
+        $this->addColumn('email', 'Email', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('encryptedPassword', 'Encryptedpassword', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('name', 'Name', 'LONGVARCHAR', true, null, null);
     } // initialize()
 
     /**
@@ -164,69 +158,6 @@ class UserTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Email', '\\Email', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':UserID',
-    1 => ':ID',
-  ),
-), null, null, 'Emails', false);
-        $this->addRelation('Lives', '\\Lives', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':UserID',
-    1 => ':ID',
-  ),
-), null, null, 'Livess', false);
-        $this->addRelation('OwedRelatedByReceiverid', '\\Owed', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':ReceiverID',
-    1 => ':ID',
-  ),
-), null, null, 'OwedsRelatedByReceiverid', false);
-        $this->addRelation('OwedRelatedBySenderid', '\\Owed', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':SenderID',
-    1 => ':ID',
-  ),
-), null, null, 'OwedsRelatedBySenderid', false);
-        $this->addRelation('PaymentRelatedByReceiverid', '\\Payment', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':ReceiverID',
-    1 => ':ID',
-  ),
-), null, null, 'PaymentsRelatedByReceiverid', false);
-        $this->addRelation('PaymentRelatedBySenderid', '\\Payment', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':SenderID',
-    1 => ':ID',
-  ),
-), null, null, 'PaymentsRelatedBySenderid', false);
-        $this->addRelation('Phone', '\\Phone', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':UserID',
-    1 => ':ID',
-  ),
-), null, null, 'Phones', false);
-        $this->addRelation('Property', '\\Property', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':LandlordID',
-    1 => ':ID',
-  ),
-), null, null, 'Properties', false);
-        $this->addRelation('Tenant', '\\Tenant', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':UserID',
-    1 => ':ID',
-  ),
-), null, null, 'Tenants', false);
     } // buildRelations()
 
     /**
@@ -371,18 +302,16 @@ class UserTableMap extends TableMap
     {
         if (null === $alias) {
             $criteria->addSelectColumn(UserTableMap::COL_ID);
-            $criteria->addSelectColumn(UserTableMap::COL_TIMESTAMP);
-            $criteria->addSelectColumn(UserTableMap::COL_FIRSTNAME);
-            $criteria->addSelectColumn(UserTableMap::COL_MIDDLENAME);
-            $criteria->addSelectColumn(UserTableMap::COL_LASTNAME);
-            $criteria->addSelectColumn(UserTableMap::COL_HASHEDPASSWORD);
+            $criteria->addSelectColumn(UserTableMap::COL_ADDDATE);
+            $criteria->addSelectColumn(UserTableMap::COL_EMAIL);
+            $criteria->addSelectColumn(UserTableMap::COL_ENCRYPTEDPASSWORD);
+            $criteria->addSelectColumn(UserTableMap::COL_NAME);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.Timestamp');
-            $criteria->addSelectColumn($alias . '.FirstName');
-            $criteria->addSelectColumn($alias . '.MiddleName');
-            $criteria->addSelectColumn($alias . '.LastName');
-            $criteria->addSelectColumn($alias . '.HashedPassword');
+            $criteria->addSelectColumn($alias . '.addDate');
+            $criteria->addSelectColumn($alias . '.email');
+            $criteria->addSelectColumn($alias . '.encryptedPassword');
+            $criteria->addSelectColumn($alias . '.name');
         }
     }
 

@@ -2,39 +2,16 @@
 
 namespace Base;
 
-use \Email as ChildEmail;
-use \EmailQuery as ChildEmailQuery;
-use \Lives as ChildLives;
-use \LivesQuery as ChildLivesQuery;
-use \Owed as ChildOwed;
-use \OwedQuery as ChildOwedQuery;
-use \Payment as ChildPayment;
-use \PaymentQuery as ChildPaymentQuery;
-use \Phone as ChildPhone;
-use \PhoneQuery as ChildPhoneQuery;
-use \Property as ChildProperty;
-use \PropertyQuery as ChildPropertyQuery;
-use \Tenant as ChildTenant;
-use \TenantQuery as ChildTenantQuery;
-use \User as ChildUser;
 use \UserQuery as ChildUserQuery;
 use \DateTime;
 use \Exception;
 use \PDO;
-use Map\EmailTableMap;
-use Map\LivesTableMap;
-use Map\OwedTableMap;
-use Map\PaymentTableMap;
-use Map\PhoneTableMap;
-use Map\PropertyTableMap;
-use Map\TenantTableMap;
 use Map\UserTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
-use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -92,94 +69,33 @@ abstract class User implements ActiveRecordInterface
     protected $id;
 
     /**
-     * The value for the timestamp field.
+     * The value for the adddate field.
      *
      * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
      * @var        DateTime
      */
-    protected $timestamp;
+    protected $adddate;
 
     /**
-     * The value for the firstname field.
+     * The value for the email field.
      *
      * @var        string
      */
-    protected $firstname;
+    protected $email;
 
     /**
-     * The value for the middlename field.
+     * The value for the encryptedpassword field.
      *
      * @var        string
      */
-    protected $middlename;
+    protected $encryptedpassword;
 
     /**
-     * The value for the lastname field.
+     * The value for the name field.
      *
      * @var        string
      */
-    protected $lastname;
-
-    /**
-     * The value for the hashedpassword field.
-     *
-     * @var        string
-     */
-    protected $hashedpassword;
-
-    /**
-     * @var        ObjectCollection|ChildEmail[] Collection to store aggregation of ChildEmail objects.
-     */
-    protected $collEmails;
-    protected $collEmailsPartial;
-
-    /**
-     * @var        ObjectCollection|ChildLives[] Collection to store aggregation of ChildLives objects.
-     */
-    protected $collLivess;
-    protected $collLivessPartial;
-
-    /**
-     * @var        ObjectCollection|ChildOwed[] Collection to store aggregation of ChildOwed objects.
-     */
-    protected $collOwedsRelatedByReceiverid;
-    protected $collOwedsRelatedByReceiveridPartial;
-
-    /**
-     * @var        ObjectCollection|ChildOwed[] Collection to store aggregation of ChildOwed objects.
-     */
-    protected $collOwedsRelatedBySenderid;
-    protected $collOwedsRelatedBySenderidPartial;
-
-    /**
-     * @var        ObjectCollection|ChildPayment[] Collection to store aggregation of ChildPayment objects.
-     */
-    protected $collPaymentsRelatedByReceiverid;
-    protected $collPaymentsRelatedByReceiveridPartial;
-
-    /**
-     * @var        ObjectCollection|ChildPayment[] Collection to store aggregation of ChildPayment objects.
-     */
-    protected $collPaymentsRelatedBySenderid;
-    protected $collPaymentsRelatedBySenderidPartial;
-
-    /**
-     * @var        ObjectCollection|ChildPhone[] Collection to store aggregation of ChildPhone objects.
-     */
-    protected $collPhones;
-    protected $collPhonesPartial;
-
-    /**
-     * @var        ObjectCollection|ChildProperty[] Collection to store aggregation of ChildProperty objects.
-     */
-    protected $collProperties;
-    protected $collPropertiesPartial;
-
-    /**
-     * @var        ObjectCollection|ChildTenant[] Collection to store aggregation of ChildTenant objects.
-     */
-    protected $collTenants;
-    protected $collTenantsPartial;
+    protected $name;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -188,60 +104,6 @@ abstract class User implements ActiveRecordInterface
      * @var boolean
      */
     protected $alreadyInSave = false;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildEmail[]
-     */
-    protected $emailsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildLives[]
-     */
-    protected $livessScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildOwed[]
-     */
-    protected $owedsRelatedByReceiveridScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildOwed[]
-     */
-    protected $owedsRelatedBySenderidScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildPayment[]
-     */
-    protected $paymentsRelatedByReceiveridScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildPayment[]
-     */
-    protected $paymentsRelatedBySenderidScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildPhone[]
-     */
-    protected $phonesScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildProperty[]
-     */
-    protected $propertiesScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildTenant[]
-     */
-    protected $tenantsScheduledForDeletion = null;
 
     /**
      * Applies default values to this object.
@@ -491,7 +353,7 @@ abstract class User implements ActiveRecordInterface
     }
 
     /**
-     * Get the [optionally formatted] temporal [timestamp] column value.
+     * Get the [optionally formatted] temporal [adddate] column value.
      *
      *
      * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
@@ -501,53 +363,43 @@ abstract class User implements ActiveRecordInterface
      *
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getTimestamp($format = NULL)
+    public function getAdddate($format = NULL)
     {
         if ($format === null) {
-            return $this->timestamp;
+            return $this->adddate;
         } else {
-            return $this->timestamp instanceof \DateTimeInterface ? $this->timestamp->format($format) : null;
+            return $this->adddate instanceof \DateTimeInterface ? $this->adddate->format($format) : null;
         }
     }
 
     /**
-     * Get the [firstname] column value.
+     * Get the [email] column value.
      *
      * @return string
      */
-    public function getFirstname()
+    public function getEmail()
     {
-        return $this->firstname;
+        return $this->email;
     }
 
     /**
-     * Get the [middlename] column value.
+     * Get the [encryptedpassword] column value.
      *
      * @return string
      */
-    public function getMiddlename()
+    public function getEncryptedpassword()
     {
-        return $this->middlename;
+        return $this->encryptedpassword;
     }
 
     /**
-     * Get the [lastname] column value.
+     * Get the [name] column value.
      *
      * @return string
      */
-    public function getLastname()
+    public function getName()
     {
-        return $this->lastname;
-    }
-
-    /**
-     * Get the [hashedpassword] column value.
-     *
-     * @return string
-     */
-    public function getHashedpassword()
-    {
-        return $this->hashedpassword;
+        return $this->name;
     }
 
     /**
@@ -571,104 +423,84 @@ abstract class User implements ActiveRecordInterface
     } // setId()
 
     /**
-     * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
+     * Sets the value of [adddate] column to a normalized version of the date/time value specified.
      *
      * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
      *               Empty strings are treated as NULL.
      * @return $this|\User The current object (for fluent API support)
      */
-    public function setTimestamp($v)
+    public function setAdddate($v)
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->timestamp !== null || $dt !== null) {
-            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->timestamp->format("Y-m-d H:i:s.u")) {
-                $this->timestamp = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[UserTableMap::COL_TIMESTAMP] = true;
+        if ($this->adddate !== null || $dt !== null) {
+            if ($this->adddate === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->adddate->format("Y-m-d H:i:s.u")) {
+                $this->adddate = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[UserTableMap::COL_ADDDATE] = true;
             }
         } // if either are not null
 
         return $this;
-    } // setTimestamp()
+    } // setAdddate()
 
     /**
-     * Set the value of [firstname] column.
+     * Set the value of [email] column.
      *
      * @param string $v new value
      * @return $this|\User The current object (for fluent API support)
      */
-    public function setFirstname($v)
+    public function setEmail($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->firstname !== $v) {
-            $this->firstname = $v;
-            $this->modifiedColumns[UserTableMap::COL_FIRSTNAME] = true;
+        if ($this->email !== $v) {
+            $this->email = $v;
+            $this->modifiedColumns[UserTableMap::COL_EMAIL] = true;
         }
 
         return $this;
-    } // setFirstname()
+    } // setEmail()
 
     /**
-     * Set the value of [middlename] column.
+     * Set the value of [encryptedpassword] column.
      *
      * @param string $v new value
      * @return $this|\User The current object (for fluent API support)
      */
-    public function setMiddlename($v)
+    public function setEncryptedpassword($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->middlename !== $v) {
-            $this->middlename = $v;
-            $this->modifiedColumns[UserTableMap::COL_MIDDLENAME] = true;
+        if ($this->encryptedpassword !== $v) {
+            $this->encryptedpassword = $v;
+            $this->modifiedColumns[UserTableMap::COL_ENCRYPTEDPASSWORD] = true;
         }
 
         return $this;
-    } // setMiddlename()
+    } // setEncryptedpassword()
 
     /**
-     * Set the value of [lastname] column.
+     * Set the value of [name] column.
      *
      * @param string $v new value
      * @return $this|\User The current object (for fluent API support)
      */
-    public function setLastname($v)
+    public function setName($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->lastname !== $v) {
-            $this->lastname = $v;
-            $this->modifiedColumns[UserTableMap::COL_LASTNAME] = true;
+        if ($this->name !== $v) {
+            $this->name = $v;
+            $this->modifiedColumns[UserTableMap::COL_NAME] = true;
         }
 
         return $this;
-    } // setLastname()
-
-    /**
-     * Set the value of [hashedpassword] column.
-     *
-     * @param string $v new value
-     * @return $this|\User The current object (for fluent API support)
-     */
-    public function setHashedpassword($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->hashedpassword !== $v) {
-            $this->hashedpassword = $v;
-            $this->modifiedColumns[UserTableMap::COL_HASHEDPASSWORD] = true;
-        }
-
-        return $this;
-    } // setHashedpassword()
+    } // setName()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -709,23 +541,20 @@ abstract class User implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : UserTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : UserTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : UserTableMap::translateFieldName('Adddate', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
-            $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+            $this->adddate = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : UserTableMap::translateFieldName('Firstname', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->firstname = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : UserTableMap::translateFieldName('Email', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->email = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : UserTableMap::translateFieldName('Middlename', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->middlename = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : UserTableMap::translateFieldName('Encryptedpassword', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->encryptedpassword = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : UserTableMap::translateFieldName('Lastname', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->lastname = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : UserTableMap::translateFieldName('Hashedpassword', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->hashedpassword = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : UserTableMap::translateFieldName('Name', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->name = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -734,7 +563,7 @@ abstract class User implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = UserTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 5; // 5 = UserTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\User'), 0, $e);
@@ -794,24 +623,6 @@ abstract class User implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
-
-            $this->collEmails = null;
-
-            $this->collLivess = null;
-
-            $this->collOwedsRelatedByReceiverid = null;
-
-            $this->collOwedsRelatedBySenderid = null;
-
-            $this->collPaymentsRelatedByReceiverid = null;
-
-            $this->collPaymentsRelatedBySenderid = null;
-
-            $this->collPhones = null;
-
-            $this->collProperties = null;
-
-            $this->collTenants = null;
 
         } // if (deep)
     }
@@ -927,159 +738,6 @@ abstract class User implements ActiveRecordInterface
                 $this->resetModified();
             }
 
-            if ($this->emailsScheduledForDeletion !== null) {
-                if (!$this->emailsScheduledForDeletion->isEmpty()) {
-                    \EmailQuery::create()
-                        ->filterByPrimaryKeys($this->emailsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->emailsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collEmails !== null) {
-                foreach ($this->collEmails as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->livessScheduledForDeletion !== null) {
-                if (!$this->livessScheduledForDeletion->isEmpty()) {
-                    \LivesQuery::create()
-                        ->filterByPrimaryKeys($this->livessScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->livessScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collLivess !== null) {
-                foreach ($this->collLivess as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->owedsRelatedByReceiveridScheduledForDeletion !== null) {
-                if (!$this->owedsRelatedByReceiveridScheduledForDeletion->isEmpty()) {
-                    \OwedQuery::create()
-                        ->filterByPrimaryKeys($this->owedsRelatedByReceiveridScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->owedsRelatedByReceiveridScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collOwedsRelatedByReceiverid !== null) {
-                foreach ($this->collOwedsRelatedByReceiverid as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->owedsRelatedBySenderidScheduledForDeletion !== null) {
-                if (!$this->owedsRelatedBySenderidScheduledForDeletion->isEmpty()) {
-                    \OwedQuery::create()
-                        ->filterByPrimaryKeys($this->owedsRelatedBySenderidScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->owedsRelatedBySenderidScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collOwedsRelatedBySenderid !== null) {
-                foreach ($this->collOwedsRelatedBySenderid as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->paymentsRelatedByReceiveridScheduledForDeletion !== null) {
-                if (!$this->paymentsRelatedByReceiveridScheduledForDeletion->isEmpty()) {
-                    \PaymentQuery::create()
-                        ->filterByPrimaryKeys($this->paymentsRelatedByReceiveridScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->paymentsRelatedByReceiveridScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPaymentsRelatedByReceiverid !== null) {
-                foreach ($this->collPaymentsRelatedByReceiverid as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->paymentsRelatedBySenderidScheduledForDeletion !== null) {
-                if (!$this->paymentsRelatedBySenderidScheduledForDeletion->isEmpty()) {
-                    \PaymentQuery::create()
-                        ->filterByPrimaryKeys($this->paymentsRelatedBySenderidScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->paymentsRelatedBySenderidScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPaymentsRelatedBySenderid !== null) {
-                foreach ($this->collPaymentsRelatedBySenderid as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->phonesScheduledForDeletion !== null) {
-                if (!$this->phonesScheduledForDeletion->isEmpty()) {
-                    \PhoneQuery::create()
-                        ->filterByPrimaryKeys($this->phonesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->phonesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPhones !== null) {
-                foreach ($this->collPhones as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->propertiesScheduledForDeletion !== null) {
-                if (!$this->propertiesScheduledForDeletion->isEmpty()) {
-                    \PropertyQuery::create()
-                        ->filterByPrimaryKeys($this->propertiesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->propertiesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collProperties !== null) {
-                foreach ($this->collProperties as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->tenantsScheduledForDeletion !== null) {
-                if (!$this->tenantsScheduledForDeletion->isEmpty()) {
-                    \TenantQuery::create()
-                        ->filterByPrimaryKeys($this->tenantsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->tenantsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collTenants !== null) {
-                foreach ($this->collTenants as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
             $this->alreadyInSave = false;
 
         }
@@ -1109,20 +767,17 @@ abstract class User implements ActiveRecordInterface
         if ($this->isColumnModified(UserTableMap::COL_ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(UserTableMap::COL_TIMESTAMP)) {
-            $modifiedColumns[':p' . $index++]  = 'Timestamp';
+        if ($this->isColumnModified(UserTableMap::COL_ADDDATE)) {
+            $modifiedColumns[':p' . $index++]  = 'addDate';
         }
-        if ($this->isColumnModified(UserTableMap::COL_FIRSTNAME)) {
-            $modifiedColumns[':p' . $index++]  = 'FirstName';
+        if ($this->isColumnModified(UserTableMap::COL_EMAIL)) {
+            $modifiedColumns[':p' . $index++]  = 'email';
         }
-        if ($this->isColumnModified(UserTableMap::COL_MIDDLENAME)) {
-            $modifiedColumns[':p' . $index++]  = 'MiddleName';
+        if ($this->isColumnModified(UserTableMap::COL_ENCRYPTEDPASSWORD)) {
+            $modifiedColumns[':p' . $index++]  = 'encryptedPassword';
         }
-        if ($this->isColumnModified(UserTableMap::COL_LASTNAME)) {
-            $modifiedColumns[':p' . $index++]  = 'LastName';
-        }
-        if ($this->isColumnModified(UserTableMap::COL_HASHEDPASSWORD)) {
-            $modifiedColumns[':p' . $index++]  = 'HashedPassword';
+        if ($this->isColumnModified(UserTableMap::COL_NAME)) {
+            $modifiedColumns[':p' . $index++]  = 'name';
         }
 
         $sql = sprintf(
@@ -1138,20 +793,17 @@ abstract class User implements ActiveRecordInterface
                     case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'Timestamp':
-                        $stmt->bindValue($identifier, $this->timestamp ? $this->timestamp->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
+                    case 'addDate':
+                        $stmt->bindValue($identifier, $this->adddate ? $this->adddate->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
-                    case 'FirstName':
-                        $stmt->bindValue($identifier, $this->firstname, PDO::PARAM_STR);
+                    case 'email':
+                        $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
                         break;
-                    case 'MiddleName':
-                        $stmt->bindValue($identifier, $this->middlename, PDO::PARAM_STR);
+                    case 'encryptedPassword':
+                        $stmt->bindValue($identifier, $this->encryptedpassword, PDO::PARAM_STR);
                         break;
-                    case 'LastName':
-                        $stmt->bindValue($identifier, $this->lastname, PDO::PARAM_STR);
-                        break;
-                    case 'HashedPassword':
-                        $stmt->bindValue($identifier, $this->hashedpassword, PDO::PARAM_STR);
+                    case 'name':
+                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1219,19 +871,16 @@ abstract class User implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getTimestamp();
+                return $this->getAdddate();
                 break;
             case 2:
-                return $this->getFirstname();
+                return $this->getEmail();
                 break;
             case 3:
-                return $this->getMiddlename();
+                return $this->getEncryptedpassword();
                 break;
             case 4:
-                return $this->getLastname();
-                break;
-            case 5:
-                return $this->getHashedpassword();
+                return $this->getName();
                 break;
             default:
                 return null;
@@ -1250,11 +899,10 @@ abstract class User implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
         if (isset($alreadyDumpedObjects['User'][$this->hashCode()])) {
@@ -1264,11 +912,10 @@ abstract class User implements ActiveRecordInterface
         $keys = UserTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getTimestamp(),
-            $keys[2] => $this->getFirstname(),
-            $keys[3] => $this->getMiddlename(),
-            $keys[4] => $this->getLastname(),
-            $keys[5] => $this->getHashedpassword(),
+            $keys[1] => $this->getAdddate(),
+            $keys[2] => $this->getEmail(),
+            $keys[3] => $this->getEncryptedpassword(),
+            $keys[4] => $this->getName(),
         );
         if ($result[$keys[1]] instanceof \DateTimeInterface) {
             $result[$keys[1]] = $result[$keys[1]]->format('c');
@@ -1279,143 +926,6 @@ abstract class User implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
-        if ($includeForeignObjects) {
-            if (null !== $this->collEmails) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'emails';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'emails';
-                        break;
-                    default:
-                        $key = 'Emails';
-                }
-
-                $result[$key] = $this->collEmails->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collLivess) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'livess';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'livess';
-                        break;
-                    default:
-                        $key = 'Livess';
-                }
-
-                $result[$key] = $this->collLivess->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collOwedsRelatedByReceiverid) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'oweds';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'oweds';
-                        break;
-                    default:
-                        $key = 'Oweds';
-                }
-
-                $result[$key] = $this->collOwedsRelatedByReceiverid->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collOwedsRelatedBySenderid) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'oweds';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'oweds';
-                        break;
-                    default:
-                        $key = 'Oweds';
-                }
-
-                $result[$key] = $this->collOwedsRelatedBySenderid->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collPaymentsRelatedByReceiverid) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'payments';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'payments';
-                        break;
-                    default:
-                        $key = 'Payments';
-                }
-
-                $result[$key] = $this->collPaymentsRelatedByReceiverid->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collPaymentsRelatedBySenderid) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'payments';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'payments';
-                        break;
-                    default:
-                        $key = 'Payments';
-                }
-
-                $result[$key] = $this->collPaymentsRelatedBySenderid->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collPhones) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'phones';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'phones';
-                        break;
-                    default:
-                        $key = 'Phones';
-                }
-
-                $result[$key] = $this->collPhones->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collProperties) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'properties';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'properties';
-                        break;
-                    default:
-                        $key = 'Properties';
-                }
-
-                $result[$key] = $this->collProperties->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collTenants) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'tenants';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'tenants';
-                        break;
-                    default:
-                        $key = 'Tenants';
-                }
-
-                $result[$key] = $this->collTenants->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-        }
 
         return $result;
     }
@@ -1453,19 +963,16 @@ abstract class User implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setTimestamp($value);
+                $this->setAdddate($value);
                 break;
             case 2:
-                $this->setFirstname($value);
+                $this->setEmail($value);
                 break;
             case 3:
-                $this->setMiddlename($value);
+                $this->setEncryptedpassword($value);
                 break;
             case 4:
-                $this->setLastname($value);
-                break;
-            case 5:
-                $this->setHashedpassword($value);
+                $this->setName($value);
                 break;
         } // switch()
 
@@ -1497,19 +1004,16 @@ abstract class User implements ActiveRecordInterface
             $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setTimestamp($arr[$keys[1]]);
+            $this->setAdddate($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setFirstname($arr[$keys[2]]);
+            $this->setEmail($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setMiddlename($arr[$keys[3]]);
+            $this->setEncryptedpassword($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setLastname($arr[$keys[4]]);
-        }
-        if (array_key_exists($keys[5], $arr)) {
-            $this->setHashedpassword($arr[$keys[5]]);
+            $this->setName($arr[$keys[4]]);
         }
     }
 
@@ -1555,20 +1059,17 @@ abstract class User implements ActiveRecordInterface
         if ($this->isColumnModified(UserTableMap::COL_ID)) {
             $criteria->add(UserTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(UserTableMap::COL_TIMESTAMP)) {
-            $criteria->add(UserTableMap::COL_TIMESTAMP, $this->timestamp);
+        if ($this->isColumnModified(UserTableMap::COL_ADDDATE)) {
+            $criteria->add(UserTableMap::COL_ADDDATE, $this->adddate);
         }
-        if ($this->isColumnModified(UserTableMap::COL_FIRSTNAME)) {
-            $criteria->add(UserTableMap::COL_FIRSTNAME, $this->firstname);
+        if ($this->isColumnModified(UserTableMap::COL_EMAIL)) {
+            $criteria->add(UserTableMap::COL_EMAIL, $this->email);
         }
-        if ($this->isColumnModified(UserTableMap::COL_MIDDLENAME)) {
-            $criteria->add(UserTableMap::COL_MIDDLENAME, $this->middlename);
+        if ($this->isColumnModified(UserTableMap::COL_ENCRYPTEDPASSWORD)) {
+            $criteria->add(UserTableMap::COL_ENCRYPTEDPASSWORD, $this->encryptedpassword);
         }
-        if ($this->isColumnModified(UserTableMap::COL_LASTNAME)) {
-            $criteria->add(UserTableMap::COL_LASTNAME, $this->lastname);
-        }
-        if ($this->isColumnModified(UserTableMap::COL_HASHEDPASSWORD)) {
-            $criteria->add(UserTableMap::COL_HASHEDPASSWORD, $this->hashedpassword);
+        if ($this->isColumnModified(UserTableMap::COL_NAME)) {
+            $criteria->add(UserTableMap::COL_NAME, $this->name);
         }
 
         return $criteria;
@@ -1656,73 +1157,10 @@ abstract class User implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setTimestamp($this->getTimestamp());
-        $copyObj->setFirstname($this->getFirstname());
-        $copyObj->setMiddlename($this->getMiddlename());
-        $copyObj->setLastname($this->getLastname());
-        $copyObj->setHashedpassword($this->getHashedpassword());
-
-        if ($deepCopy) {
-            // important: temporarily setNew(false) because this affects the behavior of
-            // the getter/setter methods for fkey referrer objects.
-            $copyObj->setNew(false);
-
-            foreach ($this->getEmails() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addEmail($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getLivess() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addLives($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getOwedsRelatedByReceiverid() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addOwedRelatedByReceiverid($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getOwedsRelatedBySenderid() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addOwedRelatedBySenderid($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getPaymentsRelatedByReceiverid() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPaymentRelatedByReceiverid($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getPaymentsRelatedBySenderid() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPaymentRelatedBySenderid($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getPhones() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPhone($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getProperties() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addProperty($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getTenants() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addTenant($relObj->copy($deepCopy));
-                }
-            }
-
-        } // if ($deepCopy)
-
+        $copyObj->setAdddate($this->getAdddate());
+        $copyObj->setEmail($this->getEmail());
+        $copyObj->setEncryptedpassword($this->getEncryptedpassword());
+        $copyObj->setName($this->getName());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1751,2230 +1189,6 @@ abstract class User implements ActiveRecordInterface
         return $copyObj;
     }
 
-
-    /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
-     *
-     * @param      string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('Email' == $relationName) {
-            $this->initEmails();
-            return;
-        }
-        if ('Lives' == $relationName) {
-            $this->initLivess();
-            return;
-        }
-        if ('OwedRelatedByReceiverid' == $relationName) {
-            $this->initOwedsRelatedByReceiverid();
-            return;
-        }
-        if ('OwedRelatedBySenderid' == $relationName) {
-            $this->initOwedsRelatedBySenderid();
-            return;
-        }
-        if ('PaymentRelatedByReceiverid' == $relationName) {
-            $this->initPaymentsRelatedByReceiverid();
-            return;
-        }
-        if ('PaymentRelatedBySenderid' == $relationName) {
-            $this->initPaymentsRelatedBySenderid();
-            return;
-        }
-        if ('Phone' == $relationName) {
-            $this->initPhones();
-            return;
-        }
-        if ('Property' == $relationName) {
-            $this->initProperties();
-            return;
-        }
-        if ('Tenant' == $relationName) {
-            $this->initTenants();
-            return;
-        }
-    }
-
-    /**
-     * Clears out the collEmails collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addEmails()
-     */
-    public function clearEmails()
-    {
-        $this->collEmails = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collEmails collection loaded partially.
-     */
-    public function resetPartialEmails($v = true)
-    {
-        $this->collEmailsPartial = $v;
-    }
-
-    /**
-     * Initializes the collEmails collection.
-     *
-     * By default this just sets the collEmails collection to an empty array (like clearcollEmails());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initEmails($overrideExisting = true)
-    {
-        if (null !== $this->collEmails && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = EmailTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collEmails = new $collectionClassName;
-        $this->collEmails->setModel('\Email');
-    }
-
-    /**
-     * Gets an array of ChildEmail objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildUser is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildEmail[] List of ChildEmail objects
-     * @throws PropelException
-     */
-    public function getEmails(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collEmailsPartial && !$this->isNew();
-        if (null === $this->collEmails || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collEmails) {
-                // return empty collection
-                $this->initEmails();
-            } else {
-                $collEmails = ChildEmailQuery::create(null, $criteria)
-                    ->filterByUser($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collEmailsPartial && count($collEmails)) {
-                        $this->initEmails(false);
-
-                        foreach ($collEmails as $obj) {
-                            if (false == $this->collEmails->contains($obj)) {
-                                $this->collEmails->append($obj);
-                            }
-                        }
-
-                        $this->collEmailsPartial = true;
-                    }
-
-                    return $collEmails;
-                }
-
-                if ($partial && $this->collEmails) {
-                    foreach ($this->collEmails as $obj) {
-                        if ($obj->isNew()) {
-                            $collEmails[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collEmails = $collEmails;
-                $this->collEmailsPartial = false;
-            }
-        }
-
-        return $this->collEmails;
-    }
-
-    /**
-     * Sets a collection of ChildEmail objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $emails A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function setEmails(Collection $emails, ConnectionInterface $con = null)
-    {
-        /** @var ChildEmail[] $emailsToDelete */
-        $emailsToDelete = $this->getEmails(new Criteria(), $con)->diff($emails);
-
-
-        $this->emailsScheduledForDeletion = $emailsToDelete;
-
-        foreach ($emailsToDelete as $emailRemoved) {
-            $emailRemoved->setUser(null);
-        }
-
-        $this->collEmails = null;
-        foreach ($emails as $email) {
-            $this->addEmail($email);
-        }
-
-        $this->collEmails = $emails;
-        $this->collEmailsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Email objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Email objects.
-     * @throws PropelException
-     */
-    public function countEmails(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collEmailsPartial && !$this->isNew();
-        if (null === $this->collEmails || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collEmails) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getEmails());
-            }
-
-            $query = ChildEmailQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByUser($this)
-                ->count($con);
-        }
-
-        return count($this->collEmails);
-    }
-
-    /**
-     * Method called to associate a ChildEmail object to this object
-     * through the ChildEmail foreign key attribute.
-     *
-     * @param  ChildEmail $l ChildEmail
-     * @return $this|\User The current object (for fluent API support)
-     */
-    public function addEmail(ChildEmail $l)
-    {
-        if ($this->collEmails === null) {
-            $this->initEmails();
-            $this->collEmailsPartial = true;
-        }
-
-        if (!$this->collEmails->contains($l)) {
-            $this->doAddEmail($l);
-
-            if ($this->emailsScheduledForDeletion and $this->emailsScheduledForDeletion->contains($l)) {
-                $this->emailsScheduledForDeletion->remove($this->emailsScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildEmail $email The ChildEmail object to add.
-     */
-    protected function doAddEmail(ChildEmail $email)
-    {
-        $this->collEmails[]= $email;
-        $email->setUser($this);
-    }
-
-    /**
-     * @param  ChildEmail $email The ChildEmail object to remove.
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function removeEmail(ChildEmail $email)
-    {
-        if ($this->getEmails()->contains($email)) {
-            $pos = $this->collEmails->search($email);
-            $this->collEmails->remove($pos);
-            if (null === $this->emailsScheduledForDeletion) {
-                $this->emailsScheduledForDeletion = clone $this->collEmails;
-                $this->emailsScheduledForDeletion->clear();
-            }
-            $this->emailsScheduledForDeletion[]= clone $email;
-            $email->setUser(null);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Clears out the collLivess collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addLivess()
-     */
-    public function clearLivess()
-    {
-        $this->collLivess = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collLivess collection loaded partially.
-     */
-    public function resetPartialLivess($v = true)
-    {
-        $this->collLivessPartial = $v;
-    }
-
-    /**
-     * Initializes the collLivess collection.
-     *
-     * By default this just sets the collLivess collection to an empty array (like clearcollLivess());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initLivess($overrideExisting = true)
-    {
-        if (null !== $this->collLivess && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = LivesTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collLivess = new $collectionClassName;
-        $this->collLivess->setModel('\Lives');
-    }
-
-    /**
-     * Gets an array of ChildLives objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildUser is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildLives[] List of ChildLives objects
-     * @throws PropelException
-     */
-    public function getLivess(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collLivessPartial && !$this->isNew();
-        if (null === $this->collLivess || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collLivess) {
-                // return empty collection
-                $this->initLivess();
-            } else {
-                $collLivess = ChildLivesQuery::create(null, $criteria)
-                    ->filterByUser($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collLivessPartial && count($collLivess)) {
-                        $this->initLivess(false);
-
-                        foreach ($collLivess as $obj) {
-                            if (false == $this->collLivess->contains($obj)) {
-                                $this->collLivess->append($obj);
-                            }
-                        }
-
-                        $this->collLivessPartial = true;
-                    }
-
-                    return $collLivess;
-                }
-
-                if ($partial && $this->collLivess) {
-                    foreach ($this->collLivess as $obj) {
-                        if ($obj->isNew()) {
-                            $collLivess[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collLivess = $collLivess;
-                $this->collLivessPartial = false;
-            }
-        }
-
-        return $this->collLivess;
-    }
-
-    /**
-     * Sets a collection of ChildLives objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $livess A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function setLivess(Collection $livess, ConnectionInterface $con = null)
-    {
-        /** @var ChildLives[] $livessToDelete */
-        $livessToDelete = $this->getLivess(new Criteria(), $con)->diff($livess);
-
-
-        $this->livessScheduledForDeletion = $livessToDelete;
-
-        foreach ($livessToDelete as $livesRemoved) {
-            $livesRemoved->setUser(null);
-        }
-
-        $this->collLivess = null;
-        foreach ($livess as $lives) {
-            $this->addLives($lives);
-        }
-
-        $this->collLivess = $livess;
-        $this->collLivessPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Lives objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Lives objects.
-     * @throws PropelException
-     */
-    public function countLivess(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collLivessPartial && !$this->isNew();
-        if (null === $this->collLivess || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collLivess) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getLivess());
-            }
-
-            $query = ChildLivesQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByUser($this)
-                ->count($con);
-        }
-
-        return count($this->collLivess);
-    }
-
-    /**
-     * Method called to associate a ChildLives object to this object
-     * through the ChildLives foreign key attribute.
-     *
-     * @param  ChildLives $l ChildLives
-     * @return $this|\User The current object (for fluent API support)
-     */
-    public function addLives(ChildLives $l)
-    {
-        if ($this->collLivess === null) {
-            $this->initLivess();
-            $this->collLivessPartial = true;
-        }
-
-        if (!$this->collLivess->contains($l)) {
-            $this->doAddLives($l);
-
-            if ($this->livessScheduledForDeletion and $this->livessScheduledForDeletion->contains($l)) {
-                $this->livessScheduledForDeletion->remove($this->livessScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildLives $lives The ChildLives object to add.
-     */
-    protected function doAddLives(ChildLives $lives)
-    {
-        $this->collLivess[]= $lives;
-        $lives->setUser($this);
-    }
-
-    /**
-     * @param  ChildLives $lives The ChildLives object to remove.
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function removeLives(ChildLives $lives)
-    {
-        if ($this->getLivess()->contains($lives)) {
-            $pos = $this->collLivess->search($lives);
-            $this->collLivess->remove($pos);
-            if (null === $this->livessScheduledForDeletion) {
-                $this->livessScheduledForDeletion = clone $this->collLivess;
-                $this->livessScheduledForDeletion->clear();
-            }
-            $this->livessScheduledForDeletion[]= clone $lives;
-            $lives->setUser(null);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Clears out the collOwedsRelatedByReceiverid collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addOwedsRelatedByReceiverid()
-     */
-    public function clearOwedsRelatedByReceiverid()
-    {
-        $this->collOwedsRelatedByReceiverid = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collOwedsRelatedByReceiverid collection loaded partially.
-     */
-    public function resetPartialOwedsRelatedByReceiverid($v = true)
-    {
-        $this->collOwedsRelatedByReceiveridPartial = $v;
-    }
-
-    /**
-     * Initializes the collOwedsRelatedByReceiverid collection.
-     *
-     * By default this just sets the collOwedsRelatedByReceiverid collection to an empty array (like clearcollOwedsRelatedByReceiverid());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initOwedsRelatedByReceiverid($overrideExisting = true)
-    {
-        if (null !== $this->collOwedsRelatedByReceiverid && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = OwedTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collOwedsRelatedByReceiverid = new $collectionClassName;
-        $this->collOwedsRelatedByReceiverid->setModel('\Owed');
-    }
-
-    /**
-     * Gets an array of ChildOwed objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildUser is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildOwed[] List of ChildOwed objects
-     * @throws PropelException
-     */
-    public function getOwedsRelatedByReceiverid(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collOwedsRelatedByReceiveridPartial && !$this->isNew();
-        if (null === $this->collOwedsRelatedByReceiverid || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collOwedsRelatedByReceiverid) {
-                // return empty collection
-                $this->initOwedsRelatedByReceiverid();
-            } else {
-                $collOwedsRelatedByReceiverid = ChildOwedQuery::create(null, $criteria)
-                    ->filterByUserRelatedByReceiverid($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collOwedsRelatedByReceiveridPartial && count($collOwedsRelatedByReceiverid)) {
-                        $this->initOwedsRelatedByReceiverid(false);
-
-                        foreach ($collOwedsRelatedByReceiverid as $obj) {
-                            if (false == $this->collOwedsRelatedByReceiverid->contains($obj)) {
-                                $this->collOwedsRelatedByReceiverid->append($obj);
-                            }
-                        }
-
-                        $this->collOwedsRelatedByReceiveridPartial = true;
-                    }
-
-                    return $collOwedsRelatedByReceiverid;
-                }
-
-                if ($partial && $this->collOwedsRelatedByReceiverid) {
-                    foreach ($this->collOwedsRelatedByReceiverid as $obj) {
-                        if ($obj->isNew()) {
-                            $collOwedsRelatedByReceiverid[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collOwedsRelatedByReceiverid = $collOwedsRelatedByReceiverid;
-                $this->collOwedsRelatedByReceiveridPartial = false;
-            }
-        }
-
-        return $this->collOwedsRelatedByReceiverid;
-    }
-
-    /**
-     * Sets a collection of ChildOwed objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $owedsRelatedByReceiverid A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function setOwedsRelatedByReceiverid(Collection $owedsRelatedByReceiverid, ConnectionInterface $con = null)
-    {
-        /** @var ChildOwed[] $owedsRelatedByReceiveridToDelete */
-        $owedsRelatedByReceiveridToDelete = $this->getOwedsRelatedByReceiverid(new Criteria(), $con)->diff($owedsRelatedByReceiverid);
-
-
-        $this->owedsRelatedByReceiveridScheduledForDeletion = $owedsRelatedByReceiveridToDelete;
-
-        foreach ($owedsRelatedByReceiveridToDelete as $owedRelatedByReceiveridRemoved) {
-            $owedRelatedByReceiveridRemoved->setUserRelatedByReceiverid(null);
-        }
-
-        $this->collOwedsRelatedByReceiverid = null;
-        foreach ($owedsRelatedByReceiverid as $owedRelatedByReceiverid) {
-            $this->addOwedRelatedByReceiverid($owedRelatedByReceiverid);
-        }
-
-        $this->collOwedsRelatedByReceiverid = $owedsRelatedByReceiverid;
-        $this->collOwedsRelatedByReceiveridPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Owed objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Owed objects.
-     * @throws PropelException
-     */
-    public function countOwedsRelatedByReceiverid(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collOwedsRelatedByReceiveridPartial && !$this->isNew();
-        if (null === $this->collOwedsRelatedByReceiverid || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collOwedsRelatedByReceiverid) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getOwedsRelatedByReceiverid());
-            }
-
-            $query = ChildOwedQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByUserRelatedByReceiverid($this)
-                ->count($con);
-        }
-
-        return count($this->collOwedsRelatedByReceiverid);
-    }
-
-    /**
-     * Method called to associate a ChildOwed object to this object
-     * through the ChildOwed foreign key attribute.
-     *
-     * @param  ChildOwed $l ChildOwed
-     * @return $this|\User The current object (for fluent API support)
-     */
-    public function addOwedRelatedByReceiverid(ChildOwed $l)
-    {
-        if ($this->collOwedsRelatedByReceiverid === null) {
-            $this->initOwedsRelatedByReceiverid();
-            $this->collOwedsRelatedByReceiveridPartial = true;
-        }
-
-        if (!$this->collOwedsRelatedByReceiverid->contains($l)) {
-            $this->doAddOwedRelatedByReceiverid($l);
-
-            if ($this->owedsRelatedByReceiveridScheduledForDeletion and $this->owedsRelatedByReceiveridScheduledForDeletion->contains($l)) {
-                $this->owedsRelatedByReceiveridScheduledForDeletion->remove($this->owedsRelatedByReceiveridScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildOwed $owedRelatedByReceiverid The ChildOwed object to add.
-     */
-    protected function doAddOwedRelatedByReceiverid(ChildOwed $owedRelatedByReceiverid)
-    {
-        $this->collOwedsRelatedByReceiverid[]= $owedRelatedByReceiverid;
-        $owedRelatedByReceiverid->setUserRelatedByReceiverid($this);
-    }
-
-    /**
-     * @param  ChildOwed $owedRelatedByReceiverid The ChildOwed object to remove.
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function removeOwedRelatedByReceiverid(ChildOwed $owedRelatedByReceiverid)
-    {
-        if ($this->getOwedsRelatedByReceiverid()->contains($owedRelatedByReceiverid)) {
-            $pos = $this->collOwedsRelatedByReceiverid->search($owedRelatedByReceiverid);
-            $this->collOwedsRelatedByReceiverid->remove($pos);
-            if (null === $this->owedsRelatedByReceiveridScheduledForDeletion) {
-                $this->owedsRelatedByReceiveridScheduledForDeletion = clone $this->collOwedsRelatedByReceiverid;
-                $this->owedsRelatedByReceiveridScheduledForDeletion->clear();
-            }
-            $this->owedsRelatedByReceiveridScheduledForDeletion[]= clone $owedRelatedByReceiverid;
-            $owedRelatedByReceiverid->setUserRelatedByReceiverid(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related OwedsRelatedByReceiverid from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildOwed[] List of ChildOwed objects
-     */
-    public function getOwedsRelatedByReceiveridJoinPaymentRelatedByPaymentid(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildOwedQuery::create(null, $criteria);
-        $query->joinWith('PaymentRelatedByPaymentid', $joinBehavior);
-
-        return $this->getOwedsRelatedByReceiverid($query, $con);
-    }
-
-    /**
-     * Clears out the collOwedsRelatedBySenderid collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addOwedsRelatedBySenderid()
-     */
-    public function clearOwedsRelatedBySenderid()
-    {
-        $this->collOwedsRelatedBySenderid = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collOwedsRelatedBySenderid collection loaded partially.
-     */
-    public function resetPartialOwedsRelatedBySenderid($v = true)
-    {
-        $this->collOwedsRelatedBySenderidPartial = $v;
-    }
-
-    /**
-     * Initializes the collOwedsRelatedBySenderid collection.
-     *
-     * By default this just sets the collOwedsRelatedBySenderid collection to an empty array (like clearcollOwedsRelatedBySenderid());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initOwedsRelatedBySenderid($overrideExisting = true)
-    {
-        if (null !== $this->collOwedsRelatedBySenderid && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = OwedTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collOwedsRelatedBySenderid = new $collectionClassName;
-        $this->collOwedsRelatedBySenderid->setModel('\Owed');
-    }
-
-    /**
-     * Gets an array of ChildOwed objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildUser is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildOwed[] List of ChildOwed objects
-     * @throws PropelException
-     */
-    public function getOwedsRelatedBySenderid(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collOwedsRelatedBySenderidPartial && !$this->isNew();
-        if (null === $this->collOwedsRelatedBySenderid || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collOwedsRelatedBySenderid) {
-                // return empty collection
-                $this->initOwedsRelatedBySenderid();
-            } else {
-                $collOwedsRelatedBySenderid = ChildOwedQuery::create(null, $criteria)
-                    ->filterByUserRelatedBySenderid($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collOwedsRelatedBySenderidPartial && count($collOwedsRelatedBySenderid)) {
-                        $this->initOwedsRelatedBySenderid(false);
-
-                        foreach ($collOwedsRelatedBySenderid as $obj) {
-                            if (false == $this->collOwedsRelatedBySenderid->contains($obj)) {
-                                $this->collOwedsRelatedBySenderid->append($obj);
-                            }
-                        }
-
-                        $this->collOwedsRelatedBySenderidPartial = true;
-                    }
-
-                    return $collOwedsRelatedBySenderid;
-                }
-
-                if ($partial && $this->collOwedsRelatedBySenderid) {
-                    foreach ($this->collOwedsRelatedBySenderid as $obj) {
-                        if ($obj->isNew()) {
-                            $collOwedsRelatedBySenderid[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collOwedsRelatedBySenderid = $collOwedsRelatedBySenderid;
-                $this->collOwedsRelatedBySenderidPartial = false;
-            }
-        }
-
-        return $this->collOwedsRelatedBySenderid;
-    }
-
-    /**
-     * Sets a collection of ChildOwed objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $owedsRelatedBySenderid A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function setOwedsRelatedBySenderid(Collection $owedsRelatedBySenderid, ConnectionInterface $con = null)
-    {
-        /** @var ChildOwed[] $owedsRelatedBySenderidToDelete */
-        $owedsRelatedBySenderidToDelete = $this->getOwedsRelatedBySenderid(new Criteria(), $con)->diff($owedsRelatedBySenderid);
-
-
-        $this->owedsRelatedBySenderidScheduledForDeletion = $owedsRelatedBySenderidToDelete;
-
-        foreach ($owedsRelatedBySenderidToDelete as $owedRelatedBySenderidRemoved) {
-            $owedRelatedBySenderidRemoved->setUserRelatedBySenderid(null);
-        }
-
-        $this->collOwedsRelatedBySenderid = null;
-        foreach ($owedsRelatedBySenderid as $owedRelatedBySenderid) {
-            $this->addOwedRelatedBySenderid($owedRelatedBySenderid);
-        }
-
-        $this->collOwedsRelatedBySenderid = $owedsRelatedBySenderid;
-        $this->collOwedsRelatedBySenderidPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Owed objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Owed objects.
-     * @throws PropelException
-     */
-    public function countOwedsRelatedBySenderid(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collOwedsRelatedBySenderidPartial && !$this->isNew();
-        if (null === $this->collOwedsRelatedBySenderid || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collOwedsRelatedBySenderid) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getOwedsRelatedBySenderid());
-            }
-
-            $query = ChildOwedQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByUserRelatedBySenderid($this)
-                ->count($con);
-        }
-
-        return count($this->collOwedsRelatedBySenderid);
-    }
-
-    /**
-     * Method called to associate a ChildOwed object to this object
-     * through the ChildOwed foreign key attribute.
-     *
-     * @param  ChildOwed $l ChildOwed
-     * @return $this|\User The current object (for fluent API support)
-     */
-    public function addOwedRelatedBySenderid(ChildOwed $l)
-    {
-        if ($this->collOwedsRelatedBySenderid === null) {
-            $this->initOwedsRelatedBySenderid();
-            $this->collOwedsRelatedBySenderidPartial = true;
-        }
-
-        if (!$this->collOwedsRelatedBySenderid->contains($l)) {
-            $this->doAddOwedRelatedBySenderid($l);
-
-            if ($this->owedsRelatedBySenderidScheduledForDeletion and $this->owedsRelatedBySenderidScheduledForDeletion->contains($l)) {
-                $this->owedsRelatedBySenderidScheduledForDeletion->remove($this->owedsRelatedBySenderidScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildOwed $owedRelatedBySenderid The ChildOwed object to add.
-     */
-    protected function doAddOwedRelatedBySenderid(ChildOwed $owedRelatedBySenderid)
-    {
-        $this->collOwedsRelatedBySenderid[]= $owedRelatedBySenderid;
-        $owedRelatedBySenderid->setUserRelatedBySenderid($this);
-    }
-
-    /**
-     * @param  ChildOwed $owedRelatedBySenderid The ChildOwed object to remove.
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function removeOwedRelatedBySenderid(ChildOwed $owedRelatedBySenderid)
-    {
-        if ($this->getOwedsRelatedBySenderid()->contains($owedRelatedBySenderid)) {
-            $pos = $this->collOwedsRelatedBySenderid->search($owedRelatedBySenderid);
-            $this->collOwedsRelatedBySenderid->remove($pos);
-            if (null === $this->owedsRelatedBySenderidScheduledForDeletion) {
-                $this->owedsRelatedBySenderidScheduledForDeletion = clone $this->collOwedsRelatedBySenderid;
-                $this->owedsRelatedBySenderidScheduledForDeletion->clear();
-            }
-            $this->owedsRelatedBySenderidScheduledForDeletion[]= clone $owedRelatedBySenderid;
-            $owedRelatedBySenderid->setUserRelatedBySenderid(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related OwedsRelatedBySenderid from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildOwed[] List of ChildOwed objects
-     */
-    public function getOwedsRelatedBySenderidJoinPaymentRelatedByPaymentid(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildOwedQuery::create(null, $criteria);
-        $query->joinWith('PaymentRelatedByPaymentid', $joinBehavior);
-
-        return $this->getOwedsRelatedBySenderid($query, $con);
-    }
-
-    /**
-     * Clears out the collPaymentsRelatedByReceiverid collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addPaymentsRelatedByReceiverid()
-     */
-    public function clearPaymentsRelatedByReceiverid()
-    {
-        $this->collPaymentsRelatedByReceiverid = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collPaymentsRelatedByReceiverid collection loaded partially.
-     */
-    public function resetPartialPaymentsRelatedByReceiverid($v = true)
-    {
-        $this->collPaymentsRelatedByReceiveridPartial = $v;
-    }
-
-    /**
-     * Initializes the collPaymentsRelatedByReceiverid collection.
-     *
-     * By default this just sets the collPaymentsRelatedByReceiverid collection to an empty array (like clearcollPaymentsRelatedByReceiverid());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPaymentsRelatedByReceiverid($overrideExisting = true)
-    {
-        if (null !== $this->collPaymentsRelatedByReceiverid && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = PaymentTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collPaymentsRelatedByReceiverid = new $collectionClassName;
-        $this->collPaymentsRelatedByReceiverid->setModel('\Payment');
-    }
-
-    /**
-     * Gets an array of ChildPayment objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildUser is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildPayment[] List of ChildPayment objects
-     * @throws PropelException
-     */
-    public function getPaymentsRelatedByReceiverid(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collPaymentsRelatedByReceiveridPartial && !$this->isNew();
-        if (null === $this->collPaymentsRelatedByReceiverid || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPaymentsRelatedByReceiverid) {
-                // return empty collection
-                $this->initPaymentsRelatedByReceiverid();
-            } else {
-                $collPaymentsRelatedByReceiverid = ChildPaymentQuery::create(null, $criteria)
-                    ->filterByUserRelatedByReceiverid($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collPaymentsRelatedByReceiveridPartial && count($collPaymentsRelatedByReceiverid)) {
-                        $this->initPaymentsRelatedByReceiverid(false);
-
-                        foreach ($collPaymentsRelatedByReceiverid as $obj) {
-                            if (false == $this->collPaymentsRelatedByReceiverid->contains($obj)) {
-                                $this->collPaymentsRelatedByReceiverid->append($obj);
-                            }
-                        }
-
-                        $this->collPaymentsRelatedByReceiveridPartial = true;
-                    }
-
-                    return $collPaymentsRelatedByReceiverid;
-                }
-
-                if ($partial && $this->collPaymentsRelatedByReceiverid) {
-                    foreach ($this->collPaymentsRelatedByReceiverid as $obj) {
-                        if ($obj->isNew()) {
-                            $collPaymentsRelatedByReceiverid[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPaymentsRelatedByReceiverid = $collPaymentsRelatedByReceiverid;
-                $this->collPaymentsRelatedByReceiveridPartial = false;
-            }
-        }
-
-        return $this->collPaymentsRelatedByReceiverid;
-    }
-
-    /**
-     * Sets a collection of ChildPayment objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $paymentsRelatedByReceiverid A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function setPaymentsRelatedByReceiverid(Collection $paymentsRelatedByReceiverid, ConnectionInterface $con = null)
-    {
-        /** @var ChildPayment[] $paymentsRelatedByReceiveridToDelete */
-        $paymentsRelatedByReceiveridToDelete = $this->getPaymentsRelatedByReceiverid(new Criteria(), $con)->diff($paymentsRelatedByReceiverid);
-
-
-        $this->paymentsRelatedByReceiveridScheduledForDeletion = $paymentsRelatedByReceiveridToDelete;
-
-        foreach ($paymentsRelatedByReceiveridToDelete as $paymentRelatedByReceiveridRemoved) {
-            $paymentRelatedByReceiveridRemoved->setUserRelatedByReceiverid(null);
-        }
-
-        $this->collPaymentsRelatedByReceiverid = null;
-        foreach ($paymentsRelatedByReceiverid as $paymentRelatedByReceiverid) {
-            $this->addPaymentRelatedByReceiverid($paymentRelatedByReceiverid);
-        }
-
-        $this->collPaymentsRelatedByReceiverid = $paymentsRelatedByReceiverid;
-        $this->collPaymentsRelatedByReceiveridPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Payment objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Payment objects.
-     * @throws PropelException
-     */
-    public function countPaymentsRelatedByReceiverid(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collPaymentsRelatedByReceiveridPartial && !$this->isNew();
-        if (null === $this->collPaymentsRelatedByReceiverid || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPaymentsRelatedByReceiverid) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getPaymentsRelatedByReceiverid());
-            }
-
-            $query = ChildPaymentQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByUserRelatedByReceiverid($this)
-                ->count($con);
-        }
-
-        return count($this->collPaymentsRelatedByReceiverid);
-    }
-
-    /**
-     * Method called to associate a ChildPayment object to this object
-     * through the ChildPayment foreign key attribute.
-     *
-     * @param  ChildPayment $l ChildPayment
-     * @return $this|\User The current object (for fluent API support)
-     */
-    public function addPaymentRelatedByReceiverid(ChildPayment $l)
-    {
-        if ($this->collPaymentsRelatedByReceiverid === null) {
-            $this->initPaymentsRelatedByReceiverid();
-            $this->collPaymentsRelatedByReceiveridPartial = true;
-        }
-
-        if (!$this->collPaymentsRelatedByReceiverid->contains($l)) {
-            $this->doAddPaymentRelatedByReceiverid($l);
-
-            if ($this->paymentsRelatedByReceiveridScheduledForDeletion and $this->paymentsRelatedByReceiveridScheduledForDeletion->contains($l)) {
-                $this->paymentsRelatedByReceiveridScheduledForDeletion->remove($this->paymentsRelatedByReceiveridScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildPayment $paymentRelatedByReceiverid The ChildPayment object to add.
-     */
-    protected function doAddPaymentRelatedByReceiverid(ChildPayment $paymentRelatedByReceiverid)
-    {
-        $this->collPaymentsRelatedByReceiverid[]= $paymentRelatedByReceiverid;
-        $paymentRelatedByReceiverid->setUserRelatedByReceiverid($this);
-    }
-
-    /**
-     * @param  ChildPayment $paymentRelatedByReceiverid The ChildPayment object to remove.
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function removePaymentRelatedByReceiverid(ChildPayment $paymentRelatedByReceiverid)
-    {
-        if ($this->getPaymentsRelatedByReceiverid()->contains($paymentRelatedByReceiverid)) {
-            $pos = $this->collPaymentsRelatedByReceiverid->search($paymentRelatedByReceiverid);
-            $this->collPaymentsRelatedByReceiverid->remove($pos);
-            if (null === $this->paymentsRelatedByReceiveridScheduledForDeletion) {
-                $this->paymentsRelatedByReceiveridScheduledForDeletion = clone $this->collPaymentsRelatedByReceiverid;
-                $this->paymentsRelatedByReceiveridScheduledForDeletion->clear();
-            }
-            $this->paymentsRelatedByReceiveridScheduledForDeletion[]= clone $paymentRelatedByReceiverid;
-            $paymentRelatedByReceiverid->setUserRelatedByReceiverid(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related PaymentsRelatedByReceiverid from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildPayment[] List of ChildPayment objects
-     */
-    public function getPaymentsRelatedByReceiveridJoinOwedRelatedByOwedid(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildPaymentQuery::create(null, $criteria);
-        $query->joinWith('OwedRelatedByOwedid', $joinBehavior);
-
-        return $this->getPaymentsRelatedByReceiverid($query, $con);
-    }
-
-    /**
-     * Clears out the collPaymentsRelatedBySenderid collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addPaymentsRelatedBySenderid()
-     */
-    public function clearPaymentsRelatedBySenderid()
-    {
-        $this->collPaymentsRelatedBySenderid = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collPaymentsRelatedBySenderid collection loaded partially.
-     */
-    public function resetPartialPaymentsRelatedBySenderid($v = true)
-    {
-        $this->collPaymentsRelatedBySenderidPartial = $v;
-    }
-
-    /**
-     * Initializes the collPaymentsRelatedBySenderid collection.
-     *
-     * By default this just sets the collPaymentsRelatedBySenderid collection to an empty array (like clearcollPaymentsRelatedBySenderid());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPaymentsRelatedBySenderid($overrideExisting = true)
-    {
-        if (null !== $this->collPaymentsRelatedBySenderid && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = PaymentTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collPaymentsRelatedBySenderid = new $collectionClassName;
-        $this->collPaymentsRelatedBySenderid->setModel('\Payment');
-    }
-
-    /**
-     * Gets an array of ChildPayment objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildUser is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildPayment[] List of ChildPayment objects
-     * @throws PropelException
-     */
-    public function getPaymentsRelatedBySenderid(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collPaymentsRelatedBySenderidPartial && !$this->isNew();
-        if (null === $this->collPaymentsRelatedBySenderid || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPaymentsRelatedBySenderid) {
-                // return empty collection
-                $this->initPaymentsRelatedBySenderid();
-            } else {
-                $collPaymentsRelatedBySenderid = ChildPaymentQuery::create(null, $criteria)
-                    ->filterByUserRelatedBySenderid($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collPaymentsRelatedBySenderidPartial && count($collPaymentsRelatedBySenderid)) {
-                        $this->initPaymentsRelatedBySenderid(false);
-
-                        foreach ($collPaymentsRelatedBySenderid as $obj) {
-                            if (false == $this->collPaymentsRelatedBySenderid->contains($obj)) {
-                                $this->collPaymentsRelatedBySenderid->append($obj);
-                            }
-                        }
-
-                        $this->collPaymentsRelatedBySenderidPartial = true;
-                    }
-
-                    return $collPaymentsRelatedBySenderid;
-                }
-
-                if ($partial && $this->collPaymentsRelatedBySenderid) {
-                    foreach ($this->collPaymentsRelatedBySenderid as $obj) {
-                        if ($obj->isNew()) {
-                            $collPaymentsRelatedBySenderid[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPaymentsRelatedBySenderid = $collPaymentsRelatedBySenderid;
-                $this->collPaymentsRelatedBySenderidPartial = false;
-            }
-        }
-
-        return $this->collPaymentsRelatedBySenderid;
-    }
-
-    /**
-     * Sets a collection of ChildPayment objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $paymentsRelatedBySenderid A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function setPaymentsRelatedBySenderid(Collection $paymentsRelatedBySenderid, ConnectionInterface $con = null)
-    {
-        /** @var ChildPayment[] $paymentsRelatedBySenderidToDelete */
-        $paymentsRelatedBySenderidToDelete = $this->getPaymentsRelatedBySenderid(new Criteria(), $con)->diff($paymentsRelatedBySenderid);
-
-
-        $this->paymentsRelatedBySenderidScheduledForDeletion = $paymentsRelatedBySenderidToDelete;
-
-        foreach ($paymentsRelatedBySenderidToDelete as $paymentRelatedBySenderidRemoved) {
-            $paymentRelatedBySenderidRemoved->setUserRelatedBySenderid(null);
-        }
-
-        $this->collPaymentsRelatedBySenderid = null;
-        foreach ($paymentsRelatedBySenderid as $paymentRelatedBySenderid) {
-            $this->addPaymentRelatedBySenderid($paymentRelatedBySenderid);
-        }
-
-        $this->collPaymentsRelatedBySenderid = $paymentsRelatedBySenderid;
-        $this->collPaymentsRelatedBySenderidPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Payment objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Payment objects.
-     * @throws PropelException
-     */
-    public function countPaymentsRelatedBySenderid(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collPaymentsRelatedBySenderidPartial && !$this->isNew();
-        if (null === $this->collPaymentsRelatedBySenderid || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPaymentsRelatedBySenderid) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getPaymentsRelatedBySenderid());
-            }
-
-            $query = ChildPaymentQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByUserRelatedBySenderid($this)
-                ->count($con);
-        }
-
-        return count($this->collPaymentsRelatedBySenderid);
-    }
-
-    /**
-     * Method called to associate a ChildPayment object to this object
-     * through the ChildPayment foreign key attribute.
-     *
-     * @param  ChildPayment $l ChildPayment
-     * @return $this|\User The current object (for fluent API support)
-     */
-    public function addPaymentRelatedBySenderid(ChildPayment $l)
-    {
-        if ($this->collPaymentsRelatedBySenderid === null) {
-            $this->initPaymentsRelatedBySenderid();
-            $this->collPaymentsRelatedBySenderidPartial = true;
-        }
-
-        if (!$this->collPaymentsRelatedBySenderid->contains($l)) {
-            $this->doAddPaymentRelatedBySenderid($l);
-
-            if ($this->paymentsRelatedBySenderidScheduledForDeletion and $this->paymentsRelatedBySenderidScheduledForDeletion->contains($l)) {
-                $this->paymentsRelatedBySenderidScheduledForDeletion->remove($this->paymentsRelatedBySenderidScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildPayment $paymentRelatedBySenderid The ChildPayment object to add.
-     */
-    protected function doAddPaymentRelatedBySenderid(ChildPayment $paymentRelatedBySenderid)
-    {
-        $this->collPaymentsRelatedBySenderid[]= $paymentRelatedBySenderid;
-        $paymentRelatedBySenderid->setUserRelatedBySenderid($this);
-    }
-
-    /**
-     * @param  ChildPayment $paymentRelatedBySenderid The ChildPayment object to remove.
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function removePaymentRelatedBySenderid(ChildPayment $paymentRelatedBySenderid)
-    {
-        if ($this->getPaymentsRelatedBySenderid()->contains($paymentRelatedBySenderid)) {
-            $pos = $this->collPaymentsRelatedBySenderid->search($paymentRelatedBySenderid);
-            $this->collPaymentsRelatedBySenderid->remove($pos);
-            if (null === $this->paymentsRelatedBySenderidScheduledForDeletion) {
-                $this->paymentsRelatedBySenderidScheduledForDeletion = clone $this->collPaymentsRelatedBySenderid;
-                $this->paymentsRelatedBySenderidScheduledForDeletion->clear();
-            }
-            $this->paymentsRelatedBySenderidScheduledForDeletion[]= clone $paymentRelatedBySenderid;
-            $paymentRelatedBySenderid->setUserRelatedBySenderid(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related PaymentsRelatedBySenderid from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildPayment[] List of ChildPayment objects
-     */
-    public function getPaymentsRelatedBySenderidJoinOwedRelatedByOwedid(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildPaymentQuery::create(null, $criteria);
-        $query->joinWith('OwedRelatedByOwedid', $joinBehavior);
-
-        return $this->getPaymentsRelatedBySenderid($query, $con);
-    }
-
-    /**
-     * Clears out the collPhones collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addPhones()
-     */
-    public function clearPhones()
-    {
-        $this->collPhones = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collPhones collection loaded partially.
-     */
-    public function resetPartialPhones($v = true)
-    {
-        $this->collPhonesPartial = $v;
-    }
-
-    /**
-     * Initializes the collPhones collection.
-     *
-     * By default this just sets the collPhones collection to an empty array (like clearcollPhones());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPhones($overrideExisting = true)
-    {
-        if (null !== $this->collPhones && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = PhoneTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collPhones = new $collectionClassName;
-        $this->collPhones->setModel('\Phone');
-    }
-
-    /**
-     * Gets an array of ChildPhone objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildUser is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildPhone[] List of ChildPhone objects
-     * @throws PropelException
-     */
-    public function getPhones(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collPhonesPartial && !$this->isNew();
-        if (null === $this->collPhones || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPhones) {
-                // return empty collection
-                $this->initPhones();
-            } else {
-                $collPhones = ChildPhoneQuery::create(null, $criteria)
-                    ->filterByUser($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collPhonesPartial && count($collPhones)) {
-                        $this->initPhones(false);
-
-                        foreach ($collPhones as $obj) {
-                            if (false == $this->collPhones->contains($obj)) {
-                                $this->collPhones->append($obj);
-                            }
-                        }
-
-                        $this->collPhonesPartial = true;
-                    }
-
-                    return $collPhones;
-                }
-
-                if ($partial && $this->collPhones) {
-                    foreach ($this->collPhones as $obj) {
-                        if ($obj->isNew()) {
-                            $collPhones[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPhones = $collPhones;
-                $this->collPhonesPartial = false;
-            }
-        }
-
-        return $this->collPhones;
-    }
-
-    /**
-     * Sets a collection of ChildPhone objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $phones A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function setPhones(Collection $phones, ConnectionInterface $con = null)
-    {
-        /** @var ChildPhone[] $phonesToDelete */
-        $phonesToDelete = $this->getPhones(new Criteria(), $con)->diff($phones);
-
-
-        $this->phonesScheduledForDeletion = $phonesToDelete;
-
-        foreach ($phonesToDelete as $phoneRemoved) {
-            $phoneRemoved->setUser(null);
-        }
-
-        $this->collPhones = null;
-        foreach ($phones as $phone) {
-            $this->addPhone($phone);
-        }
-
-        $this->collPhones = $phones;
-        $this->collPhonesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Phone objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Phone objects.
-     * @throws PropelException
-     */
-    public function countPhones(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collPhonesPartial && !$this->isNew();
-        if (null === $this->collPhones || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPhones) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getPhones());
-            }
-
-            $query = ChildPhoneQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByUser($this)
-                ->count($con);
-        }
-
-        return count($this->collPhones);
-    }
-
-    /**
-     * Method called to associate a ChildPhone object to this object
-     * through the ChildPhone foreign key attribute.
-     *
-     * @param  ChildPhone $l ChildPhone
-     * @return $this|\User The current object (for fluent API support)
-     */
-    public function addPhone(ChildPhone $l)
-    {
-        if ($this->collPhones === null) {
-            $this->initPhones();
-            $this->collPhonesPartial = true;
-        }
-
-        if (!$this->collPhones->contains($l)) {
-            $this->doAddPhone($l);
-
-            if ($this->phonesScheduledForDeletion and $this->phonesScheduledForDeletion->contains($l)) {
-                $this->phonesScheduledForDeletion->remove($this->phonesScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildPhone $phone The ChildPhone object to add.
-     */
-    protected function doAddPhone(ChildPhone $phone)
-    {
-        $this->collPhones[]= $phone;
-        $phone->setUser($this);
-    }
-
-    /**
-     * @param  ChildPhone $phone The ChildPhone object to remove.
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function removePhone(ChildPhone $phone)
-    {
-        if ($this->getPhones()->contains($phone)) {
-            $pos = $this->collPhones->search($phone);
-            $this->collPhones->remove($pos);
-            if (null === $this->phonesScheduledForDeletion) {
-                $this->phonesScheduledForDeletion = clone $this->collPhones;
-                $this->phonesScheduledForDeletion->clear();
-            }
-            $this->phonesScheduledForDeletion[]= clone $phone;
-            $phone->setUser(null);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Clears out the collProperties collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addProperties()
-     */
-    public function clearProperties()
-    {
-        $this->collProperties = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collProperties collection loaded partially.
-     */
-    public function resetPartialProperties($v = true)
-    {
-        $this->collPropertiesPartial = $v;
-    }
-
-    /**
-     * Initializes the collProperties collection.
-     *
-     * By default this just sets the collProperties collection to an empty array (like clearcollProperties());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initProperties($overrideExisting = true)
-    {
-        if (null !== $this->collProperties && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = PropertyTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collProperties = new $collectionClassName;
-        $this->collProperties->setModel('\Property');
-    }
-
-    /**
-     * Gets an array of ChildProperty objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildUser is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildProperty[] List of ChildProperty objects
-     * @throws PropelException
-     */
-    public function getProperties(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collPropertiesPartial && !$this->isNew();
-        if (null === $this->collProperties || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collProperties) {
-                // return empty collection
-                $this->initProperties();
-            } else {
-                $collProperties = ChildPropertyQuery::create(null, $criteria)
-                    ->filterByUser($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collPropertiesPartial && count($collProperties)) {
-                        $this->initProperties(false);
-
-                        foreach ($collProperties as $obj) {
-                            if (false == $this->collProperties->contains($obj)) {
-                                $this->collProperties->append($obj);
-                            }
-                        }
-
-                        $this->collPropertiesPartial = true;
-                    }
-
-                    return $collProperties;
-                }
-
-                if ($partial && $this->collProperties) {
-                    foreach ($this->collProperties as $obj) {
-                        if ($obj->isNew()) {
-                            $collProperties[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collProperties = $collProperties;
-                $this->collPropertiesPartial = false;
-            }
-        }
-
-        return $this->collProperties;
-    }
-
-    /**
-     * Sets a collection of ChildProperty objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $properties A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function setProperties(Collection $properties, ConnectionInterface $con = null)
-    {
-        /** @var ChildProperty[] $propertiesToDelete */
-        $propertiesToDelete = $this->getProperties(new Criteria(), $con)->diff($properties);
-
-
-        $this->propertiesScheduledForDeletion = $propertiesToDelete;
-
-        foreach ($propertiesToDelete as $propertyRemoved) {
-            $propertyRemoved->setUser(null);
-        }
-
-        $this->collProperties = null;
-        foreach ($properties as $property) {
-            $this->addProperty($property);
-        }
-
-        $this->collProperties = $properties;
-        $this->collPropertiesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Property objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Property objects.
-     * @throws PropelException
-     */
-    public function countProperties(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collPropertiesPartial && !$this->isNew();
-        if (null === $this->collProperties || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collProperties) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getProperties());
-            }
-
-            $query = ChildPropertyQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByUser($this)
-                ->count($con);
-        }
-
-        return count($this->collProperties);
-    }
-
-    /**
-     * Method called to associate a ChildProperty object to this object
-     * through the ChildProperty foreign key attribute.
-     *
-     * @param  ChildProperty $l ChildProperty
-     * @return $this|\User The current object (for fluent API support)
-     */
-    public function addProperty(ChildProperty $l)
-    {
-        if ($this->collProperties === null) {
-            $this->initProperties();
-            $this->collPropertiesPartial = true;
-        }
-
-        if (!$this->collProperties->contains($l)) {
-            $this->doAddProperty($l);
-
-            if ($this->propertiesScheduledForDeletion and $this->propertiesScheduledForDeletion->contains($l)) {
-                $this->propertiesScheduledForDeletion->remove($this->propertiesScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildProperty $property The ChildProperty object to add.
-     */
-    protected function doAddProperty(ChildProperty $property)
-    {
-        $this->collProperties[]= $property;
-        $property->setUser($this);
-    }
-
-    /**
-     * @param  ChildProperty $property The ChildProperty object to remove.
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function removeProperty(ChildProperty $property)
-    {
-        if ($this->getProperties()->contains($property)) {
-            $pos = $this->collProperties->search($property);
-            $this->collProperties->remove($pos);
-            if (null === $this->propertiesScheduledForDeletion) {
-                $this->propertiesScheduledForDeletion = clone $this->collProperties;
-                $this->propertiesScheduledForDeletion->clear();
-            }
-            $this->propertiesScheduledForDeletion[]= clone $property;
-            $property->setUser(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related Properties from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildProperty[] List of ChildProperty objects
-     */
-    public function getPropertiesJoinAddress(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildPropertyQuery::create(null, $criteria);
-        $query->joinWith('Address', $joinBehavior);
-
-        return $this->getProperties($query, $con);
-    }
-
-    /**
-     * Clears out the collTenants collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addTenants()
-     */
-    public function clearTenants()
-    {
-        $this->collTenants = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collTenants collection loaded partially.
-     */
-    public function resetPartialTenants($v = true)
-    {
-        $this->collTenantsPartial = $v;
-    }
-
-    /**
-     * Initializes the collTenants collection.
-     *
-     * By default this just sets the collTenants collection to an empty array (like clearcollTenants());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initTenants($overrideExisting = true)
-    {
-        if (null !== $this->collTenants && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = TenantTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collTenants = new $collectionClassName;
-        $this->collTenants->setModel('\Tenant');
-    }
-
-    /**
-     * Gets an array of ChildTenant objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildUser is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildTenant[] List of ChildTenant objects
-     * @throws PropelException
-     */
-    public function getTenants(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collTenantsPartial && !$this->isNew();
-        if (null === $this->collTenants || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collTenants) {
-                // return empty collection
-                $this->initTenants();
-            } else {
-                $collTenants = ChildTenantQuery::create(null, $criteria)
-                    ->filterByUser($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collTenantsPartial && count($collTenants)) {
-                        $this->initTenants(false);
-
-                        foreach ($collTenants as $obj) {
-                            if (false == $this->collTenants->contains($obj)) {
-                                $this->collTenants->append($obj);
-                            }
-                        }
-
-                        $this->collTenantsPartial = true;
-                    }
-
-                    return $collTenants;
-                }
-
-                if ($partial && $this->collTenants) {
-                    foreach ($this->collTenants as $obj) {
-                        if ($obj->isNew()) {
-                            $collTenants[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collTenants = $collTenants;
-                $this->collTenantsPartial = false;
-            }
-        }
-
-        return $this->collTenants;
-    }
-
-    /**
-     * Sets a collection of ChildTenant objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $tenants A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function setTenants(Collection $tenants, ConnectionInterface $con = null)
-    {
-        /** @var ChildTenant[] $tenantsToDelete */
-        $tenantsToDelete = $this->getTenants(new Criteria(), $con)->diff($tenants);
-
-
-        $this->tenantsScheduledForDeletion = $tenantsToDelete;
-
-        foreach ($tenantsToDelete as $tenantRemoved) {
-            $tenantRemoved->setUser(null);
-        }
-
-        $this->collTenants = null;
-        foreach ($tenants as $tenant) {
-            $this->addTenant($tenant);
-        }
-
-        $this->collTenants = $tenants;
-        $this->collTenantsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Tenant objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Tenant objects.
-     * @throws PropelException
-     */
-    public function countTenants(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collTenantsPartial && !$this->isNew();
-        if (null === $this->collTenants || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collTenants) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getTenants());
-            }
-
-            $query = ChildTenantQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByUser($this)
-                ->count($con);
-        }
-
-        return count($this->collTenants);
-    }
-
-    /**
-     * Method called to associate a ChildTenant object to this object
-     * through the ChildTenant foreign key attribute.
-     *
-     * @param  ChildTenant $l ChildTenant
-     * @return $this|\User The current object (for fluent API support)
-     */
-    public function addTenant(ChildTenant $l)
-    {
-        if ($this->collTenants === null) {
-            $this->initTenants();
-            $this->collTenantsPartial = true;
-        }
-
-        if (!$this->collTenants->contains($l)) {
-            $this->doAddTenant($l);
-
-            if ($this->tenantsScheduledForDeletion and $this->tenantsScheduledForDeletion->contains($l)) {
-                $this->tenantsScheduledForDeletion->remove($this->tenantsScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildTenant $tenant The ChildTenant object to add.
-     */
-    protected function doAddTenant(ChildTenant $tenant)
-    {
-        $this->collTenants[]= $tenant;
-        $tenant->setUser($this);
-    }
-
-    /**
-     * @param  ChildTenant $tenant The ChildTenant object to remove.
-     * @return $this|ChildUser The current object (for fluent API support)
-     */
-    public function removeTenant(ChildTenant $tenant)
-    {
-        if ($this->getTenants()->contains($tenant)) {
-            $pos = $this->collTenants->search($tenant);
-            $this->collTenants->remove($pos);
-            if (null === $this->tenantsScheduledForDeletion) {
-                $this->tenantsScheduledForDeletion = clone $this->collTenants;
-                $this->tenantsScheduledForDeletion->clear();
-            }
-            $this->tenantsScheduledForDeletion[]= clone $tenant;
-            $tenant->setUser(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related Tenants from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildTenant[] List of ChildTenant objects
-     */
-    public function getTenantsJoinProperty(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildTenantQuery::create(null, $criteria);
-        $query->joinWith('Property', $joinBehavior);
-
-        return $this->getTenants($query, $con);
-    }
-
     /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
@@ -3983,11 +1197,10 @@ abstract class User implements ActiveRecordInterface
     public function clear()
     {
         $this->id = null;
-        $this->timestamp = null;
-        $this->firstname = null;
-        $this->middlename = null;
-        $this->lastname = null;
-        $this->hashedpassword = null;
+        $this->adddate = null;
+        $this->email = null;
+        $this->encryptedpassword = null;
+        $this->name = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();
@@ -4007,62 +1220,8 @@ abstract class User implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collEmails) {
-                foreach ($this->collEmails as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collLivess) {
-                foreach ($this->collLivess as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collOwedsRelatedByReceiverid) {
-                foreach ($this->collOwedsRelatedByReceiverid as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collOwedsRelatedBySenderid) {
-                foreach ($this->collOwedsRelatedBySenderid as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collPaymentsRelatedByReceiverid) {
-                foreach ($this->collPaymentsRelatedByReceiverid as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collPaymentsRelatedBySenderid) {
-                foreach ($this->collPaymentsRelatedBySenderid as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collPhones) {
-                foreach ($this->collPhones as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collProperties) {
-                foreach ($this->collProperties as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collTenants) {
-                foreach ($this->collTenants as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
         } // if ($deep)
 
-        $this->collEmails = null;
-        $this->collLivess = null;
-        $this->collOwedsRelatedByReceiverid = null;
-        $this->collOwedsRelatedBySenderid = null;
-        $this->collPaymentsRelatedByReceiverid = null;
-        $this->collPaymentsRelatedBySenderid = null;
-        $this->collPhones = null;
-        $this->collProperties = null;
-        $this->collTenants = null;
     }
 
     /**

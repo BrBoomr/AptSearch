@@ -1,9 +1,9 @@
 <?php
 
-use Base\PaymentQuery as BasePaymentQuery;
+use Base\ContinenttypeQuery as BaseContinenttypeQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'payment' table.
+ * Skeleton subclass for performing query and update operations on the 'continenttype' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\PaymentQuery as BasePaymentQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class PaymentQuery extends BasePaymentQuery
+class ContinenttypeQuery extends BaseContinenttypeQuery
 {
 
 }

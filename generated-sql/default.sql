@@ -12,15 +12,14 @@ DROP TABLE IF EXISTS `address`;
 CREATE TABLE `address`
 (
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `Continent` VARCHAR(128) NOT NULL,
-    `Country` VARCHAR(128) NOT NULL,
-    `State` VARCHAR(128),
-    `City` VARCHAR(128) NOT NULL,
-    `Zip` INTEGER,
-    `StreetName` VARCHAR(128) NOT NULL,
-    `BuildingNumber` INTEGER NOT NULL,
-    `ApartmentID` INTEGER,
+    `continentTypeID` INTEGER NOT NULL,
+    `countryTypeID` INTEGER NOT NULL,
+    `state` TEXT,
+    `locality` TEXT,
+    `zipCode` TEXT,
+    `streetName` TEXT,
+    `buildingIndentifier` TEXT,
+    `apartmentIdentifier` TEXT,
     PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB;
 
@@ -32,17 +31,26 @@ DROP TABLE IF EXISTS `amenity`;
 
 CREATE TABLE `amenity`
 (
+    `amenityNumberID` INTEGER NOT NULL AUTO_INCREMENT,
+    `propertyID` INTEGER NOT NULL,
+    `amenityTypeID` INTEGER NOT NULL,
+    `details` TEXT,
+    PRIMARY KEY (`amenityNumberID`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- amenitytype
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `amenitytype`;
+
+CREATE TABLE `amenitytype`
+(
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `PropertyID` INTEGER NOT NULL,
-    `Name` VARCHAR(56) NOT NULL,
-    `Description` VARCHAR(128) NOT NULL,
-    `Private` TINYINT(1) NOT NULL,
-    PRIMARY KEY (`ID`),
-    INDEX `PropertyID` (`PropertyID`),
-    CONSTRAINT `amenity_ibfk_1`
-        FOREIGN KEY (`PropertyID`)
-        REFERENCES `property` (`ID`)
+    `addDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `name` TEXT NOT NULL,
+    `useCount` INTEGER DEFAULT 0 NOT NULL,
+    PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -53,72 +61,55 @@ DROP TABLE IF EXISTS `appliance`;
 
 CREATE TABLE `appliance`
 (
-    `ID` INTEGER NOT NULL,
-    `Timestamp` DATE NOT NULL,
-    `Name` VARCHAR(128) NOT NULL,
-    `Description` VARCHAR(128) NOT NULL,
-    `PropertyID` INTEGER NOT NULL,
-    INDEX `PropertyID` (`PropertyID`),
-    CONSTRAINT `appliance_ibfk_1`
-        FOREIGN KEY (`PropertyID`)
-        REFERENCES `property` (`ID`)
+    `applianceNumberID` INTEGER NOT NULL AUTO_INCREMENT,
+    `propertyID` INTEGER NOT NULL,
+    `applianceTypeID` INTEGER NOT NULL,
+    `details` TEXT,
+    PRIMARY KEY (`applianceNumberID`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- cost
+-- appliancetype
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `cost`;
+DROP TABLE IF EXISTS `appliancetype`;
 
-CREATE TABLE `cost`
+CREATE TABLE `appliancetype`
 (
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `PropertyID` INTEGER NOT NULL,
-    `Name` VARCHAR(56) NOT NULL,
-    `Description` VARCHAR(128) NOT NULL,
-    `Cost` INTEGER NOT NULL,
-    PRIMARY KEY (`ID`),
-    INDEX `PropertyID` (`PropertyID`),
-    CONSTRAINT `cost_ibfk_1`
-        FOREIGN KEY (`PropertyID`)
-        REFERENCES `property` (`ID`)
+    `addDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `name` TEXT NOT NULL,
+    `useCount` INTEGER DEFAULT 0 NOT NULL,
+    PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- email
+-- continenttype
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `email`;
+DROP TABLE IF EXISTS `continenttype`;
 
-CREATE TABLE `email`
+CREATE TABLE `continenttype`
 (
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `UserID` INTEGER NOT NULL,
-    `Email` VARCHAR(128) NOT NULL,
-    `Description` enum('general','tenant','landlord',''),
-    PRIMARY KEY (`ID`),
-    INDEX `UserID` (`UserID`),
-    CONSTRAINT `email_ibfk_1`
-        FOREIGN KEY (`UserID`)
-        REFERENCES `user` (`ID`)
+    `addDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `name` TEXT NOT NULL,
+    `useCount` INTEGER DEFAULT 0 NOT NULL,
+    PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- fee
+-- countrytype
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `fee`;
+DROP TABLE IF EXISTS `countrytype`;
 
-CREATE TABLE `fee`
+CREATE TABLE `countrytype`
 (
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `PropertyID` INTEGER NOT NULL,
-    `Name` VARCHAR(56) NOT NULL,
-    `Description` VARCHAR(128) NOT NULL,
-    `Cost` INTEGER NOT NULL,
+    `addDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `name` TEXT NOT NULL,
+    `useCount` INTEGER DEFAULT 0 NOT NULL,
     PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB;
 
@@ -130,138 +121,43 @@ DROP TABLE IF EXISTS `issue`;
 
 CREATE TABLE `issue`
 (
-    `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `PropertyID` INTEGER NOT NULL,
-    `Name` VARCHAR(56) NOT NULL,
-    `Description` VARCHAR(128) NOT NULL,
-    `Found` DATE NOT NULL,
-    `Repaired` DATE NOT NULL,
-    `Cost` INTEGER NOT NULL,
-    PRIMARY KEY (`ID`),
-    INDEX `PropertyID` (`PropertyID`),
-    CONSTRAINT `issue_ibfk_1`
-        FOREIGN KEY (`PropertyID`)
-        REFERENCES `property` (`ID`)
+    `issueNumberID` INTEGER NOT NULL AUTO_INCREMENT,
+    `propertyID` INTEGER NOT NULL,
+    `name` TEXT NOT NULL,
+    `details` TEXT,
+    `foundDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `repairDate` DATETIME,
+    PRIMARY KEY (`issueNumberID`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- limitation
+-- perk
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `limitation`;
+DROP TABLE IF EXISTS `perk`;
 
-CREATE TABLE `limitation`
+CREATE TABLE `perk`
 (
-    `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `PropertyID` INTEGER NOT NULL,
-    `Name` VARCHAR(56) NOT NULL,
-    `Description` VARCHAR(128) NOT NULL,
-    PRIMARY KEY (`ID`),
-    INDEX `PropertyID` (`PropertyID`),
-    CONSTRAINT `limitation_ibfk_1`
-        FOREIGN KEY (`PropertyID`)
-        REFERENCES `property` (`ID`)
+    `perkNumberID` INTEGER NOT NULL AUTO_INCREMENT,
+    `propertyID` INTEGER NOT NULL,
+    `perkTypeID` INTEGER NOT NULL,
+    `details` TEXT,
+    PRIMARY KEY (`perkNumberID`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- lives
+-- perktype
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `lives`;
+DROP TABLE IF EXISTS `perktype`;
 
-CREATE TABLE `lives`
+CREATE TABLE `perktype`
 (
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `UserID` INTEGER NOT NULL,
-    `Name` VARCHAR(128) NOT NULL,
-    `TenantRelation` VARCHAR(128) NOT NULL,
-    `Start` DATE NOT NULL,
-    `End` DATE NOT NULL,
-    `ActualEnd` DATE NOT NULL,
-    PRIMARY KEY (`ID`),
-    INDEX `UserID` (`UserID`),
-    CONSTRAINT `lives_ibfk_1`
-        FOREIGN KEY (`UserID`)
-        REFERENCES `user` (`ID`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- money
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `money`;
-
-CREATE TABLE `money`
-(
-    `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `UserID` INTEGER NOT NULL,
-    `Send` TINYINT(1) NOT NULL,
-    `Receive` TINYINT(1) NOT NULL,
+    `addDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `name` TEXT NOT NULL,
+    `useCount` INTEGER DEFAULT 0 NOT NULL,
     PRIMARY KEY (`ID`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- owed
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `owed`;
-
-CREATE TABLE `owed`
-(
-    `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` INTEGER NOT NULL,
-    `SenderID` INTEGER NOT NULL,
-    `ReceiverID` INTEGER NOT NULL,
-    `Amount` INTEGER NOT NULL,
-    `DateDue` DATE NOT NULL,
-    `Name` VARCHAR(56) NOT NULL,
-    `Details` VARCHAR(128) NOT NULL,
-    `PaymentID` INTEGER,
-    PRIMARY KEY (`ID`),
-    INDEX `PaymentID` (`PaymentID`),
-    INDEX `ReceiverID` (`ReceiverID`),
-    INDEX `SenderID` (`SenderID`),
-    CONSTRAINT `owed_ibfk_1`
-        FOREIGN KEY (`PaymentID`)
-        REFERENCES `payment` (`ID`),
-    CONSTRAINT `owed_ibfk_2`
-        FOREIGN KEY (`ReceiverID`)
-        REFERENCES `user` (`ID`),
-    CONSTRAINT `owed_ibfk_3`
-        FOREIGN KEY (`SenderID`)
-        REFERENCES `user` (`ID`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- payment
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `payment`;
-
-CREATE TABLE `payment`
-(
-    `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `SenderID` INTEGER NOT NULL,
-    `ReceiverID` INTEGER NOT NULL,
-    `OwedID` INTEGER NOT NULL,
-    PRIMARY KEY (`ID`),
-    INDEX `ReceiverID` (`ReceiverID`),
-    INDEX `SenderID` (`SenderID`),
-    INDEX `OwedID` (`OwedID`),
-    CONSTRAINT `payment_ibfk_1`
-        FOREIGN KEY (`ReceiverID`)
-        REFERENCES `user` (`ID`),
-    CONSTRAINT `payment_ibfk_2`
-        FOREIGN KEY (`SenderID`)
-        REFERENCES `user` (`ID`),
-    CONSTRAINT `payment_ibfk_3`
-        FOREIGN KEY (`OwedID`)
-        REFERENCES `owed` (`ID`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -272,16 +168,14 @@ DROP TABLE IF EXISTS `phone`;
 
 CREATE TABLE `phone`
 (
-    `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `UserID` INTEGER NOT NULL,
-    `Number` VARCHAR(64) NOT NULL,
-    `Description` enum('work','home','cell','') NOT NULL,
-    PRIMARY KEY (`ID`),
-    INDEX `UserID` (`UserID`),
-    CONSTRAINT `phone_ibfk_1`
-        FOREIGN KEY (`UserID`)
-        REFERENCES `user` (`ID`)
+    `phoneNumberID` INTEGER NOT NULL AUTO_INCREMENT,
+    `userID` INTEGER NOT NULL,
+    `addDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `areaCode` TEXT NOT NULL,
+    `number` TEXT NOT NULL,
+    `extension` TEXT,
+    `description` TEXT,
+    PRIMARY KEY (`phoneNumberID`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -292,16 +186,12 @@ DROP TABLE IF EXISTS `picture`;
 
 CREATE TABLE `picture`
 (
-    `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `PropertyID` INTEGER NOT NULL,
-    `Link` VARCHAR(128) NOT NULL,
-    `Description` VARCHAR(128) NOT NULL,
-    PRIMARY KEY (`ID`),
-    INDEX `PropertyID` (`PropertyID`),
-    CONSTRAINT `picture_ibfk_1`
-        FOREIGN KEY (`PropertyID`)
-        REFERENCES `property` (`ID`)
+    `pictureNumberID` INTEGER NOT NULL AUTO_INCREMENT,
+    `addDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `propertyID` INTEGER NOT NULL,
+    `link` TEXT NOT NULL,
+    `details` TEXT,
+    PRIMARY KEY (`pictureNumberID`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -313,50 +203,18 @@ DROP TABLE IF EXISTS `property`;
 CREATE TABLE `property`
 (
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `LandlordID` INTEGER NOT NULL,
-    `AddressID` INTEGER NOT NULL,
-    `FPL` INTEGER,
-    `SquareFootage` INTEGER NOT NULL,
-    `Rooms` INTEGER NOT NULL,
-    `Bathrooms` INTEGER NOT NULL,
-    `Details` VARCHAR(256),
-    PRIMARY KEY (`ID`),
-    INDEX `AddressID` (`AddressID`),
-    INDEX `LandlordID` (`LandlordID`),
-    CONSTRAINT `property_ibfk_1`
-        FOREIGN KEY (`AddressID`)
-        REFERENCES `address` (`ID`),
-    CONSTRAINT `property_ibfk_2`
-        FOREIGN KEY (`LandlordID`)
-        REFERENCES `user` (`ID`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
--- tenant
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `tenant`;
-
-CREATE TABLE `tenant`
-(
-    `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `UserID` INTEGER NOT NULL,
-    `PropertyID` INTEGER NOT NULL,
-    `Name` VARCHAR(128) NOT NULL,
-    `Start` DATE NOT NULL,
-    `End` DATE,
-    `ActualEnd` DATE,
-    PRIMARY KEY (`ID`),
-    INDEX `PropertyID` (`PropertyID`),
-    INDEX `UserID` (`UserID`),
-    CONSTRAINT `tenant_ibfk_1`
-        FOREIGN KEY (`PropertyID`)
-        REFERENCES `property` (`ID`),
-    CONSTRAINT `tenant_ibfk_2`
-        FOREIGN KEY (`UserID`)
-        REFERENCES `user` (`ID`)
+    `addressID` INTEGER NOT NULL,
+    `userID` INTEGER NOT NULL,
+    `addDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `lastUpdated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `postName` TEXT NOT NULL,
+    `available` TINYINT(1) DEFAULT 0 NOT NULL,
+    `expectedRentPerMonth` DOUBLE NOT NULL,
+    `squareFootage` INTEGER NOT NULL,
+    `bedroomCount` INTEGER NOT NULL,
+    `bathroomCount` INTEGER NOT NULL,
+    `details` TEXT,
+    PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
@@ -368,11 +226,10 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`
 (
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `FirstName` VARCHAR(128) NOT NULL,
-    `MiddleName` VARCHAR(128),
-    `LastName` VARCHAR(128) NOT NULL,
-    `HashedPassword` VARCHAR(256) NOT NULL,
+    `addDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `email` TEXT NOT NULL,
+    `encryptedPassword` TEXT NOT NULL,
+    `name` TEXT NOT NULL,
     PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB;
 
@@ -384,18 +241,29 @@ DROP TABLE IF EXISTS `utility`;
 
 CREATE TABLE `utility`
 (
+    `utilityNumberID` INTEGER NOT NULL AUTO_INCREMENT,
+    `propertyID` INTEGER NOT NULL,
+    `utilityTypeID` INTEGER NOT NULL,
+    `details` TEXT,
+    `available` TINYINT(1) DEFAULT 1 NOT NULL,
+    `includedInRent` TINYINT(1) DEFAULT 1 NOT NULL,
+    `expectedCostPerMonth` DOUBLE DEFAULT 0 NOT NULL,
+    PRIMARY KEY (`utilityNumberID`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- utilitytype
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `utilitytype`;
+
+CREATE TABLE `utilitytype`
+(
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
-    `Timestamp` DATE NOT NULL,
-    `PropertyID` INTEGER NOT NULL,
-    `Name` VARCHAR(56) NOT NULL,
-    `Description` VARCHAR(128) NOT NULL,
-    `Included` TINYINT(1) NOT NULL,
-    `Cost` INTEGER NOT NULL,
-    PRIMARY KEY (`ID`),
-    INDEX `PropertyID` (`PropertyID`),
-    CONSTRAINT `utility_ibfk_1`
-        FOREIGN KEY (`PropertyID`)
-        REFERENCES `property` (`ID`)
+    `addDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `name` TEXT NOT NULL,
+    `useCount` INTEGER DEFAULT 0 NOT NULL,
+    PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier

@@ -72,29 +72,29 @@ class PictureTableMap extends TableMap
     const NUM_HYDRATE_COLUMNS = 5;
 
     /**
-     * the column name for the ID field
+     * the column name for the pictureNumberID field
      */
-    const COL_ID = 'picture.ID';
+    const COL_PICTURENUMBERID = 'picture.pictureNumberID';
 
     /**
-     * the column name for the Timestamp field
+     * the column name for the addDate field
      */
-    const COL_TIMESTAMP = 'picture.Timestamp';
+    const COL_ADDDATE = 'picture.addDate';
 
     /**
-     * the column name for the PropertyID field
+     * the column name for the propertyID field
      */
-    const COL_PROPERTYID = 'picture.PropertyID';
+    const COL_PROPERTYID = 'picture.propertyID';
 
     /**
-     * the column name for the Link field
+     * the column name for the link field
      */
-    const COL_LINK = 'picture.Link';
+    const COL_LINK = 'picture.link';
 
     /**
-     * the column name for the Description field
+     * the column name for the details field
      */
-    const COL_DESCRIPTION = 'picture.Description';
+    const COL_DETAILS = 'picture.details';
 
     /**
      * The default string format for model objects of the related table
@@ -108,10 +108,10 @@ class PictureTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Timestamp', 'Propertyid', 'Link', 'Description', ),
-        self::TYPE_CAMELNAME     => array('id', 'timestamp', 'propertyid', 'link', 'description', ),
-        self::TYPE_COLNAME       => array(PictureTableMap::COL_ID, PictureTableMap::COL_TIMESTAMP, PictureTableMap::COL_PROPERTYID, PictureTableMap::COL_LINK, PictureTableMap::COL_DESCRIPTION, ),
-        self::TYPE_FIELDNAME     => array('ID', 'Timestamp', 'PropertyID', 'Link', 'Description', ),
+        self::TYPE_PHPNAME       => array('Picturenumberid', 'Adddate', 'Propertyid', 'Link', 'Details', ),
+        self::TYPE_CAMELNAME     => array('picturenumberid', 'adddate', 'propertyid', 'link', 'details', ),
+        self::TYPE_COLNAME       => array(PictureTableMap::COL_PICTURENUMBERID, PictureTableMap::COL_ADDDATE, PictureTableMap::COL_PROPERTYID, PictureTableMap::COL_LINK, PictureTableMap::COL_DETAILS, ),
+        self::TYPE_FIELDNAME     => array('pictureNumberID', 'addDate', 'propertyID', 'link', 'details', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
@@ -122,10 +122,10 @@ class PictureTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Timestamp' => 1, 'Propertyid' => 2, 'Link' => 3, 'Description' => 4, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'timestamp' => 1, 'propertyid' => 2, 'link' => 3, 'description' => 4, ),
-        self::TYPE_COLNAME       => array(PictureTableMap::COL_ID => 0, PictureTableMap::COL_TIMESTAMP => 1, PictureTableMap::COL_PROPERTYID => 2, PictureTableMap::COL_LINK => 3, PictureTableMap::COL_DESCRIPTION => 4, ),
-        self::TYPE_FIELDNAME     => array('ID' => 0, 'Timestamp' => 1, 'PropertyID' => 2, 'Link' => 3, 'Description' => 4, ),
+        self::TYPE_PHPNAME       => array('Picturenumberid' => 0, 'Adddate' => 1, 'Propertyid' => 2, 'Link' => 3, 'Details' => 4, ),
+        self::TYPE_CAMELNAME     => array('picturenumberid' => 0, 'adddate' => 1, 'propertyid' => 2, 'link' => 3, 'details' => 4, ),
+        self::TYPE_COLNAME       => array(PictureTableMap::COL_PICTURENUMBERID => 0, PictureTableMap::COL_ADDDATE => 1, PictureTableMap::COL_PROPERTYID => 2, PictureTableMap::COL_LINK => 3, PictureTableMap::COL_DETAILS => 4, ),
+        self::TYPE_FIELDNAME     => array('pictureNumberID' => 0, 'addDate' => 1, 'propertyID' => 2, 'link' => 3, 'details' => 4, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
     );
 
@@ -146,11 +146,11 @@ class PictureTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
-        $this->addForeignKey('PropertyID', 'Propertyid', 'INTEGER', 'property', 'ID', true, null, null);
-        $this->addColumn('Link', 'Link', 'VARCHAR', true, 128, null);
-        $this->addColumn('Description', 'Description', 'VARCHAR', true, 128, null);
+        $this->addPrimaryKey('pictureNumberID', 'Picturenumberid', 'INTEGER', true, null, null);
+        $this->addColumn('addDate', 'Adddate', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
+        $this->addColumn('propertyID', 'Propertyid', 'INTEGER', true, null, null);
+        $this->addColumn('link', 'Link', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('details', 'Details', 'LONGVARCHAR', false, null, null);
     } // initialize()
 
     /**
@@ -158,13 +158,6 @@ class PictureTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Property', '\\Property', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':PropertyID',
-    1 => ':ID',
-  ),
-), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -183,11 +176,11 @@ class PictureTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Picturenumberid', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Picturenumberid', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Picturenumberid', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Picturenumberid', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Picturenumberid', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Picturenumberid', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -207,7 +200,7 @@ class PictureTableMap extends TableMap
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('Picturenumberid', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -308,17 +301,17 @@ class PictureTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PictureTableMap::COL_ID);
-            $criteria->addSelectColumn(PictureTableMap::COL_TIMESTAMP);
+            $criteria->addSelectColumn(PictureTableMap::COL_PICTURENUMBERID);
+            $criteria->addSelectColumn(PictureTableMap::COL_ADDDATE);
             $criteria->addSelectColumn(PictureTableMap::COL_PROPERTYID);
             $criteria->addSelectColumn(PictureTableMap::COL_LINK);
-            $criteria->addSelectColumn(PictureTableMap::COL_DESCRIPTION);
+            $criteria->addSelectColumn(PictureTableMap::COL_DETAILS);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.Timestamp');
-            $criteria->addSelectColumn($alias . '.PropertyID');
-            $criteria->addSelectColumn($alias . '.Link');
-            $criteria->addSelectColumn($alias . '.Description');
+            $criteria->addSelectColumn($alias . '.pictureNumberID');
+            $criteria->addSelectColumn($alias . '.addDate');
+            $criteria->addSelectColumn($alias . '.propertyID');
+            $criteria->addSelectColumn($alias . '.link');
+            $criteria->addSelectColumn($alias . '.details');
         }
     }
 
@@ -370,7 +363,7 @@ class PictureTableMap extends TableMap
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(PictureTableMap::DATABASE_NAME);
-            $criteria->add(PictureTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria->add(PictureTableMap::COL_PICTURENUMBERID, (array) $values, Criteria::IN);
         }
 
         $query = PictureQuery::create()->mergeWith($criteria);
@@ -418,8 +411,8 @@ class PictureTableMap extends TableMap
             $criteria = $criteria->buildCriteria(); // build Criteria from Picture object
         }
 
-        if ($criteria->containsKey(PictureTableMap::COL_ID) && $criteria->keyContainsValue(PictureTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PictureTableMap::COL_ID.')');
+        if ($criteria->containsKey(PictureTableMap::COL_PICTURENUMBERID) && $criteria->keyContainsValue(PictureTableMap::COL_PICTURENUMBERID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PictureTableMap::COL_PICTURENUMBERID.')');
         }
 
 

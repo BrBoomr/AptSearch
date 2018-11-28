@@ -1,9 +1,9 @@
 <?php
 
-use Base\Email as BaseEmail;
+use Base\Perktype as BasePerktype;
 
 /**
- * Skeleton subclass for representing a row from the 'email' table.
+ * Skeleton subclass for representing a row from the 'perktype' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\Email as BaseEmail;
  * long as it does not already exist in the output directory.
  *
  */
-class Email extends BaseEmail
+class Perktype extends BasePerktype
 {
 
 }

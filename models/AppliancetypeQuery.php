@@ -1,9 +1,9 @@
 <?php
 
-use Base\CostQuery as BaseCostQuery;
+use Base\AppliancetypeQuery as BaseAppliancetypeQuery;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'cost' table.
+ * Skeleton subclass for performing query and update operations on the 'appliancetype' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\CostQuery as BaseCostQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class CostQuery extends BaseCostQuery
+class AppliancetypeQuery extends BaseAppliancetypeQuery
 {
 
 }

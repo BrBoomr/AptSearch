@@ -3,8 +3,6 @@
 namespace Base;
 
 use \PhoneQuery as ChildPhoneQuery;
-use \User as ChildUser;
-use \UserQuery as ChildUserQuery;
 use \DateTime;
 use \Exception;
 use \PDO;
@@ -64,18 +62,11 @@ abstract class Phone implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the id field.
+     * The value for the phonenumberid field.
      *
      * @var        int
      */
-    protected $id;
-
-    /**
-     * The value for the timestamp field.
-     *
-     * @var        DateTime
-     */
-    protected $timestamp;
+    protected $phonenumberid;
 
     /**
      * The value for the userid field.
@@ -85,6 +76,21 @@ abstract class Phone implements ActiveRecordInterface
     protected $userid;
 
     /**
+     * The value for the adddate field.
+     *
+     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
+     * @var        DateTime
+     */
+    protected $adddate;
+
+    /**
+     * The value for the areacode field.
+     *
+     * @var        string
+     */
+    protected $areacode;
+
+    /**
      * The value for the number field.
      *
      * @var        string
@@ -92,16 +98,18 @@ abstract class Phone implements ActiveRecordInterface
     protected $number;
 
     /**
+     * The value for the extension field.
+     *
+     * @var        string
+     */
+    protected $extension;
+
+    /**
      * The value for the description field.
      *
      * @var        string
      */
     protected $description;
-
-    /**
-     * @var        ChildUser
-     */
-    protected $aUser;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -112,10 +120,22 @@ abstract class Phone implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
+     */
+    public function applyDefaultValues()
+    {
+    }
+
+    /**
      * Initializes internal state of Base\Phone object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -337,33 +357,13 @@ abstract class Phone implements ActiveRecordInterface
     }
 
     /**
-     * Get the [id] column value.
+     * Get the [phonenumberid] column value.
      *
      * @return int
      */
-    public function getId()
+    public function getPhonenumberid()
     {
-        return $this->id;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [timestamp] column value.
-     *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getTimestamp($format = NULL)
-    {
-        if ($format === null) {
-            return $this->timestamp;
-        } else {
-            return $this->timestamp instanceof \DateTimeInterface ? $this->timestamp->format($format) : null;
-        }
+        return $this->phonenumberid;
     }
 
     /**
@@ -377,6 +377,36 @@ abstract class Phone implements ActiveRecordInterface
     }
 
     /**
+     * Get the [optionally formatted] temporal [adddate] column value.
+     *
+     *
+     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw DateTime object will be returned.
+     *
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getAdddate($format = NULL)
+    {
+        if ($format === null) {
+            return $this->adddate;
+        } else {
+            return $this->adddate instanceof \DateTimeInterface ? $this->adddate->format($format) : null;
+        }
+    }
+
+    /**
+     * Get the [areacode] column value.
+     *
+     * @return string
+     */
+    public function getAreacode()
+    {
+        return $this->areacode;
+    }
+
+    /**
      * Get the [number] column value.
      *
      * @return string
@@ -384,6 +414,16 @@ abstract class Phone implements ActiveRecordInterface
     public function getNumber()
     {
         return $this->number;
+    }
+
+    /**
+     * Get the [extension] column value.
+     *
+     * @return string
+     */
+    public function getExtension()
+    {
+        return $this->extension;
     }
 
     /**
@@ -397,44 +437,24 @@ abstract class Phone implements ActiveRecordInterface
     }
 
     /**
-     * Set the value of [id] column.
+     * Set the value of [phonenumberid] column.
      *
      * @param int $v new value
      * @return $this|\Phone The current object (for fluent API support)
      */
-    public function setId($v)
+    public function setPhonenumberid($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id !== $v) {
-            $this->id = $v;
-            $this->modifiedColumns[PhoneTableMap::COL_ID] = true;
+        if ($this->phonenumberid !== $v) {
+            $this->phonenumberid = $v;
+            $this->modifiedColumns[PhoneTableMap::COL_PHONENUMBERID] = true;
         }
 
         return $this;
-    } // setId()
-
-    /**
-     * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
-     *
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
-     * @return $this|\Phone The current object (for fluent API support)
-     */
-    public function setTimestamp($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->timestamp !== null || $dt !== null) {
-            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d") !== $this->timestamp->format("Y-m-d")) {
-                $this->timestamp = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[PhoneTableMap::COL_TIMESTAMP] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setTimestamp()
+    } // setPhonenumberid()
 
     /**
      * Set the value of [userid] column.
@@ -453,12 +473,48 @@ abstract class Phone implements ActiveRecordInterface
             $this->modifiedColumns[PhoneTableMap::COL_USERID] = true;
         }
 
-        if ($this->aUser !== null && $this->aUser->getId() !== $v) {
-            $this->aUser = null;
+        return $this;
+    } // setUserid()
+
+    /**
+     * Sets the value of [adddate] column to a normalized version of the date/time value specified.
+     *
+     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
+     *               Empty strings are treated as NULL.
+     * @return $this|\Phone The current object (for fluent API support)
+     */
+    public function setAdddate($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->adddate !== null || $dt !== null) {
+            if ($this->adddate === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->adddate->format("Y-m-d H:i:s.u")) {
+                $this->adddate = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[PhoneTableMap::COL_ADDDATE] = true;
+            }
+        } // if either are not null
+
+        return $this;
+    } // setAdddate()
+
+    /**
+     * Set the value of [areacode] column.
+     *
+     * @param string $v new value
+     * @return $this|\Phone The current object (for fluent API support)
+     */
+    public function setAreacode($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->areacode !== $v) {
+            $this->areacode = $v;
+            $this->modifiedColumns[PhoneTableMap::COL_AREACODE] = true;
         }
 
         return $this;
-    } // setUserid()
+    } // setAreacode()
 
     /**
      * Set the value of [number] column.
@@ -479,6 +535,26 @@ abstract class Phone implements ActiveRecordInterface
 
         return $this;
     } // setNumber()
+
+    /**
+     * Set the value of [extension] column.
+     *
+     * @param string $v new value
+     * @return $this|\Phone The current object (for fluent API support)
+     */
+    public function setExtension($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->extension !== $v) {
+            $this->extension = $v;
+            $this->modifiedColumns[PhoneTableMap::COL_EXTENSION] = true;
+        }
+
+        return $this;
+    } // setExtension()
 
     /**
      * Set the value of [description] column.
@@ -536,22 +612,28 @@ abstract class Phone implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : PhoneTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : PhoneTableMap::translateFieldName('Phonenumberid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->phonenumberid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PhoneTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00') {
-                $col = null;
-            }
-            $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PhoneTableMap::translateFieldName('Userid', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PhoneTableMap::translateFieldName('Userid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->userid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PhoneTableMap::translateFieldName('Number', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PhoneTableMap::translateFieldName('Adddate', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00 00:00:00') {
+                $col = null;
+            }
+            $this->adddate = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PhoneTableMap::translateFieldName('Areacode', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->areacode = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PhoneTableMap::translateFieldName('Number', TableMap::TYPE_PHPNAME, $indexType)];
             $this->number = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PhoneTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PhoneTableMap::translateFieldName('Extension', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->extension = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PhoneTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
             $this->description = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -561,7 +643,7 @@ abstract class Phone implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = PhoneTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = PhoneTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Phone'), 0, $e);
@@ -583,9 +665,6 @@ abstract class Phone implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aUser !== null && $this->userid !== $this->aUser->getId()) {
-            $this->aUser = null;
-        }
     } // ensureConsistency
 
     /**
@@ -625,7 +704,6 @@ abstract class Phone implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aUser = null;
         } // if (deep)
     }
 
@@ -729,18 +807,6 @@ abstract class Phone implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aUser !== null) {
-                if ($this->aUser->isModified() || $this->aUser->isNew()) {
-                    $affectedRows += $this->aUser->save($con);
-                }
-                $this->setUser($this->aUser);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -772,26 +838,32 @@ abstract class Phone implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[PhoneTableMap::COL_ID] = true;
-        if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PhoneTableMap::COL_ID . ')');
+        $this->modifiedColumns[PhoneTableMap::COL_PHONENUMBERID] = true;
+        if (null !== $this->phonenumberid) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PhoneTableMap::COL_PHONENUMBERID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PhoneTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'ID';
-        }
-        if ($this->isColumnModified(PhoneTableMap::COL_TIMESTAMP)) {
-            $modifiedColumns[':p' . $index++]  = 'Timestamp';
+        if ($this->isColumnModified(PhoneTableMap::COL_PHONENUMBERID)) {
+            $modifiedColumns[':p' . $index++]  = 'phoneNumberID';
         }
         if ($this->isColumnModified(PhoneTableMap::COL_USERID)) {
-            $modifiedColumns[':p' . $index++]  = 'UserID';
+            $modifiedColumns[':p' . $index++]  = 'userID';
+        }
+        if ($this->isColumnModified(PhoneTableMap::COL_ADDDATE)) {
+            $modifiedColumns[':p' . $index++]  = 'addDate';
+        }
+        if ($this->isColumnModified(PhoneTableMap::COL_AREACODE)) {
+            $modifiedColumns[':p' . $index++]  = 'areaCode';
         }
         if ($this->isColumnModified(PhoneTableMap::COL_NUMBER)) {
-            $modifiedColumns[':p' . $index++]  = 'Number';
+            $modifiedColumns[':p' . $index++]  = 'number';
+        }
+        if ($this->isColumnModified(PhoneTableMap::COL_EXTENSION)) {
+            $modifiedColumns[':p' . $index++]  = 'extension';
         }
         if ($this->isColumnModified(PhoneTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'Description';
+            $modifiedColumns[':p' . $index++]  = 'description';
         }
 
         $sql = sprintf(
@@ -804,19 +876,25 @@ abstract class Phone implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':
-                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                    case 'phoneNumberID':
+                        $stmt->bindValue($identifier, $this->phonenumberid, PDO::PARAM_INT);
                         break;
-                    case 'Timestamp':
-                        $stmt->bindValue($identifier, $this->timestamp ? $this->timestamp->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
-                        break;
-                    case 'UserID':
+                    case 'userID':
                         $stmt->bindValue($identifier, $this->userid, PDO::PARAM_INT);
                         break;
-                    case 'Number':
+                    case 'addDate':
+                        $stmt->bindValue($identifier, $this->adddate ? $this->adddate->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
+                        break;
+                    case 'areaCode':
+                        $stmt->bindValue($identifier, $this->areacode, PDO::PARAM_STR);
+                        break;
+                    case 'number':
                         $stmt->bindValue($identifier, $this->number, PDO::PARAM_STR);
                         break;
-                    case 'Description':
+                    case 'extension':
+                        $stmt->bindValue($identifier, $this->extension, PDO::PARAM_STR);
+                        break;
+                    case 'description':
                         $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
                         break;
                 }
@@ -832,7 +910,7 @@ abstract class Phone implements ActiveRecordInterface
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', 0, $e);
         }
-        $this->setId($pk);
+        $this->setPhonenumberid($pk);
 
         $this->setNew(false);
     }
@@ -882,18 +960,24 @@ abstract class Phone implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getId();
+                return $this->getPhonenumberid();
                 break;
             case 1:
-                return $this->getTimestamp();
-                break;
-            case 2:
                 return $this->getUserid();
                 break;
+            case 2:
+                return $this->getAdddate();
+                break;
             case 3:
-                return $this->getNumber();
+                return $this->getAreacode();
                 break;
             case 4:
+                return $this->getNumber();
+                break;
+            case 5:
+                return $this->getExtension();
+                break;
+            case 6:
                 return $this->getDescription();
                 break;
             default:
@@ -913,11 +997,10 @@ abstract class Phone implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
         if (isset($alreadyDumpedObjects['Phone'][$this->hashCode()])) {
@@ -926,14 +1009,16 @@ abstract class Phone implements ActiveRecordInterface
         $alreadyDumpedObjects['Phone'][$this->hashCode()] = true;
         $keys = PhoneTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getId(),
-            $keys[1] => $this->getTimestamp(),
-            $keys[2] => $this->getUserid(),
-            $keys[3] => $this->getNumber(),
-            $keys[4] => $this->getDescription(),
+            $keys[0] => $this->getPhonenumberid(),
+            $keys[1] => $this->getUserid(),
+            $keys[2] => $this->getAdddate(),
+            $keys[3] => $this->getAreacode(),
+            $keys[4] => $this->getNumber(),
+            $keys[5] => $this->getExtension(),
+            $keys[6] => $this->getDescription(),
         );
-        if ($result[$keys[1]] instanceof \DateTimeInterface) {
-            $result[$keys[1]] = $result[$keys[1]]->format('c');
+        if ($result[$keys[2]] instanceof \DateTimeInterface) {
+            $result[$keys[2]] = $result[$keys[2]]->format('c');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -941,23 +1026,6 @@ abstract class Phone implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
-        if ($includeForeignObjects) {
-            if (null !== $this->aUser) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'user';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'user';
-                        break;
-                    default:
-                        $key = 'User';
-                }
-
-                $result[$key] = $this->aUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-        }
 
         return $result;
     }
@@ -992,18 +1060,24 @@ abstract class Phone implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setId($value);
+                $this->setPhonenumberid($value);
                 break;
             case 1:
-                $this->setTimestamp($value);
-                break;
-            case 2:
                 $this->setUserid($value);
                 break;
+            case 2:
+                $this->setAdddate($value);
+                break;
             case 3:
-                $this->setNumber($value);
+                $this->setAreacode($value);
                 break;
             case 4:
+                $this->setNumber($value);
+                break;
+            case 5:
+                $this->setExtension($value);
+                break;
+            case 6:
                 $this->setDescription($value);
                 break;
         } // switch()
@@ -1033,19 +1107,25 @@ abstract class Phone implements ActiveRecordInterface
         $keys = PhoneTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setId($arr[$keys[0]]);
+            $this->setPhonenumberid($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setTimestamp($arr[$keys[1]]);
+            $this->setUserid($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setUserid($arr[$keys[2]]);
+            $this->setAdddate($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setNumber($arr[$keys[3]]);
+            $this->setAreacode($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setDescription($arr[$keys[4]]);
+            $this->setNumber($arr[$keys[4]]);
+        }
+        if (array_key_exists($keys[5], $arr)) {
+            $this->setExtension($arr[$keys[5]]);
+        }
+        if (array_key_exists($keys[6], $arr)) {
+            $this->setDescription($arr[$keys[6]]);
         }
     }
 
@@ -1088,17 +1168,23 @@ abstract class Phone implements ActiveRecordInterface
     {
         $criteria = new Criteria(PhoneTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(PhoneTableMap::COL_ID)) {
-            $criteria->add(PhoneTableMap::COL_ID, $this->id);
-        }
-        if ($this->isColumnModified(PhoneTableMap::COL_TIMESTAMP)) {
-            $criteria->add(PhoneTableMap::COL_TIMESTAMP, $this->timestamp);
+        if ($this->isColumnModified(PhoneTableMap::COL_PHONENUMBERID)) {
+            $criteria->add(PhoneTableMap::COL_PHONENUMBERID, $this->phonenumberid);
         }
         if ($this->isColumnModified(PhoneTableMap::COL_USERID)) {
             $criteria->add(PhoneTableMap::COL_USERID, $this->userid);
         }
+        if ($this->isColumnModified(PhoneTableMap::COL_ADDDATE)) {
+            $criteria->add(PhoneTableMap::COL_ADDDATE, $this->adddate);
+        }
+        if ($this->isColumnModified(PhoneTableMap::COL_AREACODE)) {
+            $criteria->add(PhoneTableMap::COL_AREACODE, $this->areacode);
+        }
         if ($this->isColumnModified(PhoneTableMap::COL_NUMBER)) {
             $criteria->add(PhoneTableMap::COL_NUMBER, $this->number);
+        }
+        if ($this->isColumnModified(PhoneTableMap::COL_EXTENSION)) {
+            $criteria->add(PhoneTableMap::COL_EXTENSION, $this->extension);
         }
         if ($this->isColumnModified(PhoneTableMap::COL_DESCRIPTION)) {
             $criteria->add(PhoneTableMap::COL_DESCRIPTION, $this->description);
@@ -1120,7 +1206,7 @@ abstract class Phone implements ActiveRecordInterface
     public function buildPkeyCriteria()
     {
         $criteria = ChildPhoneQuery::create();
-        $criteria->add(PhoneTableMap::COL_ID, $this->id);
+        $criteria->add(PhoneTableMap::COL_PHONENUMBERID, $this->phonenumberid);
 
         return $criteria;
     }
@@ -1133,7 +1219,7 @@ abstract class Phone implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getId();
+        $validPk = null !== $this->getPhonenumberid();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1153,18 +1239,18 @@ abstract class Phone implements ActiveRecordInterface
      */
     public function getPrimaryKey()
     {
-        return $this->getId();
+        return $this->getPhonenumberid();
     }
 
     /**
-     * Generic method to set the primary key (id column).
+     * Generic method to set the primary key (phonenumberid column).
      *
      * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setId($key);
+        $this->setPhonenumberid($key);
     }
 
     /**
@@ -1173,7 +1259,7 @@ abstract class Phone implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getId();
+        return null === $this->getPhonenumberid();
     }
 
     /**
@@ -1189,13 +1275,15 @@ abstract class Phone implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setTimestamp($this->getTimestamp());
         $copyObj->setUserid($this->getUserid());
+        $copyObj->setAdddate($this->getAdddate());
+        $copyObj->setAreacode($this->getAreacode());
         $copyObj->setNumber($this->getNumber());
+        $copyObj->setExtension($this->getExtension());
         $copyObj->setDescription($this->getDescription());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setPhonenumberid(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1222,73 +1310,22 @@ abstract class Phone implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildUser object.
-     *
-     * @param  ChildUser $v
-     * @return $this|\Phone The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setUser(ChildUser $v = null)
-    {
-        if ($v === null) {
-            $this->setUserid(NULL);
-        } else {
-            $this->setUserid($v->getId());
-        }
-
-        $this->aUser = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildUser object, it will not be re-added.
-        if ($v !== null) {
-            $v->addPhone($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildUser object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildUser The associated ChildUser object.
-     * @throws PropelException
-     */
-    public function getUser(ConnectionInterface $con = null)
-    {
-        if ($this->aUser === null && ($this->userid != 0)) {
-            $this->aUser = ChildUserQuery::create()->findPk($this->userid, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aUser->addPhones($this);
-             */
-        }
-
-        return $this->aUser;
-    }
-
-    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
-        if (null !== $this->aUser) {
-            $this->aUser->removePhone($this);
-        }
-        $this->id = null;
-        $this->timestamp = null;
+        $this->phonenumberid = null;
         $this->userid = null;
+        $this->adddate = null;
+        $this->areacode = null;
         $this->number = null;
+        $this->extension = null;
         $this->description = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1307,7 +1344,6 @@ abstract class Phone implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aUser = null;
     }
 
     /**

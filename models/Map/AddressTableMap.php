@@ -59,7 +59,7 @@ class AddressTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 10;
+    const NUM_COLUMNS = 9;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class AddressTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 10;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /**
      * the column name for the ID field
@@ -77,49 +77,44 @@ class AddressTableMap extends TableMap
     const COL_ID = 'address.ID';
 
     /**
-     * the column name for the Timestamp field
+     * the column name for the continentTypeID field
      */
-    const COL_TIMESTAMP = 'address.Timestamp';
+    const COL_CONTINENTTYPEID = 'address.continentTypeID';
 
     /**
-     * the column name for the Continent field
+     * the column name for the countryTypeID field
      */
-    const COL_CONTINENT = 'address.Continent';
+    const COL_COUNTRYTYPEID = 'address.countryTypeID';
 
     /**
-     * the column name for the Country field
+     * the column name for the state field
      */
-    const COL_COUNTRY = 'address.Country';
+    const COL_STATE = 'address.state';
 
     /**
-     * the column name for the State field
+     * the column name for the locality field
      */
-    const COL_STATE = 'address.State';
+    const COL_LOCALITY = 'address.locality';
 
     /**
-     * the column name for the City field
+     * the column name for the zipCode field
      */
-    const COL_CITY = 'address.City';
+    const COL_ZIPCODE = 'address.zipCode';
 
     /**
-     * the column name for the Zip field
+     * the column name for the streetName field
      */
-    const COL_ZIP = 'address.Zip';
+    const COL_STREETNAME = 'address.streetName';
 
     /**
-     * the column name for the StreetName field
+     * the column name for the buildingIndentifier field
      */
-    const COL_STREETNAME = 'address.StreetName';
+    const COL_BUILDINGINDENTIFIER = 'address.buildingIndentifier';
 
     /**
-     * the column name for the BuildingNumber field
+     * the column name for the apartmentIdentifier field
      */
-    const COL_BUILDINGNUMBER = 'address.BuildingNumber';
-
-    /**
-     * the column name for the ApartmentID field
-     */
-    const COL_APARTMENTID = 'address.ApartmentID';
+    const COL_APARTMENTIDENTIFIER = 'address.apartmentIdentifier';
 
     /**
      * The default string format for model objects of the related table
@@ -133,11 +128,11 @@ class AddressTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Timestamp', 'Continent', 'Country', 'State', 'City', 'Zip', 'Streetname', 'Buildingnumber', 'Apartmentid', ),
-        self::TYPE_CAMELNAME     => array('id', 'timestamp', 'continent', 'country', 'state', 'city', 'zip', 'streetname', 'buildingnumber', 'apartmentid', ),
-        self::TYPE_COLNAME       => array(AddressTableMap::COL_ID, AddressTableMap::COL_TIMESTAMP, AddressTableMap::COL_CONTINENT, AddressTableMap::COL_COUNTRY, AddressTableMap::COL_STATE, AddressTableMap::COL_CITY, AddressTableMap::COL_ZIP, AddressTableMap::COL_STREETNAME, AddressTableMap::COL_BUILDINGNUMBER, AddressTableMap::COL_APARTMENTID, ),
-        self::TYPE_FIELDNAME     => array('ID', 'Timestamp', 'Continent', 'Country', 'State', 'City', 'Zip', 'StreetName', 'BuildingNumber', 'ApartmentID', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('Id', 'Continenttypeid', 'Countrytypeid', 'State', 'Locality', 'Zipcode', 'Streetname', 'Buildingindentifier', 'Apartmentidentifier', ),
+        self::TYPE_CAMELNAME     => array('id', 'continenttypeid', 'countrytypeid', 'state', 'locality', 'zipcode', 'streetname', 'buildingindentifier', 'apartmentidentifier', ),
+        self::TYPE_COLNAME       => array(AddressTableMap::COL_ID, AddressTableMap::COL_CONTINENTTYPEID, AddressTableMap::COL_COUNTRYTYPEID, AddressTableMap::COL_STATE, AddressTableMap::COL_LOCALITY, AddressTableMap::COL_ZIPCODE, AddressTableMap::COL_STREETNAME, AddressTableMap::COL_BUILDINGINDENTIFIER, AddressTableMap::COL_APARTMENTIDENTIFIER, ),
+        self::TYPE_FIELDNAME     => array('ID', 'continentTypeID', 'countryTypeID', 'state', 'locality', 'zipCode', 'streetName', 'buildingIndentifier', 'apartmentIdentifier', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -147,11 +142,11 @@ class AddressTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Timestamp' => 1, 'Continent' => 2, 'Country' => 3, 'State' => 4, 'City' => 5, 'Zip' => 6, 'Streetname' => 7, 'Buildingnumber' => 8, 'Apartmentid' => 9, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'timestamp' => 1, 'continent' => 2, 'country' => 3, 'state' => 4, 'city' => 5, 'zip' => 6, 'streetname' => 7, 'buildingnumber' => 8, 'apartmentid' => 9, ),
-        self::TYPE_COLNAME       => array(AddressTableMap::COL_ID => 0, AddressTableMap::COL_TIMESTAMP => 1, AddressTableMap::COL_CONTINENT => 2, AddressTableMap::COL_COUNTRY => 3, AddressTableMap::COL_STATE => 4, AddressTableMap::COL_CITY => 5, AddressTableMap::COL_ZIP => 6, AddressTableMap::COL_STREETNAME => 7, AddressTableMap::COL_BUILDINGNUMBER => 8, AddressTableMap::COL_APARTMENTID => 9, ),
-        self::TYPE_FIELDNAME     => array('ID' => 0, 'Timestamp' => 1, 'Continent' => 2, 'Country' => 3, 'State' => 4, 'City' => 5, 'Zip' => 6, 'StreetName' => 7, 'BuildingNumber' => 8, 'ApartmentID' => 9, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Continenttypeid' => 1, 'Countrytypeid' => 2, 'State' => 3, 'Locality' => 4, 'Zipcode' => 5, 'Streetname' => 6, 'Buildingindentifier' => 7, 'Apartmentidentifier' => 8, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'continenttypeid' => 1, 'countrytypeid' => 2, 'state' => 3, 'locality' => 4, 'zipcode' => 5, 'streetname' => 6, 'buildingindentifier' => 7, 'apartmentidentifier' => 8, ),
+        self::TYPE_COLNAME       => array(AddressTableMap::COL_ID => 0, AddressTableMap::COL_CONTINENTTYPEID => 1, AddressTableMap::COL_COUNTRYTYPEID => 2, AddressTableMap::COL_STATE => 3, AddressTableMap::COL_LOCALITY => 4, AddressTableMap::COL_ZIPCODE => 5, AddressTableMap::COL_STREETNAME => 6, AddressTableMap::COL_BUILDINGINDENTIFIER => 7, AddressTableMap::COL_APARTMENTIDENTIFIER => 8, ),
+        self::TYPE_FIELDNAME     => array('ID' => 0, 'continentTypeID' => 1, 'countryTypeID' => 2, 'state' => 3, 'locality' => 4, 'zipCode' => 5, 'streetName' => 6, 'buildingIndentifier' => 7, 'apartmentIdentifier' => 8, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -172,15 +167,14 @@ class AddressTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
-        $this->addColumn('Continent', 'Continent', 'VARCHAR', true, 128, null);
-        $this->addColumn('Country', 'Country', 'VARCHAR', true, 128, null);
-        $this->addColumn('State', 'State', 'VARCHAR', false, 128, null);
-        $this->addColumn('City', 'City', 'VARCHAR', true, 128, null);
-        $this->addColumn('Zip', 'Zip', 'INTEGER', false, null, null);
-        $this->addColumn('StreetName', 'Streetname', 'VARCHAR', true, 128, null);
-        $this->addColumn('BuildingNumber', 'Buildingnumber', 'INTEGER', true, null, null);
-        $this->addColumn('ApartmentID', 'Apartmentid', 'INTEGER', false, null, null);
+        $this->addColumn('continentTypeID', 'Continenttypeid', 'INTEGER', true, null, null);
+        $this->addColumn('countryTypeID', 'Countrytypeid', 'INTEGER', true, null, null);
+        $this->addColumn('state', 'State', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('locality', 'Locality', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('zipCode', 'Zipcode', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('streetName', 'Streetname', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('buildingIndentifier', 'Buildingindentifier', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('apartmentIdentifier', 'Apartmentidentifier', 'LONGVARCHAR', false, null, null);
     } // initialize()
 
     /**
@@ -188,13 +182,6 @@ class AddressTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Property', '\\Property', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':AddressID',
-    1 => ':ID',
-  ),
-), null, null, 'Properties', false);
     } // buildRelations()
 
     /**
@@ -339,26 +326,24 @@ class AddressTableMap extends TableMap
     {
         if (null === $alias) {
             $criteria->addSelectColumn(AddressTableMap::COL_ID);
-            $criteria->addSelectColumn(AddressTableMap::COL_TIMESTAMP);
-            $criteria->addSelectColumn(AddressTableMap::COL_CONTINENT);
-            $criteria->addSelectColumn(AddressTableMap::COL_COUNTRY);
+            $criteria->addSelectColumn(AddressTableMap::COL_CONTINENTTYPEID);
+            $criteria->addSelectColumn(AddressTableMap::COL_COUNTRYTYPEID);
             $criteria->addSelectColumn(AddressTableMap::COL_STATE);
-            $criteria->addSelectColumn(AddressTableMap::COL_CITY);
-            $criteria->addSelectColumn(AddressTableMap::COL_ZIP);
+            $criteria->addSelectColumn(AddressTableMap::COL_LOCALITY);
+            $criteria->addSelectColumn(AddressTableMap::COL_ZIPCODE);
             $criteria->addSelectColumn(AddressTableMap::COL_STREETNAME);
-            $criteria->addSelectColumn(AddressTableMap::COL_BUILDINGNUMBER);
-            $criteria->addSelectColumn(AddressTableMap::COL_APARTMENTID);
+            $criteria->addSelectColumn(AddressTableMap::COL_BUILDINGINDENTIFIER);
+            $criteria->addSelectColumn(AddressTableMap::COL_APARTMENTIDENTIFIER);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.Timestamp');
-            $criteria->addSelectColumn($alias . '.Continent');
-            $criteria->addSelectColumn($alias . '.Country');
-            $criteria->addSelectColumn($alias . '.State');
-            $criteria->addSelectColumn($alias . '.City');
-            $criteria->addSelectColumn($alias . '.Zip');
-            $criteria->addSelectColumn($alias . '.StreetName');
-            $criteria->addSelectColumn($alias . '.BuildingNumber');
-            $criteria->addSelectColumn($alias . '.ApartmentID');
+            $criteria->addSelectColumn($alias . '.continentTypeID');
+            $criteria->addSelectColumn($alias . '.countryTypeID');
+            $criteria->addSelectColumn($alias . '.state');
+            $criteria->addSelectColumn($alias . '.locality');
+            $criteria->addSelectColumn($alias . '.zipCode');
+            $criteria->addSelectColumn($alias . '.streetName');
+            $criteria->addSelectColumn($alias . '.buildingIndentifier');
+            $criteria->addSelectColumn($alias . '.apartmentIdentifier');
         }
     }
 

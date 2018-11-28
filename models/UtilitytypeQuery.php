@@ -1,9 +1,9 @@
 <?php
 
-use Base\Lives as BaseLives;
+use Base\UtilitytypeQuery as BaseUtilitytypeQuery;
 
 /**
- * Skeleton subclass for representing a row from the 'lives' table.
+ * Skeleton subclass for performing query and update operations on the 'utilitytype' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\Lives as BaseLives;
  * long as it does not already exist in the output directory.
  *
  */
-class Lives extends BaseLives
+class UtilitytypeQuery extends BaseUtilitytypeQuery
 {
 
 }

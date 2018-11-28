@@ -3,8 +3,6 @@
 namespace Base;
 
 use \PictureQuery as ChildPictureQuery;
-use \Property as ChildProperty;
-use \PropertyQuery as ChildPropertyQuery;
 use \DateTime;
 use \Exception;
 use \PDO;
@@ -64,18 +62,19 @@ abstract class Picture implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the id field.
+     * The value for the picturenumberid field.
      *
      * @var        int
      */
-    protected $id;
+    protected $picturenumberid;
 
     /**
-     * The value for the timestamp field.
+     * The value for the adddate field.
      *
+     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
      * @var        DateTime
      */
-    protected $timestamp;
+    protected $adddate;
 
     /**
      * The value for the propertyid field.
@@ -92,16 +91,11 @@ abstract class Picture implements ActiveRecordInterface
     protected $link;
 
     /**
-     * The value for the description field.
+     * The value for the details field.
      *
      * @var        string
      */
-    protected $description;
-
-    /**
-     * @var        ChildProperty
-     */
-    protected $aProperty;
+    protected $details;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -112,10 +106,22 @@ abstract class Picture implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
+     */
+    public function applyDefaultValues()
+    {
+    }
+
+    /**
      * Initializes internal state of Base\Picture object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -337,32 +343,32 @@ abstract class Picture implements ActiveRecordInterface
     }
 
     /**
-     * Get the [id] column value.
+     * Get the [picturenumberid] column value.
      *
      * @return int
      */
-    public function getId()
+    public function getPicturenumberid()
     {
-        return $this->id;
+        return $this->picturenumberid;
     }
 
     /**
-     * Get the [optionally formatted] temporal [timestamp] column value.
+     * Get the [optionally formatted] temporal [adddate] column value.
      *
      *
      * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw DateTime object will be returned.
      *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
      *
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getTimestamp($format = NULL)
+    public function getAdddate($format = NULL)
     {
         if ($format === null) {
-            return $this->timestamp;
+            return $this->adddate;
         } else {
-            return $this->timestamp instanceof \DateTimeInterface ? $this->timestamp->format($format) : null;
+            return $this->adddate instanceof \DateTimeInterface ? $this->adddate->format($format) : null;
         }
     }
 
@@ -387,54 +393,54 @@ abstract class Picture implements ActiveRecordInterface
     }
 
     /**
-     * Get the [description] column value.
+     * Get the [details] column value.
      *
      * @return string
      */
-    public function getDescription()
+    public function getDetails()
     {
-        return $this->description;
+        return $this->details;
     }
 
     /**
-     * Set the value of [id] column.
+     * Set the value of [picturenumberid] column.
      *
      * @param int $v new value
      * @return $this|\Picture The current object (for fluent API support)
      */
-    public function setId($v)
+    public function setPicturenumberid($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id !== $v) {
-            $this->id = $v;
-            $this->modifiedColumns[PictureTableMap::COL_ID] = true;
+        if ($this->picturenumberid !== $v) {
+            $this->picturenumberid = $v;
+            $this->modifiedColumns[PictureTableMap::COL_PICTURENUMBERID] = true;
         }
 
         return $this;
-    } // setId()
+    } // setPicturenumberid()
 
     /**
-     * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
+     * Sets the value of [adddate] column to a normalized version of the date/time value specified.
      *
      * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
      *               Empty strings are treated as NULL.
      * @return $this|\Picture The current object (for fluent API support)
      */
-    public function setTimestamp($v)
+    public function setAdddate($v)
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->timestamp !== null || $dt !== null) {
-            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d") !== $this->timestamp->format("Y-m-d")) {
-                $this->timestamp = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[PictureTableMap::COL_TIMESTAMP] = true;
+        if ($this->adddate !== null || $dt !== null) {
+            if ($this->adddate === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->adddate->format("Y-m-d H:i:s.u")) {
+                $this->adddate = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[PictureTableMap::COL_ADDDATE] = true;
             }
         } // if either are not null
 
         return $this;
-    } // setTimestamp()
+    } // setAdddate()
 
     /**
      * Set the value of [propertyid] column.
@@ -451,10 +457,6 @@ abstract class Picture implements ActiveRecordInterface
         if ($this->propertyid !== $v) {
             $this->propertyid = $v;
             $this->modifiedColumns[PictureTableMap::COL_PROPERTYID] = true;
-        }
-
-        if ($this->aProperty !== null && $this->aProperty->getId() !== $v) {
-            $this->aProperty = null;
         }
 
         return $this;
@@ -481,24 +483,24 @@ abstract class Picture implements ActiveRecordInterface
     } // setLink()
 
     /**
-     * Set the value of [description] column.
+     * Set the value of [details] column.
      *
      * @param string $v new value
      * @return $this|\Picture The current object (for fluent API support)
      */
-    public function setDescription($v)
+    public function setDetails($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->description !== $v) {
-            $this->description = $v;
-            $this->modifiedColumns[PictureTableMap::COL_DESCRIPTION] = true;
+        if ($this->details !== $v) {
+            $this->details = $v;
+            $this->modifiedColumns[PictureTableMap::COL_DETAILS] = true;
         }
 
         return $this;
-    } // setDescription()
+    } // setDetails()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -536,14 +538,14 @@ abstract class Picture implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : PictureTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : PictureTableMap::translateFieldName('Picturenumberid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->picturenumberid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PictureTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00') {
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PictureTableMap::translateFieldName('Adddate', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
-            $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+            $this->adddate = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PictureTableMap::translateFieldName('Propertyid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->propertyid = (null !== $col) ? (int) $col : null;
@@ -551,8 +553,8 @@ abstract class Picture implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PictureTableMap::translateFieldName('Link', TableMap::TYPE_PHPNAME, $indexType)];
             $this->link = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PictureTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->description = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PictureTableMap::translateFieldName('Details', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->details = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -583,9 +585,6 @@ abstract class Picture implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aProperty !== null && $this->propertyid !== $this->aProperty->getId()) {
-            $this->aProperty = null;
-        }
     } // ensureConsistency
 
     /**
@@ -625,7 +624,6 @@ abstract class Picture implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aProperty = null;
         } // if (deep)
     }
 
@@ -729,18 +727,6 @@ abstract class Picture implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aProperty !== null) {
-                if ($this->aProperty->isModified() || $this->aProperty->isNew()) {
-                    $affectedRows += $this->aProperty->save($con);
-                }
-                $this->setProperty($this->aProperty);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -772,26 +758,26 @@ abstract class Picture implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[PictureTableMap::COL_ID] = true;
-        if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PictureTableMap::COL_ID . ')');
+        $this->modifiedColumns[PictureTableMap::COL_PICTURENUMBERID] = true;
+        if (null !== $this->picturenumberid) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . PictureTableMap::COL_PICTURENUMBERID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(PictureTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'ID';
+        if ($this->isColumnModified(PictureTableMap::COL_PICTURENUMBERID)) {
+            $modifiedColumns[':p' . $index++]  = 'pictureNumberID';
         }
-        if ($this->isColumnModified(PictureTableMap::COL_TIMESTAMP)) {
-            $modifiedColumns[':p' . $index++]  = 'Timestamp';
+        if ($this->isColumnModified(PictureTableMap::COL_ADDDATE)) {
+            $modifiedColumns[':p' . $index++]  = 'addDate';
         }
         if ($this->isColumnModified(PictureTableMap::COL_PROPERTYID)) {
-            $modifiedColumns[':p' . $index++]  = 'PropertyID';
+            $modifiedColumns[':p' . $index++]  = 'propertyID';
         }
         if ($this->isColumnModified(PictureTableMap::COL_LINK)) {
-            $modifiedColumns[':p' . $index++]  = 'Link';
+            $modifiedColumns[':p' . $index++]  = 'link';
         }
-        if ($this->isColumnModified(PictureTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'Description';
+        if ($this->isColumnModified(PictureTableMap::COL_DETAILS)) {
+            $modifiedColumns[':p' . $index++]  = 'details';
         }
 
         $sql = sprintf(
@@ -804,20 +790,20 @@ abstract class Picture implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':
-                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                    case 'pictureNumberID':
+                        $stmt->bindValue($identifier, $this->picturenumberid, PDO::PARAM_INT);
                         break;
-                    case 'Timestamp':
-                        $stmt->bindValue($identifier, $this->timestamp ? $this->timestamp->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
+                    case 'addDate':
+                        $stmt->bindValue($identifier, $this->adddate ? $this->adddate->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
-                    case 'PropertyID':
+                    case 'propertyID':
                         $stmt->bindValue($identifier, $this->propertyid, PDO::PARAM_INT);
                         break;
-                    case 'Link':
+                    case 'link':
                         $stmt->bindValue($identifier, $this->link, PDO::PARAM_STR);
                         break;
-                    case 'Description':
-                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                    case 'details':
+                        $stmt->bindValue($identifier, $this->details, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -832,7 +818,7 @@ abstract class Picture implements ActiveRecordInterface
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', 0, $e);
         }
-        $this->setId($pk);
+        $this->setPicturenumberid($pk);
 
         $this->setNew(false);
     }
@@ -882,10 +868,10 @@ abstract class Picture implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getId();
+                return $this->getPicturenumberid();
                 break;
             case 1:
-                return $this->getTimestamp();
+                return $this->getAdddate();
                 break;
             case 2:
                 return $this->getPropertyid();
@@ -894,7 +880,7 @@ abstract class Picture implements ActiveRecordInterface
                 return $this->getLink();
                 break;
             case 4:
-                return $this->getDescription();
+                return $this->getDetails();
                 break;
             default:
                 return null;
@@ -913,11 +899,10 @@ abstract class Picture implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
         if (isset($alreadyDumpedObjects['Picture'][$this->hashCode()])) {
@@ -926,11 +911,11 @@ abstract class Picture implements ActiveRecordInterface
         $alreadyDumpedObjects['Picture'][$this->hashCode()] = true;
         $keys = PictureTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getId(),
-            $keys[1] => $this->getTimestamp(),
+            $keys[0] => $this->getPicturenumberid(),
+            $keys[1] => $this->getAdddate(),
             $keys[2] => $this->getPropertyid(),
             $keys[3] => $this->getLink(),
-            $keys[4] => $this->getDescription(),
+            $keys[4] => $this->getDetails(),
         );
         if ($result[$keys[1]] instanceof \DateTimeInterface) {
             $result[$keys[1]] = $result[$keys[1]]->format('c');
@@ -941,23 +926,6 @@ abstract class Picture implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
-        if ($includeForeignObjects) {
-            if (null !== $this->aProperty) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'property';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'property';
-                        break;
-                    default:
-                        $key = 'Property';
-                }
-
-                $result[$key] = $this->aProperty->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-        }
 
         return $result;
     }
@@ -992,10 +960,10 @@ abstract class Picture implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setId($value);
+                $this->setPicturenumberid($value);
                 break;
             case 1:
-                $this->setTimestamp($value);
+                $this->setAdddate($value);
                 break;
             case 2:
                 $this->setPropertyid($value);
@@ -1004,7 +972,7 @@ abstract class Picture implements ActiveRecordInterface
                 $this->setLink($value);
                 break;
             case 4:
-                $this->setDescription($value);
+                $this->setDetails($value);
                 break;
         } // switch()
 
@@ -1033,10 +1001,10 @@ abstract class Picture implements ActiveRecordInterface
         $keys = PictureTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setId($arr[$keys[0]]);
+            $this->setPicturenumberid($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setTimestamp($arr[$keys[1]]);
+            $this->setAdddate($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
             $this->setPropertyid($arr[$keys[2]]);
@@ -1045,7 +1013,7 @@ abstract class Picture implements ActiveRecordInterface
             $this->setLink($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setDescription($arr[$keys[4]]);
+            $this->setDetails($arr[$keys[4]]);
         }
     }
 
@@ -1088,11 +1056,11 @@ abstract class Picture implements ActiveRecordInterface
     {
         $criteria = new Criteria(PictureTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(PictureTableMap::COL_ID)) {
-            $criteria->add(PictureTableMap::COL_ID, $this->id);
+        if ($this->isColumnModified(PictureTableMap::COL_PICTURENUMBERID)) {
+            $criteria->add(PictureTableMap::COL_PICTURENUMBERID, $this->picturenumberid);
         }
-        if ($this->isColumnModified(PictureTableMap::COL_TIMESTAMP)) {
-            $criteria->add(PictureTableMap::COL_TIMESTAMP, $this->timestamp);
+        if ($this->isColumnModified(PictureTableMap::COL_ADDDATE)) {
+            $criteria->add(PictureTableMap::COL_ADDDATE, $this->adddate);
         }
         if ($this->isColumnModified(PictureTableMap::COL_PROPERTYID)) {
             $criteria->add(PictureTableMap::COL_PROPERTYID, $this->propertyid);
@@ -1100,8 +1068,8 @@ abstract class Picture implements ActiveRecordInterface
         if ($this->isColumnModified(PictureTableMap::COL_LINK)) {
             $criteria->add(PictureTableMap::COL_LINK, $this->link);
         }
-        if ($this->isColumnModified(PictureTableMap::COL_DESCRIPTION)) {
-            $criteria->add(PictureTableMap::COL_DESCRIPTION, $this->description);
+        if ($this->isColumnModified(PictureTableMap::COL_DETAILS)) {
+            $criteria->add(PictureTableMap::COL_DETAILS, $this->details);
         }
 
         return $criteria;
@@ -1120,7 +1088,7 @@ abstract class Picture implements ActiveRecordInterface
     public function buildPkeyCriteria()
     {
         $criteria = ChildPictureQuery::create();
-        $criteria->add(PictureTableMap::COL_ID, $this->id);
+        $criteria->add(PictureTableMap::COL_PICTURENUMBERID, $this->picturenumberid);
 
         return $criteria;
     }
@@ -1133,7 +1101,7 @@ abstract class Picture implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getId();
+        $validPk = null !== $this->getPicturenumberid();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1153,18 +1121,18 @@ abstract class Picture implements ActiveRecordInterface
      */
     public function getPrimaryKey()
     {
-        return $this->getId();
+        return $this->getPicturenumberid();
     }
 
     /**
-     * Generic method to set the primary key (id column).
+     * Generic method to set the primary key (picturenumberid column).
      *
      * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setId($key);
+        $this->setPicturenumberid($key);
     }
 
     /**
@@ -1173,7 +1141,7 @@ abstract class Picture implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getId();
+        return null === $this->getPicturenumberid();
     }
 
     /**
@@ -1189,13 +1157,13 @@ abstract class Picture implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setTimestamp($this->getTimestamp());
+        $copyObj->setAdddate($this->getAdddate());
         $copyObj->setPropertyid($this->getPropertyid());
         $copyObj->setLink($this->getLink());
-        $copyObj->setDescription($this->getDescription());
+        $copyObj->setDetails($this->getDetails());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setPicturenumberid(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1222,73 +1190,20 @@ abstract class Picture implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildProperty object.
-     *
-     * @param  ChildProperty $v
-     * @return $this|\Picture The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setProperty(ChildProperty $v = null)
-    {
-        if ($v === null) {
-            $this->setPropertyid(NULL);
-        } else {
-            $this->setPropertyid($v->getId());
-        }
-
-        $this->aProperty = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildProperty object, it will not be re-added.
-        if ($v !== null) {
-            $v->addPicture($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildProperty object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildProperty The associated ChildProperty object.
-     * @throws PropelException
-     */
-    public function getProperty(ConnectionInterface $con = null)
-    {
-        if ($this->aProperty === null && ($this->propertyid != 0)) {
-            $this->aProperty = ChildPropertyQuery::create()->findPk($this->propertyid, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aProperty->addPictures($this);
-             */
-        }
-
-        return $this->aProperty;
-    }
-
-    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
-        if (null !== $this->aProperty) {
-            $this->aProperty->removePicture($this);
-        }
-        $this->id = null;
-        $this->timestamp = null;
+        $this->picturenumberid = null;
+        $this->adddate = null;
         $this->propertyid = null;
         $this->link = null;
-        $this->description = null;
+        $this->details = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1307,7 +1222,6 @@ abstract class Picture implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aProperty = null;
     }
 
     /**

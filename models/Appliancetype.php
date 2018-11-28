@@ -1,9 +1,9 @@
 <?php
 
-use Base\Limitation as BaseLimitation;
+use Base\Appliancetype as BaseAppliancetype;
 
 /**
- * Skeleton subclass for representing a row from the 'limitation' table.
+ * Skeleton subclass for representing a row from the 'appliancetype' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\Limitation as BaseLimitation;
  * long as it does not already exist in the output directory.
  *
  */
-class Limitation extends BaseLimitation
+class Appliancetype extends BaseAppliancetype
 {
 
 }

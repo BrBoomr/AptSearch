@@ -10,7 +10,6 @@ use Map\UserTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -21,18 +20,16 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  * @method     ChildUserQuery orderById($order = Criteria::ASC) Order by the ID column
- * @method     ChildUserQuery orderByTimestamp($order = Criteria::ASC) Order by the Timestamp column
- * @method     ChildUserQuery orderByFirstname($order = Criteria::ASC) Order by the FirstName column
- * @method     ChildUserQuery orderByMiddlename($order = Criteria::ASC) Order by the MiddleName column
- * @method     ChildUserQuery orderByLastname($order = Criteria::ASC) Order by the LastName column
- * @method     ChildUserQuery orderByHashedpassword($order = Criteria::ASC) Order by the HashedPassword column
+ * @method     ChildUserQuery orderByAdddate($order = Criteria::ASC) Order by the addDate column
+ * @method     ChildUserQuery orderByEmail($order = Criteria::ASC) Order by the email column
+ * @method     ChildUserQuery orderByEncryptedpassword($order = Criteria::ASC) Order by the encryptedPassword column
+ * @method     ChildUserQuery orderByName($order = Criteria::ASC) Order by the name column
  *
  * @method     ChildUserQuery groupById() Group by the ID column
- * @method     ChildUserQuery groupByTimestamp() Group by the Timestamp column
- * @method     ChildUserQuery groupByFirstname() Group by the FirstName column
- * @method     ChildUserQuery groupByMiddlename() Group by the MiddleName column
- * @method     ChildUserQuery groupByLastname() Group by the LastName column
- * @method     ChildUserQuery groupByHashedpassword() Group by the HashedPassword column
+ * @method     ChildUserQuery groupByAdddate() Group by the addDate column
+ * @method     ChildUserQuery groupByEmail() Group by the email column
+ * @method     ChildUserQuery groupByEncryptedpassword() Group by the encryptedPassword column
+ * @method     ChildUserQuery groupByName() Group by the name column
  *
  * @method     ChildUserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildUserQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -42,125 +39,30 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildUserQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildUserQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildUserQuery leftJoinEmail($relationAlias = null) Adds a LEFT JOIN clause to the query using the Email relation
- * @method     ChildUserQuery rightJoinEmail($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Email relation
- * @method     ChildUserQuery innerJoinEmail($relationAlias = null) Adds a INNER JOIN clause to the query using the Email relation
- *
- * @method     ChildUserQuery joinWithEmail($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Email relation
- *
- * @method     ChildUserQuery leftJoinWithEmail() Adds a LEFT JOIN clause and with to the query using the Email relation
- * @method     ChildUserQuery rightJoinWithEmail() Adds a RIGHT JOIN clause and with to the query using the Email relation
- * @method     ChildUserQuery innerJoinWithEmail() Adds a INNER JOIN clause and with to the query using the Email relation
- *
- * @method     ChildUserQuery leftJoinLives($relationAlias = null) Adds a LEFT JOIN clause to the query using the Lives relation
- * @method     ChildUserQuery rightJoinLives($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Lives relation
- * @method     ChildUserQuery innerJoinLives($relationAlias = null) Adds a INNER JOIN clause to the query using the Lives relation
- *
- * @method     ChildUserQuery joinWithLives($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Lives relation
- *
- * @method     ChildUserQuery leftJoinWithLives() Adds a LEFT JOIN clause and with to the query using the Lives relation
- * @method     ChildUserQuery rightJoinWithLives() Adds a RIGHT JOIN clause and with to the query using the Lives relation
- * @method     ChildUserQuery innerJoinWithLives() Adds a INNER JOIN clause and with to the query using the Lives relation
- *
- * @method     ChildUserQuery leftJoinOwedRelatedByReceiverid($relationAlias = null) Adds a LEFT JOIN clause to the query using the OwedRelatedByReceiverid relation
- * @method     ChildUserQuery rightJoinOwedRelatedByReceiverid($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OwedRelatedByReceiverid relation
- * @method     ChildUserQuery innerJoinOwedRelatedByReceiverid($relationAlias = null) Adds a INNER JOIN clause to the query using the OwedRelatedByReceiverid relation
- *
- * @method     ChildUserQuery joinWithOwedRelatedByReceiverid($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the OwedRelatedByReceiverid relation
- *
- * @method     ChildUserQuery leftJoinWithOwedRelatedByReceiverid() Adds a LEFT JOIN clause and with to the query using the OwedRelatedByReceiverid relation
- * @method     ChildUserQuery rightJoinWithOwedRelatedByReceiverid() Adds a RIGHT JOIN clause and with to the query using the OwedRelatedByReceiverid relation
- * @method     ChildUserQuery innerJoinWithOwedRelatedByReceiverid() Adds a INNER JOIN clause and with to the query using the OwedRelatedByReceiverid relation
- *
- * @method     ChildUserQuery leftJoinOwedRelatedBySenderid($relationAlias = null) Adds a LEFT JOIN clause to the query using the OwedRelatedBySenderid relation
- * @method     ChildUserQuery rightJoinOwedRelatedBySenderid($relationAlias = null) Adds a RIGHT JOIN clause to the query using the OwedRelatedBySenderid relation
- * @method     ChildUserQuery innerJoinOwedRelatedBySenderid($relationAlias = null) Adds a INNER JOIN clause to the query using the OwedRelatedBySenderid relation
- *
- * @method     ChildUserQuery joinWithOwedRelatedBySenderid($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the OwedRelatedBySenderid relation
- *
- * @method     ChildUserQuery leftJoinWithOwedRelatedBySenderid() Adds a LEFT JOIN clause and with to the query using the OwedRelatedBySenderid relation
- * @method     ChildUserQuery rightJoinWithOwedRelatedBySenderid() Adds a RIGHT JOIN clause and with to the query using the OwedRelatedBySenderid relation
- * @method     ChildUserQuery innerJoinWithOwedRelatedBySenderid() Adds a INNER JOIN clause and with to the query using the OwedRelatedBySenderid relation
- *
- * @method     ChildUserQuery leftJoinPaymentRelatedByReceiverid($relationAlias = null) Adds a LEFT JOIN clause to the query using the PaymentRelatedByReceiverid relation
- * @method     ChildUserQuery rightJoinPaymentRelatedByReceiverid($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PaymentRelatedByReceiverid relation
- * @method     ChildUserQuery innerJoinPaymentRelatedByReceiverid($relationAlias = null) Adds a INNER JOIN clause to the query using the PaymentRelatedByReceiverid relation
- *
- * @method     ChildUserQuery joinWithPaymentRelatedByReceiverid($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the PaymentRelatedByReceiverid relation
- *
- * @method     ChildUserQuery leftJoinWithPaymentRelatedByReceiverid() Adds a LEFT JOIN clause and with to the query using the PaymentRelatedByReceiverid relation
- * @method     ChildUserQuery rightJoinWithPaymentRelatedByReceiverid() Adds a RIGHT JOIN clause and with to the query using the PaymentRelatedByReceiverid relation
- * @method     ChildUserQuery innerJoinWithPaymentRelatedByReceiverid() Adds a INNER JOIN clause and with to the query using the PaymentRelatedByReceiverid relation
- *
- * @method     ChildUserQuery leftJoinPaymentRelatedBySenderid($relationAlias = null) Adds a LEFT JOIN clause to the query using the PaymentRelatedBySenderid relation
- * @method     ChildUserQuery rightJoinPaymentRelatedBySenderid($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PaymentRelatedBySenderid relation
- * @method     ChildUserQuery innerJoinPaymentRelatedBySenderid($relationAlias = null) Adds a INNER JOIN clause to the query using the PaymentRelatedBySenderid relation
- *
- * @method     ChildUserQuery joinWithPaymentRelatedBySenderid($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the PaymentRelatedBySenderid relation
- *
- * @method     ChildUserQuery leftJoinWithPaymentRelatedBySenderid() Adds a LEFT JOIN clause and with to the query using the PaymentRelatedBySenderid relation
- * @method     ChildUserQuery rightJoinWithPaymentRelatedBySenderid() Adds a RIGHT JOIN clause and with to the query using the PaymentRelatedBySenderid relation
- * @method     ChildUserQuery innerJoinWithPaymentRelatedBySenderid() Adds a INNER JOIN clause and with to the query using the PaymentRelatedBySenderid relation
- *
- * @method     ChildUserQuery leftJoinPhone($relationAlias = null) Adds a LEFT JOIN clause to the query using the Phone relation
- * @method     ChildUserQuery rightJoinPhone($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Phone relation
- * @method     ChildUserQuery innerJoinPhone($relationAlias = null) Adds a INNER JOIN clause to the query using the Phone relation
- *
- * @method     ChildUserQuery joinWithPhone($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Phone relation
- *
- * @method     ChildUserQuery leftJoinWithPhone() Adds a LEFT JOIN clause and with to the query using the Phone relation
- * @method     ChildUserQuery rightJoinWithPhone() Adds a RIGHT JOIN clause and with to the query using the Phone relation
- * @method     ChildUserQuery innerJoinWithPhone() Adds a INNER JOIN clause and with to the query using the Phone relation
- *
- * @method     ChildUserQuery leftJoinProperty($relationAlias = null) Adds a LEFT JOIN clause to the query using the Property relation
- * @method     ChildUserQuery rightJoinProperty($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Property relation
- * @method     ChildUserQuery innerJoinProperty($relationAlias = null) Adds a INNER JOIN clause to the query using the Property relation
- *
- * @method     ChildUserQuery joinWithProperty($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Property relation
- *
- * @method     ChildUserQuery leftJoinWithProperty() Adds a LEFT JOIN clause and with to the query using the Property relation
- * @method     ChildUserQuery rightJoinWithProperty() Adds a RIGHT JOIN clause and with to the query using the Property relation
- * @method     ChildUserQuery innerJoinWithProperty() Adds a INNER JOIN clause and with to the query using the Property relation
- *
- * @method     ChildUserQuery leftJoinTenant($relationAlias = null) Adds a LEFT JOIN clause to the query using the Tenant relation
- * @method     ChildUserQuery rightJoinTenant($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Tenant relation
- * @method     ChildUserQuery innerJoinTenant($relationAlias = null) Adds a INNER JOIN clause to the query using the Tenant relation
- *
- * @method     ChildUserQuery joinWithTenant($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Tenant relation
- *
- * @method     ChildUserQuery leftJoinWithTenant() Adds a LEFT JOIN clause and with to the query using the Tenant relation
- * @method     ChildUserQuery rightJoinWithTenant() Adds a RIGHT JOIN clause and with to the query using the Tenant relation
- * @method     ChildUserQuery innerJoinWithTenant() Adds a INNER JOIN clause and with to the query using the Tenant relation
- *
- * @method     \EmailQuery|\LivesQuery|\OwedQuery|\PaymentQuery|\PhoneQuery|\PropertyQuery|\TenantQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
- *
  * @method     ChildUser findOne(ConnectionInterface $con = null) Return the first ChildUser matching the query
  * @method     ChildUser findOneOrCreate(ConnectionInterface $con = null) Return the first ChildUser matching the query, or a new ChildUser object populated from the query conditions when no match is found
  *
  * @method     ChildUser findOneById(int $ID) Return the first ChildUser filtered by the ID column
- * @method     ChildUser findOneByTimestamp(string $Timestamp) Return the first ChildUser filtered by the Timestamp column
- * @method     ChildUser findOneByFirstname(string $FirstName) Return the first ChildUser filtered by the FirstName column
- * @method     ChildUser findOneByMiddlename(string $MiddleName) Return the first ChildUser filtered by the MiddleName column
- * @method     ChildUser findOneByLastname(string $LastName) Return the first ChildUser filtered by the LastName column
- * @method     ChildUser findOneByHashedpassword(string $HashedPassword) Return the first ChildUser filtered by the HashedPassword column *
+ * @method     ChildUser findOneByAdddate(string $addDate) Return the first ChildUser filtered by the addDate column
+ * @method     ChildUser findOneByEmail(string $email) Return the first ChildUser filtered by the email column
+ * @method     ChildUser findOneByEncryptedpassword(string $encryptedPassword) Return the first ChildUser filtered by the encryptedPassword column
+ * @method     ChildUser findOneByName(string $name) Return the first ChildUser filtered by the name column *
 
  * @method     ChildUser requirePk($key, ConnectionInterface $con = null) Return the ChildUser by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildUser requireOne(ConnectionInterface $con = null) Return the first ChildUser matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildUser requireOneById(int $ID) Return the first ChildUser filtered by the ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUser requireOneByTimestamp(string $Timestamp) Return the first ChildUser filtered by the Timestamp column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUser requireOneByFirstname(string $FirstName) Return the first ChildUser filtered by the FirstName column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUser requireOneByMiddlename(string $MiddleName) Return the first ChildUser filtered by the MiddleName column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUser requireOneByLastname(string $LastName) Return the first ChildUser filtered by the LastName column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildUser requireOneByHashedpassword(string $HashedPassword) Return the first ChildUser filtered by the HashedPassword column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUser requireOneByAdddate(string $addDate) Return the first ChildUser filtered by the addDate column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUser requireOneByEmail(string $email) Return the first ChildUser filtered by the email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUser requireOneByEncryptedpassword(string $encryptedPassword) Return the first ChildUser filtered by the encryptedPassword column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildUser requireOneByName(string $name) Return the first ChildUser filtered by the name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildUser[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildUser objects based on current ModelCriteria
  * @method     ChildUser[]|ObjectCollection findById(int $ID) Return ChildUser objects filtered by the ID column
- * @method     ChildUser[]|ObjectCollection findByTimestamp(string $Timestamp) Return ChildUser objects filtered by the Timestamp column
- * @method     ChildUser[]|ObjectCollection findByFirstname(string $FirstName) Return ChildUser objects filtered by the FirstName column
- * @method     ChildUser[]|ObjectCollection findByMiddlename(string $MiddleName) Return ChildUser objects filtered by the MiddleName column
- * @method     ChildUser[]|ObjectCollection findByLastname(string $LastName) Return ChildUser objects filtered by the LastName column
- * @method     ChildUser[]|ObjectCollection findByHashedpassword(string $HashedPassword) Return ChildUser objects filtered by the HashedPassword column
+ * @method     ChildUser[]|ObjectCollection findByAdddate(string $addDate) Return ChildUser objects filtered by the addDate column
+ * @method     ChildUser[]|ObjectCollection findByEmail(string $email) Return ChildUser objects filtered by the email column
+ * @method     ChildUser[]|ObjectCollection findByEncryptedpassword(string $encryptedPassword) Return ChildUser objects filtered by the encryptedPassword column
+ * @method     ChildUser[]|ObjectCollection findByName(string $name) Return ChildUser objects filtered by the name column
  * @method     ChildUser[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -259,7 +161,7 @@ abstract class UserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT ID, Timestamp, FirstName, MiddleName, LastName, HashedPassword FROM user WHERE ID = :p0';
+        $sql = 'SELECT ID, addDate, email, encryptedPassword, name FROM user WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -391,16 +293,16 @@ abstract class UserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the Timestamp column
+     * Filter the query on the addDate column
      *
      * Example usage:
      * <code>
-     * $query->filterByTimestamp('2011-03-14'); // WHERE Timestamp = '2011-03-14'
-     * $query->filterByTimestamp('now'); // WHERE Timestamp = '2011-03-14'
-     * $query->filterByTimestamp(array('max' => 'yesterday')); // WHERE Timestamp > '2011-03-13'
+     * $query->filterByAdddate('2011-03-14'); // WHERE addDate = '2011-03-14'
+     * $query->filterByAdddate('now'); // WHERE addDate = '2011-03-14'
+     * $query->filterByAdddate(array('max' => 'yesterday')); // WHERE addDate > '2011-03-13'
      * </code>
      *
-     * @param     mixed $timestamp The value to use as filter.
+     * @param     mixed $adddate The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
@@ -410,16 +312,16 @@ abstract class UserQuery extends ModelCriteria
      *
      * @return $this|ChildUserQuery The current query, for fluid interface
      */
-    public function filterByTimestamp($timestamp = null, $comparison = null)
+    public function filterByAdddate($adddate = null, $comparison = null)
     {
-        if (is_array($timestamp)) {
+        if (is_array($adddate)) {
             $useMinMax = false;
-            if (isset($timestamp['min'])) {
-                $this->addUsingAlias(UserTableMap::COL_TIMESTAMP, $timestamp['min'], Criteria::GREATER_EQUAL);
+            if (isset($adddate['min'])) {
+                $this->addUsingAlias(UserTableMap::COL_ADDDATE, $adddate['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($timestamp['max'])) {
-                $this->addUsingAlias(UserTableMap::COL_TIMESTAMP, $timestamp['max'], Criteria::LESS_EQUAL);
+            if (isset($adddate['max'])) {
+                $this->addUsingAlias(UserTableMap::COL_ADDDATE, $adddate['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -430,764 +332,82 @@ abstract class UserQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_TIMESTAMP, $timestamp, $comparison);
+        return $this->addUsingAlias(UserTableMap::COL_ADDDATE, $adddate, $comparison);
     }
 
     /**
-     * Filter the query on the FirstName column
+     * Filter the query on the email column
      *
      * Example usage:
      * <code>
-     * $query->filterByFirstname('fooValue');   // WHERE FirstName = 'fooValue'
-     * $query->filterByFirstname('%fooValue%', Criteria::LIKE); // WHERE FirstName LIKE '%fooValue%'
+     * $query->filterByEmail('fooValue');   // WHERE email = 'fooValue'
+     * $query->filterByEmail('%fooValue%', Criteria::LIKE); // WHERE email LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $firstname The value to use as filter.
+     * @param     string $email The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildUserQuery The current query, for fluid interface
      */
-    public function filterByFirstname($firstname = null, $comparison = null)
+    public function filterByEmail($email = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($firstname)) {
+            if (is_array($email)) {
                 $comparison = Criteria::IN;
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_FIRSTNAME, $firstname, $comparison);
+        return $this->addUsingAlias(UserTableMap::COL_EMAIL, $email, $comparison);
     }
 
     /**
-     * Filter the query on the MiddleName column
+     * Filter the query on the encryptedPassword column
      *
      * Example usage:
      * <code>
-     * $query->filterByMiddlename('fooValue');   // WHERE MiddleName = 'fooValue'
-     * $query->filterByMiddlename('%fooValue%', Criteria::LIKE); // WHERE MiddleName LIKE '%fooValue%'
+     * $query->filterByEncryptedpassword('fooValue');   // WHERE encryptedPassword = 'fooValue'
+     * $query->filterByEncryptedpassword('%fooValue%', Criteria::LIKE); // WHERE encryptedPassword LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $middlename The value to use as filter.
+     * @param     string $encryptedpassword The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildUserQuery The current query, for fluid interface
      */
-    public function filterByMiddlename($middlename = null, $comparison = null)
+    public function filterByEncryptedpassword($encryptedpassword = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($middlename)) {
+            if (is_array($encryptedpassword)) {
                 $comparison = Criteria::IN;
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_MIDDLENAME, $middlename, $comparison);
+        return $this->addUsingAlias(UserTableMap::COL_ENCRYPTEDPASSWORD, $encryptedpassword, $comparison);
     }
 
     /**
-     * Filter the query on the LastName column
+     * Filter the query on the name column
      *
      * Example usage:
      * <code>
-     * $query->filterByLastname('fooValue');   // WHERE LastName = 'fooValue'
-     * $query->filterByLastname('%fooValue%', Criteria::LIKE); // WHERE LastName LIKE '%fooValue%'
+     * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
+     * $query->filterByName('%fooValue%', Criteria::LIKE); // WHERE name LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $lastname The value to use as filter.
+     * @param     string $name The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildUserQuery The current query, for fluid interface
      */
-    public function filterByLastname($lastname = null, $comparison = null)
+    public function filterByName($name = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($lastname)) {
+            if (is_array($name)) {
                 $comparison = Criteria::IN;
             }
         }
 
-        return $this->addUsingAlias(UserTableMap::COL_LASTNAME, $lastname, $comparison);
-    }
-
-    /**
-     * Filter the query on the HashedPassword column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByHashedpassword('fooValue');   // WHERE HashedPassword = 'fooValue'
-     * $query->filterByHashedpassword('%fooValue%', Criteria::LIKE); // WHERE HashedPassword LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $hashedpassword The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildUserQuery The current query, for fluid interface
-     */
-    public function filterByHashedpassword($hashedpassword = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($hashedpassword)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(UserTableMap::COL_HASHEDPASSWORD, $hashedpassword, $comparison);
-    }
-
-    /**
-     * Filter the query by a related \Email object
-     *
-     * @param \Email|ObjectCollection $email the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildUserQuery The current query, for fluid interface
-     */
-    public function filterByEmail($email, $comparison = null)
-    {
-        if ($email instanceof \Email) {
-            return $this
-                ->addUsingAlias(UserTableMap::COL_ID, $email->getUserid(), $comparison);
-        } elseif ($email instanceof ObjectCollection) {
-            return $this
-                ->useEmailQuery()
-                ->filterByPrimaryKeys($email->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByEmail() only accepts arguments of type \Email or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Email relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildUserQuery The current query, for fluid interface
-     */
-    public function joinEmail($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Email');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Email');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Email relation Email object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \EmailQuery A secondary query class using the current class as primary query
-     */
-    public function useEmailQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinEmail($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Email', '\EmailQuery');
-    }
-
-    /**
-     * Filter the query by a related \Lives object
-     *
-     * @param \Lives|ObjectCollection $lives the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildUserQuery The current query, for fluid interface
-     */
-    public function filterByLives($lives, $comparison = null)
-    {
-        if ($lives instanceof \Lives) {
-            return $this
-                ->addUsingAlias(UserTableMap::COL_ID, $lives->getUserid(), $comparison);
-        } elseif ($lives instanceof ObjectCollection) {
-            return $this
-                ->useLivesQuery()
-                ->filterByPrimaryKeys($lives->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByLives() only accepts arguments of type \Lives or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Lives relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildUserQuery The current query, for fluid interface
-     */
-    public function joinLives($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Lives');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Lives');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Lives relation Lives object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \LivesQuery A secondary query class using the current class as primary query
-     */
-    public function useLivesQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinLives($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Lives', '\LivesQuery');
-    }
-
-    /**
-     * Filter the query by a related \Owed object
-     *
-     * @param \Owed|ObjectCollection $owed the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildUserQuery The current query, for fluid interface
-     */
-    public function filterByOwedRelatedByReceiverid($owed, $comparison = null)
-    {
-        if ($owed instanceof \Owed) {
-            return $this
-                ->addUsingAlias(UserTableMap::COL_ID, $owed->getReceiverid(), $comparison);
-        } elseif ($owed instanceof ObjectCollection) {
-            return $this
-                ->useOwedRelatedByReceiveridQuery()
-                ->filterByPrimaryKeys($owed->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByOwedRelatedByReceiverid() only accepts arguments of type \Owed or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the OwedRelatedByReceiverid relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildUserQuery The current query, for fluid interface
-     */
-    public function joinOwedRelatedByReceiverid($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('OwedRelatedByReceiverid');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'OwedRelatedByReceiverid');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the OwedRelatedByReceiverid relation Owed object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \OwedQuery A secondary query class using the current class as primary query
-     */
-    public function useOwedRelatedByReceiveridQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinOwedRelatedByReceiverid($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'OwedRelatedByReceiverid', '\OwedQuery');
-    }
-
-    /**
-     * Filter the query by a related \Owed object
-     *
-     * @param \Owed|ObjectCollection $owed the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildUserQuery The current query, for fluid interface
-     */
-    public function filterByOwedRelatedBySenderid($owed, $comparison = null)
-    {
-        if ($owed instanceof \Owed) {
-            return $this
-                ->addUsingAlias(UserTableMap::COL_ID, $owed->getSenderid(), $comparison);
-        } elseif ($owed instanceof ObjectCollection) {
-            return $this
-                ->useOwedRelatedBySenderidQuery()
-                ->filterByPrimaryKeys($owed->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByOwedRelatedBySenderid() only accepts arguments of type \Owed or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the OwedRelatedBySenderid relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildUserQuery The current query, for fluid interface
-     */
-    public function joinOwedRelatedBySenderid($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('OwedRelatedBySenderid');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'OwedRelatedBySenderid');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the OwedRelatedBySenderid relation Owed object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \OwedQuery A secondary query class using the current class as primary query
-     */
-    public function useOwedRelatedBySenderidQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinOwedRelatedBySenderid($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'OwedRelatedBySenderid', '\OwedQuery');
-    }
-
-    /**
-     * Filter the query by a related \Payment object
-     *
-     * @param \Payment|ObjectCollection $payment the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildUserQuery The current query, for fluid interface
-     */
-    public function filterByPaymentRelatedByReceiverid($payment, $comparison = null)
-    {
-        if ($payment instanceof \Payment) {
-            return $this
-                ->addUsingAlias(UserTableMap::COL_ID, $payment->getReceiverid(), $comparison);
-        } elseif ($payment instanceof ObjectCollection) {
-            return $this
-                ->usePaymentRelatedByReceiveridQuery()
-                ->filterByPrimaryKeys($payment->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByPaymentRelatedByReceiverid() only accepts arguments of type \Payment or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PaymentRelatedByReceiverid relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildUserQuery The current query, for fluid interface
-     */
-    public function joinPaymentRelatedByReceiverid($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PaymentRelatedByReceiverid');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PaymentRelatedByReceiverid');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PaymentRelatedByReceiverid relation Payment object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \PaymentQuery A secondary query class using the current class as primary query
-     */
-    public function usePaymentRelatedByReceiveridQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinPaymentRelatedByReceiverid($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PaymentRelatedByReceiverid', '\PaymentQuery');
-    }
-
-    /**
-     * Filter the query by a related \Payment object
-     *
-     * @param \Payment|ObjectCollection $payment the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildUserQuery The current query, for fluid interface
-     */
-    public function filterByPaymentRelatedBySenderid($payment, $comparison = null)
-    {
-        if ($payment instanceof \Payment) {
-            return $this
-                ->addUsingAlias(UserTableMap::COL_ID, $payment->getSenderid(), $comparison);
-        } elseif ($payment instanceof ObjectCollection) {
-            return $this
-                ->usePaymentRelatedBySenderidQuery()
-                ->filterByPrimaryKeys($payment->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByPaymentRelatedBySenderid() only accepts arguments of type \Payment or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the PaymentRelatedBySenderid relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildUserQuery The current query, for fluid interface
-     */
-    public function joinPaymentRelatedBySenderid($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('PaymentRelatedBySenderid');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'PaymentRelatedBySenderid');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the PaymentRelatedBySenderid relation Payment object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \PaymentQuery A secondary query class using the current class as primary query
-     */
-    public function usePaymentRelatedBySenderidQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinPaymentRelatedBySenderid($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'PaymentRelatedBySenderid', '\PaymentQuery');
-    }
-
-    /**
-     * Filter the query by a related \Phone object
-     *
-     * @param \Phone|ObjectCollection $phone the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildUserQuery The current query, for fluid interface
-     */
-    public function filterByPhone($phone, $comparison = null)
-    {
-        if ($phone instanceof \Phone) {
-            return $this
-                ->addUsingAlias(UserTableMap::COL_ID, $phone->getUserid(), $comparison);
-        } elseif ($phone instanceof ObjectCollection) {
-            return $this
-                ->usePhoneQuery()
-                ->filterByPrimaryKeys($phone->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByPhone() only accepts arguments of type \Phone or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Phone relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildUserQuery The current query, for fluid interface
-     */
-    public function joinPhone($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Phone');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Phone');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Phone relation Phone object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \PhoneQuery A secondary query class using the current class as primary query
-     */
-    public function usePhoneQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinPhone($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Phone', '\PhoneQuery');
-    }
-
-    /**
-     * Filter the query by a related \Property object
-     *
-     * @param \Property|ObjectCollection $property the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildUserQuery The current query, for fluid interface
-     */
-    public function filterByProperty($property, $comparison = null)
-    {
-        if ($property instanceof \Property) {
-            return $this
-                ->addUsingAlias(UserTableMap::COL_ID, $property->getLandlordid(), $comparison);
-        } elseif ($property instanceof ObjectCollection) {
-            return $this
-                ->usePropertyQuery()
-                ->filterByPrimaryKeys($property->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByProperty() only accepts arguments of type \Property or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Property relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildUserQuery The current query, for fluid interface
-     */
-    public function joinProperty($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Property');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Property');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Property relation Property object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \PropertyQuery A secondary query class using the current class as primary query
-     */
-    public function usePropertyQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinProperty($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Property', '\PropertyQuery');
-    }
-
-    /**
-     * Filter the query by a related \Tenant object
-     *
-     * @param \Tenant|ObjectCollection $tenant the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildUserQuery The current query, for fluid interface
-     */
-    public function filterByTenant($tenant, $comparison = null)
-    {
-        if ($tenant instanceof \Tenant) {
-            return $this
-                ->addUsingAlias(UserTableMap::COL_ID, $tenant->getUserid(), $comparison);
-        } elseif ($tenant instanceof ObjectCollection) {
-            return $this
-                ->useTenantQuery()
-                ->filterByPrimaryKeys($tenant->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByTenant() only accepts arguments of type \Tenant or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Tenant relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildUserQuery The current query, for fluid interface
-     */
-    public function joinTenant($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Tenant');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Tenant');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Tenant relation Tenant object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \TenantQuery A secondary query class using the current class as primary query
-     */
-    public function useTenantQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinTenant($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Tenant', '\TenantQuery');
+        return $this->addUsingAlias(UserTableMap::COL_NAME, $name, $comparison);
     }
 
     /**

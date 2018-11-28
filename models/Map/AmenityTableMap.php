@@ -59,7 +59,7 @@ class AmenityTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
@@ -69,37 +69,27 @@ class AmenityTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /**
-     * the column name for the ID field
+     * the column name for the amenityNumberID field
      */
-    const COL_ID = 'amenity.ID';
+    const COL_AMENITYNUMBERID = 'amenity.amenityNumberID';
 
     /**
-     * the column name for the Timestamp field
+     * the column name for the propertyID field
      */
-    const COL_TIMESTAMP = 'amenity.Timestamp';
+    const COL_PROPERTYID = 'amenity.propertyID';
 
     /**
-     * the column name for the PropertyID field
+     * the column name for the amenityTypeID field
      */
-    const COL_PROPERTYID = 'amenity.PropertyID';
+    const COL_AMENITYTYPEID = 'amenity.amenityTypeID';
 
     /**
-     * the column name for the Name field
+     * the column name for the details field
      */
-    const COL_NAME = 'amenity.Name';
-
-    /**
-     * the column name for the Description field
-     */
-    const COL_DESCRIPTION = 'amenity.Description';
-
-    /**
-     * the column name for the Private field
-     */
-    const COL_PRIVATE = 'amenity.Private';
+    const COL_DETAILS = 'amenity.details';
 
     /**
      * The default string format for model objects of the related table
@@ -113,11 +103,11 @@ class AmenityTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Timestamp', 'Propertyid', 'Name', 'Description', 'Private', ),
-        self::TYPE_CAMELNAME     => array('id', 'timestamp', 'propertyid', 'name', 'description', 'private', ),
-        self::TYPE_COLNAME       => array(AmenityTableMap::COL_ID, AmenityTableMap::COL_TIMESTAMP, AmenityTableMap::COL_PROPERTYID, AmenityTableMap::COL_NAME, AmenityTableMap::COL_DESCRIPTION, AmenityTableMap::COL_PRIVATE, ),
-        self::TYPE_FIELDNAME     => array('ID', 'Timestamp', 'PropertyID', 'Name', 'Description', 'Private', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Amenitynumberid', 'Propertyid', 'Amenitytypeid', 'Details', ),
+        self::TYPE_CAMELNAME     => array('amenitynumberid', 'propertyid', 'amenitytypeid', 'details', ),
+        self::TYPE_COLNAME       => array(AmenityTableMap::COL_AMENITYNUMBERID, AmenityTableMap::COL_PROPERTYID, AmenityTableMap::COL_AMENITYTYPEID, AmenityTableMap::COL_DETAILS, ),
+        self::TYPE_FIELDNAME     => array('amenityNumberID', 'propertyID', 'amenityTypeID', 'details', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -127,11 +117,11 @@ class AmenityTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Timestamp' => 1, 'Propertyid' => 2, 'Name' => 3, 'Description' => 4, 'Private' => 5, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'timestamp' => 1, 'propertyid' => 2, 'name' => 3, 'description' => 4, 'private' => 5, ),
-        self::TYPE_COLNAME       => array(AmenityTableMap::COL_ID => 0, AmenityTableMap::COL_TIMESTAMP => 1, AmenityTableMap::COL_PROPERTYID => 2, AmenityTableMap::COL_NAME => 3, AmenityTableMap::COL_DESCRIPTION => 4, AmenityTableMap::COL_PRIVATE => 5, ),
-        self::TYPE_FIELDNAME     => array('ID' => 0, 'Timestamp' => 1, 'PropertyID' => 2, 'Name' => 3, 'Description' => 4, 'Private' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Amenitynumberid' => 0, 'Propertyid' => 1, 'Amenitytypeid' => 2, 'Details' => 3, ),
+        self::TYPE_CAMELNAME     => array('amenitynumberid' => 0, 'propertyid' => 1, 'amenitytypeid' => 2, 'details' => 3, ),
+        self::TYPE_COLNAME       => array(AmenityTableMap::COL_AMENITYNUMBERID => 0, AmenityTableMap::COL_PROPERTYID => 1, AmenityTableMap::COL_AMENITYTYPEID => 2, AmenityTableMap::COL_DETAILS => 3, ),
+        self::TYPE_FIELDNAME     => array('amenityNumberID' => 0, 'propertyID' => 1, 'amenityTypeID' => 2, 'details' => 3, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -151,12 +141,10 @@ class AmenityTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
-        $this->addForeignKey('PropertyID', 'Propertyid', 'INTEGER', 'property', 'ID', true, null, null);
-        $this->addColumn('Name', 'Name', 'VARCHAR', true, 56, null);
-        $this->addColumn('Description', 'Description', 'VARCHAR', true, 128, null);
-        $this->addColumn('Private', 'Private', 'BOOLEAN', true, 1, null);
+        $this->addPrimaryKey('amenityNumberID', 'Amenitynumberid', 'INTEGER', true, null, null);
+        $this->addColumn('propertyID', 'Propertyid', 'INTEGER', true, null, null);
+        $this->addColumn('amenityTypeID', 'Amenitytypeid', 'INTEGER', true, null, null);
+        $this->addColumn('details', 'Details', 'LONGVARCHAR', false, null, null);
     } // initialize()
 
     /**
@@ -164,13 +152,6 @@ class AmenityTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Property', '\\Property', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':PropertyID',
-    1 => ':ID',
-  ),
-), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -189,11 +170,11 @@ class AmenityTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Amenitynumberid', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Amenitynumberid', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Amenitynumberid', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Amenitynumberid', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Amenitynumberid', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Amenitynumberid', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -213,7 +194,7 @@ class AmenityTableMap extends TableMap
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('Amenitynumberid', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -314,19 +295,15 @@ class AmenityTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(AmenityTableMap::COL_ID);
-            $criteria->addSelectColumn(AmenityTableMap::COL_TIMESTAMP);
+            $criteria->addSelectColumn(AmenityTableMap::COL_AMENITYNUMBERID);
             $criteria->addSelectColumn(AmenityTableMap::COL_PROPERTYID);
-            $criteria->addSelectColumn(AmenityTableMap::COL_NAME);
-            $criteria->addSelectColumn(AmenityTableMap::COL_DESCRIPTION);
-            $criteria->addSelectColumn(AmenityTableMap::COL_PRIVATE);
+            $criteria->addSelectColumn(AmenityTableMap::COL_AMENITYTYPEID);
+            $criteria->addSelectColumn(AmenityTableMap::COL_DETAILS);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.Timestamp');
-            $criteria->addSelectColumn($alias . '.PropertyID');
-            $criteria->addSelectColumn($alias . '.Name');
-            $criteria->addSelectColumn($alias . '.Description');
-            $criteria->addSelectColumn($alias . '.Private');
+            $criteria->addSelectColumn($alias . '.amenityNumberID');
+            $criteria->addSelectColumn($alias . '.propertyID');
+            $criteria->addSelectColumn($alias . '.amenityTypeID');
+            $criteria->addSelectColumn($alias . '.details');
         }
     }
 
@@ -378,7 +355,7 @@ class AmenityTableMap extends TableMap
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(AmenityTableMap::DATABASE_NAME);
-            $criteria->add(AmenityTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria->add(AmenityTableMap::COL_AMENITYNUMBERID, (array) $values, Criteria::IN);
         }
 
         $query = AmenityQuery::create()->mergeWith($criteria);
@@ -426,8 +403,8 @@ class AmenityTableMap extends TableMap
             $criteria = $criteria->buildCriteria(); // build Criteria from Amenity object
         }
 
-        if ($criteria->containsKey(AmenityTableMap::COL_ID) && $criteria->keyContainsValue(AmenityTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.AmenityTableMap::COL_ID.')');
+        if ($criteria->containsKey(AmenityTableMap::COL_AMENITYNUMBERID) && $criteria->keyContainsValue(AmenityTableMap::COL_AMENITYNUMBERID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.AmenityTableMap::COL_AMENITYNUMBERID.')');
         }
 
 

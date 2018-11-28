@@ -2,46 +2,16 @@
 
 namespace Base;
 
-use \Address as ChildAddress;
-use \AddressQuery as ChildAddressQuery;
-use \Amenity as ChildAmenity;
-use \AmenityQuery as ChildAmenityQuery;
-use \Appliance as ChildAppliance;
-use \ApplianceQuery as ChildApplianceQuery;
-use \Cost as ChildCost;
-use \CostQuery as ChildCostQuery;
-use \Issue as ChildIssue;
-use \IssueQuery as ChildIssueQuery;
-use \Limitation as ChildLimitation;
-use \LimitationQuery as ChildLimitationQuery;
-use \Picture as ChildPicture;
-use \PictureQuery as ChildPictureQuery;
-use \Property as ChildProperty;
 use \PropertyQuery as ChildPropertyQuery;
-use \Tenant as ChildTenant;
-use \TenantQuery as ChildTenantQuery;
-use \User as ChildUser;
-use \UserQuery as ChildUserQuery;
-use \Utility as ChildUtility;
-use \UtilityQuery as ChildUtilityQuery;
 use \DateTime;
 use \Exception;
 use \PDO;
-use Map\AmenityTableMap;
-use Map\ApplianceTableMap;
-use Map\CostTableMap;
-use Map\IssueTableMap;
-use Map\LimitationTableMap;
-use Map\PictureTableMap;
 use Map\PropertyTableMap;
-use Map\TenantTableMap;
-use Map\UtilityTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Propel\Runtime\Collection\Collection;
-use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\LogicException;
@@ -99,20 +69,6 @@ abstract class Property implements ActiveRecordInterface
     protected $id;
 
     /**
-     * The value for the timestamp field.
-     *
-     * @var        DateTime
-     */
-    protected $timestamp;
-
-    /**
-     * The value for the landlordid field.
-     *
-     * @var        int
-     */
-    protected $landlordid;
-
-    /**
      * The value for the addressid field.
      *
      * @var        int
@@ -120,11 +76,49 @@ abstract class Property implements ActiveRecordInterface
     protected $addressid;
 
     /**
-     * The value for the fpl field.
+     * The value for the userid field.
      *
      * @var        int
      */
-    protected $fpl;
+    protected $userid;
+
+    /**
+     * The value for the adddate field.
+     *
+     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
+     * @var        DateTime
+     */
+    protected $adddate;
+
+    /**
+     * The value for the lastupdated field.
+     *
+     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
+     * @var        DateTime
+     */
+    protected $lastupdated;
+
+    /**
+     * The value for the postname field.
+     *
+     * @var        string
+     */
+    protected $postname;
+
+    /**
+     * The value for the available field.
+     *
+     * Note: this column has a database default value of: false
+     * @var        boolean
+     */
+    protected $available;
+
+    /**
+     * The value for the expectedrentpermonth field.
+     *
+     * @var        double
+     */
+    protected $expectedrentpermonth;
 
     /**
      * The value for the squarefootage field.
@@ -134,18 +128,18 @@ abstract class Property implements ActiveRecordInterface
     protected $squarefootage;
 
     /**
-     * The value for the rooms field.
+     * The value for the bedroomcount field.
      *
      * @var        int
      */
-    protected $rooms;
+    protected $bedroomcount;
 
     /**
-     * The value for the bathrooms field.
+     * The value for the bathroomcount field.
      *
      * @var        int
      */
-    protected $bathrooms;
+    protected $bathroomcount;
 
     /**
      * The value for the details field.
@@ -153,64 +147,6 @@ abstract class Property implements ActiveRecordInterface
      * @var        string
      */
     protected $details;
-
-    /**
-     * @var        ChildAddress
-     */
-    protected $aAddress;
-
-    /**
-     * @var        ChildUser
-     */
-    protected $aUser;
-
-    /**
-     * @var        ObjectCollection|ChildAmenity[] Collection to store aggregation of ChildAmenity objects.
-     */
-    protected $collAmenities;
-    protected $collAmenitiesPartial;
-
-    /**
-     * @var        ObjectCollection|ChildAppliance[] Collection to store aggregation of ChildAppliance objects.
-     */
-    protected $collAppliances;
-    protected $collAppliancesPartial;
-
-    /**
-     * @var        ObjectCollection|ChildCost[] Collection to store aggregation of ChildCost objects.
-     */
-    protected $collCosts;
-    protected $collCostsPartial;
-
-    /**
-     * @var        ObjectCollection|ChildIssue[] Collection to store aggregation of ChildIssue objects.
-     */
-    protected $collIssues;
-    protected $collIssuesPartial;
-
-    /**
-     * @var        ObjectCollection|ChildLimitation[] Collection to store aggregation of ChildLimitation objects.
-     */
-    protected $collLimitations;
-    protected $collLimitationsPartial;
-
-    /**
-     * @var        ObjectCollection|ChildPicture[] Collection to store aggregation of ChildPicture objects.
-     */
-    protected $collPictures;
-    protected $collPicturesPartial;
-
-    /**
-     * @var        ObjectCollection|ChildTenant[] Collection to store aggregation of ChildTenant objects.
-     */
-    protected $collTenants;
-    protected $collTenantsPartial;
-
-    /**
-     * @var        ObjectCollection|ChildUtility[] Collection to store aggregation of ChildUtility objects.
-     */
-    protected $collUtilities;
-    protected $collUtilitiesPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -221,58 +157,23 @@ abstract class Property implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildAmenity[]
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
      */
-    protected $amenitiesScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildAppliance[]
-     */
-    protected $appliancesScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildCost[]
-     */
-    protected $costsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildIssue[]
-     */
-    protected $issuesScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildLimitation[]
-     */
-    protected $limitationsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildPicture[]
-     */
-    protected $picturesScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildTenant[]
-     */
-    protected $tenantsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildUtility[]
-     */
-    protected $utilitiesScheduledForDeletion = null;
+    public function applyDefaultValues()
+    {
+        $this->available = false;
+    }
 
     /**
      * Initializes internal state of Base\Property object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -504,36 +405,6 @@ abstract class Property implements ActiveRecordInterface
     }
 
     /**
-     * Get the [optionally formatted] temporal [timestamp] column value.
-     *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getTimestamp($format = NULL)
-    {
-        if ($format === null) {
-            return $this->timestamp;
-        } else {
-            return $this->timestamp instanceof \DateTimeInterface ? $this->timestamp->format($format) : null;
-        }
-    }
-
-    /**
-     * Get the [landlordid] column value.
-     *
-     * @return int
-     */
-    public function getLandlordid()
-    {
-        return $this->landlordid;
-    }
-
-    /**
      * Get the [addressid] column value.
      *
      * @return int
@@ -544,13 +415,93 @@ abstract class Property implements ActiveRecordInterface
     }
 
     /**
-     * Get the [fpl] column value.
+     * Get the [userid] column value.
      *
      * @return int
      */
-    public function getFpl()
+    public function getUserid()
     {
-        return $this->fpl;
+        return $this->userid;
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [adddate] column value.
+     *
+     *
+     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw DateTime object will be returned.
+     *
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getAdddate($format = NULL)
+    {
+        if ($format === null) {
+            return $this->adddate;
+        } else {
+            return $this->adddate instanceof \DateTimeInterface ? $this->adddate->format($format) : null;
+        }
+    }
+
+    /**
+     * Get the [optionally formatted] temporal [lastupdated] column value.
+     *
+     *
+     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw DateTime object will be returned.
+     *
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getLastupdated($format = NULL)
+    {
+        if ($format === null) {
+            return $this->lastupdated;
+        } else {
+            return $this->lastupdated instanceof \DateTimeInterface ? $this->lastupdated->format($format) : null;
+        }
+    }
+
+    /**
+     * Get the [postname] column value.
+     *
+     * @return string
+     */
+    public function getPostname()
+    {
+        return $this->postname;
+    }
+
+    /**
+     * Get the [available] column value.
+     *
+     * @return boolean
+     */
+    public function getAvailable()
+    {
+        return $this->available;
+    }
+
+    /**
+     * Get the [available] column value.
+     *
+     * @return boolean
+     */
+    public function isAvailable()
+    {
+        return $this->getAvailable();
+    }
+
+    /**
+     * Get the [expectedrentpermonth] column value.
+     *
+     * @return double
+     */
+    public function getExpectedrentpermonth()
+    {
+        return $this->expectedrentpermonth;
     }
 
     /**
@@ -564,23 +515,23 @@ abstract class Property implements ActiveRecordInterface
     }
 
     /**
-     * Get the [rooms] column value.
+     * Get the [bedroomcount] column value.
      *
      * @return int
      */
-    public function getRooms()
+    public function getBedroomcount()
     {
-        return $this->rooms;
+        return $this->bedroomcount;
     }
 
     /**
-     * Get the [bathrooms] column value.
+     * Get the [bathroomcount] column value.
      *
      * @return int
      */
-    public function getBathrooms()
+    public function getBathroomcount()
     {
-        return $this->bathrooms;
+        return $this->bathroomcount;
     }
 
     /**
@@ -614,50 +565,6 @@ abstract class Property implements ActiveRecordInterface
     } // setId()
 
     /**
-     * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
-     *
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
-     * @return $this|\Property The current object (for fluent API support)
-     */
-    public function setTimestamp($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->timestamp !== null || $dt !== null) {
-            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d") !== $this->timestamp->format("Y-m-d")) {
-                $this->timestamp = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[PropertyTableMap::COL_TIMESTAMP] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setTimestamp()
-
-    /**
-     * Set the value of [landlordid] column.
-     *
-     * @param int $v new value
-     * @return $this|\Property The current object (for fluent API support)
-     */
-    public function setLandlordid($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->landlordid !== $v) {
-            $this->landlordid = $v;
-            $this->modifiedColumns[PropertyTableMap::COL_LANDLORDID] = true;
-        }
-
-        if ($this->aUser !== null && $this->aUser->getId() !== $v) {
-            $this->aUser = null;
-        }
-
-        return $this;
-    } // setLandlordid()
-
-    /**
      * Set the value of [addressid] column.
      *
      * @param int $v new value
@@ -674,32 +581,136 @@ abstract class Property implements ActiveRecordInterface
             $this->modifiedColumns[PropertyTableMap::COL_ADDRESSID] = true;
         }
 
-        if ($this->aAddress !== null && $this->aAddress->getId() !== $v) {
-            $this->aAddress = null;
-        }
-
         return $this;
     } // setAddressid()
 
     /**
-     * Set the value of [fpl] column.
+     * Set the value of [userid] column.
      *
      * @param int $v new value
      * @return $this|\Property The current object (for fluent API support)
      */
-    public function setFpl($v)
+    public function setUserid($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->fpl !== $v) {
-            $this->fpl = $v;
-            $this->modifiedColumns[PropertyTableMap::COL_FPL] = true;
+        if ($this->userid !== $v) {
+            $this->userid = $v;
+            $this->modifiedColumns[PropertyTableMap::COL_USERID] = true;
         }
 
         return $this;
-    } // setFpl()
+    } // setUserid()
+
+    /**
+     * Sets the value of [adddate] column to a normalized version of the date/time value specified.
+     *
+     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
+     *               Empty strings are treated as NULL.
+     * @return $this|\Property The current object (for fluent API support)
+     */
+    public function setAdddate($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->adddate !== null || $dt !== null) {
+            if ($this->adddate === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->adddate->format("Y-m-d H:i:s.u")) {
+                $this->adddate = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[PropertyTableMap::COL_ADDDATE] = true;
+            }
+        } // if either are not null
+
+        return $this;
+    } // setAdddate()
+
+    /**
+     * Sets the value of [lastupdated] column to a normalized version of the date/time value specified.
+     *
+     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
+     *               Empty strings are treated as NULL.
+     * @return $this|\Property The current object (for fluent API support)
+     */
+    public function setLastupdated($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->lastupdated !== null || $dt !== null) {
+            if ($this->lastupdated === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->lastupdated->format("Y-m-d H:i:s.u")) {
+                $this->lastupdated = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[PropertyTableMap::COL_LASTUPDATED] = true;
+            }
+        } // if either are not null
+
+        return $this;
+    } // setLastupdated()
+
+    /**
+     * Set the value of [postname] column.
+     *
+     * @param string $v new value
+     * @return $this|\Property The current object (for fluent API support)
+     */
+    public function setPostname($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->postname !== $v) {
+            $this->postname = $v;
+            $this->modifiedColumns[PropertyTableMap::COL_POSTNAME] = true;
+        }
+
+        return $this;
+    } // setPostname()
+
+    /**
+     * Sets the value of the [available] column.
+     * Non-boolean arguments are converted using the following rules:
+     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
+     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
+     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     *
+     * @param  boolean|integer|string $v The new value
+     * @return $this|\Property The current object (for fluent API support)
+     */
+    public function setAvailable($v)
+    {
+        if ($v !== null) {
+            if (is_string($v)) {
+                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            } else {
+                $v = (boolean) $v;
+            }
+        }
+
+        if ($this->available !== $v) {
+            $this->available = $v;
+            $this->modifiedColumns[PropertyTableMap::COL_AVAILABLE] = true;
+        }
+
+        return $this;
+    } // setAvailable()
+
+    /**
+     * Set the value of [expectedrentpermonth] column.
+     *
+     * @param double $v new value
+     * @return $this|\Property The current object (for fluent API support)
+     */
+    public function setExpectedrentpermonth($v)
+    {
+        if ($v !== null) {
+            $v = (double) $v;
+        }
+
+        if ($this->expectedrentpermonth !== $v) {
+            $this->expectedrentpermonth = $v;
+            $this->modifiedColumns[PropertyTableMap::COL_EXPECTEDRENTPERMONTH] = true;
+        }
+
+        return $this;
+    } // setExpectedrentpermonth()
 
     /**
      * Set the value of [squarefootage] column.
@@ -722,44 +733,44 @@ abstract class Property implements ActiveRecordInterface
     } // setSquarefootage()
 
     /**
-     * Set the value of [rooms] column.
+     * Set the value of [bedroomcount] column.
      *
      * @param int $v new value
      * @return $this|\Property The current object (for fluent API support)
      */
-    public function setRooms($v)
+    public function setBedroomcount($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->rooms !== $v) {
-            $this->rooms = $v;
-            $this->modifiedColumns[PropertyTableMap::COL_ROOMS] = true;
+        if ($this->bedroomcount !== $v) {
+            $this->bedroomcount = $v;
+            $this->modifiedColumns[PropertyTableMap::COL_BEDROOMCOUNT] = true;
         }
 
         return $this;
-    } // setRooms()
+    } // setBedroomcount()
 
     /**
-     * Set the value of [bathrooms] column.
+     * Set the value of [bathroomcount] column.
      *
      * @param int $v new value
      * @return $this|\Property The current object (for fluent API support)
      */
-    public function setBathrooms($v)
+    public function setBathroomcount($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->bathrooms !== $v) {
-            $this->bathrooms = $v;
-            $this->modifiedColumns[PropertyTableMap::COL_BATHROOMS] = true;
+        if ($this->bathroomcount !== $v) {
+            $this->bathroomcount = $v;
+            $this->modifiedColumns[PropertyTableMap::COL_BATHROOMCOUNT] = true;
         }
 
         return $this;
-    } // setBathrooms()
+    } // setBathroomcount()
 
     /**
      * Set the value of [details] column.
@@ -791,6 +802,10 @@ abstract class Property implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
+            if ($this->available !== false) {
+                return false;
+            }
+
         // otherwise, everything was equal, so return TRUE
         return true;
     } // hasOnlyDefaultValues()
@@ -820,31 +835,43 @@ abstract class Property implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : PropertyTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PropertyTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00') {
-                $col = null;
-            }
-            $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PropertyTableMap::translateFieldName('Landlordid', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->landlordid = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PropertyTableMap::translateFieldName('Addressid', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PropertyTableMap::translateFieldName('Addressid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->addressid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PropertyTableMap::translateFieldName('Fpl', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->fpl = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PropertyTableMap::translateFieldName('Userid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->userid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PropertyTableMap::translateFieldName('Squarefootage', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PropertyTableMap::translateFieldName('Adddate', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00 00:00:00') {
+                $col = null;
+            }
+            $this->adddate = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PropertyTableMap::translateFieldName('Lastupdated', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00 00:00:00') {
+                $col = null;
+            }
+            $this->lastupdated = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PropertyTableMap::translateFieldName('Postname', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->postname = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PropertyTableMap::translateFieldName('Available', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->available = (null !== $col) ? (boolean) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : PropertyTableMap::translateFieldName('Expectedrentpermonth', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->expectedrentpermonth = (null !== $col) ? (double) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : PropertyTableMap::translateFieldName('Squarefootage', TableMap::TYPE_PHPNAME, $indexType)];
             $this->squarefootage = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PropertyTableMap::translateFieldName('Rooms', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->rooms = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : PropertyTableMap::translateFieldName('Bedroomcount', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->bedroomcount = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : PropertyTableMap::translateFieldName('Bathrooms', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->bathrooms = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : PropertyTableMap::translateFieldName('Bathroomcount', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->bathroomcount = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : PropertyTableMap::translateFieldName('Details', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : PropertyTableMap::translateFieldName('Details', TableMap::TYPE_PHPNAME, $indexType)];
             $this->details = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -854,7 +881,7 @@ abstract class Property implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 9; // 9 = PropertyTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 12; // 12 = PropertyTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Property'), 0, $e);
@@ -876,12 +903,6 @@ abstract class Property implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aUser !== null && $this->landlordid !== $this->aUser->getId()) {
-            $this->aUser = null;
-        }
-        if ($this->aAddress !== null && $this->addressid !== $this->aAddress->getId()) {
-            $this->aAddress = null;
-        }
     } // ensureConsistency
 
     /**
@@ -920,24 +941,6 @@ abstract class Property implements ActiveRecordInterface
         $this->hydrate($row, 0, true, $dataFetcher->getIndexType()); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
-
-            $this->aAddress = null;
-            $this->aUser = null;
-            $this->collAmenities = null;
-
-            $this->collAppliances = null;
-
-            $this->collCosts = null;
-
-            $this->collIssues = null;
-
-            $this->collLimitations = null;
-
-            $this->collPictures = null;
-
-            $this->collTenants = null;
-
-            $this->collUtilities = null;
 
         } // if (deep)
     }
@@ -1042,25 +1045,6 @@ abstract class Property implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aAddress !== null) {
-                if ($this->aAddress->isModified() || $this->aAddress->isNew()) {
-                    $affectedRows += $this->aAddress->save($con);
-                }
-                $this->setAddress($this->aAddress);
-            }
-
-            if ($this->aUser !== null) {
-                if ($this->aUser->isModified() || $this->aUser->isNew()) {
-                    $affectedRows += $this->aUser->save($con);
-                }
-                $this->setUser($this->aUser);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -1070,142 +1054,6 @@ abstract class Property implements ActiveRecordInterface
                     $affectedRows += $this->doUpdate($con);
                 }
                 $this->resetModified();
-            }
-
-            if ($this->amenitiesScheduledForDeletion !== null) {
-                if (!$this->amenitiesScheduledForDeletion->isEmpty()) {
-                    \AmenityQuery::create()
-                        ->filterByPrimaryKeys($this->amenitiesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->amenitiesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collAmenities !== null) {
-                foreach ($this->collAmenities as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->appliancesScheduledForDeletion !== null) {
-                if (!$this->appliancesScheduledForDeletion->isEmpty()) {
-                    \ApplianceQuery::create()
-                        ->filterByPrimaryKeys($this->appliancesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->appliancesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collAppliances !== null) {
-                foreach ($this->collAppliances as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->costsScheduledForDeletion !== null) {
-                if (!$this->costsScheduledForDeletion->isEmpty()) {
-                    \CostQuery::create()
-                        ->filterByPrimaryKeys($this->costsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->costsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collCosts !== null) {
-                foreach ($this->collCosts as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->issuesScheduledForDeletion !== null) {
-                if (!$this->issuesScheduledForDeletion->isEmpty()) {
-                    \IssueQuery::create()
-                        ->filterByPrimaryKeys($this->issuesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->issuesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collIssues !== null) {
-                foreach ($this->collIssues as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->limitationsScheduledForDeletion !== null) {
-                if (!$this->limitationsScheduledForDeletion->isEmpty()) {
-                    \LimitationQuery::create()
-                        ->filterByPrimaryKeys($this->limitationsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->limitationsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collLimitations !== null) {
-                foreach ($this->collLimitations as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->picturesScheduledForDeletion !== null) {
-                if (!$this->picturesScheduledForDeletion->isEmpty()) {
-                    \PictureQuery::create()
-                        ->filterByPrimaryKeys($this->picturesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->picturesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collPictures !== null) {
-                foreach ($this->collPictures as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->tenantsScheduledForDeletion !== null) {
-                if (!$this->tenantsScheduledForDeletion->isEmpty()) {
-                    \TenantQuery::create()
-                        ->filterByPrimaryKeys($this->tenantsScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->tenantsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collTenants !== null) {
-                foreach ($this->collTenants as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->utilitiesScheduledForDeletion !== null) {
-                if (!$this->utilitiesScheduledForDeletion->isEmpty()) {
-                    \UtilityQuery::create()
-                        ->filterByPrimaryKeys($this->utilitiesScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->utilitiesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collUtilities !== null) {
-                foreach ($this->collUtilities as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             $this->alreadyInSave = false;
@@ -1237,29 +1085,38 @@ abstract class Property implements ActiveRecordInterface
         if ($this->isColumnModified(PropertyTableMap::COL_ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(PropertyTableMap::COL_TIMESTAMP)) {
-            $modifiedColumns[':p' . $index++]  = 'Timestamp';
-        }
-        if ($this->isColumnModified(PropertyTableMap::COL_LANDLORDID)) {
-            $modifiedColumns[':p' . $index++]  = 'LandlordID';
-        }
         if ($this->isColumnModified(PropertyTableMap::COL_ADDRESSID)) {
-            $modifiedColumns[':p' . $index++]  = 'AddressID';
+            $modifiedColumns[':p' . $index++]  = 'addressID';
         }
-        if ($this->isColumnModified(PropertyTableMap::COL_FPL)) {
-            $modifiedColumns[':p' . $index++]  = 'FPL';
+        if ($this->isColumnModified(PropertyTableMap::COL_USERID)) {
+            $modifiedColumns[':p' . $index++]  = 'userID';
+        }
+        if ($this->isColumnModified(PropertyTableMap::COL_ADDDATE)) {
+            $modifiedColumns[':p' . $index++]  = 'addDate';
+        }
+        if ($this->isColumnModified(PropertyTableMap::COL_LASTUPDATED)) {
+            $modifiedColumns[':p' . $index++]  = 'lastUpdated';
+        }
+        if ($this->isColumnModified(PropertyTableMap::COL_POSTNAME)) {
+            $modifiedColumns[':p' . $index++]  = 'postName';
+        }
+        if ($this->isColumnModified(PropertyTableMap::COL_AVAILABLE)) {
+            $modifiedColumns[':p' . $index++]  = 'available';
+        }
+        if ($this->isColumnModified(PropertyTableMap::COL_EXPECTEDRENTPERMONTH)) {
+            $modifiedColumns[':p' . $index++]  = 'expectedRentPerMonth';
         }
         if ($this->isColumnModified(PropertyTableMap::COL_SQUAREFOOTAGE)) {
-            $modifiedColumns[':p' . $index++]  = 'SquareFootage';
+            $modifiedColumns[':p' . $index++]  = 'squareFootage';
         }
-        if ($this->isColumnModified(PropertyTableMap::COL_ROOMS)) {
-            $modifiedColumns[':p' . $index++]  = 'Rooms';
+        if ($this->isColumnModified(PropertyTableMap::COL_BEDROOMCOUNT)) {
+            $modifiedColumns[':p' . $index++]  = 'bedroomCount';
         }
-        if ($this->isColumnModified(PropertyTableMap::COL_BATHROOMS)) {
-            $modifiedColumns[':p' . $index++]  = 'Bathrooms';
+        if ($this->isColumnModified(PropertyTableMap::COL_BATHROOMCOUNT)) {
+            $modifiedColumns[':p' . $index++]  = 'bathroomCount';
         }
         if ($this->isColumnModified(PropertyTableMap::COL_DETAILS)) {
-            $modifiedColumns[':p' . $index++]  = 'Details';
+            $modifiedColumns[':p' . $index++]  = 'details';
         }
 
         $sql = sprintf(
@@ -1275,28 +1132,37 @@ abstract class Property implements ActiveRecordInterface
                     case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'Timestamp':
-                        $stmt->bindValue($identifier, $this->timestamp ? $this->timestamp->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
-                        break;
-                    case 'LandlordID':
-                        $stmt->bindValue($identifier, $this->landlordid, PDO::PARAM_INT);
-                        break;
-                    case 'AddressID':
+                    case 'addressID':
                         $stmt->bindValue($identifier, $this->addressid, PDO::PARAM_INT);
                         break;
-                    case 'FPL':
-                        $stmt->bindValue($identifier, $this->fpl, PDO::PARAM_INT);
+                    case 'userID':
+                        $stmt->bindValue($identifier, $this->userid, PDO::PARAM_INT);
                         break;
-                    case 'SquareFootage':
+                    case 'addDate':
+                        $stmt->bindValue($identifier, $this->adddate ? $this->adddate->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
+                        break;
+                    case 'lastUpdated':
+                        $stmt->bindValue($identifier, $this->lastupdated ? $this->lastupdated->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
+                        break;
+                    case 'postName':
+                        $stmt->bindValue($identifier, $this->postname, PDO::PARAM_STR);
+                        break;
+                    case 'available':
+                        $stmt->bindValue($identifier, (int) $this->available, PDO::PARAM_INT);
+                        break;
+                    case 'expectedRentPerMonth':
+                        $stmt->bindValue($identifier, $this->expectedrentpermonth, PDO::PARAM_STR);
+                        break;
+                    case 'squareFootage':
                         $stmt->bindValue($identifier, $this->squarefootage, PDO::PARAM_INT);
                         break;
-                    case 'Rooms':
-                        $stmt->bindValue($identifier, $this->rooms, PDO::PARAM_INT);
+                    case 'bedroomCount':
+                        $stmt->bindValue($identifier, $this->bedroomcount, PDO::PARAM_INT);
                         break;
-                    case 'Bathrooms':
-                        $stmt->bindValue($identifier, $this->bathrooms, PDO::PARAM_INT);
+                    case 'bathroomCount':
+                        $stmt->bindValue($identifier, $this->bathroomcount, PDO::PARAM_INT);
                         break;
-                    case 'Details':
+                    case 'details':
                         $stmt->bindValue($identifier, $this->details, PDO::PARAM_STR);
                         break;
                 }
@@ -1365,27 +1231,36 @@ abstract class Property implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getTimestamp();
-                break;
-            case 2:
-                return $this->getLandlordid();
-                break;
-            case 3:
                 return $this->getAddressid();
                 break;
+            case 2:
+                return $this->getUserid();
+                break;
+            case 3:
+                return $this->getAdddate();
+                break;
             case 4:
-                return $this->getFpl();
+                return $this->getLastupdated();
                 break;
             case 5:
-                return $this->getSquarefootage();
+                return $this->getPostname();
                 break;
             case 6:
-                return $this->getRooms();
+                return $this->getAvailable();
                 break;
             case 7:
-                return $this->getBathrooms();
+                return $this->getExpectedrentpermonth();
                 break;
             case 8:
+                return $this->getSquarefootage();
+                break;
+            case 9:
+                return $this->getBedroomcount();
+                break;
+            case 10:
+                return $this->getBathroomcount();
+                break;
+            case 11:
                 return $this->getDetails();
                 break;
             default:
@@ -1405,11 +1280,10 @@ abstract class Property implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
         if (isset($alreadyDumpedObjects['Property'][$this->hashCode()])) {
@@ -1419,17 +1293,24 @@ abstract class Property implements ActiveRecordInterface
         $keys = PropertyTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getTimestamp(),
-            $keys[2] => $this->getLandlordid(),
-            $keys[3] => $this->getAddressid(),
-            $keys[4] => $this->getFpl(),
-            $keys[5] => $this->getSquarefootage(),
-            $keys[6] => $this->getRooms(),
-            $keys[7] => $this->getBathrooms(),
-            $keys[8] => $this->getDetails(),
+            $keys[1] => $this->getAddressid(),
+            $keys[2] => $this->getUserid(),
+            $keys[3] => $this->getAdddate(),
+            $keys[4] => $this->getLastupdated(),
+            $keys[5] => $this->getPostname(),
+            $keys[6] => $this->getAvailable(),
+            $keys[7] => $this->getExpectedrentpermonth(),
+            $keys[8] => $this->getSquarefootage(),
+            $keys[9] => $this->getBedroomcount(),
+            $keys[10] => $this->getBathroomcount(),
+            $keys[11] => $this->getDetails(),
         );
-        if ($result[$keys[1]] instanceof \DateTimeInterface) {
-            $result[$keys[1]] = $result[$keys[1]]->format('c');
+        if ($result[$keys[3]] instanceof \DateTimeInterface) {
+            $result[$keys[3]] = $result[$keys[3]]->format('c');
+        }
+
+        if ($result[$keys[4]] instanceof \DateTimeInterface) {
+            $result[$keys[4]] = $result[$keys[4]]->format('c');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -1437,158 +1318,6 @@ abstract class Property implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
-        if ($includeForeignObjects) {
-            if (null !== $this->aAddress) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'address';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'address';
-                        break;
-                    default:
-                        $key = 'Address';
-                }
-
-                $result[$key] = $this->aAddress->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aUser) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'user';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'user';
-                        break;
-                    default:
-                        $key = 'User';
-                }
-
-                $result[$key] = $this->aUser->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->collAmenities) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'amenities';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'amenities';
-                        break;
-                    default:
-                        $key = 'Amenities';
-                }
-
-                $result[$key] = $this->collAmenities->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collAppliances) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'appliances';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'appliances';
-                        break;
-                    default:
-                        $key = 'Appliances';
-                }
-
-                $result[$key] = $this->collAppliances->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collCosts) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'costs';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'costs';
-                        break;
-                    default:
-                        $key = 'Costs';
-                }
-
-                $result[$key] = $this->collCosts->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collIssues) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'issues';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'issues';
-                        break;
-                    default:
-                        $key = 'Issues';
-                }
-
-                $result[$key] = $this->collIssues->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collLimitations) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'limitations';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'limitations';
-                        break;
-                    default:
-                        $key = 'Limitations';
-                }
-
-                $result[$key] = $this->collLimitations->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collPictures) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'pictures';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'pictures';
-                        break;
-                    default:
-                        $key = 'Pictures';
-                }
-
-                $result[$key] = $this->collPictures->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collTenants) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'tenants';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'tenants';
-                        break;
-                    default:
-                        $key = 'Tenants';
-                }
-
-                $result[$key] = $this->collTenants->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collUtilities) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'utilities';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'utilities';
-                        break;
-                    default:
-                        $key = 'Utilities';
-                }
-
-                $result[$key] = $this->collUtilities->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-        }
 
         return $result;
     }
@@ -1626,27 +1355,36 @@ abstract class Property implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setTimestamp($value);
-                break;
-            case 2:
-                $this->setLandlordid($value);
-                break;
-            case 3:
                 $this->setAddressid($value);
                 break;
+            case 2:
+                $this->setUserid($value);
+                break;
+            case 3:
+                $this->setAdddate($value);
+                break;
             case 4:
-                $this->setFpl($value);
+                $this->setLastupdated($value);
                 break;
             case 5:
-                $this->setSquarefootage($value);
+                $this->setPostname($value);
                 break;
             case 6:
-                $this->setRooms($value);
+                $this->setAvailable($value);
                 break;
             case 7:
-                $this->setBathrooms($value);
+                $this->setExpectedrentpermonth($value);
                 break;
             case 8:
+                $this->setSquarefootage($value);
+                break;
+            case 9:
+                $this->setBedroomcount($value);
+                break;
+            case 10:
+                $this->setBathroomcount($value);
+                break;
+            case 11:
                 $this->setDetails($value);
                 break;
         } // switch()
@@ -1679,28 +1417,37 @@ abstract class Property implements ActiveRecordInterface
             $this->setId($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setTimestamp($arr[$keys[1]]);
+            $this->setAddressid($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setLandlordid($arr[$keys[2]]);
+            $this->setUserid($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setAddressid($arr[$keys[3]]);
+            $this->setAdddate($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setFpl($arr[$keys[4]]);
+            $this->setLastupdated($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setSquarefootage($arr[$keys[5]]);
+            $this->setPostname($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setRooms($arr[$keys[6]]);
+            $this->setAvailable($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setBathrooms($arr[$keys[7]]);
+            $this->setExpectedrentpermonth($arr[$keys[7]]);
         }
         if (array_key_exists($keys[8], $arr)) {
-            $this->setDetails($arr[$keys[8]]);
+            $this->setSquarefootage($arr[$keys[8]]);
+        }
+        if (array_key_exists($keys[9], $arr)) {
+            $this->setBedroomcount($arr[$keys[9]]);
+        }
+        if (array_key_exists($keys[10], $arr)) {
+            $this->setBathroomcount($arr[$keys[10]]);
+        }
+        if (array_key_exists($keys[11], $arr)) {
+            $this->setDetails($arr[$keys[11]]);
         }
     }
 
@@ -1746,26 +1493,35 @@ abstract class Property implements ActiveRecordInterface
         if ($this->isColumnModified(PropertyTableMap::COL_ID)) {
             $criteria->add(PropertyTableMap::COL_ID, $this->id);
         }
-        if ($this->isColumnModified(PropertyTableMap::COL_TIMESTAMP)) {
-            $criteria->add(PropertyTableMap::COL_TIMESTAMP, $this->timestamp);
-        }
-        if ($this->isColumnModified(PropertyTableMap::COL_LANDLORDID)) {
-            $criteria->add(PropertyTableMap::COL_LANDLORDID, $this->landlordid);
-        }
         if ($this->isColumnModified(PropertyTableMap::COL_ADDRESSID)) {
             $criteria->add(PropertyTableMap::COL_ADDRESSID, $this->addressid);
         }
-        if ($this->isColumnModified(PropertyTableMap::COL_FPL)) {
-            $criteria->add(PropertyTableMap::COL_FPL, $this->fpl);
+        if ($this->isColumnModified(PropertyTableMap::COL_USERID)) {
+            $criteria->add(PropertyTableMap::COL_USERID, $this->userid);
+        }
+        if ($this->isColumnModified(PropertyTableMap::COL_ADDDATE)) {
+            $criteria->add(PropertyTableMap::COL_ADDDATE, $this->adddate);
+        }
+        if ($this->isColumnModified(PropertyTableMap::COL_LASTUPDATED)) {
+            $criteria->add(PropertyTableMap::COL_LASTUPDATED, $this->lastupdated);
+        }
+        if ($this->isColumnModified(PropertyTableMap::COL_POSTNAME)) {
+            $criteria->add(PropertyTableMap::COL_POSTNAME, $this->postname);
+        }
+        if ($this->isColumnModified(PropertyTableMap::COL_AVAILABLE)) {
+            $criteria->add(PropertyTableMap::COL_AVAILABLE, $this->available);
+        }
+        if ($this->isColumnModified(PropertyTableMap::COL_EXPECTEDRENTPERMONTH)) {
+            $criteria->add(PropertyTableMap::COL_EXPECTEDRENTPERMONTH, $this->expectedrentpermonth);
         }
         if ($this->isColumnModified(PropertyTableMap::COL_SQUAREFOOTAGE)) {
             $criteria->add(PropertyTableMap::COL_SQUAREFOOTAGE, $this->squarefootage);
         }
-        if ($this->isColumnModified(PropertyTableMap::COL_ROOMS)) {
-            $criteria->add(PropertyTableMap::COL_ROOMS, $this->rooms);
+        if ($this->isColumnModified(PropertyTableMap::COL_BEDROOMCOUNT)) {
+            $criteria->add(PropertyTableMap::COL_BEDROOMCOUNT, $this->bedroomcount);
         }
-        if ($this->isColumnModified(PropertyTableMap::COL_BATHROOMS)) {
-            $criteria->add(PropertyTableMap::COL_BATHROOMS, $this->bathrooms);
+        if ($this->isColumnModified(PropertyTableMap::COL_BATHROOMCOUNT)) {
+            $criteria->add(PropertyTableMap::COL_BATHROOMCOUNT, $this->bathroomcount);
         }
         if ($this->isColumnModified(PropertyTableMap::COL_DETAILS)) {
             $criteria->add(PropertyTableMap::COL_DETAILS, $this->details);
@@ -1856,70 +1612,17 @@ abstract class Property implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setTimestamp($this->getTimestamp());
-        $copyObj->setLandlordid($this->getLandlordid());
         $copyObj->setAddressid($this->getAddressid());
-        $copyObj->setFpl($this->getFpl());
+        $copyObj->setUserid($this->getUserid());
+        $copyObj->setAdddate($this->getAdddate());
+        $copyObj->setLastupdated($this->getLastupdated());
+        $copyObj->setPostname($this->getPostname());
+        $copyObj->setAvailable($this->getAvailable());
+        $copyObj->setExpectedrentpermonth($this->getExpectedrentpermonth());
         $copyObj->setSquarefootage($this->getSquarefootage());
-        $copyObj->setRooms($this->getRooms());
-        $copyObj->setBathrooms($this->getBathrooms());
+        $copyObj->setBedroomcount($this->getBedroomcount());
+        $copyObj->setBathroomcount($this->getBathroomcount());
         $copyObj->setDetails($this->getDetails());
-
-        if ($deepCopy) {
-            // important: temporarily setNew(false) because this affects the behavior of
-            // the getter/setter methods for fkey referrer objects.
-            $copyObj->setNew(false);
-
-            foreach ($this->getAmenities() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addAmenity($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getAppliances() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addAppliance($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getCosts() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addCost($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getIssues() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addIssue($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getLimitations() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addLimitation($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getPictures() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addPicture($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getTenants() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addTenant($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getUtilities() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addUtility($relObj->copy($deepCopy));
-                }
-            }
-
-        } // if ($deepCopy)
-
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1949,2001 +1652,27 @@ abstract class Property implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildAddress object.
-     *
-     * @param  ChildAddress $v
-     * @return $this|\Property The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setAddress(ChildAddress $v = null)
-    {
-        if ($v === null) {
-            $this->setAddressid(NULL);
-        } else {
-            $this->setAddressid($v->getId());
-        }
-
-        $this->aAddress = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildAddress object, it will not be re-added.
-        if ($v !== null) {
-            $v->addProperty($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildAddress object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildAddress The associated ChildAddress object.
-     * @throws PropelException
-     */
-    public function getAddress(ConnectionInterface $con = null)
-    {
-        if ($this->aAddress === null && ($this->addressid != 0)) {
-            $this->aAddress = ChildAddressQuery::create()->findPk($this->addressid, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aAddress->addProperties($this);
-             */
-        }
-
-        return $this->aAddress;
-    }
-
-    /**
-     * Declares an association between this object and a ChildUser object.
-     *
-     * @param  ChildUser $v
-     * @return $this|\Property The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setUser(ChildUser $v = null)
-    {
-        if ($v === null) {
-            $this->setLandlordid(NULL);
-        } else {
-            $this->setLandlordid($v->getId());
-        }
-
-        $this->aUser = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildUser object, it will not be re-added.
-        if ($v !== null) {
-            $v->addProperty($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildUser object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildUser The associated ChildUser object.
-     * @throws PropelException
-     */
-    public function getUser(ConnectionInterface $con = null)
-    {
-        if ($this->aUser === null && ($this->landlordid != 0)) {
-            $this->aUser = ChildUserQuery::create()->findPk($this->landlordid, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aUser->addProperties($this);
-             */
-        }
-
-        return $this->aUser;
-    }
-
-
-    /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
-     *
-     * @param      string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('Amenity' == $relationName) {
-            $this->initAmenities();
-            return;
-        }
-        if ('Appliance' == $relationName) {
-            $this->initAppliances();
-            return;
-        }
-        if ('Cost' == $relationName) {
-            $this->initCosts();
-            return;
-        }
-        if ('Issue' == $relationName) {
-            $this->initIssues();
-            return;
-        }
-        if ('Limitation' == $relationName) {
-            $this->initLimitations();
-            return;
-        }
-        if ('Picture' == $relationName) {
-            $this->initPictures();
-            return;
-        }
-        if ('Tenant' == $relationName) {
-            $this->initTenants();
-            return;
-        }
-        if ('Utility' == $relationName) {
-            $this->initUtilities();
-            return;
-        }
-    }
-
-    /**
-     * Clears out the collAmenities collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addAmenities()
-     */
-    public function clearAmenities()
-    {
-        $this->collAmenities = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collAmenities collection loaded partially.
-     */
-    public function resetPartialAmenities($v = true)
-    {
-        $this->collAmenitiesPartial = $v;
-    }
-
-    /**
-     * Initializes the collAmenities collection.
-     *
-     * By default this just sets the collAmenities collection to an empty array (like clearcollAmenities());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initAmenities($overrideExisting = true)
-    {
-        if (null !== $this->collAmenities && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = AmenityTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collAmenities = new $collectionClassName;
-        $this->collAmenities->setModel('\Amenity');
-    }
-
-    /**
-     * Gets an array of ChildAmenity objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildProperty is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildAmenity[] List of ChildAmenity objects
-     * @throws PropelException
-     */
-    public function getAmenities(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collAmenitiesPartial && !$this->isNew();
-        if (null === $this->collAmenities || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collAmenities) {
-                // return empty collection
-                $this->initAmenities();
-            } else {
-                $collAmenities = ChildAmenityQuery::create(null, $criteria)
-                    ->filterByProperty($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collAmenitiesPartial && count($collAmenities)) {
-                        $this->initAmenities(false);
-
-                        foreach ($collAmenities as $obj) {
-                            if (false == $this->collAmenities->contains($obj)) {
-                                $this->collAmenities->append($obj);
-                            }
-                        }
-
-                        $this->collAmenitiesPartial = true;
-                    }
-
-                    return $collAmenities;
-                }
-
-                if ($partial && $this->collAmenities) {
-                    foreach ($this->collAmenities as $obj) {
-                        if ($obj->isNew()) {
-                            $collAmenities[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collAmenities = $collAmenities;
-                $this->collAmenitiesPartial = false;
-            }
-        }
-
-        return $this->collAmenities;
-    }
-
-    /**
-     * Sets a collection of ChildAmenity objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $amenities A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function setAmenities(Collection $amenities, ConnectionInterface $con = null)
-    {
-        /** @var ChildAmenity[] $amenitiesToDelete */
-        $amenitiesToDelete = $this->getAmenities(new Criteria(), $con)->diff($amenities);
-
-
-        $this->amenitiesScheduledForDeletion = $amenitiesToDelete;
-
-        foreach ($amenitiesToDelete as $amenityRemoved) {
-            $amenityRemoved->setProperty(null);
-        }
-
-        $this->collAmenities = null;
-        foreach ($amenities as $amenity) {
-            $this->addAmenity($amenity);
-        }
-
-        $this->collAmenities = $amenities;
-        $this->collAmenitiesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Amenity objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Amenity objects.
-     * @throws PropelException
-     */
-    public function countAmenities(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collAmenitiesPartial && !$this->isNew();
-        if (null === $this->collAmenities || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collAmenities) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getAmenities());
-            }
-
-            $query = ChildAmenityQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByProperty($this)
-                ->count($con);
-        }
-
-        return count($this->collAmenities);
-    }
-
-    /**
-     * Method called to associate a ChildAmenity object to this object
-     * through the ChildAmenity foreign key attribute.
-     *
-     * @param  ChildAmenity $l ChildAmenity
-     * @return $this|\Property The current object (for fluent API support)
-     */
-    public function addAmenity(ChildAmenity $l)
-    {
-        if ($this->collAmenities === null) {
-            $this->initAmenities();
-            $this->collAmenitiesPartial = true;
-        }
-
-        if (!$this->collAmenities->contains($l)) {
-            $this->doAddAmenity($l);
-
-            if ($this->amenitiesScheduledForDeletion and $this->amenitiesScheduledForDeletion->contains($l)) {
-                $this->amenitiesScheduledForDeletion->remove($this->amenitiesScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildAmenity $amenity The ChildAmenity object to add.
-     */
-    protected function doAddAmenity(ChildAmenity $amenity)
-    {
-        $this->collAmenities[]= $amenity;
-        $amenity->setProperty($this);
-    }
-
-    /**
-     * @param  ChildAmenity $amenity The ChildAmenity object to remove.
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function removeAmenity(ChildAmenity $amenity)
-    {
-        if ($this->getAmenities()->contains($amenity)) {
-            $pos = $this->collAmenities->search($amenity);
-            $this->collAmenities->remove($pos);
-            if (null === $this->amenitiesScheduledForDeletion) {
-                $this->amenitiesScheduledForDeletion = clone $this->collAmenities;
-                $this->amenitiesScheduledForDeletion->clear();
-            }
-            $this->amenitiesScheduledForDeletion[]= clone $amenity;
-            $amenity->setProperty(null);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Clears out the collAppliances collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addAppliances()
-     */
-    public function clearAppliances()
-    {
-        $this->collAppliances = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collAppliances collection loaded partially.
-     */
-    public function resetPartialAppliances($v = true)
-    {
-        $this->collAppliancesPartial = $v;
-    }
-
-    /**
-     * Initializes the collAppliances collection.
-     *
-     * By default this just sets the collAppliances collection to an empty array (like clearcollAppliances());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initAppliances($overrideExisting = true)
-    {
-        if (null !== $this->collAppliances && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = ApplianceTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collAppliances = new $collectionClassName;
-        $this->collAppliances->setModel('\Appliance');
-    }
-
-    /**
-     * Gets an array of ChildAppliance objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildProperty is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildAppliance[] List of ChildAppliance objects
-     * @throws PropelException
-     */
-    public function getAppliances(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collAppliancesPartial && !$this->isNew();
-        if (null === $this->collAppliances || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collAppliances) {
-                // return empty collection
-                $this->initAppliances();
-            } else {
-                $collAppliances = ChildApplianceQuery::create(null, $criteria)
-                    ->filterByProperty($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collAppliancesPartial && count($collAppliances)) {
-                        $this->initAppliances(false);
-
-                        foreach ($collAppliances as $obj) {
-                            if (false == $this->collAppliances->contains($obj)) {
-                                $this->collAppliances->append($obj);
-                            }
-                        }
-
-                        $this->collAppliancesPartial = true;
-                    }
-
-                    return $collAppliances;
-                }
-
-                if ($partial && $this->collAppliances) {
-                    foreach ($this->collAppliances as $obj) {
-                        if ($obj->isNew()) {
-                            $collAppliances[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collAppliances = $collAppliances;
-                $this->collAppliancesPartial = false;
-            }
-        }
-
-        return $this->collAppliances;
-    }
-
-    /**
-     * Sets a collection of ChildAppliance objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $appliances A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function setAppliances(Collection $appliances, ConnectionInterface $con = null)
-    {
-        /** @var ChildAppliance[] $appliancesToDelete */
-        $appliancesToDelete = $this->getAppliances(new Criteria(), $con)->diff($appliances);
-
-
-        $this->appliancesScheduledForDeletion = $appliancesToDelete;
-
-        foreach ($appliancesToDelete as $applianceRemoved) {
-            $applianceRemoved->setProperty(null);
-        }
-
-        $this->collAppliances = null;
-        foreach ($appliances as $appliance) {
-            $this->addAppliance($appliance);
-        }
-
-        $this->collAppliances = $appliances;
-        $this->collAppliancesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Appliance objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Appliance objects.
-     * @throws PropelException
-     */
-    public function countAppliances(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collAppliancesPartial && !$this->isNew();
-        if (null === $this->collAppliances || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collAppliances) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getAppliances());
-            }
-
-            $query = ChildApplianceQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByProperty($this)
-                ->count($con);
-        }
-
-        return count($this->collAppliances);
-    }
-
-    /**
-     * Method called to associate a ChildAppliance object to this object
-     * through the ChildAppliance foreign key attribute.
-     *
-     * @param  ChildAppliance $l ChildAppliance
-     * @return $this|\Property The current object (for fluent API support)
-     */
-    public function addAppliance(ChildAppliance $l)
-    {
-        if ($this->collAppliances === null) {
-            $this->initAppliances();
-            $this->collAppliancesPartial = true;
-        }
-
-        if (!$this->collAppliances->contains($l)) {
-            $this->doAddAppliance($l);
-
-            if ($this->appliancesScheduledForDeletion and $this->appliancesScheduledForDeletion->contains($l)) {
-                $this->appliancesScheduledForDeletion->remove($this->appliancesScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildAppliance $appliance The ChildAppliance object to add.
-     */
-    protected function doAddAppliance(ChildAppliance $appliance)
-    {
-        $this->collAppliances[]= $appliance;
-        $appliance->setProperty($this);
-    }
-
-    /**
-     * @param  ChildAppliance $appliance The ChildAppliance object to remove.
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function removeAppliance(ChildAppliance $appliance)
-    {
-        if ($this->getAppliances()->contains($appliance)) {
-            $pos = $this->collAppliances->search($appliance);
-            $this->collAppliances->remove($pos);
-            if (null === $this->appliancesScheduledForDeletion) {
-                $this->appliancesScheduledForDeletion = clone $this->collAppliances;
-                $this->appliancesScheduledForDeletion->clear();
-            }
-            $this->appliancesScheduledForDeletion[]= clone $appliance;
-            $appliance->setProperty(null);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Clears out the collCosts collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addCosts()
-     */
-    public function clearCosts()
-    {
-        $this->collCosts = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collCosts collection loaded partially.
-     */
-    public function resetPartialCosts($v = true)
-    {
-        $this->collCostsPartial = $v;
-    }
-
-    /**
-     * Initializes the collCosts collection.
-     *
-     * By default this just sets the collCosts collection to an empty array (like clearcollCosts());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initCosts($overrideExisting = true)
-    {
-        if (null !== $this->collCosts && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = CostTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collCosts = new $collectionClassName;
-        $this->collCosts->setModel('\Cost');
-    }
-
-    /**
-     * Gets an array of ChildCost objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildProperty is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildCost[] List of ChildCost objects
-     * @throws PropelException
-     */
-    public function getCosts(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collCostsPartial && !$this->isNew();
-        if (null === $this->collCosts || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collCosts) {
-                // return empty collection
-                $this->initCosts();
-            } else {
-                $collCosts = ChildCostQuery::create(null, $criteria)
-                    ->filterByProperty($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collCostsPartial && count($collCosts)) {
-                        $this->initCosts(false);
-
-                        foreach ($collCosts as $obj) {
-                            if (false == $this->collCosts->contains($obj)) {
-                                $this->collCosts->append($obj);
-                            }
-                        }
-
-                        $this->collCostsPartial = true;
-                    }
-
-                    return $collCosts;
-                }
-
-                if ($partial && $this->collCosts) {
-                    foreach ($this->collCosts as $obj) {
-                        if ($obj->isNew()) {
-                            $collCosts[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collCosts = $collCosts;
-                $this->collCostsPartial = false;
-            }
-        }
-
-        return $this->collCosts;
-    }
-
-    /**
-     * Sets a collection of ChildCost objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $costs A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function setCosts(Collection $costs, ConnectionInterface $con = null)
-    {
-        /** @var ChildCost[] $costsToDelete */
-        $costsToDelete = $this->getCosts(new Criteria(), $con)->diff($costs);
-
-
-        $this->costsScheduledForDeletion = $costsToDelete;
-
-        foreach ($costsToDelete as $costRemoved) {
-            $costRemoved->setProperty(null);
-        }
-
-        $this->collCosts = null;
-        foreach ($costs as $cost) {
-            $this->addCost($cost);
-        }
-
-        $this->collCosts = $costs;
-        $this->collCostsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Cost objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Cost objects.
-     * @throws PropelException
-     */
-    public function countCosts(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collCostsPartial && !$this->isNew();
-        if (null === $this->collCosts || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collCosts) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getCosts());
-            }
-
-            $query = ChildCostQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByProperty($this)
-                ->count($con);
-        }
-
-        return count($this->collCosts);
-    }
-
-    /**
-     * Method called to associate a ChildCost object to this object
-     * through the ChildCost foreign key attribute.
-     *
-     * @param  ChildCost $l ChildCost
-     * @return $this|\Property The current object (for fluent API support)
-     */
-    public function addCost(ChildCost $l)
-    {
-        if ($this->collCosts === null) {
-            $this->initCosts();
-            $this->collCostsPartial = true;
-        }
-
-        if (!$this->collCosts->contains($l)) {
-            $this->doAddCost($l);
-
-            if ($this->costsScheduledForDeletion and $this->costsScheduledForDeletion->contains($l)) {
-                $this->costsScheduledForDeletion->remove($this->costsScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildCost $cost The ChildCost object to add.
-     */
-    protected function doAddCost(ChildCost $cost)
-    {
-        $this->collCosts[]= $cost;
-        $cost->setProperty($this);
-    }
-
-    /**
-     * @param  ChildCost $cost The ChildCost object to remove.
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function removeCost(ChildCost $cost)
-    {
-        if ($this->getCosts()->contains($cost)) {
-            $pos = $this->collCosts->search($cost);
-            $this->collCosts->remove($pos);
-            if (null === $this->costsScheduledForDeletion) {
-                $this->costsScheduledForDeletion = clone $this->collCosts;
-                $this->costsScheduledForDeletion->clear();
-            }
-            $this->costsScheduledForDeletion[]= clone $cost;
-            $cost->setProperty(null);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Clears out the collIssues collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addIssues()
-     */
-    public function clearIssues()
-    {
-        $this->collIssues = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collIssues collection loaded partially.
-     */
-    public function resetPartialIssues($v = true)
-    {
-        $this->collIssuesPartial = $v;
-    }
-
-    /**
-     * Initializes the collIssues collection.
-     *
-     * By default this just sets the collIssues collection to an empty array (like clearcollIssues());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initIssues($overrideExisting = true)
-    {
-        if (null !== $this->collIssues && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = IssueTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collIssues = new $collectionClassName;
-        $this->collIssues->setModel('\Issue');
-    }
-
-    /**
-     * Gets an array of ChildIssue objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildProperty is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildIssue[] List of ChildIssue objects
-     * @throws PropelException
-     */
-    public function getIssues(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collIssuesPartial && !$this->isNew();
-        if (null === $this->collIssues || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collIssues) {
-                // return empty collection
-                $this->initIssues();
-            } else {
-                $collIssues = ChildIssueQuery::create(null, $criteria)
-                    ->filterByProperty($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collIssuesPartial && count($collIssues)) {
-                        $this->initIssues(false);
-
-                        foreach ($collIssues as $obj) {
-                            if (false == $this->collIssues->contains($obj)) {
-                                $this->collIssues->append($obj);
-                            }
-                        }
-
-                        $this->collIssuesPartial = true;
-                    }
-
-                    return $collIssues;
-                }
-
-                if ($partial && $this->collIssues) {
-                    foreach ($this->collIssues as $obj) {
-                        if ($obj->isNew()) {
-                            $collIssues[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collIssues = $collIssues;
-                $this->collIssuesPartial = false;
-            }
-        }
-
-        return $this->collIssues;
-    }
-
-    /**
-     * Sets a collection of ChildIssue objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $issues A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function setIssues(Collection $issues, ConnectionInterface $con = null)
-    {
-        /** @var ChildIssue[] $issuesToDelete */
-        $issuesToDelete = $this->getIssues(new Criteria(), $con)->diff($issues);
-
-
-        $this->issuesScheduledForDeletion = $issuesToDelete;
-
-        foreach ($issuesToDelete as $issueRemoved) {
-            $issueRemoved->setProperty(null);
-        }
-
-        $this->collIssues = null;
-        foreach ($issues as $issue) {
-            $this->addIssue($issue);
-        }
-
-        $this->collIssues = $issues;
-        $this->collIssuesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Issue objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Issue objects.
-     * @throws PropelException
-     */
-    public function countIssues(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collIssuesPartial && !$this->isNew();
-        if (null === $this->collIssues || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collIssues) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getIssues());
-            }
-
-            $query = ChildIssueQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByProperty($this)
-                ->count($con);
-        }
-
-        return count($this->collIssues);
-    }
-
-    /**
-     * Method called to associate a ChildIssue object to this object
-     * through the ChildIssue foreign key attribute.
-     *
-     * @param  ChildIssue $l ChildIssue
-     * @return $this|\Property The current object (for fluent API support)
-     */
-    public function addIssue(ChildIssue $l)
-    {
-        if ($this->collIssues === null) {
-            $this->initIssues();
-            $this->collIssuesPartial = true;
-        }
-
-        if (!$this->collIssues->contains($l)) {
-            $this->doAddIssue($l);
-
-            if ($this->issuesScheduledForDeletion and $this->issuesScheduledForDeletion->contains($l)) {
-                $this->issuesScheduledForDeletion->remove($this->issuesScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildIssue $issue The ChildIssue object to add.
-     */
-    protected function doAddIssue(ChildIssue $issue)
-    {
-        $this->collIssues[]= $issue;
-        $issue->setProperty($this);
-    }
-
-    /**
-     * @param  ChildIssue $issue The ChildIssue object to remove.
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function removeIssue(ChildIssue $issue)
-    {
-        if ($this->getIssues()->contains($issue)) {
-            $pos = $this->collIssues->search($issue);
-            $this->collIssues->remove($pos);
-            if (null === $this->issuesScheduledForDeletion) {
-                $this->issuesScheduledForDeletion = clone $this->collIssues;
-                $this->issuesScheduledForDeletion->clear();
-            }
-            $this->issuesScheduledForDeletion[]= clone $issue;
-            $issue->setProperty(null);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Clears out the collLimitations collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addLimitations()
-     */
-    public function clearLimitations()
-    {
-        $this->collLimitations = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collLimitations collection loaded partially.
-     */
-    public function resetPartialLimitations($v = true)
-    {
-        $this->collLimitationsPartial = $v;
-    }
-
-    /**
-     * Initializes the collLimitations collection.
-     *
-     * By default this just sets the collLimitations collection to an empty array (like clearcollLimitations());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initLimitations($overrideExisting = true)
-    {
-        if (null !== $this->collLimitations && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = LimitationTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collLimitations = new $collectionClassName;
-        $this->collLimitations->setModel('\Limitation');
-    }
-
-    /**
-     * Gets an array of ChildLimitation objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildProperty is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildLimitation[] List of ChildLimitation objects
-     * @throws PropelException
-     */
-    public function getLimitations(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collLimitationsPartial && !$this->isNew();
-        if (null === $this->collLimitations || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collLimitations) {
-                // return empty collection
-                $this->initLimitations();
-            } else {
-                $collLimitations = ChildLimitationQuery::create(null, $criteria)
-                    ->filterByProperty($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collLimitationsPartial && count($collLimitations)) {
-                        $this->initLimitations(false);
-
-                        foreach ($collLimitations as $obj) {
-                            if (false == $this->collLimitations->contains($obj)) {
-                                $this->collLimitations->append($obj);
-                            }
-                        }
-
-                        $this->collLimitationsPartial = true;
-                    }
-
-                    return $collLimitations;
-                }
-
-                if ($partial && $this->collLimitations) {
-                    foreach ($this->collLimitations as $obj) {
-                        if ($obj->isNew()) {
-                            $collLimitations[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collLimitations = $collLimitations;
-                $this->collLimitationsPartial = false;
-            }
-        }
-
-        return $this->collLimitations;
-    }
-
-    /**
-     * Sets a collection of ChildLimitation objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $limitations A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function setLimitations(Collection $limitations, ConnectionInterface $con = null)
-    {
-        /** @var ChildLimitation[] $limitationsToDelete */
-        $limitationsToDelete = $this->getLimitations(new Criteria(), $con)->diff($limitations);
-
-
-        $this->limitationsScheduledForDeletion = $limitationsToDelete;
-
-        foreach ($limitationsToDelete as $limitationRemoved) {
-            $limitationRemoved->setProperty(null);
-        }
-
-        $this->collLimitations = null;
-        foreach ($limitations as $limitation) {
-            $this->addLimitation($limitation);
-        }
-
-        $this->collLimitations = $limitations;
-        $this->collLimitationsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Limitation objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Limitation objects.
-     * @throws PropelException
-     */
-    public function countLimitations(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collLimitationsPartial && !$this->isNew();
-        if (null === $this->collLimitations || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collLimitations) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getLimitations());
-            }
-
-            $query = ChildLimitationQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByProperty($this)
-                ->count($con);
-        }
-
-        return count($this->collLimitations);
-    }
-
-    /**
-     * Method called to associate a ChildLimitation object to this object
-     * through the ChildLimitation foreign key attribute.
-     *
-     * @param  ChildLimitation $l ChildLimitation
-     * @return $this|\Property The current object (for fluent API support)
-     */
-    public function addLimitation(ChildLimitation $l)
-    {
-        if ($this->collLimitations === null) {
-            $this->initLimitations();
-            $this->collLimitationsPartial = true;
-        }
-
-        if (!$this->collLimitations->contains($l)) {
-            $this->doAddLimitation($l);
-
-            if ($this->limitationsScheduledForDeletion and $this->limitationsScheduledForDeletion->contains($l)) {
-                $this->limitationsScheduledForDeletion->remove($this->limitationsScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildLimitation $limitation The ChildLimitation object to add.
-     */
-    protected function doAddLimitation(ChildLimitation $limitation)
-    {
-        $this->collLimitations[]= $limitation;
-        $limitation->setProperty($this);
-    }
-
-    /**
-     * @param  ChildLimitation $limitation The ChildLimitation object to remove.
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function removeLimitation(ChildLimitation $limitation)
-    {
-        if ($this->getLimitations()->contains($limitation)) {
-            $pos = $this->collLimitations->search($limitation);
-            $this->collLimitations->remove($pos);
-            if (null === $this->limitationsScheduledForDeletion) {
-                $this->limitationsScheduledForDeletion = clone $this->collLimitations;
-                $this->limitationsScheduledForDeletion->clear();
-            }
-            $this->limitationsScheduledForDeletion[]= clone $limitation;
-            $limitation->setProperty(null);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Clears out the collPictures collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addPictures()
-     */
-    public function clearPictures()
-    {
-        $this->collPictures = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collPictures collection loaded partially.
-     */
-    public function resetPartialPictures($v = true)
-    {
-        $this->collPicturesPartial = $v;
-    }
-
-    /**
-     * Initializes the collPictures collection.
-     *
-     * By default this just sets the collPictures collection to an empty array (like clearcollPictures());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initPictures($overrideExisting = true)
-    {
-        if (null !== $this->collPictures && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = PictureTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collPictures = new $collectionClassName;
-        $this->collPictures->setModel('\Picture');
-    }
-
-    /**
-     * Gets an array of ChildPicture objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildProperty is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildPicture[] List of ChildPicture objects
-     * @throws PropelException
-     */
-    public function getPictures(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collPicturesPartial && !$this->isNew();
-        if (null === $this->collPictures || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPictures) {
-                // return empty collection
-                $this->initPictures();
-            } else {
-                $collPictures = ChildPictureQuery::create(null, $criteria)
-                    ->filterByProperty($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collPicturesPartial && count($collPictures)) {
-                        $this->initPictures(false);
-
-                        foreach ($collPictures as $obj) {
-                            if (false == $this->collPictures->contains($obj)) {
-                                $this->collPictures->append($obj);
-                            }
-                        }
-
-                        $this->collPicturesPartial = true;
-                    }
-
-                    return $collPictures;
-                }
-
-                if ($partial && $this->collPictures) {
-                    foreach ($this->collPictures as $obj) {
-                        if ($obj->isNew()) {
-                            $collPictures[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collPictures = $collPictures;
-                $this->collPicturesPartial = false;
-            }
-        }
-
-        return $this->collPictures;
-    }
-
-    /**
-     * Sets a collection of ChildPicture objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $pictures A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function setPictures(Collection $pictures, ConnectionInterface $con = null)
-    {
-        /** @var ChildPicture[] $picturesToDelete */
-        $picturesToDelete = $this->getPictures(new Criteria(), $con)->diff($pictures);
-
-
-        $this->picturesScheduledForDeletion = $picturesToDelete;
-
-        foreach ($picturesToDelete as $pictureRemoved) {
-            $pictureRemoved->setProperty(null);
-        }
-
-        $this->collPictures = null;
-        foreach ($pictures as $picture) {
-            $this->addPicture($picture);
-        }
-
-        $this->collPictures = $pictures;
-        $this->collPicturesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Picture objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Picture objects.
-     * @throws PropelException
-     */
-    public function countPictures(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collPicturesPartial && !$this->isNew();
-        if (null === $this->collPictures || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collPictures) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getPictures());
-            }
-
-            $query = ChildPictureQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByProperty($this)
-                ->count($con);
-        }
-
-        return count($this->collPictures);
-    }
-
-    /**
-     * Method called to associate a ChildPicture object to this object
-     * through the ChildPicture foreign key attribute.
-     *
-     * @param  ChildPicture $l ChildPicture
-     * @return $this|\Property The current object (for fluent API support)
-     */
-    public function addPicture(ChildPicture $l)
-    {
-        if ($this->collPictures === null) {
-            $this->initPictures();
-            $this->collPicturesPartial = true;
-        }
-
-        if (!$this->collPictures->contains($l)) {
-            $this->doAddPicture($l);
-
-            if ($this->picturesScheduledForDeletion and $this->picturesScheduledForDeletion->contains($l)) {
-                $this->picturesScheduledForDeletion->remove($this->picturesScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildPicture $picture The ChildPicture object to add.
-     */
-    protected function doAddPicture(ChildPicture $picture)
-    {
-        $this->collPictures[]= $picture;
-        $picture->setProperty($this);
-    }
-
-    /**
-     * @param  ChildPicture $picture The ChildPicture object to remove.
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function removePicture(ChildPicture $picture)
-    {
-        if ($this->getPictures()->contains($picture)) {
-            $pos = $this->collPictures->search($picture);
-            $this->collPictures->remove($pos);
-            if (null === $this->picturesScheduledForDeletion) {
-                $this->picturesScheduledForDeletion = clone $this->collPictures;
-                $this->picturesScheduledForDeletion->clear();
-            }
-            $this->picturesScheduledForDeletion[]= clone $picture;
-            $picture->setProperty(null);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Clears out the collTenants collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addTenants()
-     */
-    public function clearTenants()
-    {
-        $this->collTenants = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collTenants collection loaded partially.
-     */
-    public function resetPartialTenants($v = true)
-    {
-        $this->collTenantsPartial = $v;
-    }
-
-    /**
-     * Initializes the collTenants collection.
-     *
-     * By default this just sets the collTenants collection to an empty array (like clearcollTenants());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initTenants($overrideExisting = true)
-    {
-        if (null !== $this->collTenants && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = TenantTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collTenants = new $collectionClassName;
-        $this->collTenants->setModel('\Tenant');
-    }
-
-    /**
-     * Gets an array of ChildTenant objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildProperty is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildTenant[] List of ChildTenant objects
-     * @throws PropelException
-     */
-    public function getTenants(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collTenantsPartial && !$this->isNew();
-        if (null === $this->collTenants || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collTenants) {
-                // return empty collection
-                $this->initTenants();
-            } else {
-                $collTenants = ChildTenantQuery::create(null, $criteria)
-                    ->filterByProperty($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collTenantsPartial && count($collTenants)) {
-                        $this->initTenants(false);
-
-                        foreach ($collTenants as $obj) {
-                            if (false == $this->collTenants->contains($obj)) {
-                                $this->collTenants->append($obj);
-                            }
-                        }
-
-                        $this->collTenantsPartial = true;
-                    }
-
-                    return $collTenants;
-                }
-
-                if ($partial && $this->collTenants) {
-                    foreach ($this->collTenants as $obj) {
-                        if ($obj->isNew()) {
-                            $collTenants[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collTenants = $collTenants;
-                $this->collTenantsPartial = false;
-            }
-        }
-
-        return $this->collTenants;
-    }
-
-    /**
-     * Sets a collection of ChildTenant objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $tenants A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function setTenants(Collection $tenants, ConnectionInterface $con = null)
-    {
-        /** @var ChildTenant[] $tenantsToDelete */
-        $tenantsToDelete = $this->getTenants(new Criteria(), $con)->diff($tenants);
-
-
-        $this->tenantsScheduledForDeletion = $tenantsToDelete;
-
-        foreach ($tenantsToDelete as $tenantRemoved) {
-            $tenantRemoved->setProperty(null);
-        }
-
-        $this->collTenants = null;
-        foreach ($tenants as $tenant) {
-            $this->addTenant($tenant);
-        }
-
-        $this->collTenants = $tenants;
-        $this->collTenantsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Tenant objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Tenant objects.
-     * @throws PropelException
-     */
-    public function countTenants(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collTenantsPartial && !$this->isNew();
-        if (null === $this->collTenants || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collTenants) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getTenants());
-            }
-
-            $query = ChildTenantQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByProperty($this)
-                ->count($con);
-        }
-
-        return count($this->collTenants);
-    }
-
-    /**
-     * Method called to associate a ChildTenant object to this object
-     * through the ChildTenant foreign key attribute.
-     *
-     * @param  ChildTenant $l ChildTenant
-     * @return $this|\Property The current object (for fluent API support)
-     */
-    public function addTenant(ChildTenant $l)
-    {
-        if ($this->collTenants === null) {
-            $this->initTenants();
-            $this->collTenantsPartial = true;
-        }
-
-        if (!$this->collTenants->contains($l)) {
-            $this->doAddTenant($l);
-
-            if ($this->tenantsScheduledForDeletion and $this->tenantsScheduledForDeletion->contains($l)) {
-                $this->tenantsScheduledForDeletion->remove($this->tenantsScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildTenant $tenant The ChildTenant object to add.
-     */
-    protected function doAddTenant(ChildTenant $tenant)
-    {
-        $this->collTenants[]= $tenant;
-        $tenant->setProperty($this);
-    }
-
-    /**
-     * @param  ChildTenant $tenant The ChildTenant object to remove.
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function removeTenant(ChildTenant $tenant)
-    {
-        if ($this->getTenants()->contains($tenant)) {
-            $pos = $this->collTenants->search($tenant);
-            $this->collTenants->remove($pos);
-            if (null === $this->tenantsScheduledForDeletion) {
-                $this->tenantsScheduledForDeletion = clone $this->collTenants;
-                $this->tenantsScheduledForDeletion->clear();
-            }
-            $this->tenantsScheduledForDeletion[]= clone $tenant;
-            $tenant->setProperty(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Property is new, it will return
-     * an empty collection; or if this Property has previously
-     * been saved, it will retrieve related Tenants from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Property.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildTenant[] List of ChildTenant objects
-     */
-    public function getTenantsJoinUser(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildTenantQuery::create(null, $criteria);
-        $query->joinWith('User', $joinBehavior);
-
-        return $this->getTenants($query, $con);
-    }
-
-    /**
-     * Clears out the collUtilities collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addUtilities()
-     */
-    public function clearUtilities()
-    {
-        $this->collUtilities = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collUtilities collection loaded partially.
-     */
-    public function resetPartialUtilities($v = true)
-    {
-        $this->collUtilitiesPartial = $v;
-    }
-
-    /**
-     * Initializes the collUtilities collection.
-     *
-     * By default this just sets the collUtilities collection to an empty array (like clearcollUtilities());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initUtilities($overrideExisting = true)
-    {
-        if (null !== $this->collUtilities && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = UtilityTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collUtilities = new $collectionClassName;
-        $this->collUtilities->setModel('\Utility');
-    }
-
-    /**
-     * Gets an array of ChildUtility objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildProperty is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildUtility[] List of ChildUtility objects
-     * @throws PropelException
-     */
-    public function getUtilities(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collUtilitiesPartial && !$this->isNew();
-        if (null === $this->collUtilities || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collUtilities) {
-                // return empty collection
-                $this->initUtilities();
-            } else {
-                $collUtilities = ChildUtilityQuery::create(null, $criteria)
-                    ->filterByProperty($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collUtilitiesPartial && count($collUtilities)) {
-                        $this->initUtilities(false);
-
-                        foreach ($collUtilities as $obj) {
-                            if (false == $this->collUtilities->contains($obj)) {
-                                $this->collUtilities->append($obj);
-                            }
-                        }
-
-                        $this->collUtilitiesPartial = true;
-                    }
-
-                    return $collUtilities;
-                }
-
-                if ($partial && $this->collUtilities) {
-                    foreach ($this->collUtilities as $obj) {
-                        if ($obj->isNew()) {
-                            $collUtilities[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collUtilities = $collUtilities;
-                $this->collUtilitiesPartial = false;
-            }
-        }
-
-        return $this->collUtilities;
-    }
-
-    /**
-     * Sets a collection of ChildUtility objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $utilities A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function setUtilities(Collection $utilities, ConnectionInterface $con = null)
-    {
-        /** @var ChildUtility[] $utilitiesToDelete */
-        $utilitiesToDelete = $this->getUtilities(new Criteria(), $con)->diff($utilities);
-
-
-        $this->utilitiesScheduledForDeletion = $utilitiesToDelete;
-
-        foreach ($utilitiesToDelete as $utilityRemoved) {
-            $utilityRemoved->setProperty(null);
-        }
-
-        $this->collUtilities = null;
-        foreach ($utilities as $utility) {
-            $this->addUtility($utility);
-        }
-
-        $this->collUtilities = $utilities;
-        $this->collUtilitiesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Utility objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Utility objects.
-     * @throws PropelException
-     */
-    public function countUtilities(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collUtilitiesPartial && !$this->isNew();
-        if (null === $this->collUtilities || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collUtilities) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getUtilities());
-            }
-
-            $query = ChildUtilityQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByProperty($this)
-                ->count($con);
-        }
-
-        return count($this->collUtilities);
-    }
-
-    /**
-     * Method called to associate a ChildUtility object to this object
-     * through the ChildUtility foreign key attribute.
-     *
-     * @param  ChildUtility $l ChildUtility
-     * @return $this|\Property The current object (for fluent API support)
-     */
-    public function addUtility(ChildUtility $l)
-    {
-        if ($this->collUtilities === null) {
-            $this->initUtilities();
-            $this->collUtilitiesPartial = true;
-        }
-
-        if (!$this->collUtilities->contains($l)) {
-            $this->doAddUtility($l);
-
-            if ($this->utilitiesScheduledForDeletion and $this->utilitiesScheduledForDeletion->contains($l)) {
-                $this->utilitiesScheduledForDeletion->remove($this->utilitiesScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildUtility $utility The ChildUtility object to add.
-     */
-    protected function doAddUtility(ChildUtility $utility)
-    {
-        $this->collUtilities[]= $utility;
-        $utility->setProperty($this);
-    }
-
-    /**
-     * @param  ChildUtility $utility The ChildUtility object to remove.
-     * @return $this|ChildProperty The current object (for fluent API support)
-     */
-    public function removeUtility(ChildUtility $utility)
-    {
-        if ($this->getUtilities()->contains($utility)) {
-            $pos = $this->collUtilities->search($utility);
-            $this->collUtilities->remove($pos);
-            if (null === $this->utilitiesScheduledForDeletion) {
-                $this->utilitiesScheduledForDeletion = clone $this->collUtilities;
-                $this->utilitiesScheduledForDeletion->clear();
-            }
-            $this->utilitiesScheduledForDeletion[]= clone $utility;
-            $utility->setProperty(null);
-        }
-
-        return $this;
-    }
-
-    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
-        if (null !== $this->aAddress) {
-            $this->aAddress->removeProperty($this);
-        }
-        if (null !== $this->aUser) {
-            $this->aUser->removeProperty($this);
-        }
         $this->id = null;
-        $this->timestamp = null;
-        $this->landlordid = null;
         $this->addressid = null;
-        $this->fpl = null;
+        $this->userid = null;
+        $this->adddate = null;
+        $this->lastupdated = null;
+        $this->postname = null;
+        $this->available = null;
+        $this->expectedrentpermonth = null;
         $this->squarefootage = null;
-        $this->rooms = null;
-        $this->bathrooms = null;
+        $this->bedroomcount = null;
+        $this->bathroomcount = null;
         $this->details = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -3960,58 +1689,8 @@ abstract class Property implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collAmenities) {
-                foreach ($this->collAmenities as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collAppliances) {
-                foreach ($this->collAppliances as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collCosts) {
-                foreach ($this->collCosts as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collIssues) {
-                foreach ($this->collIssues as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collLimitations) {
-                foreach ($this->collLimitations as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collPictures) {
-                foreach ($this->collPictures as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collTenants) {
-                foreach ($this->collTenants as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collUtilities) {
-                foreach ($this->collUtilities as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
         } // if ($deep)
 
-        $this->collAmenities = null;
-        $this->collAppliances = null;
-        $this->collCosts = null;
-        $this->collIssues = null;
-        $this->collLimitations = null;
-        $this->collPictures = null;
-        $this->collTenants = null;
-        $this->collUtilities = null;
-        $this->aAddress = null;
-        $this->aUser = null;
     }
 
     /**

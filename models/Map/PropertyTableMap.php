@@ -59,7 +59,7 @@ class PropertyTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 9;
+    const NUM_COLUMNS = 12;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class PropertyTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 9;
+    const NUM_HYDRATE_COLUMNS = 12;
 
     /**
      * the column name for the ID field
@@ -77,44 +77,59 @@ class PropertyTableMap extends TableMap
     const COL_ID = 'property.ID';
 
     /**
-     * the column name for the Timestamp field
+     * the column name for the addressID field
      */
-    const COL_TIMESTAMP = 'property.Timestamp';
+    const COL_ADDRESSID = 'property.addressID';
 
     /**
-     * the column name for the LandlordID field
+     * the column name for the userID field
      */
-    const COL_LANDLORDID = 'property.LandlordID';
+    const COL_USERID = 'property.userID';
 
     /**
-     * the column name for the AddressID field
+     * the column name for the addDate field
      */
-    const COL_ADDRESSID = 'property.AddressID';
+    const COL_ADDDATE = 'property.addDate';
 
     /**
-     * the column name for the FPL field
+     * the column name for the lastUpdated field
      */
-    const COL_FPL = 'property.FPL';
+    const COL_LASTUPDATED = 'property.lastUpdated';
 
     /**
-     * the column name for the SquareFootage field
+     * the column name for the postName field
      */
-    const COL_SQUAREFOOTAGE = 'property.SquareFootage';
+    const COL_POSTNAME = 'property.postName';
 
     /**
-     * the column name for the Rooms field
+     * the column name for the available field
      */
-    const COL_ROOMS = 'property.Rooms';
+    const COL_AVAILABLE = 'property.available';
 
     /**
-     * the column name for the Bathrooms field
+     * the column name for the expectedRentPerMonth field
      */
-    const COL_BATHROOMS = 'property.Bathrooms';
+    const COL_EXPECTEDRENTPERMONTH = 'property.expectedRentPerMonth';
 
     /**
-     * the column name for the Details field
+     * the column name for the squareFootage field
      */
-    const COL_DETAILS = 'property.Details';
+    const COL_SQUAREFOOTAGE = 'property.squareFootage';
+
+    /**
+     * the column name for the bedroomCount field
+     */
+    const COL_BEDROOMCOUNT = 'property.bedroomCount';
+
+    /**
+     * the column name for the bathroomCount field
+     */
+    const COL_BATHROOMCOUNT = 'property.bathroomCount';
+
+    /**
+     * the column name for the details field
+     */
+    const COL_DETAILS = 'property.details';
 
     /**
      * The default string format for model objects of the related table
@@ -128,11 +143,11 @@ class PropertyTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Timestamp', 'Landlordid', 'Addressid', 'Fpl', 'Squarefootage', 'Rooms', 'Bathrooms', 'Details', ),
-        self::TYPE_CAMELNAME     => array('id', 'timestamp', 'landlordid', 'addressid', 'fpl', 'squarefootage', 'rooms', 'bathrooms', 'details', ),
-        self::TYPE_COLNAME       => array(PropertyTableMap::COL_ID, PropertyTableMap::COL_TIMESTAMP, PropertyTableMap::COL_LANDLORDID, PropertyTableMap::COL_ADDRESSID, PropertyTableMap::COL_FPL, PropertyTableMap::COL_SQUAREFOOTAGE, PropertyTableMap::COL_ROOMS, PropertyTableMap::COL_BATHROOMS, PropertyTableMap::COL_DETAILS, ),
-        self::TYPE_FIELDNAME     => array('ID', 'Timestamp', 'LandlordID', 'AddressID', 'FPL', 'SquareFootage', 'Rooms', 'Bathrooms', 'Details', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        self::TYPE_PHPNAME       => array('Id', 'Addressid', 'Userid', 'Adddate', 'Lastupdated', 'Postname', 'Available', 'Expectedrentpermonth', 'Squarefootage', 'Bedroomcount', 'Bathroomcount', 'Details', ),
+        self::TYPE_CAMELNAME     => array('id', 'addressid', 'userid', 'adddate', 'lastupdated', 'postname', 'available', 'expectedrentpermonth', 'squarefootage', 'bedroomcount', 'bathroomcount', 'details', ),
+        self::TYPE_COLNAME       => array(PropertyTableMap::COL_ID, PropertyTableMap::COL_ADDRESSID, PropertyTableMap::COL_USERID, PropertyTableMap::COL_ADDDATE, PropertyTableMap::COL_LASTUPDATED, PropertyTableMap::COL_POSTNAME, PropertyTableMap::COL_AVAILABLE, PropertyTableMap::COL_EXPECTEDRENTPERMONTH, PropertyTableMap::COL_SQUAREFOOTAGE, PropertyTableMap::COL_BEDROOMCOUNT, PropertyTableMap::COL_BATHROOMCOUNT, PropertyTableMap::COL_DETAILS, ),
+        self::TYPE_FIELDNAME     => array('ID', 'addressID', 'userID', 'addDate', 'lastUpdated', 'postName', 'available', 'expectedRentPerMonth', 'squareFootage', 'bedroomCount', 'bathroomCount', 'details', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -142,11 +157,11 @@ class PropertyTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Timestamp' => 1, 'Landlordid' => 2, 'Addressid' => 3, 'Fpl' => 4, 'Squarefootage' => 5, 'Rooms' => 6, 'Bathrooms' => 7, 'Details' => 8, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'timestamp' => 1, 'landlordid' => 2, 'addressid' => 3, 'fpl' => 4, 'squarefootage' => 5, 'rooms' => 6, 'bathrooms' => 7, 'details' => 8, ),
-        self::TYPE_COLNAME       => array(PropertyTableMap::COL_ID => 0, PropertyTableMap::COL_TIMESTAMP => 1, PropertyTableMap::COL_LANDLORDID => 2, PropertyTableMap::COL_ADDRESSID => 3, PropertyTableMap::COL_FPL => 4, PropertyTableMap::COL_SQUAREFOOTAGE => 5, PropertyTableMap::COL_ROOMS => 6, PropertyTableMap::COL_BATHROOMS => 7, PropertyTableMap::COL_DETAILS => 8, ),
-        self::TYPE_FIELDNAME     => array('ID' => 0, 'Timestamp' => 1, 'LandlordID' => 2, 'AddressID' => 3, 'FPL' => 4, 'SquareFootage' => 5, 'Rooms' => 6, 'Bathrooms' => 7, 'Details' => 8, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Addressid' => 1, 'Userid' => 2, 'Adddate' => 3, 'Lastupdated' => 4, 'Postname' => 5, 'Available' => 6, 'Expectedrentpermonth' => 7, 'Squarefootage' => 8, 'Bedroomcount' => 9, 'Bathroomcount' => 10, 'Details' => 11, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'addressid' => 1, 'userid' => 2, 'adddate' => 3, 'lastupdated' => 4, 'postname' => 5, 'available' => 6, 'expectedrentpermonth' => 7, 'squarefootage' => 8, 'bedroomcount' => 9, 'bathroomcount' => 10, 'details' => 11, ),
+        self::TYPE_COLNAME       => array(PropertyTableMap::COL_ID => 0, PropertyTableMap::COL_ADDRESSID => 1, PropertyTableMap::COL_USERID => 2, PropertyTableMap::COL_ADDDATE => 3, PropertyTableMap::COL_LASTUPDATED => 4, PropertyTableMap::COL_POSTNAME => 5, PropertyTableMap::COL_AVAILABLE => 6, PropertyTableMap::COL_EXPECTEDRENTPERMONTH => 7, PropertyTableMap::COL_SQUAREFOOTAGE => 8, PropertyTableMap::COL_BEDROOMCOUNT => 9, PropertyTableMap::COL_BATHROOMCOUNT => 10, PropertyTableMap::COL_DETAILS => 11, ),
+        self::TYPE_FIELDNAME     => array('ID' => 0, 'addressID' => 1, 'userID' => 2, 'addDate' => 3, 'lastUpdated' => 4, 'postName' => 5, 'available' => 6, 'expectedRentPerMonth' => 7, 'squareFootage' => 8, 'bedroomCount' => 9, 'bathroomCount' => 10, 'details' => 11, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -167,14 +182,17 @@ class PropertyTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
-        $this->addForeignKey('LandlordID', 'Landlordid', 'INTEGER', 'user', 'ID', true, null, null);
-        $this->addForeignKey('AddressID', 'Addressid', 'INTEGER', 'address', 'ID', true, null, null);
-        $this->addColumn('FPL', 'Fpl', 'INTEGER', false, null, null);
-        $this->addColumn('SquareFootage', 'Squarefootage', 'INTEGER', true, null, null);
-        $this->addColumn('Rooms', 'Rooms', 'INTEGER', true, null, null);
-        $this->addColumn('Bathrooms', 'Bathrooms', 'INTEGER', true, null, null);
-        $this->addColumn('Details', 'Details', 'VARCHAR', false, 256, null);
+        $this->addColumn('addressID', 'Addressid', 'INTEGER', true, null, null);
+        $this->addColumn('userID', 'Userid', 'INTEGER', true, null, null);
+        $this->addColumn('addDate', 'Adddate', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
+        $this->addColumn('lastUpdated', 'Lastupdated', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
+        $this->addColumn('postName', 'Postname', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('available', 'Available', 'BOOLEAN', true, 1, false);
+        $this->addColumn('expectedRentPerMonth', 'Expectedrentpermonth', 'DOUBLE', true, null, null);
+        $this->addColumn('squareFootage', 'Squarefootage', 'INTEGER', true, null, null);
+        $this->addColumn('bedroomCount', 'Bedroomcount', 'INTEGER', true, null, null);
+        $this->addColumn('bathroomCount', 'Bathroomcount', 'INTEGER', true, null, null);
+        $this->addColumn('details', 'Details', 'LONGVARCHAR', false, null, null);
     } // initialize()
 
     /**
@@ -182,76 +200,6 @@ class PropertyTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Address', '\\Address', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':AddressID',
-    1 => ':ID',
-  ),
-), null, null, null, false);
-        $this->addRelation('User', '\\User', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':LandlordID',
-    1 => ':ID',
-  ),
-), null, null, null, false);
-        $this->addRelation('Amenity', '\\Amenity', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':PropertyID',
-    1 => ':ID',
-  ),
-), null, null, 'Amenities', false);
-        $this->addRelation('Appliance', '\\Appliance', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':PropertyID',
-    1 => ':ID',
-  ),
-), null, null, 'Appliances', false);
-        $this->addRelation('Cost', '\\Cost', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':PropertyID',
-    1 => ':ID',
-  ),
-), null, null, 'Costs', false);
-        $this->addRelation('Issue', '\\Issue', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':PropertyID',
-    1 => ':ID',
-  ),
-), null, null, 'Issues', false);
-        $this->addRelation('Limitation', '\\Limitation', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':PropertyID',
-    1 => ':ID',
-  ),
-), null, null, 'Limitations', false);
-        $this->addRelation('Picture', '\\Picture', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':PropertyID',
-    1 => ':ID',
-  ),
-), null, null, 'Pictures', false);
-        $this->addRelation('Tenant', '\\Tenant', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':PropertyID',
-    1 => ':ID',
-  ),
-), null, null, 'Tenants', false);
-        $this->addRelation('Utility', '\\Utility', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':PropertyID',
-    1 => ':ID',
-  ),
-), null, null, 'Utilities', false);
     } // buildRelations()
 
     /**
@@ -396,24 +344,30 @@ class PropertyTableMap extends TableMap
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PropertyTableMap::COL_ID);
-            $criteria->addSelectColumn(PropertyTableMap::COL_TIMESTAMP);
-            $criteria->addSelectColumn(PropertyTableMap::COL_LANDLORDID);
             $criteria->addSelectColumn(PropertyTableMap::COL_ADDRESSID);
-            $criteria->addSelectColumn(PropertyTableMap::COL_FPL);
+            $criteria->addSelectColumn(PropertyTableMap::COL_USERID);
+            $criteria->addSelectColumn(PropertyTableMap::COL_ADDDATE);
+            $criteria->addSelectColumn(PropertyTableMap::COL_LASTUPDATED);
+            $criteria->addSelectColumn(PropertyTableMap::COL_POSTNAME);
+            $criteria->addSelectColumn(PropertyTableMap::COL_AVAILABLE);
+            $criteria->addSelectColumn(PropertyTableMap::COL_EXPECTEDRENTPERMONTH);
             $criteria->addSelectColumn(PropertyTableMap::COL_SQUAREFOOTAGE);
-            $criteria->addSelectColumn(PropertyTableMap::COL_ROOMS);
-            $criteria->addSelectColumn(PropertyTableMap::COL_BATHROOMS);
+            $criteria->addSelectColumn(PropertyTableMap::COL_BEDROOMCOUNT);
+            $criteria->addSelectColumn(PropertyTableMap::COL_BATHROOMCOUNT);
             $criteria->addSelectColumn(PropertyTableMap::COL_DETAILS);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.Timestamp');
-            $criteria->addSelectColumn($alias . '.LandlordID');
-            $criteria->addSelectColumn($alias . '.AddressID');
-            $criteria->addSelectColumn($alias . '.FPL');
-            $criteria->addSelectColumn($alias . '.SquareFootage');
-            $criteria->addSelectColumn($alias . '.Rooms');
-            $criteria->addSelectColumn($alias . '.Bathrooms');
-            $criteria->addSelectColumn($alias . '.Details');
+            $criteria->addSelectColumn($alias . '.addressID');
+            $criteria->addSelectColumn($alias . '.userID');
+            $criteria->addSelectColumn($alias . '.addDate');
+            $criteria->addSelectColumn($alias . '.lastUpdated');
+            $criteria->addSelectColumn($alias . '.postName');
+            $criteria->addSelectColumn($alias . '.available');
+            $criteria->addSelectColumn($alias . '.expectedRentPerMonth');
+            $criteria->addSelectColumn($alias . '.squareFootage');
+            $criteria->addSelectColumn($alias . '.bedroomCount');
+            $criteria->addSelectColumn($alias . '.bathroomCount');
+            $criteria->addSelectColumn($alias . '.details');
         }
     }
 

@@ -10,7 +10,6 @@ use Map\AmenityTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -20,19 +19,15 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  *
- * @method     ChildAmenityQuery orderById($order = Criteria::ASC) Order by the ID column
- * @method     ChildAmenityQuery orderByTimestamp($order = Criteria::ASC) Order by the Timestamp column
- * @method     ChildAmenityQuery orderByPropertyid($order = Criteria::ASC) Order by the PropertyID column
- * @method     ChildAmenityQuery orderByName($order = Criteria::ASC) Order by the Name column
- * @method     ChildAmenityQuery orderByDescription($order = Criteria::ASC) Order by the Description column
- * @method     ChildAmenityQuery orderByPrivate($order = Criteria::ASC) Order by the Private column
+ * @method     ChildAmenityQuery orderByAmenitynumberid($order = Criteria::ASC) Order by the amenityNumberID column
+ * @method     ChildAmenityQuery orderByPropertyid($order = Criteria::ASC) Order by the propertyID column
+ * @method     ChildAmenityQuery orderByAmenitytypeid($order = Criteria::ASC) Order by the amenityTypeID column
+ * @method     ChildAmenityQuery orderByDetails($order = Criteria::ASC) Order by the details column
  *
- * @method     ChildAmenityQuery groupById() Group by the ID column
- * @method     ChildAmenityQuery groupByTimestamp() Group by the Timestamp column
- * @method     ChildAmenityQuery groupByPropertyid() Group by the PropertyID column
- * @method     ChildAmenityQuery groupByName() Group by the Name column
- * @method     ChildAmenityQuery groupByDescription() Group by the Description column
- * @method     ChildAmenityQuery groupByPrivate() Group by the Private column
+ * @method     ChildAmenityQuery groupByAmenitynumberid() Group by the amenityNumberID column
+ * @method     ChildAmenityQuery groupByPropertyid() Group by the propertyID column
+ * @method     ChildAmenityQuery groupByAmenitytypeid() Group by the amenityTypeID column
+ * @method     ChildAmenityQuery groupByDetails() Group by the details column
  *
  * @method     ChildAmenityQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildAmenityQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -42,45 +37,27 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAmenityQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildAmenityQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildAmenityQuery leftJoinProperty($relationAlias = null) Adds a LEFT JOIN clause to the query using the Property relation
- * @method     ChildAmenityQuery rightJoinProperty($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Property relation
- * @method     ChildAmenityQuery innerJoinProperty($relationAlias = null) Adds a INNER JOIN clause to the query using the Property relation
- *
- * @method     ChildAmenityQuery joinWithProperty($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Property relation
- *
- * @method     ChildAmenityQuery leftJoinWithProperty() Adds a LEFT JOIN clause and with to the query using the Property relation
- * @method     ChildAmenityQuery rightJoinWithProperty() Adds a RIGHT JOIN clause and with to the query using the Property relation
- * @method     ChildAmenityQuery innerJoinWithProperty() Adds a INNER JOIN clause and with to the query using the Property relation
- *
- * @method     \PropertyQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
- *
  * @method     ChildAmenity findOne(ConnectionInterface $con = null) Return the first ChildAmenity matching the query
  * @method     ChildAmenity findOneOrCreate(ConnectionInterface $con = null) Return the first ChildAmenity matching the query, or a new ChildAmenity object populated from the query conditions when no match is found
  *
- * @method     ChildAmenity findOneById(int $ID) Return the first ChildAmenity filtered by the ID column
- * @method     ChildAmenity findOneByTimestamp(string $Timestamp) Return the first ChildAmenity filtered by the Timestamp column
- * @method     ChildAmenity findOneByPropertyid(int $PropertyID) Return the first ChildAmenity filtered by the PropertyID column
- * @method     ChildAmenity findOneByName(string $Name) Return the first ChildAmenity filtered by the Name column
- * @method     ChildAmenity findOneByDescription(string $Description) Return the first ChildAmenity filtered by the Description column
- * @method     ChildAmenity findOneByPrivate(boolean $Private) Return the first ChildAmenity filtered by the Private column *
+ * @method     ChildAmenity findOneByAmenitynumberid(int $amenityNumberID) Return the first ChildAmenity filtered by the amenityNumberID column
+ * @method     ChildAmenity findOneByPropertyid(int $propertyID) Return the first ChildAmenity filtered by the propertyID column
+ * @method     ChildAmenity findOneByAmenitytypeid(int $amenityTypeID) Return the first ChildAmenity filtered by the amenityTypeID column
+ * @method     ChildAmenity findOneByDetails(string $details) Return the first ChildAmenity filtered by the details column *
 
  * @method     ChildAmenity requirePk($key, ConnectionInterface $con = null) Return the ChildAmenity by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAmenity requireOne(ConnectionInterface $con = null) Return the first ChildAmenity matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildAmenity requireOneById(int $ID) Return the first ChildAmenity filtered by the ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildAmenity requireOneByTimestamp(string $Timestamp) Return the first ChildAmenity filtered by the Timestamp column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildAmenity requireOneByPropertyid(int $PropertyID) Return the first ChildAmenity filtered by the PropertyID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildAmenity requireOneByName(string $Name) Return the first ChildAmenity filtered by the Name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildAmenity requireOneByDescription(string $Description) Return the first ChildAmenity filtered by the Description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildAmenity requireOneByPrivate(boolean $Private) Return the first ChildAmenity filtered by the Private column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAmenity requireOneByAmenitynumberid(int $amenityNumberID) Return the first ChildAmenity filtered by the amenityNumberID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAmenity requireOneByPropertyid(int $propertyID) Return the first ChildAmenity filtered by the propertyID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAmenity requireOneByAmenitytypeid(int $amenityTypeID) Return the first ChildAmenity filtered by the amenityTypeID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAmenity requireOneByDetails(string $details) Return the first ChildAmenity filtered by the details column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildAmenity[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildAmenity objects based on current ModelCriteria
- * @method     ChildAmenity[]|ObjectCollection findById(int $ID) Return ChildAmenity objects filtered by the ID column
- * @method     ChildAmenity[]|ObjectCollection findByTimestamp(string $Timestamp) Return ChildAmenity objects filtered by the Timestamp column
- * @method     ChildAmenity[]|ObjectCollection findByPropertyid(int $PropertyID) Return ChildAmenity objects filtered by the PropertyID column
- * @method     ChildAmenity[]|ObjectCollection findByName(string $Name) Return ChildAmenity objects filtered by the Name column
- * @method     ChildAmenity[]|ObjectCollection findByDescription(string $Description) Return ChildAmenity objects filtered by the Description column
- * @method     ChildAmenity[]|ObjectCollection findByPrivate(boolean $Private) Return ChildAmenity objects filtered by the Private column
+ * @method     ChildAmenity[]|ObjectCollection findByAmenitynumberid(int $amenityNumberID) Return ChildAmenity objects filtered by the amenityNumberID column
+ * @method     ChildAmenity[]|ObjectCollection findByPropertyid(int $propertyID) Return ChildAmenity objects filtered by the propertyID column
+ * @method     ChildAmenity[]|ObjectCollection findByAmenitytypeid(int $amenityTypeID) Return ChildAmenity objects filtered by the amenityTypeID column
+ * @method     ChildAmenity[]|ObjectCollection findByDetails(string $details) Return ChildAmenity objects filtered by the details column
  * @method     ChildAmenity[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -179,7 +156,7 @@ abstract class AmenityQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT ID, Timestamp, PropertyID, Name, Description, Private FROM amenity WHERE ID = :p0';
+        $sql = 'SELECT amenityNumberID, propertyID, amenityTypeID, details FROM amenity WHERE amenityNumberID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -253,7 +230,7 @@ abstract class AmenityQuery extends ModelCriteria
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(AmenityTableMap::COL_ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(AmenityTableMap::COL_AMENITYNUMBERID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -266,20 +243,20 @@ abstract class AmenityQuery extends ModelCriteria
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(AmenityTableMap::COL_ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(AmenityTableMap::COL_AMENITYNUMBERID, $keys, Criteria::IN);
     }
 
     /**
-     * Filter the query on the ID column
+     * Filter the query on the amenityNumberID column
      *
      * Example usage:
      * <code>
-     * $query->filterById(1234); // WHERE ID = 1234
-     * $query->filterById(array(12, 34)); // WHERE ID IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE ID > 12
+     * $query->filterByAmenitynumberid(1234); // WHERE amenityNumberID = 1234
+     * $query->filterByAmenitynumberid(array(12, 34)); // WHERE amenityNumberID IN (12, 34)
+     * $query->filterByAmenitynumberid(array('min' => 12)); // WHERE amenityNumberID > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param     mixed $amenitynumberid The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -287,16 +264,16 @@ abstract class AmenityQuery extends ModelCriteria
      *
      * @return $this|ChildAmenityQuery The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterByAmenitynumberid($amenitynumberid = null, $comparison = null)
     {
-        if (is_array($id)) {
+        if (is_array($amenitynumberid)) {
             $useMinMax = false;
-            if (isset($id['min'])) {
-                $this->addUsingAlias(AmenityTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
+            if (isset($amenitynumberid['min'])) {
+                $this->addUsingAlias(AmenityTableMap::COL_AMENITYNUMBERID, $amenitynumberid['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($id['max'])) {
-                $this->addUsingAlias(AmenityTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
+            if (isset($amenitynumberid['max'])) {
+                $this->addUsingAlias(AmenityTableMap::COL_AMENITYNUMBERID, $amenitynumberid['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -307,63 +284,18 @@ abstract class AmenityQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(AmenityTableMap::COL_ID, $id, $comparison);
+        return $this->addUsingAlias(AmenityTableMap::COL_AMENITYNUMBERID, $amenitynumberid, $comparison);
     }
 
     /**
-     * Filter the query on the Timestamp column
+     * Filter the query on the propertyID column
      *
      * Example usage:
      * <code>
-     * $query->filterByTimestamp('2011-03-14'); // WHERE Timestamp = '2011-03-14'
-     * $query->filterByTimestamp('now'); // WHERE Timestamp = '2011-03-14'
-     * $query->filterByTimestamp(array('max' => 'yesterday')); // WHERE Timestamp > '2011-03-13'
+     * $query->filterByPropertyid(1234); // WHERE propertyID = 1234
+     * $query->filterByPropertyid(array(12, 34)); // WHERE propertyID IN (12, 34)
+     * $query->filterByPropertyid(array('min' => 12)); // WHERE propertyID > 12
      * </code>
-     *
-     * @param     mixed $timestamp The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildAmenityQuery The current query, for fluid interface
-     */
-    public function filterByTimestamp($timestamp = null, $comparison = null)
-    {
-        if (is_array($timestamp)) {
-            $useMinMax = false;
-            if (isset($timestamp['min'])) {
-                $this->addUsingAlias(AmenityTableMap::COL_TIMESTAMP, $timestamp['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($timestamp['max'])) {
-                $this->addUsingAlias(AmenityTableMap::COL_TIMESTAMP, $timestamp['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(AmenityTableMap::COL_TIMESTAMP, $timestamp, $comparison);
-    }
-
-    /**
-     * Filter the query on the PropertyID column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPropertyid(1234); // WHERE PropertyID = 1234
-     * $query->filterByPropertyid(array(12, 34)); // WHERE PropertyID IN (12, 34)
-     * $query->filterByPropertyid(array('min' => 12)); // WHERE PropertyID > 12
-     * </code>
-     *
-     * @see       filterByProperty()
      *
      * @param     mixed $propertyid The value to use as filter.
      *              Use scalar values for equality.
@@ -397,157 +329,69 @@ abstract class AmenityQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the Name column
+     * Filter the query on the amenityTypeID column
      *
      * Example usage:
      * <code>
-     * $query->filterByName('fooValue');   // WHERE Name = 'fooValue'
-     * $query->filterByName('%fooValue%', Criteria::LIKE); // WHERE Name LIKE '%fooValue%'
+     * $query->filterByAmenitytypeid(1234); // WHERE amenityTypeID = 1234
+     * $query->filterByAmenitytypeid(array(12, 34)); // WHERE amenityTypeID IN (12, 34)
+     * $query->filterByAmenitytypeid(array('min' => 12)); // WHERE amenityTypeID > 12
      * </code>
      *
-     * @param     string $name The value to use as filter.
+     * @param     mixed $amenitytypeid The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildAmenityQuery The current query, for fluid interface
      */
-    public function filterByName($name = null, $comparison = null)
+    public function filterByAmenitytypeid($amenitytypeid = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($name)) {
-                $comparison = Criteria::IN;
+        if (is_array($amenitytypeid)) {
+            $useMinMax = false;
+            if (isset($amenitytypeid['min'])) {
+                $this->addUsingAlias(AmenityTableMap::COL_AMENITYTYPEID, $amenitytypeid['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
             }
-        }
-
-        return $this->addUsingAlias(AmenityTableMap::COL_NAME, $name, $comparison);
-    }
-
-    /**
-     * Filter the query on the Description column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByDescription('fooValue');   // WHERE Description = 'fooValue'
-     * $query->filterByDescription('%fooValue%', Criteria::LIKE); // WHERE Description LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $description The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildAmenityQuery The current query, for fluid interface
-     */
-    public function filterByDescription($description = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($description)) {
-                $comparison = Criteria::IN;
+            if (isset($amenitytypeid['max'])) {
+                $this->addUsingAlias(AmenityTableMap::COL_AMENITYTYPEID, $amenitytypeid['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
             }
-        }
-
-        return $this->addUsingAlias(AmenityTableMap::COL_DESCRIPTION, $description, $comparison);
-    }
-
-    /**
-     * Filter the query on the Private column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPrivate(true); // WHERE Private = true
-     * $query->filterByPrivate('yes'); // WHERE Private = true
-     * </code>
-     *
-     * @param     boolean|string $private The value to use as filter.
-     *              Non-boolean arguments are converted using the following rules:
-     *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildAmenityQuery The current query, for fluid interface
-     */
-    public function filterByPrivate($private = null, $comparison = null)
-    {
-        if (is_string($private)) {
-            $private = in_array(strtolower($private), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-        }
-
-        return $this->addUsingAlias(AmenityTableMap::COL_PRIVATE, $private, $comparison);
-    }
-
-    /**
-     * Filter the query by a related \Property object
-     *
-     * @param \Property|ObjectCollection $property The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @throws \Propel\Runtime\Exception\PropelException
-     *
-     * @return ChildAmenityQuery The current query, for fluid interface
-     */
-    public function filterByProperty($property, $comparison = null)
-    {
-        if ($property instanceof \Property) {
-            return $this
-                ->addUsingAlias(AmenityTableMap::COL_PROPERTYID, $property->getId(), $comparison);
-        } elseif ($property instanceof ObjectCollection) {
+            if ($useMinMax) {
+                return $this;
+            }
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
-
-            return $this
-                ->addUsingAlias(AmenityTableMap::COL_PROPERTYID, $property->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByProperty() only accepts arguments of type \Property or Collection');
         }
+
+        return $this->addUsingAlias(AmenityTableMap::COL_AMENITYTYPEID, $amenitytypeid, $comparison);
     }
 
     /**
-     * Adds a JOIN clause to the query using the Property relation
+     * Filter the query on the details column
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * Example usage:
+     * <code>
+     * $query->filterByDetails('fooValue');   // WHERE details = 'fooValue'
+     * $query->filterByDetails('%fooValue%', Criteria::LIKE); // WHERE details LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $details The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildAmenityQuery The current query, for fluid interface
      */
-    public function joinProperty($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function filterByDetails($details = null, $comparison = null)
     {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Property');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
+        if (null === $comparison) {
+            if (is_array($details)) {
+                $comparison = Criteria::IN;
+            }
         }
 
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Property');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Property relation Property object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \PropertyQuery A secondary query class using the current class as primary query
-     */
-    public function usePropertyQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinProperty($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Property', '\PropertyQuery');
+        return $this->addUsingAlias(AmenityTableMap::COL_DETAILS, $details, $comparison);
     }
 
     /**
@@ -560,7 +404,7 @@ abstract class AmenityQuery extends ModelCriteria
     public function prune($amenity = null)
     {
         if ($amenity) {
-            $this->addUsingAlias(AmenityTableMap::COL_ID, $amenity->getId(), Criteria::NOT_EQUAL);
+            $this->addUsingAlias(AmenityTableMap::COL_AMENITYNUMBERID, $amenity->getAmenitynumberid(), Criteria::NOT_EQUAL);
         }
 
         return $this;

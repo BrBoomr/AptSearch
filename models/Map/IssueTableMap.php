@@ -59,7 +59,7 @@ class IssueTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 6;
 
     /**
      * The number of lazy-loaded columns
@@ -69,47 +69,37 @@ class IssueTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /**
-     * the column name for the ID field
+     * the column name for the issueNumberID field
      */
-    const COL_ID = 'issue.ID';
+    const COL_ISSUENUMBERID = 'issue.issueNumberID';
 
     /**
-     * the column name for the Timestamp field
+     * the column name for the propertyID field
      */
-    const COL_TIMESTAMP = 'issue.Timestamp';
+    const COL_PROPERTYID = 'issue.propertyID';
 
     /**
-     * the column name for the PropertyID field
+     * the column name for the name field
      */
-    const COL_PROPERTYID = 'issue.PropertyID';
+    const COL_NAME = 'issue.name';
 
     /**
-     * the column name for the Name field
+     * the column name for the details field
      */
-    const COL_NAME = 'issue.Name';
+    const COL_DETAILS = 'issue.details';
 
     /**
-     * the column name for the Description field
+     * the column name for the foundDate field
      */
-    const COL_DESCRIPTION = 'issue.Description';
+    const COL_FOUNDDATE = 'issue.foundDate';
 
     /**
-     * the column name for the Found field
+     * the column name for the repairDate field
      */
-    const COL_FOUND = 'issue.Found';
-
-    /**
-     * the column name for the Repaired field
-     */
-    const COL_REPAIRED = 'issue.Repaired';
-
-    /**
-     * the column name for the Cost field
-     */
-    const COL_COST = 'issue.Cost';
+    const COL_REPAIRDATE = 'issue.repairDate';
 
     /**
      * The default string format for model objects of the related table
@@ -123,11 +113,11 @@ class IssueTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Timestamp', 'Propertyid', 'Name', 'Description', 'Found', 'Repaired', 'Cost', ),
-        self::TYPE_CAMELNAME     => array('id', 'timestamp', 'propertyid', 'name', 'description', 'found', 'repaired', 'cost', ),
-        self::TYPE_COLNAME       => array(IssueTableMap::COL_ID, IssueTableMap::COL_TIMESTAMP, IssueTableMap::COL_PROPERTYID, IssueTableMap::COL_NAME, IssueTableMap::COL_DESCRIPTION, IssueTableMap::COL_FOUND, IssueTableMap::COL_REPAIRED, IssueTableMap::COL_COST, ),
-        self::TYPE_FIELDNAME     => array('ID', 'Timestamp', 'PropertyID', 'Name', 'Description', 'Found', 'Repaired', 'Cost', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
+        self::TYPE_PHPNAME       => array('Issuenumberid', 'Propertyid', 'Name', 'Details', 'Founddate', 'Repairdate', ),
+        self::TYPE_CAMELNAME     => array('issuenumberid', 'propertyid', 'name', 'details', 'founddate', 'repairdate', ),
+        self::TYPE_COLNAME       => array(IssueTableMap::COL_ISSUENUMBERID, IssueTableMap::COL_PROPERTYID, IssueTableMap::COL_NAME, IssueTableMap::COL_DETAILS, IssueTableMap::COL_FOUNDDATE, IssueTableMap::COL_REPAIRDATE, ),
+        self::TYPE_FIELDNAME     => array('issueNumberID', 'propertyID', 'name', 'details', 'foundDate', 'repairDate', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -137,11 +127,11 @@ class IssueTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Timestamp' => 1, 'Propertyid' => 2, 'Name' => 3, 'Description' => 4, 'Found' => 5, 'Repaired' => 6, 'Cost' => 7, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'timestamp' => 1, 'propertyid' => 2, 'name' => 3, 'description' => 4, 'found' => 5, 'repaired' => 6, 'cost' => 7, ),
-        self::TYPE_COLNAME       => array(IssueTableMap::COL_ID => 0, IssueTableMap::COL_TIMESTAMP => 1, IssueTableMap::COL_PROPERTYID => 2, IssueTableMap::COL_NAME => 3, IssueTableMap::COL_DESCRIPTION => 4, IssueTableMap::COL_FOUND => 5, IssueTableMap::COL_REPAIRED => 6, IssueTableMap::COL_COST => 7, ),
-        self::TYPE_FIELDNAME     => array('ID' => 0, 'Timestamp' => 1, 'PropertyID' => 2, 'Name' => 3, 'Description' => 4, 'Found' => 5, 'Repaired' => 6, 'Cost' => 7, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
+        self::TYPE_PHPNAME       => array('Issuenumberid' => 0, 'Propertyid' => 1, 'Name' => 2, 'Details' => 3, 'Founddate' => 4, 'Repairdate' => 5, ),
+        self::TYPE_CAMELNAME     => array('issuenumberid' => 0, 'propertyid' => 1, 'name' => 2, 'details' => 3, 'founddate' => 4, 'repairdate' => 5, ),
+        self::TYPE_COLNAME       => array(IssueTableMap::COL_ISSUENUMBERID => 0, IssueTableMap::COL_PROPERTYID => 1, IssueTableMap::COL_NAME => 2, IssueTableMap::COL_DETAILS => 3, IssueTableMap::COL_FOUNDDATE => 4, IssueTableMap::COL_REPAIRDATE => 5, ),
+        self::TYPE_FIELDNAME     => array('issueNumberID' => 0, 'propertyID' => 1, 'name' => 2, 'details' => 3, 'foundDate' => 4, 'repairDate' => 5, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -161,14 +151,12 @@ class IssueTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
-        $this->addForeignKey('PropertyID', 'Propertyid', 'INTEGER', 'property', 'ID', true, null, null);
-        $this->addColumn('Name', 'Name', 'VARCHAR', true, 56, null);
-        $this->addColumn('Description', 'Description', 'VARCHAR', true, 128, null);
-        $this->addColumn('Found', 'Found', 'DATE', true, null, null);
-        $this->addColumn('Repaired', 'Repaired', 'DATE', true, null, null);
-        $this->addColumn('Cost', 'Cost', 'INTEGER', true, null, null);
+        $this->addPrimaryKey('issueNumberID', 'Issuenumberid', 'INTEGER', true, null, null);
+        $this->addColumn('propertyID', 'Propertyid', 'INTEGER', true, null, null);
+        $this->addColumn('name', 'Name', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('details', 'Details', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('foundDate', 'Founddate', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
+        $this->addColumn('repairDate', 'Repairdate', 'TIMESTAMP', false, null, null);
     } // initialize()
 
     /**
@@ -176,13 +164,6 @@ class IssueTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Property', '\\Property', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':PropertyID',
-    1 => ':ID',
-  ),
-), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -201,11 +182,11 @@ class IssueTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Issuenumberid', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Issuenumberid', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Issuenumberid', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Issuenumberid', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Issuenumberid', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Issuenumberid', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -225,7 +206,7 @@ class IssueTableMap extends TableMap
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('Issuenumberid', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -326,23 +307,19 @@ class IssueTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(IssueTableMap::COL_ID);
-            $criteria->addSelectColumn(IssueTableMap::COL_TIMESTAMP);
+            $criteria->addSelectColumn(IssueTableMap::COL_ISSUENUMBERID);
             $criteria->addSelectColumn(IssueTableMap::COL_PROPERTYID);
             $criteria->addSelectColumn(IssueTableMap::COL_NAME);
-            $criteria->addSelectColumn(IssueTableMap::COL_DESCRIPTION);
-            $criteria->addSelectColumn(IssueTableMap::COL_FOUND);
-            $criteria->addSelectColumn(IssueTableMap::COL_REPAIRED);
-            $criteria->addSelectColumn(IssueTableMap::COL_COST);
+            $criteria->addSelectColumn(IssueTableMap::COL_DETAILS);
+            $criteria->addSelectColumn(IssueTableMap::COL_FOUNDDATE);
+            $criteria->addSelectColumn(IssueTableMap::COL_REPAIRDATE);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.Timestamp');
-            $criteria->addSelectColumn($alias . '.PropertyID');
-            $criteria->addSelectColumn($alias . '.Name');
-            $criteria->addSelectColumn($alias . '.Description');
-            $criteria->addSelectColumn($alias . '.Found');
-            $criteria->addSelectColumn($alias . '.Repaired');
-            $criteria->addSelectColumn($alias . '.Cost');
+            $criteria->addSelectColumn($alias . '.issueNumberID');
+            $criteria->addSelectColumn($alias . '.propertyID');
+            $criteria->addSelectColumn($alias . '.name');
+            $criteria->addSelectColumn($alias . '.details');
+            $criteria->addSelectColumn($alias . '.foundDate');
+            $criteria->addSelectColumn($alias . '.repairDate');
         }
     }
 
@@ -394,7 +371,7 @@ class IssueTableMap extends TableMap
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(IssueTableMap::DATABASE_NAME);
-            $criteria->add(IssueTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria->add(IssueTableMap::COL_ISSUENUMBERID, (array) $values, Criteria::IN);
         }
 
         $query = IssueQuery::create()->mergeWith($criteria);
@@ -442,8 +419,8 @@ class IssueTableMap extends TableMap
             $criteria = $criteria->buildCriteria(); // build Criteria from Issue object
         }
 
-        if ($criteria->containsKey(IssueTableMap::COL_ID) && $criteria->keyContainsValue(IssueTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.IssueTableMap::COL_ID.')');
+        if ($criteria->containsKey(IssueTableMap::COL_ISSUENUMBERID) && $criteria->keyContainsValue(IssueTableMap::COL_ISSUENUMBERID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.IssueTableMap::COL_ISSUENUMBERID.')');
         }
 
 

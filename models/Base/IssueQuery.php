@@ -10,7 +10,6 @@ use Map\IssueTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -20,23 +19,19 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  *
- * @method     ChildIssueQuery orderById($order = Criteria::ASC) Order by the ID column
- * @method     ChildIssueQuery orderByTimestamp($order = Criteria::ASC) Order by the Timestamp column
- * @method     ChildIssueQuery orderByPropertyid($order = Criteria::ASC) Order by the PropertyID column
- * @method     ChildIssueQuery orderByName($order = Criteria::ASC) Order by the Name column
- * @method     ChildIssueQuery orderByDescription($order = Criteria::ASC) Order by the Description column
- * @method     ChildIssueQuery orderByFound($order = Criteria::ASC) Order by the Found column
- * @method     ChildIssueQuery orderByRepaired($order = Criteria::ASC) Order by the Repaired column
- * @method     ChildIssueQuery orderByCost($order = Criteria::ASC) Order by the Cost column
+ * @method     ChildIssueQuery orderByIssuenumberid($order = Criteria::ASC) Order by the issueNumberID column
+ * @method     ChildIssueQuery orderByPropertyid($order = Criteria::ASC) Order by the propertyID column
+ * @method     ChildIssueQuery orderByName($order = Criteria::ASC) Order by the name column
+ * @method     ChildIssueQuery orderByDetails($order = Criteria::ASC) Order by the details column
+ * @method     ChildIssueQuery orderByFounddate($order = Criteria::ASC) Order by the foundDate column
+ * @method     ChildIssueQuery orderByRepairdate($order = Criteria::ASC) Order by the repairDate column
  *
- * @method     ChildIssueQuery groupById() Group by the ID column
- * @method     ChildIssueQuery groupByTimestamp() Group by the Timestamp column
- * @method     ChildIssueQuery groupByPropertyid() Group by the PropertyID column
- * @method     ChildIssueQuery groupByName() Group by the Name column
- * @method     ChildIssueQuery groupByDescription() Group by the Description column
- * @method     ChildIssueQuery groupByFound() Group by the Found column
- * @method     ChildIssueQuery groupByRepaired() Group by the Repaired column
- * @method     ChildIssueQuery groupByCost() Group by the Cost column
+ * @method     ChildIssueQuery groupByIssuenumberid() Group by the issueNumberID column
+ * @method     ChildIssueQuery groupByPropertyid() Group by the propertyID column
+ * @method     ChildIssueQuery groupByName() Group by the name column
+ * @method     ChildIssueQuery groupByDetails() Group by the details column
+ * @method     ChildIssueQuery groupByFounddate() Group by the foundDate column
+ * @method     ChildIssueQuery groupByRepairdate() Group by the repairDate column
  *
  * @method     ChildIssueQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildIssueQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -46,51 +41,33 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildIssueQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildIssueQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildIssueQuery leftJoinProperty($relationAlias = null) Adds a LEFT JOIN clause to the query using the Property relation
- * @method     ChildIssueQuery rightJoinProperty($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Property relation
- * @method     ChildIssueQuery innerJoinProperty($relationAlias = null) Adds a INNER JOIN clause to the query using the Property relation
- *
- * @method     ChildIssueQuery joinWithProperty($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Property relation
- *
- * @method     ChildIssueQuery leftJoinWithProperty() Adds a LEFT JOIN clause and with to the query using the Property relation
- * @method     ChildIssueQuery rightJoinWithProperty() Adds a RIGHT JOIN clause and with to the query using the Property relation
- * @method     ChildIssueQuery innerJoinWithProperty() Adds a INNER JOIN clause and with to the query using the Property relation
- *
- * @method     \PropertyQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
- *
  * @method     ChildIssue findOne(ConnectionInterface $con = null) Return the first ChildIssue matching the query
  * @method     ChildIssue findOneOrCreate(ConnectionInterface $con = null) Return the first ChildIssue matching the query, or a new ChildIssue object populated from the query conditions when no match is found
  *
- * @method     ChildIssue findOneById(int $ID) Return the first ChildIssue filtered by the ID column
- * @method     ChildIssue findOneByTimestamp(string $Timestamp) Return the first ChildIssue filtered by the Timestamp column
- * @method     ChildIssue findOneByPropertyid(int $PropertyID) Return the first ChildIssue filtered by the PropertyID column
- * @method     ChildIssue findOneByName(string $Name) Return the first ChildIssue filtered by the Name column
- * @method     ChildIssue findOneByDescription(string $Description) Return the first ChildIssue filtered by the Description column
- * @method     ChildIssue findOneByFound(string $Found) Return the first ChildIssue filtered by the Found column
- * @method     ChildIssue findOneByRepaired(string $Repaired) Return the first ChildIssue filtered by the Repaired column
- * @method     ChildIssue findOneByCost(int $Cost) Return the first ChildIssue filtered by the Cost column *
+ * @method     ChildIssue findOneByIssuenumberid(int $issueNumberID) Return the first ChildIssue filtered by the issueNumberID column
+ * @method     ChildIssue findOneByPropertyid(int $propertyID) Return the first ChildIssue filtered by the propertyID column
+ * @method     ChildIssue findOneByName(string $name) Return the first ChildIssue filtered by the name column
+ * @method     ChildIssue findOneByDetails(string $details) Return the first ChildIssue filtered by the details column
+ * @method     ChildIssue findOneByFounddate(string $foundDate) Return the first ChildIssue filtered by the foundDate column
+ * @method     ChildIssue findOneByRepairdate(string $repairDate) Return the first ChildIssue filtered by the repairDate column *
 
  * @method     ChildIssue requirePk($key, ConnectionInterface $con = null) Return the ChildIssue by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildIssue requireOne(ConnectionInterface $con = null) Return the first ChildIssue matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildIssue requireOneById(int $ID) Return the first ChildIssue filtered by the ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildIssue requireOneByTimestamp(string $Timestamp) Return the first ChildIssue filtered by the Timestamp column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildIssue requireOneByPropertyid(int $PropertyID) Return the first ChildIssue filtered by the PropertyID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildIssue requireOneByName(string $Name) Return the first ChildIssue filtered by the Name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildIssue requireOneByDescription(string $Description) Return the first ChildIssue filtered by the Description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildIssue requireOneByFound(string $Found) Return the first ChildIssue filtered by the Found column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildIssue requireOneByRepaired(string $Repaired) Return the first ChildIssue filtered by the Repaired column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildIssue requireOneByCost(int $Cost) Return the first ChildIssue filtered by the Cost column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildIssue requireOneByIssuenumberid(int $issueNumberID) Return the first ChildIssue filtered by the issueNumberID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildIssue requireOneByPropertyid(int $propertyID) Return the first ChildIssue filtered by the propertyID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildIssue requireOneByName(string $name) Return the first ChildIssue filtered by the name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildIssue requireOneByDetails(string $details) Return the first ChildIssue filtered by the details column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildIssue requireOneByFounddate(string $foundDate) Return the first ChildIssue filtered by the foundDate column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildIssue requireOneByRepairdate(string $repairDate) Return the first ChildIssue filtered by the repairDate column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildIssue[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildIssue objects based on current ModelCriteria
- * @method     ChildIssue[]|ObjectCollection findById(int $ID) Return ChildIssue objects filtered by the ID column
- * @method     ChildIssue[]|ObjectCollection findByTimestamp(string $Timestamp) Return ChildIssue objects filtered by the Timestamp column
- * @method     ChildIssue[]|ObjectCollection findByPropertyid(int $PropertyID) Return ChildIssue objects filtered by the PropertyID column
- * @method     ChildIssue[]|ObjectCollection findByName(string $Name) Return ChildIssue objects filtered by the Name column
- * @method     ChildIssue[]|ObjectCollection findByDescription(string $Description) Return ChildIssue objects filtered by the Description column
- * @method     ChildIssue[]|ObjectCollection findByFound(string $Found) Return ChildIssue objects filtered by the Found column
- * @method     ChildIssue[]|ObjectCollection findByRepaired(string $Repaired) Return ChildIssue objects filtered by the Repaired column
- * @method     ChildIssue[]|ObjectCollection findByCost(int $Cost) Return ChildIssue objects filtered by the Cost column
+ * @method     ChildIssue[]|ObjectCollection findByIssuenumberid(int $issueNumberID) Return ChildIssue objects filtered by the issueNumberID column
+ * @method     ChildIssue[]|ObjectCollection findByPropertyid(int $propertyID) Return ChildIssue objects filtered by the propertyID column
+ * @method     ChildIssue[]|ObjectCollection findByName(string $name) Return ChildIssue objects filtered by the name column
+ * @method     ChildIssue[]|ObjectCollection findByDetails(string $details) Return ChildIssue objects filtered by the details column
+ * @method     ChildIssue[]|ObjectCollection findByFounddate(string $foundDate) Return ChildIssue objects filtered by the foundDate column
+ * @method     ChildIssue[]|ObjectCollection findByRepairdate(string $repairDate) Return ChildIssue objects filtered by the repairDate column
  * @method     ChildIssue[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -189,7 +166,7 @@ abstract class IssueQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT ID, Timestamp, PropertyID, Name, Description, Found, Repaired, Cost FROM issue WHERE ID = :p0';
+        $sql = 'SELECT issueNumberID, propertyID, name, details, foundDate, repairDate FROM issue WHERE issueNumberID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -263,7 +240,7 @@ abstract class IssueQuery extends ModelCriteria
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(IssueTableMap::COL_ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(IssueTableMap::COL_ISSUENUMBERID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -276,20 +253,20 @@ abstract class IssueQuery extends ModelCriteria
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(IssueTableMap::COL_ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(IssueTableMap::COL_ISSUENUMBERID, $keys, Criteria::IN);
     }
 
     /**
-     * Filter the query on the ID column
+     * Filter the query on the issueNumberID column
      *
      * Example usage:
      * <code>
-     * $query->filterById(1234); // WHERE ID = 1234
-     * $query->filterById(array(12, 34)); // WHERE ID IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE ID > 12
+     * $query->filterByIssuenumberid(1234); // WHERE issueNumberID = 1234
+     * $query->filterByIssuenumberid(array(12, 34)); // WHERE issueNumberID IN (12, 34)
+     * $query->filterByIssuenumberid(array('min' => 12)); // WHERE issueNumberID > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param     mixed $issuenumberid The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -297,16 +274,16 @@ abstract class IssueQuery extends ModelCriteria
      *
      * @return $this|ChildIssueQuery The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterByIssuenumberid($issuenumberid = null, $comparison = null)
     {
-        if (is_array($id)) {
+        if (is_array($issuenumberid)) {
             $useMinMax = false;
-            if (isset($id['min'])) {
-                $this->addUsingAlias(IssueTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
+            if (isset($issuenumberid['min'])) {
+                $this->addUsingAlias(IssueTableMap::COL_ISSUENUMBERID, $issuenumberid['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($id['max'])) {
-                $this->addUsingAlias(IssueTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
+            if (isset($issuenumberid['max'])) {
+                $this->addUsingAlias(IssueTableMap::COL_ISSUENUMBERID, $issuenumberid['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -317,63 +294,18 @@ abstract class IssueQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(IssueTableMap::COL_ID, $id, $comparison);
+        return $this->addUsingAlias(IssueTableMap::COL_ISSUENUMBERID, $issuenumberid, $comparison);
     }
 
     /**
-     * Filter the query on the Timestamp column
+     * Filter the query on the propertyID column
      *
      * Example usage:
      * <code>
-     * $query->filterByTimestamp('2011-03-14'); // WHERE Timestamp = '2011-03-14'
-     * $query->filterByTimestamp('now'); // WHERE Timestamp = '2011-03-14'
-     * $query->filterByTimestamp(array('max' => 'yesterday')); // WHERE Timestamp > '2011-03-13'
+     * $query->filterByPropertyid(1234); // WHERE propertyID = 1234
+     * $query->filterByPropertyid(array(12, 34)); // WHERE propertyID IN (12, 34)
+     * $query->filterByPropertyid(array('min' => 12)); // WHERE propertyID > 12
      * </code>
-     *
-     * @param     mixed $timestamp The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildIssueQuery The current query, for fluid interface
-     */
-    public function filterByTimestamp($timestamp = null, $comparison = null)
-    {
-        if (is_array($timestamp)) {
-            $useMinMax = false;
-            if (isset($timestamp['min'])) {
-                $this->addUsingAlias(IssueTableMap::COL_TIMESTAMP, $timestamp['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($timestamp['max'])) {
-                $this->addUsingAlias(IssueTableMap::COL_TIMESTAMP, $timestamp['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(IssueTableMap::COL_TIMESTAMP, $timestamp, $comparison);
-    }
-
-    /**
-     * Filter the query on the PropertyID column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPropertyid(1234); // WHERE PropertyID = 1234
-     * $query->filterByPropertyid(array(12, 34)); // WHERE PropertyID IN (12, 34)
-     * $query->filterByPropertyid(array('min' => 12)); // WHERE PropertyID > 12
-     * </code>
-     *
-     * @see       filterByProperty()
      *
      * @param     mixed $propertyid The value to use as filter.
      *              Use scalar values for equality.
@@ -407,12 +339,12 @@ abstract class IssueQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the Name column
+     * Filter the query on the name column
      *
      * Example usage:
      * <code>
-     * $query->filterByName('fooValue');   // WHERE Name = 'fooValue'
-     * $query->filterByName('%fooValue%', Criteria::LIKE); // WHERE Name LIKE '%fooValue%'
+     * $query->filterByName('fooValue');   // WHERE name = 'fooValue'
+     * $query->filterByName('%fooValue%', Criteria::LIKE); // WHERE name LIKE '%fooValue%'
      * </code>
      *
      * @param     string $name The value to use as filter.
@@ -432,41 +364,41 @@ abstract class IssueQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the Description column
+     * Filter the query on the details column
      *
      * Example usage:
      * <code>
-     * $query->filterByDescription('fooValue');   // WHERE Description = 'fooValue'
-     * $query->filterByDescription('%fooValue%', Criteria::LIKE); // WHERE Description LIKE '%fooValue%'
+     * $query->filterByDetails('fooValue');   // WHERE details = 'fooValue'
+     * $query->filterByDetails('%fooValue%', Criteria::LIKE); // WHERE details LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $description The value to use as filter.
+     * @param     string $details The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildIssueQuery The current query, for fluid interface
      */
-    public function filterByDescription($description = null, $comparison = null)
+    public function filterByDetails($details = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($description)) {
+            if (is_array($details)) {
                 $comparison = Criteria::IN;
             }
         }
 
-        return $this->addUsingAlias(IssueTableMap::COL_DESCRIPTION, $description, $comparison);
+        return $this->addUsingAlias(IssueTableMap::COL_DETAILS, $details, $comparison);
     }
 
     /**
-     * Filter the query on the Found column
+     * Filter the query on the foundDate column
      *
      * Example usage:
      * <code>
-     * $query->filterByFound('2011-03-14'); // WHERE Found = '2011-03-14'
-     * $query->filterByFound('now'); // WHERE Found = '2011-03-14'
-     * $query->filterByFound(array('max' => 'yesterday')); // WHERE Found > '2011-03-13'
+     * $query->filterByFounddate('2011-03-14'); // WHERE foundDate = '2011-03-14'
+     * $query->filterByFounddate('now'); // WHERE foundDate = '2011-03-14'
+     * $query->filterByFounddate(array('max' => 'yesterday')); // WHERE foundDate > '2011-03-13'
      * </code>
      *
-     * @param     mixed $found The value to use as filter.
+     * @param     mixed $founddate The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
@@ -476,16 +408,16 @@ abstract class IssueQuery extends ModelCriteria
      *
      * @return $this|ChildIssueQuery The current query, for fluid interface
      */
-    public function filterByFound($found = null, $comparison = null)
+    public function filterByFounddate($founddate = null, $comparison = null)
     {
-        if (is_array($found)) {
+        if (is_array($founddate)) {
             $useMinMax = false;
-            if (isset($found['min'])) {
-                $this->addUsingAlias(IssueTableMap::COL_FOUND, $found['min'], Criteria::GREATER_EQUAL);
+            if (isset($founddate['min'])) {
+                $this->addUsingAlias(IssueTableMap::COL_FOUNDDATE, $founddate['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($found['max'])) {
-                $this->addUsingAlias(IssueTableMap::COL_FOUND, $found['max'], Criteria::LESS_EQUAL);
+            if (isset($founddate['max'])) {
+                $this->addUsingAlias(IssueTableMap::COL_FOUNDDATE, $founddate['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -496,20 +428,20 @@ abstract class IssueQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(IssueTableMap::COL_FOUND, $found, $comparison);
+        return $this->addUsingAlias(IssueTableMap::COL_FOUNDDATE, $founddate, $comparison);
     }
 
     /**
-     * Filter the query on the Repaired column
+     * Filter the query on the repairDate column
      *
      * Example usage:
      * <code>
-     * $query->filterByRepaired('2011-03-14'); // WHERE Repaired = '2011-03-14'
-     * $query->filterByRepaired('now'); // WHERE Repaired = '2011-03-14'
-     * $query->filterByRepaired(array('max' => 'yesterday')); // WHERE Repaired > '2011-03-13'
+     * $query->filterByRepairdate('2011-03-14'); // WHERE repairDate = '2011-03-14'
+     * $query->filterByRepairdate('now'); // WHERE repairDate = '2011-03-14'
+     * $query->filterByRepairdate(array('max' => 'yesterday')); // WHERE repairDate > '2011-03-13'
      * </code>
      *
-     * @param     mixed $repaired The value to use as filter.
+     * @param     mixed $repairdate The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
@@ -519,16 +451,16 @@ abstract class IssueQuery extends ModelCriteria
      *
      * @return $this|ChildIssueQuery The current query, for fluid interface
      */
-    public function filterByRepaired($repaired = null, $comparison = null)
+    public function filterByRepairdate($repairdate = null, $comparison = null)
     {
-        if (is_array($repaired)) {
+        if (is_array($repairdate)) {
             $useMinMax = false;
-            if (isset($repaired['min'])) {
-                $this->addUsingAlias(IssueTableMap::COL_REPAIRED, $repaired['min'], Criteria::GREATER_EQUAL);
+            if (isset($repairdate['min'])) {
+                $this->addUsingAlias(IssueTableMap::COL_REPAIRDATE, $repairdate['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($repaired['max'])) {
-                $this->addUsingAlias(IssueTableMap::COL_REPAIRED, $repaired['max'], Criteria::LESS_EQUAL);
+            if (isset($repairdate['max'])) {
+                $this->addUsingAlias(IssueTableMap::COL_REPAIRDATE, $repairdate['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -539,125 +471,7 @@ abstract class IssueQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(IssueTableMap::COL_REPAIRED, $repaired, $comparison);
-    }
-
-    /**
-     * Filter the query on the Cost column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCost(1234); // WHERE Cost = 1234
-     * $query->filterByCost(array(12, 34)); // WHERE Cost IN (12, 34)
-     * $query->filterByCost(array('min' => 12)); // WHERE Cost > 12
-     * </code>
-     *
-     * @param     mixed $cost The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildIssueQuery The current query, for fluid interface
-     */
-    public function filterByCost($cost = null, $comparison = null)
-    {
-        if (is_array($cost)) {
-            $useMinMax = false;
-            if (isset($cost['min'])) {
-                $this->addUsingAlias(IssueTableMap::COL_COST, $cost['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($cost['max'])) {
-                $this->addUsingAlias(IssueTableMap::COL_COST, $cost['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(IssueTableMap::COL_COST, $cost, $comparison);
-    }
-
-    /**
-     * Filter the query by a related \Property object
-     *
-     * @param \Property|ObjectCollection $property The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @throws \Propel\Runtime\Exception\PropelException
-     *
-     * @return ChildIssueQuery The current query, for fluid interface
-     */
-    public function filterByProperty($property, $comparison = null)
-    {
-        if ($property instanceof \Property) {
-            return $this
-                ->addUsingAlias(IssueTableMap::COL_PROPERTYID, $property->getId(), $comparison);
-        } elseif ($property instanceof ObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(IssueTableMap::COL_PROPERTYID, $property->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByProperty() only accepts arguments of type \Property or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Property relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildIssueQuery The current query, for fluid interface
-     */
-    public function joinProperty($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Property');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Property');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Property relation Property object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \PropertyQuery A secondary query class using the current class as primary query
-     */
-    public function usePropertyQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinProperty($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Property', '\PropertyQuery');
+        return $this->addUsingAlias(IssueTableMap::COL_REPAIRDATE, $repairdate, $comparison);
     }
 
     /**
@@ -670,7 +484,7 @@ abstract class IssueQuery extends ModelCriteria
     public function prune($issue = null)
     {
         if ($issue) {
-            $this->addUsingAlias(IssueTableMap::COL_ID, $issue->getId(), Criteria::NOT_EQUAL);
+            $this->addUsingAlias(IssueTableMap::COL_ISSUENUMBERID, $issue->getIssuenumberid(), Criteria::NOT_EQUAL);
         }
 
         return $this;

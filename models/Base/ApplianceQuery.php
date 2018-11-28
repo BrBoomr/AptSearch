@@ -5,14 +5,13 @@ namespace Base;
 use \Appliance as ChildAppliance;
 use \ApplianceQuery as ChildApplianceQuery;
 use \Exception;
+use \PDO;
 use Map\ApplianceTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
-use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 
 /**
@@ -20,17 +19,15 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  *
- * @method     ChildApplianceQuery orderById($order = Criteria::ASC) Order by the ID column
- * @method     ChildApplianceQuery orderByTimestamp($order = Criteria::ASC) Order by the Timestamp column
- * @method     ChildApplianceQuery orderByName($order = Criteria::ASC) Order by the Name column
- * @method     ChildApplianceQuery orderByDescription($order = Criteria::ASC) Order by the Description column
- * @method     ChildApplianceQuery orderByPropertyid($order = Criteria::ASC) Order by the PropertyID column
+ * @method     ChildApplianceQuery orderByAppliancenumberid($order = Criteria::ASC) Order by the applianceNumberID column
+ * @method     ChildApplianceQuery orderByPropertyid($order = Criteria::ASC) Order by the propertyID column
+ * @method     ChildApplianceQuery orderByAppliancetypeid($order = Criteria::ASC) Order by the applianceTypeID column
+ * @method     ChildApplianceQuery orderByDetails($order = Criteria::ASC) Order by the details column
  *
- * @method     ChildApplianceQuery groupById() Group by the ID column
- * @method     ChildApplianceQuery groupByTimestamp() Group by the Timestamp column
- * @method     ChildApplianceQuery groupByName() Group by the Name column
- * @method     ChildApplianceQuery groupByDescription() Group by the Description column
- * @method     ChildApplianceQuery groupByPropertyid() Group by the PropertyID column
+ * @method     ChildApplianceQuery groupByAppliancenumberid() Group by the applianceNumberID column
+ * @method     ChildApplianceQuery groupByPropertyid() Group by the propertyID column
+ * @method     ChildApplianceQuery groupByAppliancetypeid() Group by the applianceTypeID column
+ * @method     ChildApplianceQuery groupByDetails() Group by the details column
  *
  * @method     ChildApplianceQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildApplianceQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -40,42 +37,27 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildApplianceQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildApplianceQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildApplianceQuery leftJoinProperty($relationAlias = null) Adds a LEFT JOIN clause to the query using the Property relation
- * @method     ChildApplianceQuery rightJoinProperty($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Property relation
- * @method     ChildApplianceQuery innerJoinProperty($relationAlias = null) Adds a INNER JOIN clause to the query using the Property relation
- *
- * @method     ChildApplianceQuery joinWithProperty($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Property relation
- *
- * @method     ChildApplianceQuery leftJoinWithProperty() Adds a LEFT JOIN clause and with to the query using the Property relation
- * @method     ChildApplianceQuery rightJoinWithProperty() Adds a RIGHT JOIN clause and with to the query using the Property relation
- * @method     ChildApplianceQuery innerJoinWithProperty() Adds a INNER JOIN clause and with to the query using the Property relation
- *
- * @method     \PropertyQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
- *
  * @method     ChildAppliance findOne(ConnectionInterface $con = null) Return the first ChildAppliance matching the query
  * @method     ChildAppliance findOneOrCreate(ConnectionInterface $con = null) Return the first ChildAppliance matching the query, or a new ChildAppliance object populated from the query conditions when no match is found
  *
- * @method     ChildAppliance findOneById(int $ID) Return the first ChildAppliance filtered by the ID column
- * @method     ChildAppliance findOneByTimestamp(string $Timestamp) Return the first ChildAppliance filtered by the Timestamp column
- * @method     ChildAppliance findOneByName(string $Name) Return the first ChildAppliance filtered by the Name column
- * @method     ChildAppliance findOneByDescription(string $Description) Return the first ChildAppliance filtered by the Description column
- * @method     ChildAppliance findOneByPropertyid(int $PropertyID) Return the first ChildAppliance filtered by the PropertyID column *
+ * @method     ChildAppliance findOneByAppliancenumberid(int $applianceNumberID) Return the first ChildAppliance filtered by the applianceNumberID column
+ * @method     ChildAppliance findOneByPropertyid(int $propertyID) Return the first ChildAppliance filtered by the propertyID column
+ * @method     ChildAppliance findOneByAppliancetypeid(int $applianceTypeID) Return the first ChildAppliance filtered by the applianceTypeID column
+ * @method     ChildAppliance findOneByDetails(string $details) Return the first ChildAppliance filtered by the details column *
 
  * @method     ChildAppliance requirePk($key, ConnectionInterface $con = null) Return the ChildAppliance by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAppliance requireOne(ConnectionInterface $con = null) Return the first ChildAppliance matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildAppliance requireOneById(int $ID) Return the first ChildAppliance filtered by the ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildAppliance requireOneByTimestamp(string $Timestamp) Return the first ChildAppliance filtered by the Timestamp column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildAppliance requireOneByName(string $Name) Return the first ChildAppliance filtered by the Name column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildAppliance requireOneByDescription(string $Description) Return the first ChildAppliance filtered by the Description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildAppliance requireOneByPropertyid(int $PropertyID) Return the first ChildAppliance filtered by the PropertyID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAppliance requireOneByAppliancenumberid(int $applianceNumberID) Return the first ChildAppliance filtered by the applianceNumberID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAppliance requireOneByPropertyid(int $propertyID) Return the first ChildAppliance filtered by the propertyID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAppliance requireOneByAppliancetypeid(int $applianceTypeID) Return the first ChildAppliance filtered by the applianceTypeID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAppliance requireOneByDetails(string $details) Return the first ChildAppliance filtered by the details column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildAppliance[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildAppliance objects based on current ModelCriteria
- * @method     ChildAppliance[]|ObjectCollection findById(int $ID) Return ChildAppliance objects filtered by the ID column
- * @method     ChildAppliance[]|ObjectCollection findByTimestamp(string $Timestamp) Return ChildAppliance objects filtered by the Timestamp column
- * @method     ChildAppliance[]|ObjectCollection findByName(string $Name) Return ChildAppliance objects filtered by the Name column
- * @method     ChildAppliance[]|ObjectCollection findByDescription(string $Description) Return ChildAppliance objects filtered by the Description column
- * @method     ChildAppliance[]|ObjectCollection findByPropertyid(int $PropertyID) Return ChildAppliance objects filtered by the PropertyID column
+ * @method     ChildAppliance[]|ObjectCollection findByAppliancenumberid(int $applianceNumberID) Return ChildAppliance objects filtered by the applianceNumberID column
+ * @method     ChildAppliance[]|ObjectCollection findByPropertyid(int $propertyID) Return ChildAppliance objects filtered by the propertyID column
+ * @method     ChildAppliance[]|ObjectCollection findByAppliancetypeid(int $applianceTypeID) Return ChildAppliance objects filtered by the applianceTypeID column
+ * @method     ChildAppliance[]|ObjectCollection findByDetails(string $details) Return ChildAppliance objects filtered by the details column
  * @method     ChildAppliance[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -135,13 +117,89 @@ abstract class ApplianceQuery extends ModelCriteria
      */
     public function findPk($key, ConnectionInterface $con = null)
     {
-        throw new LogicException('The Appliance object has no primary key');
+        if ($key === null) {
+            return null;
+        }
+
+        if ($con === null) {
+            $con = Propel::getServiceContainer()->getReadConnection(ApplianceTableMap::DATABASE_NAME);
+        }
+
+        $this->basePreSelect($con);
+
+        if (
+            $this->formatter || $this->modelAlias || $this->with || $this->select
+            || $this->selectColumns || $this->asColumns || $this->selectModifiers
+            || $this->map || $this->having || $this->joins
+        ) {
+            return $this->findPkComplex($key, $con);
+        }
+
+        if ((null !== ($obj = ApplianceTableMap::getInstanceFromPool(null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key)))) {
+            // the object is already in the instance pool
+            return $obj;
+        }
+
+        return $this->findPkSimple($key, $con);
+    }
+
+    /**
+     * Find object by primary key using raw SQL to go fast.
+     * Bypass doSelect() and the object formatter by using generated code.
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     ConnectionInterface $con A connection object
+     *
+     * @throws \Propel\Runtime\Exception\PropelException
+     *
+     * @return ChildAppliance A model object, or null if the key is not found
+     */
+    protected function findPkSimple($key, ConnectionInterface $con)
+    {
+        $sql = 'SELECT applianceNumberID, propertyID, applianceTypeID, details FROM appliance WHERE applianceNumberID = :p0';
+        try {
+            $stmt = $con->prepare($sql);
+            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
+            $stmt->execute();
+        } catch (Exception $e) {
+            Propel::log($e->getMessage(), Propel::LOG_ERR);
+            throw new PropelException(sprintf('Unable to execute SELECT statement [%s]', $sql), 0, $e);
+        }
+        $obj = null;
+        if ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
+            /** @var ChildAppliance $obj */
+            $obj = new ChildAppliance();
+            $obj->hydrate($row);
+            ApplianceTableMap::addInstanceToPool($obj, null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key);
+        }
+        $stmt->closeCursor();
+
+        return $obj;
+    }
+
+    /**
+     * Find object by primary key.
+     *
+     * @param     mixed $key Primary key to use for the query
+     * @param     ConnectionInterface $con A connection object
+     *
+     * @return ChildAppliance|array|mixed the result, formatted by the current formatter
+     */
+    protected function findPkComplex($key, ConnectionInterface $con)
+    {
+        // As the query uses a PK condition, no limit(1) is necessary.
+        $criteria = $this->isKeepQuery() ? clone $this : $this;
+        $dataFetcher = $criteria
+            ->filterByPrimaryKey($key)
+            ->doSelect($con);
+
+        return $criteria->getFormatter()->init($criteria)->formatOne($dataFetcher);
     }
 
     /**
      * Find objects by primary key
      * <code>
-     * $objs = $c->findPks(array(array(12, 56), array(832, 123), array(123, 456)), $con);
+     * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
      * @param     array $keys Primary keys to use for the query
      * @param     ConnectionInterface $con an optional connection object
@@ -150,7 +208,16 @@ abstract class ApplianceQuery extends ModelCriteria
      */
     public function findPks($keys, ConnectionInterface $con = null)
     {
-        throw new LogicException('The Appliance object has no primary key');
+        if (null === $con) {
+            $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
+        }
+        $this->basePreSelect($con);
+        $criteria = $this->isKeepQuery() ? clone $this : $this;
+        $dataFetcher = $criteria
+            ->filterByPrimaryKeys($keys)
+            ->doSelect($con);
+
+        return $criteria->getFormatter()->init($criteria)->format($dataFetcher);
     }
 
     /**
@@ -162,7 +229,8 @@ abstract class ApplianceQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
-        throw new LogicException('The Appliance object has no primary key');
+
+        return $this->addUsingAlias(ApplianceTableMap::COL_APPLIANCENUMBERID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -174,20 +242,21 @@ abstract class ApplianceQuery extends ModelCriteria
      */
     public function filterByPrimaryKeys($keys)
     {
-        throw new LogicException('The Appliance object has no primary key');
+
+        return $this->addUsingAlias(ApplianceTableMap::COL_APPLIANCENUMBERID, $keys, Criteria::IN);
     }
 
     /**
-     * Filter the query on the ID column
+     * Filter the query on the applianceNumberID column
      *
      * Example usage:
      * <code>
-     * $query->filterById(1234); // WHERE ID = 1234
-     * $query->filterById(array(12, 34)); // WHERE ID IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE ID > 12
+     * $query->filterByAppliancenumberid(1234); // WHERE applianceNumberID = 1234
+     * $query->filterByAppliancenumberid(array(12, 34)); // WHERE applianceNumberID IN (12, 34)
+     * $query->filterByAppliancenumberid(array('min' => 12)); // WHERE applianceNumberID > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param     mixed $appliancenumberid The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -195,16 +264,16 @@ abstract class ApplianceQuery extends ModelCriteria
      *
      * @return $this|ChildApplianceQuery The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterByAppliancenumberid($appliancenumberid = null, $comparison = null)
     {
-        if (is_array($id)) {
+        if (is_array($appliancenumberid)) {
             $useMinMax = false;
-            if (isset($id['min'])) {
-                $this->addUsingAlias(ApplianceTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
+            if (isset($appliancenumberid['min'])) {
+                $this->addUsingAlias(ApplianceTableMap::COL_APPLIANCENUMBERID, $appliancenumberid['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($id['max'])) {
-                $this->addUsingAlias(ApplianceTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
+            if (isset($appliancenumberid['max'])) {
+                $this->addUsingAlias(ApplianceTableMap::COL_APPLIANCENUMBERID, $appliancenumberid['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -215,113 +284,18 @@ abstract class ApplianceQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(ApplianceTableMap::COL_ID, $id, $comparison);
+        return $this->addUsingAlias(ApplianceTableMap::COL_APPLIANCENUMBERID, $appliancenumberid, $comparison);
     }
 
     /**
-     * Filter the query on the Timestamp column
+     * Filter the query on the propertyID column
      *
      * Example usage:
      * <code>
-     * $query->filterByTimestamp('2011-03-14'); // WHERE Timestamp = '2011-03-14'
-     * $query->filterByTimestamp('now'); // WHERE Timestamp = '2011-03-14'
-     * $query->filterByTimestamp(array('max' => 'yesterday')); // WHERE Timestamp > '2011-03-13'
+     * $query->filterByPropertyid(1234); // WHERE propertyID = 1234
+     * $query->filterByPropertyid(array(12, 34)); // WHERE propertyID IN (12, 34)
+     * $query->filterByPropertyid(array('min' => 12)); // WHERE propertyID > 12
      * </code>
-     *
-     * @param     mixed $timestamp The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildApplianceQuery The current query, for fluid interface
-     */
-    public function filterByTimestamp($timestamp = null, $comparison = null)
-    {
-        if (is_array($timestamp)) {
-            $useMinMax = false;
-            if (isset($timestamp['min'])) {
-                $this->addUsingAlias(ApplianceTableMap::COL_TIMESTAMP, $timestamp['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($timestamp['max'])) {
-                $this->addUsingAlias(ApplianceTableMap::COL_TIMESTAMP, $timestamp['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(ApplianceTableMap::COL_TIMESTAMP, $timestamp, $comparison);
-    }
-
-    /**
-     * Filter the query on the Name column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByName('fooValue');   // WHERE Name = 'fooValue'
-     * $query->filterByName('%fooValue%', Criteria::LIKE); // WHERE Name LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $name The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildApplianceQuery The current query, for fluid interface
-     */
-    public function filterByName($name = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($name)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(ApplianceTableMap::COL_NAME, $name, $comparison);
-    }
-
-    /**
-     * Filter the query on the Description column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByDescription('fooValue');   // WHERE Description = 'fooValue'
-     * $query->filterByDescription('%fooValue%', Criteria::LIKE); // WHERE Description LIKE '%fooValue%'
-     * </code>
-     *
-     * @param     string $description The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildApplianceQuery The current query, for fluid interface
-     */
-    public function filterByDescription($description = null, $comparison = null)
-    {
-        if (null === $comparison) {
-            if (is_array($description)) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(ApplianceTableMap::COL_DESCRIPTION, $description, $comparison);
-    }
-
-    /**
-     * Filter the query on the PropertyID column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPropertyid(1234); // WHERE PropertyID = 1234
-     * $query->filterByPropertyid(array(12, 34)); // WHERE PropertyID IN (12, 34)
-     * $query->filterByPropertyid(array('min' => 12)); // WHERE PropertyID > 12
-     * </code>
-     *
-     * @see       filterByProperty()
      *
      * @param     mixed $propertyid The value to use as filter.
      *              Use scalar values for equality.
@@ -355,80 +329,69 @@ abstract class ApplianceQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \Property object
+     * Filter the query on the applianceTypeID column
      *
-     * @param \Property|ObjectCollection $property The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * Example usage:
+     * <code>
+     * $query->filterByAppliancetypeid(1234); // WHERE applianceTypeID = 1234
+     * $query->filterByAppliancetypeid(array(12, 34)); // WHERE applianceTypeID IN (12, 34)
+     * $query->filterByAppliancetypeid(array('min' => 12)); // WHERE applianceTypeID > 12
+     * </code>
      *
-     * @throws \Propel\Runtime\Exception\PropelException
-     *
-     * @return ChildApplianceQuery The current query, for fluid interface
-     */
-    public function filterByProperty($property, $comparison = null)
-    {
-        if ($property instanceof \Property) {
-            return $this
-                ->addUsingAlias(ApplianceTableMap::COL_PROPERTYID, $property->getId(), $comparison);
-        } elseif ($property instanceof ObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(ApplianceTableMap::COL_PROPERTYID, $property->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByProperty() only accepts arguments of type \Property or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Property relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param     mixed $appliancetypeid The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildApplianceQuery The current query, for fluid interface
      */
-    public function joinProperty($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function filterByAppliancetypeid($appliancetypeid = null, $comparison = null)
     {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Property');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
+        if (is_array($appliancetypeid)) {
+            $useMinMax = false;
+            if (isset($appliancetypeid['min'])) {
+                $this->addUsingAlias(ApplianceTableMap::COL_APPLIANCETYPEID, $appliancetypeid['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($appliancetypeid['max'])) {
+                $this->addUsingAlias(ApplianceTableMap::COL_APPLIANCETYPEID, $appliancetypeid['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Property');
-        }
-
-        return $this;
+        return $this->addUsingAlias(ApplianceTableMap::COL_APPLIANCETYPEID, $appliancetypeid, $comparison);
     }
 
     /**
-     * Use the Property relation Property object
+     * Filter the query on the details column
      *
-     * @see useQuery()
+     * Example usage:
+     * <code>
+     * $query->filterByDetails('fooValue');   // WHERE details = 'fooValue'
+     * $query->filterByDetails('%fooValue%', Criteria::LIKE); // WHERE details LIKE '%fooValue%'
+     * </code>
      *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param     string $details The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return \PropertyQuery A secondary query class using the current class as primary query
+     * @return $this|ChildApplianceQuery The current query, for fluid interface
      */
-    public function usePropertyQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function filterByDetails($details = null, $comparison = null)
     {
-        return $this
-            ->joinProperty($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Property', '\PropertyQuery');
+        if (null === $comparison) {
+            if (is_array($details)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ApplianceTableMap::COL_DETAILS, $details, $comparison);
     }
 
     /**
@@ -441,8 +404,7 @@ abstract class ApplianceQuery extends ModelCriteria
     public function prune($appliance = null)
     {
         if ($appliance) {
-            throw new LogicException('Appliance object has no primary key');
-
+            $this->addUsingAlias(ApplianceTableMap::COL_APPLIANCENUMBERID, $appliance->getAppliancenumberid(), Criteria::NOT_EQUAL);
         }
 
         return $this;

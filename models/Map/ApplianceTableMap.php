@@ -9,7 +9,6 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\DataFetcher\DataFetcherInterface;
-use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
@@ -60,7 +59,7 @@ class ApplianceTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
@@ -70,32 +69,27 @@ class ApplianceTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /**
-     * the column name for the ID field
+     * the column name for the applianceNumberID field
      */
-    const COL_ID = 'appliance.ID';
+    const COL_APPLIANCENUMBERID = 'appliance.applianceNumberID';
 
     /**
-     * the column name for the Timestamp field
+     * the column name for the propertyID field
      */
-    const COL_TIMESTAMP = 'appliance.Timestamp';
+    const COL_PROPERTYID = 'appliance.propertyID';
 
     /**
-     * the column name for the Name field
+     * the column name for the applianceTypeID field
      */
-    const COL_NAME = 'appliance.Name';
+    const COL_APPLIANCETYPEID = 'appliance.applianceTypeID';
 
     /**
-     * the column name for the Description field
+     * the column name for the details field
      */
-    const COL_DESCRIPTION = 'appliance.Description';
-
-    /**
-     * the column name for the PropertyID field
-     */
-    const COL_PROPERTYID = 'appliance.PropertyID';
+    const COL_DETAILS = 'appliance.details';
 
     /**
      * The default string format for model objects of the related table
@@ -109,11 +103,11 @@ class ApplianceTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Timestamp', 'Name', 'Description', 'Propertyid', ),
-        self::TYPE_CAMELNAME     => array('id', 'timestamp', 'name', 'description', 'propertyid', ),
-        self::TYPE_COLNAME       => array(ApplianceTableMap::COL_ID, ApplianceTableMap::COL_TIMESTAMP, ApplianceTableMap::COL_NAME, ApplianceTableMap::COL_DESCRIPTION, ApplianceTableMap::COL_PROPERTYID, ),
-        self::TYPE_FIELDNAME     => array('ID', 'Timestamp', 'Name', 'Description', 'PropertyID', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Appliancenumberid', 'Propertyid', 'Appliancetypeid', 'Details', ),
+        self::TYPE_CAMELNAME     => array('appliancenumberid', 'propertyid', 'appliancetypeid', 'details', ),
+        self::TYPE_COLNAME       => array(ApplianceTableMap::COL_APPLIANCENUMBERID, ApplianceTableMap::COL_PROPERTYID, ApplianceTableMap::COL_APPLIANCETYPEID, ApplianceTableMap::COL_DETAILS, ),
+        self::TYPE_FIELDNAME     => array('applianceNumberID', 'propertyID', 'applianceTypeID', 'details', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -123,11 +117,11 @@ class ApplianceTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Timestamp' => 1, 'Name' => 2, 'Description' => 3, 'Propertyid' => 4, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'timestamp' => 1, 'name' => 2, 'description' => 3, 'propertyid' => 4, ),
-        self::TYPE_COLNAME       => array(ApplianceTableMap::COL_ID => 0, ApplianceTableMap::COL_TIMESTAMP => 1, ApplianceTableMap::COL_NAME => 2, ApplianceTableMap::COL_DESCRIPTION => 3, ApplianceTableMap::COL_PROPERTYID => 4, ),
-        self::TYPE_FIELDNAME     => array('ID' => 0, 'Timestamp' => 1, 'Name' => 2, 'Description' => 3, 'PropertyID' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Appliancenumberid' => 0, 'Propertyid' => 1, 'Appliancetypeid' => 2, 'Details' => 3, ),
+        self::TYPE_CAMELNAME     => array('appliancenumberid' => 0, 'propertyid' => 1, 'appliancetypeid' => 2, 'details' => 3, ),
+        self::TYPE_COLNAME       => array(ApplianceTableMap::COL_APPLIANCENUMBERID => 0, ApplianceTableMap::COL_PROPERTYID => 1, ApplianceTableMap::COL_APPLIANCETYPEID => 2, ApplianceTableMap::COL_DETAILS => 3, ),
+        self::TYPE_FIELDNAME     => array('applianceNumberID' => 0, 'propertyID' => 1, 'applianceTypeID' => 2, 'details' => 3, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -145,13 +139,12 @@ class ApplianceTableMap extends TableMap
         $this->setIdentifierQuoting(false);
         $this->setClassName('\\Appliance');
         $this->setPackage('');
-        $this->setUseIdGenerator(false);
+        $this->setUseIdGenerator(true);
         // columns
-        $this->addColumn('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
-        $this->addColumn('Name', 'Name', 'VARCHAR', true, 128, null);
-        $this->addColumn('Description', 'Description', 'VARCHAR', true, 128, null);
-        $this->addForeignKey('PropertyID', 'Propertyid', 'INTEGER', 'property', 'ID', true, null, null);
+        $this->addPrimaryKey('applianceNumberID', 'Appliancenumberid', 'INTEGER', true, null, null);
+        $this->addColumn('propertyID', 'Propertyid', 'INTEGER', true, null, null);
+        $this->addColumn('applianceTypeID', 'Appliancetypeid', 'INTEGER', true, null, null);
+        $this->addColumn('details', 'Details', 'LONGVARCHAR', false, null, null);
     } // initialize()
 
     /**
@@ -159,13 +152,6 @@ class ApplianceTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Property', '\\Property', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':PropertyID',
-    1 => ':ID',
-  ),
-), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -183,7 +169,12 @@ class ApplianceTableMap extends TableMap
      */
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return null;
+        // If the PK cannot be derived from the row, return NULL.
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Appliancenumberid', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+            return null;
+        }
+
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Appliancenumberid', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Appliancenumberid', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Appliancenumberid', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Appliancenumberid', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Appliancenumberid', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -200,7 +191,11 @@ class ApplianceTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return '';
+        return (int) $row[
+            $indexType == TableMap::TYPE_NUM
+                ? 0 + $offset
+                : self::translateFieldName('Appliancenumberid', TableMap::TYPE_PHPNAME, $indexType)
+        ];
     }
 
     /**
@@ -300,17 +295,15 @@ class ApplianceTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(ApplianceTableMap::COL_ID);
-            $criteria->addSelectColumn(ApplianceTableMap::COL_TIMESTAMP);
-            $criteria->addSelectColumn(ApplianceTableMap::COL_NAME);
-            $criteria->addSelectColumn(ApplianceTableMap::COL_DESCRIPTION);
+            $criteria->addSelectColumn(ApplianceTableMap::COL_APPLIANCENUMBERID);
             $criteria->addSelectColumn(ApplianceTableMap::COL_PROPERTYID);
+            $criteria->addSelectColumn(ApplianceTableMap::COL_APPLIANCETYPEID);
+            $criteria->addSelectColumn(ApplianceTableMap::COL_DETAILS);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.Timestamp');
-            $criteria->addSelectColumn($alias . '.Name');
-            $criteria->addSelectColumn($alias . '.Description');
-            $criteria->addSelectColumn($alias . '.PropertyID');
+            $criteria->addSelectColumn($alias . '.applianceNumberID');
+            $criteria->addSelectColumn($alias . '.propertyID');
+            $criteria->addSelectColumn($alias . '.applianceTypeID');
+            $criteria->addSelectColumn($alias . '.details');
         }
     }
 
@@ -358,10 +351,11 @@ class ApplianceTableMap extends TableMap
             // rename for clarity
             $criteria = $values;
         } elseif ($values instanceof \Appliance) { // it's a model object
-            // create criteria based on pk value
-            $criteria = $values->buildCriteria();
+            // create criteria based on pk values
+            $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            throw new LogicException('The Appliance object has no primary key');
+            $criteria = new Criteria(ApplianceTableMap::DATABASE_NAME);
+            $criteria->add(ApplianceTableMap::COL_APPLIANCENUMBERID, (array) $values, Criteria::IN);
         }
 
         $query = ApplianceQuery::create()->mergeWith($criteria);
@@ -407,6 +401,10 @@ class ApplianceTableMap extends TableMap
             $criteria = clone $criteria; // rename for clarity
         } else {
             $criteria = $criteria->buildCriteria(); // build Criteria from Appliance object
+        }
+
+        if ($criteria->containsKey(ApplianceTableMap::COL_APPLIANCENUMBERID) && $criteria->keyContainsValue(ApplianceTableMap::COL_APPLIANCENUMBERID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.ApplianceTableMap::COL_APPLIANCENUMBERID.')');
         }
 
 

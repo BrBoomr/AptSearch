@@ -3,9 +3,6 @@
 namespace Base;
 
 use \ApplianceQuery as ChildApplianceQuery;
-use \Property as ChildProperty;
-use \PropertyQuery as ChildPropertyQuery;
-use \DateTime;
 use \Exception;
 use \PDO;
 use Map\ApplianceTableMap;
@@ -20,7 +17,6 @@ use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
-use Propel\Runtime\Util\PropelDateTime;
 
 /**
  * Base class that represents a row from the 'appliance' table.
@@ -64,32 +60,11 @@ abstract class Appliance implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the id field.
+     * The value for the appliancenumberid field.
      *
      * @var        int
      */
-    protected $id;
-
-    /**
-     * The value for the timestamp field.
-     *
-     * @var        DateTime
-     */
-    protected $timestamp;
-
-    /**
-     * The value for the name field.
-     *
-     * @var        string
-     */
-    protected $name;
-
-    /**
-     * The value for the description field.
-     *
-     * @var        string
-     */
-    protected $description;
+    protected $appliancenumberid;
 
     /**
      * The value for the propertyid field.
@@ -99,9 +74,18 @@ abstract class Appliance implements ActiveRecordInterface
     protected $propertyid;
 
     /**
-     * @var        ChildProperty
+     * The value for the appliancetypeid field.
+     *
+     * @var        int
      */
-    protected $aProperty;
+    protected $appliancetypeid;
+
+    /**
+     * The value for the details field.
+     *
+     * @var        string
+     */
+    protected $details;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -337,53 +321,13 @@ abstract class Appliance implements ActiveRecordInterface
     }
 
     /**
-     * Get the [id] column value.
+     * Get the [appliancenumberid] column value.
      *
      * @return int
      */
-    public function getId()
+    public function getAppliancenumberid()
     {
-        return $this->id;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [timestamp] column value.
-     *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getTimestamp($format = NULL)
-    {
-        if ($format === null) {
-            return $this->timestamp;
-        } else {
-            return $this->timestamp instanceof \DateTimeInterface ? $this->timestamp->format($format) : null;
-        }
-    }
-
-    /**
-     * Get the [name] column value.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Get the [description] column value.
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
+        return $this->appliancenumberid;
     }
 
     /**
@@ -397,84 +341,44 @@ abstract class Appliance implements ActiveRecordInterface
     }
 
     /**
-     * Set the value of [id] column.
+     * Get the [appliancetypeid] column value.
+     *
+     * @return int
+     */
+    public function getAppliancetypeid()
+    {
+        return $this->appliancetypeid;
+    }
+
+    /**
+     * Get the [details] column value.
+     *
+     * @return string
+     */
+    public function getDetails()
+    {
+        return $this->details;
+    }
+
+    /**
+     * Set the value of [appliancenumberid] column.
      *
      * @param int $v new value
      * @return $this|\Appliance The current object (for fluent API support)
      */
-    public function setId($v)
+    public function setAppliancenumberid($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id !== $v) {
-            $this->id = $v;
-            $this->modifiedColumns[ApplianceTableMap::COL_ID] = true;
+        if ($this->appliancenumberid !== $v) {
+            $this->appliancenumberid = $v;
+            $this->modifiedColumns[ApplianceTableMap::COL_APPLIANCENUMBERID] = true;
         }
 
         return $this;
-    } // setId()
-
-    /**
-     * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
-     *
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
-     * @return $this|\Appliance The current object (for fluent API support)
-     */
-    public function setTimestamp($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->timestamp !== null || $dt !== null) {
-            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d") !== $this->timestamp->format("Y-m-d")) {
-                $this->timestamp = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[ApplianceTableMap::COL_TIMESTAMP] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setTimestamp()
-
-    /**
-     * Set the value of [name] column.
-     *
-     * @param string $v new value
-     * @return $this|\Appliance The current object (for fluent API support)
-     */
-    public function setName($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->name !== $v) {
-            $this->name = $v;
-            $this->modifiedColumns[ApplianceTableMap::COL_NAME] = true;
-        }
-
-        return $this;
-    } // setName()
-
-    /**
-     * Set the value of [description] column.
-     *
-     * @param string $v new value
-     * @return $this|\Appliance The current object (for fluent API support)
-     */
-    public function setDescription($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->description !== $v) {
-            $this->description = $v;
-            $this->modifiedColumns[ApplianceTableMap::COL_DESCRIPTION] = true;
-        }
-
-        return $this;
-    } // setDescription()
+    } // setAppliancenumberid()
 
     /**
      * Set the value of [propertyid] column.
@@ -493,12 +397,48 @@ abstract class Appliance implements ActiveRecordInterface
             $this->modifiedColumns[ApplianceTableMap::COL_PROPERTYID] = true;
         }
 
-        if ($this->aProperty !== null && $this->aProperty->getId() !== $v) {
-            $this->aProperty = null;
+        return $this;
+    } // setPropertyid()
+
+    /**
+     * Set the value of [appliancetypeid] column.
+     *
+     * @param int $v new value
+     * @return $this|\Appliance The current object (for fluent API support)
+     */
+    public function setAppliancetypeid($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->appliancetypeid !== $v) {
+            $this->appliancetypeid = $v;
+            $this->modifiedColumns[ApplianceTableMap::COL_APPLIANCETYPEID] = true;
         }
 
         return $this;
-    } // setPropertyid()
+    } // setAppliancetypeid()
+
+    /**
+     * Set the value of [details] column.
+     *
+     * @param string $v new value
+     * @return $this|\Appliance The current object (for fluent API support)
+     */
+    public function setDetails($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->details !== $v) {
+            $this->details = $v;
+            $this->modifiedColumns[ApplianceTableMap::COL_DETAILS] = true;
+        }
+
+        return $this;
+    } // setDetails()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -536,23 +476,17 @@ abstract class Appliance implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ApplianceTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ApplianceTableMap::translateFieldName('Appliancenumberid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->appliancenumberid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ApplianceTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00') {
-                $col = null;
-            }
-            $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ApplianceTableMap::translateFieldName('Name', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->name = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ApplianceTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->description = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : ApplianceTableMap::translateFieldName('Propertyid', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ApplianceTableMap::translateFieldName('Propertyid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->propertyid = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ApplianceTableMap::translateFieldName('Appliancetypeid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->appliancetypeid = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : ApplianceTableMap::translateFieldName('Details', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->details = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -561,7 +495,7 @@ abstract class Appliance implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = ApplianceTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = ApplianceTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Appliance'), 0, $e);
@@ -583,9 +517,6 @@ abstract class Appliance implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aProperty !== null && $this->propertyid !== $this->aProperty->getId()) {
-            $this->aProperty = null;
-        }
     } // ensureConsistency
 
     /**
@@ -625,7 +556,6 @@ abstract class Appliance implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aProperty = null;
         } // if (deep)
     }
 
@@ -729,18 +659,6 @@ abstract class Appliance implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aProperty !== null) {
-                if ($this->aProperty->isModified() || $this->aProperty->isNew()) {
-                    $affectedRows += $this->aProperty->save($con);
-                }
-                $this->setProperty($this->aProperty);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -772,22 +690,23 @@ abstract class Appliance implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
+        $this->modifiedColumns[ApplianceTableMap::COL_APPLIANCENUMBERID] = true;
+        if (null !== $this->appliancenumberid) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ApplianceTableMap::COL_APPLIANCENUMBERID . ')');
+        }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(ApplianceTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'ID';
-        }
-        if ($this->isColumnModified(ApplianceTableMap::COL_TIMESTAMP)) {
-            $modifiedColumns[':p' . $index++]  = 'Timestamp';
-        }
-        if ($this->isColumnModified(ApplianceTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'Name';
-        }
-        if ($this->isColumnModified(ApplianceTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'Description';
+        if ($this->isColumnModified(ApplianceTableMap::COL_APPLIANCENUMBERID)) {
+            $modifiedColumns[':p' . $index++]  = 'applianceNumberID';
         }
         if ($this->isColumnModified(ApplianceTableMap::COL_PROPERTYID)) {
-            $modifiedColumns[':p' . $index++]  = 'PropertyID';
+            $modifiedColumns[':p' . $index++]  = 'propertyID';
+        }
+        if ($this->isColumnModified(ApplianceTableMap::COL_APPLIANCETYPEID)) {
+            $modifiedColumns[':p' . $index++]  = 'applianceTypeID';
+        }
+        if ($this->isColumnModified(ApplianceTableMap::COL_DETAILS)) {
+            $modifiedColumns[':p' . $index++]  = 'details';
         }
 
         $sql = sprintf(
@@ -800,20 +719,17 @@ abstract class Appliance implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':
-                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                    case 'applianceNumberID':
+                        $stmt->bindValue($identifier, $this->appliancenumberid, PDO::PARAM_INT);
                         break;
-                    case 'Timestamp':
-                        $stmt->bindValue($identifier, $this->timestamp ? $this->timestamp->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
-                        break;
-                    case 'Name':
-                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
-                        break;
-                    case 'Description':
-                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
-                        break;
-                    case 'PropertyID':
+                    case 'propertyID':
                         $stmt->bindValue($identifier, $this->propertyid, PDO::PARAM_INT);
+                        break;
+                    case 'applianceTypeID':
+                        $stmt->bindValue($identifier, $this->appliancetypeid, PDO::PARAM_INT);
+                        break;
+                    case 'details':
+                        $stmt->bindValue($identifier, $this->details, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -822,6 +738,13 @@ abstract class Appliance implements ActiveRecordInterface
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), 0, $e);
         }
+
+        try {
+            $pk = $con->lastInsertId();
+        } catch (Exception $e) {
+            throw new PropelException('Unable to get autoincrement id.', 0, $e);
+        }
+        $this->setAppliancenumberid($pk);
 
         $this->setNew(false);
     }
@@ -871,19 +794,16 @@ abstract class Appliance implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getId();
+                return $this->getAppliancenumberid();
                 break;
             case 1:
-                return $this->getTimestamp();
+                return $this->getPropertyid();
                 break;
             case 2:
-                return $this->getName();
+                return $this->getAppliancetypeid();
                 break;
             case 3:
-                return $this->getDescription();
-                break;
-            case 4:
-                return $this->getPropertyid();
+                return $this->getDetails();
                 break;
             default:
                 return null;
@@ -902,11 +822,10 @@ abstract class Appliance implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
         if (isset($alreadyDumpedObjects['Appliance'][$this->hashCode()])) {
@@ -915,38 +834,16 @@ abstract class Appliance implements ActiveRecordInterface
         $alreadyDumpedObjects['Appliance'][$this->hashCode()] = true;
         $keys = ApplianceTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getId(),
-            $keys[1] => $this->getTimestamp(),
-            $keys[2] => $this->getName(),
-            $keys[3] => $this->getDescription(),
-            $keys[4] => $this->getPropertyid(),
+            $keys[0] => $this->getAppliancenumberid(),
+            $keys[1] => $this->getPropertyid(),
+            $keys[2] => $this->getAppliancetypeid(),
+            $keys[3] => $this->getDetails(),
         );
-        if ($result[$keys[1]] instanceof \DateTimeInterface) {
-            $result[$keys[1]] = $result[$keys[1]]->format('c');
-        }
-
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
-        if ($includeForeignObjects) {
-            if (null !== $this->aProperty) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'property';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'property';
-                        break;
-                    default:
-                        $key = 'Property';
-                }
-
-                $result[$key] = $this->aProperty->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-        }
 
         return $result;
     }
@@ -981,19 +878,16 @@ abstract class Appliance implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setId($value);
+                $this->setAppliancenumberid($value);
                 break;
             case 1:
-                $this->setTimestamp($value);
+                $this->setPropertyid($value);
                 break;
             case 2:
-                $this->setName($value);
+                $this->setAppliancetypeid($value);
                 break;
             case 3:
-                $this->setDescription($value);
-                break;
-            case 4:
-                $this->setPropertyid($value);
+                $this->setDetails($value);
                 break;
         } // switch()
 
@@ -1022,19 +916,16 @@ abstract class Appliance implements ActiveRecordInterface
         $keys = ApplianceTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setId($arr[$keys[0]]);
+            $this->setAppliancenumberid($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setTimestamp($arr[$keys[1]]);
+            $this->setPropertyid($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setName($arr[$keys[2]]);
+            $this->setAppliancetypeid($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setDescription($arr[$keys[3]]);
-        }
-        if (array_key_exists($keys[4], $arr)) {
-            $this->setPropertyid($arr[$keys[4]]);
+            $this->setDetails($arr[$keys[3]]);
         }
     }
 
@@ -1077,20 +968,17 @@ abstract class Appliance implements ActiveRecordInterface
     {
         $criteria = new Criteria(ApplianceTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(ApplianceTableMap::COL_ID)) {
-            $criteria->add(ApplianceTableMap::COL_ID, $this->id);
-        }
-        if ($this->isColumnModified(ApplianceTableMap::COL_TIMESTAMP)) {
-            $criteria->add(ApplianceTableMap::COL_TIMESTAMP, $this->timestamp);
-        }
-        if ($this->isColumnModified(ApplianceTableMap::COL_NAME)) {
-            $criteria->add(ApplianceTableMap::COL_NAME, $this->name);
-        }
-        if ($this->isColumnModified(ApplianceTableMap::COL_DESCRIPTION)) {
-            $criteria->add(ApplianceTableMap::COL_DESCRIPTION, $this->description);
+        if ($this->isColumnModified(ApplianceTableMap::COL_APPLIANCENUMBERID)) {
+            $criteria->add(ApplianceTableMap::COL_APPLIANCENUMBERID, $this->appliancenumberid);
         }
         if ($this->isColumnModified(ApplianceTableMap::COL_PROPERTYID)) {
             $criteria->add(ApplianceTableMap::COL_PROPERTYID, $this->propertyid);
+        }
+        if ($this->isColumnModified(ApplianceTableMap::COL_APPLIANCETYPEID)) {
+            $criteria->add(ApplianceTableMap::COL_APPLIANCETYPEID, $this->appliancetypeid);
+        }
+        if ($this->isColumnModified(ApplianceTableMap::COL_DETAILS)) {
+            $criteria->add(ApplianceTableMap::COL_DETAILS, $this->details);
         }
 
         return $criteria;
@@ -1108,7 +996,8 @@ abstract class Appliance implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        throw new LogicException('The Appliance object has no primary key');
+        $criteria = ChildApplianceQuery::create();
+        $criteria->add(ApplianceTableMap::COL_APPLIANCENUMBERID, $this->appliancenumberid);
 
         return $criteria;
     }
@@ -1121,7 +1010,7 @@ abstract class Appliance implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = false;
+        $validPk = null !== $this->getAppliancenumberid();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1136,27 +1025,23 @@ abstract class Appliance implements ActiveRecordInterface
     }
 
     /**
-     * Returns NULL since this table doesn't have a primary key.
-     * This method exists only for BC and is deprecated!
-     * @return null
+     * Returns the primary key for this object (row).
+     * @return int
      */
     public function getPrimaryKey()
     {
-        return null;
+        return $this->getAppliancenumberid();
     }
 
     /**
-     * Dummy primary key setter.
+     * Generic method to set the primary key (appliancenumberid column).
      *
-     * This function only exists to preserve backwards compatibility.  It is no longer
-     * needed or required by the Persistent interface.  It will be removed in next BC-breaking
-     * release of Propel.
-     *
-     * @deprecated
+     * @param       int $key Primary key.
+     * @return void
      */
-    public function setPrimaryKey($pk)
+    public function setPrimaryKey($key)
     {
-        // do nothing, because this object doesn't have any primary keys
+        $this->setAppliancenumberid($key);
     }
 
     /**
@@ -1165,7 +1050,7 @@ abstract class Appliance implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return ;
+        return null === $this->getAppliancenumberid();
     }
 
     /**
@@ -1181,13 +1066,12 @@ abstract class Appliance implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setId($this->getId());
-        $copyObj->setTimestamp($this->getTimestamp());
-        $copyObj->setName($this->getName());
-        $copyObj->setDescription($this->getDescription());
         $copyObj->setPropertyid($this->getPropertyid());
+        $copyObj->setAppliancetypeid($this->getAppliancetypeid());
+        $copyObj->setDetails($this->getDetails());
         if ($makeNew) {
             $copyObj->setNew(true);
+            $copyObj->setAppliancenumberid(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1214,71 +1098,16 @@ abstract class Appliance implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildProperty object.
-     *
-     * @param  ChildProperty $v
-     * @return $this|\Appliance The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setProperty(ChildProperty $v = null)
-    {
-        if ($v === null) {
-            $this->setPropertyid(NULL);
-        } else {
-            $this->setPropertyid($v->getId());
-        }
-
-        $this->aProperty = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildProperty object, it will not be re-added.
-        if ($v !== null) {
-            $v->addAppliance($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildProperty object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildProperty The associated ChildProperty object.
-     * @throws PropelException
-     */
-    public function getProperty(ConnectionInterface $con = null)
-    {
-        if ($this->aProperty === null && ($this->propertyid != 0)) {
-            $this->aProperty = ChildPropertyQuery::create()->findPk($this->propertyid, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aProperty->addAppliances($this);
-             */
-        }
-
-        return $this->aProperty;
-    }
-
-    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
-        if (null !== $this->aProperty) {
-            $this->aProperty->removeAppliance($this);
-        }
-        $this->id = null;
-        $this->timestamp = null;
-        $this->name = null;
-        $this->description = null;
+        $this->appliancenumberid = null;
         $this->propertyid = null;
+        $this->appliancetypeid = null;
+        $this->details = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1299,7 +1128,6 @@ abstract class Appliance implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aProperty = null;
     }
 
     /**

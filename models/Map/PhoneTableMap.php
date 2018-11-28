@@ -59,7 +59,7 @@ class PhoneTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 7;
 
     /**
      * The number of lazy-loaded columns
@@ -69,32 +69,42 @@ class PhoneTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /**
-     * the column name for the ID field
+     * the column name for the phoneNumberID field
      */
-    const COL_ID = 'phone.ID';
+    const COL_PHONENUMBERID = 'phone.phoneNumberID';
 
     /**
-     * the column name for the Timestamp field
+     * the column name for the userID field
      */
-    const COL_TIMESTAMP = 'phone.Timestamp';
+    const COL_USERID = 'phone.userID';
 
     /**
-     * the column name for the UserID field
+     * the column name for the addDate field
      */
-    const COL_USERID = 'phone.UserID';
+    const COL_ADDDATE = 'phone.addDate';
 
     /**
-     * the column name for the Number field
+     * the column name for the areaCode field
      */
-    const COL_NUMBER = 'phone.Number';
+    const COL_AREACODE = 'phone.areaCode';
 
     /**
-     * the column name for the Description field
+     * the column name for the number field
      */
-    const COL_DESCRIPTION = 'phone.Description';
+    const COL_NUMBER = 'phone.number';
+
+    /**
+     * the column name for the extension field
+     */
+    const COL_EXTENSION = 'phone.extension';
+
+    /**
+     * the column name for the description field
+     */
+    const COL_DESCRIPTION = 'phone.description';
 
     /**
      * The default string format for model objects of the related table
@@ -108,11 +118,11 @@ class PhoneTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Timestamp', 'Userid', 'Number', 'Description', ),
-        self::TYPE_CAMELNAME     => array('id', 'timestamp', 'userid', 'number', 'description', ),
-        self::TYPE_COLNAME       => array(PhoneTableMap::COL_ID, PhoneTableMap::COL_TIMESTAMP, PhoneTableMap::COL_USERID, PhoneTableMap::COL_NUMBER, PhoneTableMap::COL_DESCRIPTION, ),
-        self::TYPE_FIELDNAME     => array('ID', 'Timestamp', 'UserID', 'Number', 'Description', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Phonenumberid', 'Userid', 'Adddate', 'Areacode', 'Number', 'Extension', 'Description', ),
+        self::TYPE_CAMELNAME     => array('phonenumberid', 'userid', 'adddate', 'areacode', 'number', 'extension', 'description', ),
+        self::TYPE_COLNAME       => array(PhoneTableMap::COL_PHONENUMBERID, PhoneTableMap::COL_USERID, PhoneTableMap::COL_ADDDATE, PhoneTableMap::COL_AREACODE, PhoneTableMap::COL_NUMBER, PhoneTableMap::COL_EXTENSION, PhoneTableMap::COL_DESCRIPTION, ),
+        self::TYPE_FIELDNAME     => array('phoneNumberID', 'userID', 'addDate', 'areaCode', 'number', 'extension', 'description', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -122,11 +132,11 @@ class PhoneTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Timestamp' => 1, 'Userid' => 2, 'Number' => 3, 'Description' => 4, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'timestamp' => 1, 'userid' => 2, 'number' => 3, 'description' => 4, ),
-        self::TYPE_COLNAME       => array(PhoneTableMap::COL_ID => 0, PhoneTableMap::COL_TIMESTAMP => 1, PhoneTableMap::COL_USERID => 2, PhoneTableMap::COL_NUMBER => 3, PhoneTableMap::COL_DESCRIPTION => 4, ),
-        self::TYPE_FIELDNAME     => array('ID' => 0, 'Timestamp' => 1, 'UserID' => 2, 'Number' => 3, 'Description' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Phonenumberid' => 0, 'Userid' => 1, 'Adddate' => 2, 'Areacode' => 3, 'Number' => 4, 'Extension' => 5, 'Description' => 6, ),
+        self::TYPE_CAMELNAME     => array('phonenumberid' => 0, 'userid' => 1, 'adddate' => 2, 'areacode' => 3, 'number' => 4, 'extension' => 5, 'description' => 6, ),
+        self::TYPE_COLNAME       => array(PhoneTableMap::COL_PHONENUMBERID => 0, PhoneTableMap::COL_USERID => 1, PhoneTableMap::COL_ADDDATE => 2, PhoneTableMap::COL_AREACODE => 3, PhoneTableMap::COL_NUMBER => 4, PhoneTableMap::COL_EXTENSION => 5, PhoneTableMap::COL_DESCRIPTION => 6, ),
+        self::TYPE_FIELDNAME     => array('phoneNumberID' => 0, 'userID' => 1, 'addDate' => 2, 'areaCode' => 3, 'number' => 4, 'extension' => 5, 'description' => 6, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -146,11 +156,13 @@ class PhoneTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
-        $this->addForeignKey('UserID', 'Userid', 'INTEGER', 'user', 'ID', true, null, null);
-        $this->addColumn('Number', 'Number', 'VARCHAR', true, 64, null);
-        $this->addColumn('Description', 'Description', 'CHAR', true, null, null);
+        $this->addPrimaryKey('phoneNumberID', 'Phonenumberid', 'INTEGER', true, null, null);
+        $this->addColumn('userID', 'Userid', 'INTEGER', true, null, null);
+        $this->addColumn('addDate', 'Adddate', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
+        $this->addColumn('areaCode', 'Areacode', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('number', 'Number', 'LONGVARCHAR', true, null, null);
+        $this->addColumn('extension', 'Extension', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('description', 'Description', 'LONGVARCHAR', false, null, null);
     } // initialize()
 
     /**
@@ -158,13 +170,6 @@ class PhoneTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('User', '\\User', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':UserID',
-    1 => ':ID',
-  ),
-), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -183,11 +188,11 @@ class PhoneTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Phonenumberid', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Phonenumberid', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Phonenumberid', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Phonenumberid', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Phonenumberid', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Phonenumberid', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -207,7 +212,7 @@ class PhoneTableMap extends TableMap
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('Phonenumberid', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -308,17 +313,21 @@ class PhoneTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(PhoneTableMap::COL_ID);
-            $criteria->addSelectColumn(PhoneTableMap::COL_TIMESTAMP);
+            $criteria->addSelectColumn(PhoneTableMap::COL_PHONENUMBERID);
             $criteria->addSelectColumn(PhoneTableMap::COL_USERID);
+            $criteria->addSelectColumn(PhoneTableMap::COL_ADDDATE);
+            $criteria->addSelectColumn(PhoneTableMap::COL_AREACODE);
             $criteria->addSelectColumn(PhoneTableMap::COL_NUMBER);
+            $criteria->addSelectColumn(PhoneTableMap::COL_EXTENSION);
             $criteria->addSelectColumn(PhoneTableMap::COL_DESCRIPTION);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.Timestamp');
-            $criteria->addSelectColumn($alias . '.UserID');
-            $criteria->addSelectColumn($alias . '.Number');
-            $criteria->addSelectColumn($alias . '.Description');
+            $criteria->addSelectColumn($alias . '.phoneNumberID');
+            $criteria->addSelectColumn($alias . '.userID');
+            $criteria->addSelectColumn($alias . '.addDate');
+            $criteria->addSelectColumn($alias . '.areaCode');
+            $criteria->addSelectColumn($alias . '.number');
+            $criteria->addSelectColumn($alias . '.extension');
+            $criteria->addSelectColumn($alias . '.description');
         }
     }
 
@@ -370,7 +379,7 @@ class PhoneTableMap extends TableMap
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(PhoneTableMap::DATABASE_NAME);
-            $criteria->add(PhoneTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria->add(PhoneTableMap::COL_PHONENUMBERID, (array) $values, Criteria::IN);
         }
 
         $query = PhoneQuery::create()->mergeWith($criteria);
@@ -418,8 +427,8 @@ class PhoneTableMap extends TableMap
             $criteria = $criteria->buildCriteria(); // build Criteria from Phone object
         }
 
-        if ($criteria->containsKey(PhoneTableMap::COL_ID) && $criteria->keyContainsValue(PhoneTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PhoneTableMap::COL_ID.')');
+        if ($criteria->containsKey(PhoneTableMap::COL_PHONENUMBERID) && $criteria->keyContainsValue(PhoneTableMap::COL_PHONENUMBERID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.PhoneTableMap::COL_PHONENUMBERID.')');
         }
 
 

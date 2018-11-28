@@ -72,39 +72,39 @@ class UtilityTableMap extends TableMap
     const NUM_HYDRATE_COLUMNS = 7;
 
     /**
-     * the column name for the ID field
+     * the column name for the utilityNumberID field
      */
-    const COL_ID = 'utility.ID';
+    const COL_UTILITYNUMBERID = 'utility.utilityNumberID';
 
     /**
-     * the column name for the Timestamp field
+     * the column name for the propertyID field
      */
-    const COL_TIMESTAMP = 'utility.Timestamp';
+    const COL_PROPERTYID = 'utility.propertyID';
 
     /**
-     * the column name for the PropertyID field
+     * the column name for the utilityTypeID field
      */
-    const COL_PROPERTYID = 'utility.PropertyID';
+    const COL_UTILITYTYPEID = 'utility.utilityTypeID';
 
     /**
-     * the column name for the Name field
+     * the column name for the details field
      */
-    const COL_NAME = 'utility.Name';
+    const COL_DETAILS = 'utility.details';
 
     /**
-     * the column name for the Description field
+     * the column name for the available field
      */
-    const COL_DESCRIPTION = 'utility.Description';
+    const COL_AVAILABLE = 'utility.available';
 
     /**
-     * the column name for the Included field
+     * the column name for the includedInRent field
      */
-    const COL_INCLUDED = 'utility.Included';
+    const COL_INCLUDEDINRENT = 'utility.includedInRent';
 
     /**
-     * the column name for the Cost field
+     * the column name for the expectedCostPerMonth field
      */
-    const COL_COST = 'utility.Cost';
+    const COL_EXPECTEDCOSTPERMONTH = 'utility.expectedCostPerMonth';
 
     /**
      * The default string format for model objects of the related table
@@ -118,10 +118,10 @@ class UtilityTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Timestamp', 'Propertyid', 'Name', 'Description', 'Included', 'Cost', ),
-        self::TYPE_CAMELNAME     => array('id', 'timestamp', 'propertyid', 'name', 'description', 'included', 'cost', ),
-        self::TYPE_COLNAME       => array(UtilityTableMap::COL_ID, UtilityTableMap::COL_TIMESTAMP, UtilityTableMap::COL_PROPERTYID, UtilityTableMap::COL_NAME, UtilityTableMap::COL_DESCRIPTION, UtilityTableMap::COL_INCLUDED, UtilityTableMap::COL_COST, ),
-        self::TYPE_FIELDNAME     => array('ID', 'Timestamp', 'PropertyID', 'Name', 'Description', 'Included', 'Cost', ),
+        self::TYPE_PHPNAME       => array('Utilitynumberid', 'Propertyid', 'Utilitytypeid', 'Details', 'Available', 'Includedinrent', 'Expectedcostpermonth', ),
+        self::TYPE_CAMELNAME     => array('utilitynumberid', 'propertyid', 'utilitytypeid', 'details', 'available', 'includedinrent', 'expectedcostpermonth', ),
+        self::TYPE_COLNAME       => array(UtilityTableMap::COL_UTILITYNUMBERID, UtilityTableMap::COL_PROPERTYID, UtilityTableMap::COL_UTILITYTYPEID, UtilityTableMap::COL_DETAILS, UtilityTableMap::COL_AVAILABLE, UtilityTableMap::COL_INCLUDEDINRENT, UtilityTableMap::COL_EXPECTEDCOSTPERMONTH, ),
+        self::TYPE_FIELDNAME     => array('utilityNumberID', 'propertyID', 'utilityTypeID', 'details', 'available', 'includedInRent', 'expectedCostPerMonth', ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
@@ -132,10 +132,10 @@ class UtilityTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Timestamp' => 1, 'Propertyid' => 2, 'Name' => 3, 'Description' => 4, 'Included' => 5, 'Cost' => 6, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'timestamp' => 1, 'propertyid' => 2, 'name' => 3, 'description' => 4, 'included' => 5, 'cost' => 6, ),
-        self::TYPE_COLNAME       => array(UtilityTableMap::COL_ID => 0, UtilityTableMap::COL_TIMESTAMP => 1, UtilityTableMap::COL_PROPERTYID => 2, UtilityTableMap::COL_NAME => 3, UtilityTableMap::COL_DESCRIPTION => 4, UtilityTableMap::COL_INCLUDED => 5, UtilityTableMap::COL_COST => 6, ),
-        self::TYPE_FIELDNAME     => array('ID' => 0, 'Timestamp' => 1, 'PropertyID' => 2, 'Name' => 3, 'Description' => 4, 'Included' => 5, 'Cost' => 6, ),
+        self::TYPE_PHPNAME       => array('Utilitynumberid' => 0, 'Propertyid' => 1, 'Utilitytypeid' => 2, 'Details' => 3, 'Available' => 4, 'Includedinrent' => 5, 'Expectedcostpermonth' => 6, ),
+        self::TYPE_CAMELNAME     => array('utilitynumberid' => 0, 'propertyid' => 1, 'utilitytypeid' => 2, 'details' => 3, 'available' => 4, 'includedinrent' => 5, 'expectedcostpermonth' => 6, ),
+        self::TYPE_COLNAME       => array(UtilityTableMap::COL_UTILITYNUMBERID => 0, UtilityTableMap::COL_PROPERTYID => 1, UtilityTableMap::COL_UTILITYTYPEID => 2, UtilityTableMap::COL_DETAILS => 3, UtilityTableMap::COL_AVAILABLE => 4, UtilityTableMap::COL_INCLUDEDINRENT => 5, UtilityTableMap::COL_EXPECTEDCOSTPERMONTH => 6, ),
+        self::TYPE_FIELDNAME     => array('utilityNumberID' => 0, 'propertyID' => 1, 'utilityTypeID' => 2, 'details' => 3, 'available' => 4, 'includedInRent' => 5, 'expectedCostPerMonth' => 6, ),
         self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
@@ -156,13 +156,13 @@ class UtilityTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-        $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
-        $this->addForeignKey('PropertyID', 'Propertyid', 'INTEGER', 'property', 'ID', true, null, null);
-        $this->addColumn('Name', 'Name', 'VARCHAR', true, 56, null);
-        $this->addColumn('Description', 'Description', 'VARCHAR', true, 128, null);
-        $this->addColumn('Included', 'Included', 'BOOLEAN', true, 1, null);
-        $this->addColumn('Cost', 'Cost', 'INTEGER', true, null, null);
+        $this->addPrimaryKey('utilityNumberID', 'Utilitynumberid', 'INTEGER', true, null, null);
+        $this->addColumn('propertyID', 'Propertyid', 'INTEGER', true, null, null);
+        $this->addColumn('utilityTypeID', 'Utilitytypeid', 'INTEGER', true, null, null);
+        $this->addColumn('details', 'Details', 'LONGVARCHAR', false, null, null);
+        $this->addColumn('available', 'Available', 'BOOLEAN', true, 1, true);
+        $this->addColumn('includedInRent', 'Includedinrent', 'BOOLEAN', true, 1, true);
+        $this->addColumn('expectedCostPerMonth', 'Expectedcostpermonth', 'DOUBLE', true, null, 0);
     } // initialize()
 
     /**
@@ -170,13 +170,6 @@ class UtilityTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Property', '\\Property', RelationMap::MANY_TO_ONE, array (
-  0 =>
-  array (
-    0 => ':PropertyID',
-    1 => ':ID',
-  ),
-), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -195,11 +188,11 @@ class UtilityTableMap extends TableMap
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
         // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
+        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Utilitynumberid', TableMap::TYPE_PHPNAME, $indexType)] === null) {
             return null;
         }
 
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Utilitynumberid', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Utilitynumberid', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Utilitynumberid', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Utilitynumberid', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Utilitynumberid', TableMap::TYPE_PHPNAME, $indexType)];
     }
 
     /**
@@ -219,7 +212,7 @@ class UtilityTableMap extends TableMap
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
                 ? 0 + $offset
-                : self::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)
+                : self::translateFieldName('Utilitynumberid', TableMap::TYPE_PHPNAME, $indexType)
         ];
     }
 
@@ -320,21 +313,21 @@ class UtilityTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(UtilityTableMap::COL_ID);
-            $criteria->addSelectColumn(UtilityTableMap::COL_TIMESTAMP);
+            $criteria->addSelectColumn(UtilityTableMap::COL_UTILITYNUMBERID);
             $criteria->addSelectColumn(UtilityTableMap::COL_PROPERTYID);
-            $criteria->addSelectColumn(UtilityTableMap::COL_NAME);
-            $criteria->addSelectColumn(UtilityTableMap::COL_DESCRIPTION);
-            $criteria->addSelectColumn(UtilityTableMap::COL_INCLUDED);
-            $criteria->addSelectColumn(UtilityTableMap::COL_COST);
+            $criteria->addSelectColumn(UtilityTableMap::COL_UTILITYTYPEID);
+            $criteria->addSelectColumn(UtilityTableMap::COL_DETAILS);
+            $criteria->addSelectColumn(UtilityTableMap::COL_AVAILABLE);
+            $criteria->addSelectColumn(UtilityTableMap::COL_INCLUDEDINRENT);
+            $criteria->addSelectColumn(UtilityTableMap::COL_EXPECTEDCOSTPERMONTH);
         } else {
-            $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.Timestamp');
-            $criteria->addSelectColumn($alias . '.PropertyID');
-            $criteria->addSelectColumn($alias . '.Name');
-            $criteria->addSelectColumn($alias . '.Description');
-            $criteria->addSelectColumn($alias . '.Included');
-            $criteria->addSelectColumn($alias . '.Cost');
+            $criteria->addSelectColumn($alias . '.utilityNumberID');
+            $criteria->addSelectColumn($alias . '.propertyID');
+            $criteria->addSelectColumn($alias . '.utilityTypeID');
+            $criteria->addSelectColumn($alias . '.details');
+            $criteria->addSelectColumn($alias . '.available');
+            $criteria->addSelectColumn($alias . '.includedInRent');
+            $criteria->addSelectColumn($alias . '.expectedCostPerMonth');
         }
     }
 
@@ -386,7 +379,7 @@ class UtilityTableMap extends TableMap
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(UtilityTableMap::DATABASE_NAME);
-            $criteria->add(UtilityTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria->add(UtilityTableMap::COL_UTILITYNUMBERID, (array) $values, Criteria::IN);
         }
 
         $query = UtilityQuery::create()->mergeWith($criteria);
@@ -434,8 +427,8 @@ class UtilityTableMap extends TableMap
             $criteria = $criteria->buildCriteria(); // build Criteria from Utility object
         }
 
-        if ($criteria->containsKey(UtilityTableMap::COL_ID) && $criteria->keyContainsValue(UtilityTableMap::COL_ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.UtilityTableMap::COL_ID.')');
+        if ($criteria->containsKey(UtilityTableMap::COL_UTILITYNUMBERID) && $criteria->keyContainsValue(UtilityTableMap::COL_UTILITYNUMBERID) ) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key ('.UtilityTableMap::COL_UTILITYNUMBERID.')');
         }
 
 

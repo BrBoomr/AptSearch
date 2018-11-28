@@ -3,8 +3,6 @@
 namespace Base;
 
 use \IssueQuery as ChildIssueQuery;
-use \Property as ChildProperty;
-use \PropertyQuery as ChildPropertyQuery;
 use \DateTime;
 use \Exception;
 use \PDO;
@@ -64,18 +62,11 @@ abstract class Issue implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the id field.
+     * The value for the issuenumberid field.
      *
      * @var        int
      */
-    protected $id;
-
-    /**
-     * The value for the timestamp field.
-     *
-     * @var        DateTime
-     */
-    protected $timestamp;
+    protected $issuenumberid;
 
     /**
      * The value for the propertyid field.
@@ -92,37 +83,26 @@ abstract class Issue implements ActiveRecordInterface
     protected $name;
 
     /**
-     * The value for the description field.
+     * The value for the details field.
      *
      * @var        string
      */
-    protected $description;
+    protected $details;
 
     /**
-     * The value for the found field.
+     * The value for the founddate field.
+     *
+     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
+     * @var        DateTime
+     */
+    protected $founddate;
+
+    /**
+     * The value for the repairdate field.
      *
      * @var        DateTime
      */
-    protected $found;
-
-    /**
-     * The value for the repaired field.
-     *
-     * @var        DateTime
-     */
-    protected $repaired;
-
-    /**
-     * The value for the cost field.
-     *
-     * @var        int
-     */
-    protected $cost;
-
-    /**
-     * @var        ChildProperty
-     */
-    protected $aProperty;
+    protected $repairdate;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -133,10 +113,22 @@ abstract class Issue implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
+     */
+    public function applyDefaultValues()
+    {
+    }
+
+    /**
      * Initializes internal state of Base\Issue object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -358,33 +350,13 @@ abstract class Issue implements ActiveRecordInterface
     }
 
     /**
-     * Get the [id] column value.
+     * Get the [issuenumberid] column value.
      *
      * @return int
      */
-    public function getId()
+    public function getIssuenumberid()
     {
-        return $this->id;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [timestamp] column value.
-     *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getTimestamp($format = NULL)
-    {
-        if ($format === null) {
-            return $this->timestamp;
-        } else {
-            return $this->timestamp instanceof \DateTimeInterface ? $this->timestamp->format($format) : null;
-        }
+        return $this->issuenumberid;
     }
 
     /**
@@ -408,104 +380,74 @@ abstract class Issue implements ActiveRecordInterface
     }
 
     /**
-     * Get the [description] column value.
+     * Get the [details] column value.
      *
      * @return string
      */
-    public function getDescription()
+    public function getDetails()
     {
-        return $this->description;
+        return $this->details;
     }
 
     /**
-     * Get the [optionally formatted] temporal [found] column value.
+     * Get the [optionally formatted] temporal [founddate] column value.
      *
      *
      * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw DateTime object will be returned.
      *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
      *
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getFound($format = NULL)
+    public function getFounddate($format = NULL)
     {
         if ($format === null) {
-            return $this->found;
+            return $this->founddate;
         } else {
-            return $this->found instanceof \DateTimeInterface ? $this->found->format($format) : null;
+            return $this->founddate instanceof \DateTimeInterface ? $this->founddate->format($format) : null;
         }
     }
 
     /**
-     * Get the [optionally formatted] temporal [repaired] column value.
+     * Get the [optionally formatted] temporal [repairdate] column value.
      *
      *
      * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
      *                            If format is NULL, then the raw DateTime object will be returned.
      *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
      *
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getRepaired($format = NULL)
+    public function getRepairdate($format = NULL)
     {
         if ($format === null) {
-            return $this->repaired;
+            return $this->repairdate;
         } else {
-            return $this->repaired instanceof \DateTimeInterface ? $this->repaired->format($format) : null;
+            return $this->repairdate instanceof \DateTimeInterface ? $this->repairdate->format($format) : null;
         }
     }
 
     /**
-     * Get the [cost] column value.
-     *
-     * @return int
-     */
-    public function getCost()
-    {
-        return $this->cost;
-    }
-
-    /**
-     * Set the value of [id] column.
+     * Set the value of [issuenumberid] column.
      *
      * @param int $v new value
      * @return $this|\Issue The current object (for fluent API support)
      */
-    public function setId($v)
+    public function setIssuenumberid($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id !== $v) {
-            $this->id = $v;
-            $this->modifiedColumns[IssueTableMap::COL_ID] = true;
+        if ($this->issuenumberid !== $v) {
+            $this->issuenumberid = $v;
+            $this->modifiedColumns[IssueTableMap::COL_ISSUENUMBERID] = true;
         }
 
         return $this;
-    } // setId()
-
-    /**
-     * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
-     *
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
-     * @return $this|\Issue The current object (for fluent API support)
-     */
-    public function setTimestamp($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->timestamp !== null || $dt !== null) {
-            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d") !== $this->timestamp->format("Y-m-d")) {
-                $this->timestamp = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[IssueTableMap::COL_TIMESTAMP] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setTimestamp()
+    } // setIssuenumberid()
 
     /**
      * Set the value of [propertyid] column.
@@ -522,10 +464,6 @@ abstract class Issue implements ActiveRecordInterface
         if ($this->propertyid !== $v) {
             $this->propertyid = $v;
             $this->modifiedColumns[IssueTableMap::COL_PROPERTYID] = true;
-        }
-
-        if ($this->aProperty !== null && $this->aProperty->getId() !== $v) {
-            $this->aProperty = null;
         }
 
         return $this;
@@ -552,84 +490,64 @@ abstract class Issue implements ActiveRecordInterface
     } // setName()
 
     /**
-     * Set the value of [description] column.
+     * Set the value of [details] column.
      *
      * @param string $v new value
      * @return $this|\Issue The current object (for fluent API support)
      */
-    public function setDescription($v)
+    public function setDetails($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->description !== $v) {
-            $this->description = $v;
-            $this->modifiedColumns[IssueTableMap::COL_DESCRIPTION] = true;
+        if ($this->details !== $v) {
+            $this->details = $v;
+            $this->modifiedColumns[IssueTableMap::COL_DETAILS] = true;
         }
 
         return $this;
-    } // setDescription()
+    } // setDetails()
 
     /**
-     * Sets the value of [found] column to a normalized version of the date/time value specified.
+     * Sets the value of [founddate] column to a normalized version of the date/time value specified.
      *
      * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
      *               Empty strings are treated as NULL.
      * @return $this|\Issue The current object (for fluent API support)
      */
-    public function setFound($v)
+    public function setFounddate($v)
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->found !== null || $dt !== null) {
-            if ($this->found === null || $dt === null || $dt->format("Y-m-d") !== $this->found->format("Y-m-d")) {
-                $this->found = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[IssueTableMap::COL_FOUND] = true;
+        if ($this->founddate !== null || $dt !== null) {
+            if ($this->founddate === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->founddate->format("Y-m-d H:i:s.u")) {
+                $this->founddate = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[IssueTableMap::COL_FOUNDDATE] = true;
             }
         } // if either are not null
 
         return $this;
-    } // setFound()
+    } // setFounddate()
 
     /**
-     * Sets the value of [repaired] column to a normalized version of the date/time value specified.
+     * Sets the value of [repairdate] column to a normalized version of the date/time value specified.
      *
      * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
      *               Empty strings are treated as NULL.
      * @return $this|\Issue The current object (for fluent API support)
      */
-    public function setRepaired($v)
+    public function setRepairdate($v)
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->repaired !== null || $dt !== null) {
-            if ($this->repaired === null || $dt === null || $dt->format("Y-m-d") !== $this->repaired->format("Y-m-d")) {
-                $this->repaired = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[IssueTableMap::COL_REPAIRED] = true;
+        if ($this->repairdate !== null || $dt !== null) {
+            if ($this->repairdate === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->repairdate->format("Y-m-d H:i:s.u")) {
+                $this->repairdate = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[IssueTableMap::COL_REPAIRDATE] = true;
             }
         } // if either are not null
 
         return $this;
-    } // setRepaired()
-
-    /**
-     * Set the value of [cost] column.
-     *
-     * @param int $v new value
-     * @return $this|\Issue The current object (for fluent API support)
-     */
-    public function setCost($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->cost !== $v) {
-            $this->cost = $v;
-            $this->modifiedColumns[IssueTableMap::COL_COST] = true;
-        }
-
-        return $this;
-    } // setCost()
+    } // setRepairdate()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -667,38 +585,29 @@ abstract class Issue implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : IssueTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : IssueTableMap::translateFieldName('Issuenumberid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->issuenumberid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : IssueTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00') {
-                $col = null;
-            }
-            $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : IssueTableMap::translateFieldName('Propertyid', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : IssueTableMap::translateFieldName('Propertyid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->propertyid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : IssueTableMap::translateFieldName('Name', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : IssueTableMap::translateFieldName('Name', TableMap::TYPE_PHPNAME, $indexType)];
             $this->name = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : IssueTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->description = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : IssueTableMap::translateFieldName('Details', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->details = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : IssueTableMap::translateFieldName('Found', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00') {
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : IssueTableMap::translateFieldName('Founddate', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
-            $this->found = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
+            $this->founddate = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : IssueTableMap::translateFieldName('Repaired', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00') {
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : IssueTableMap::translateFieldName('Repairdate', TableMap::TYPE_PHPNAME, $indexType)];
+            if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
-            $this->repaired = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : IssueTableMap::translateFieldName('Cost', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->cost = (null !== $col) ? (int) $col : null;
+            $this->repairdate = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -707,7 +616,7 @@ abstract class Issue implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 8; // 8 = IssueTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = IssueTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Issue'), 0, $e);
@@ -729,9 +638,6 @@ abstract class Issue implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aProperty !== null && $this->propertyid !== $this->aProperty->getId()) {
-            $this->aProperty = null;
-        }
     } // ensureConsistency
 
     /**
@@ -771,7 +677,6 @@ abstract class Issue implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aProperty = null;
         } // if (deep)
     }
 
@@ -875,18 +780,6 @@ abstract class Issue implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aProperty !== null) {
-                if ($this->aProperty->isModified() || $this->aProperty->isNew()) {
-                    $affectedRows += $this->aProperty->save($con);
-                }
-                $this->setProperty($this->aProperty);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -918,35 +811,29 @@ abstract class Issue implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[IssueTableMap::COL_ID] = true;
-        if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . IssueTableMap::COL_ID . ')');
+        $this->modifiedColumns[IssueTableMap::COL_ISSUENUMBERID] = true;
+        if (null !== $this->issuenumberid) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . IssueTableMap::COL_ISSUENUMBERID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(IssueTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'ID';
-        }
-        if ($this->isColumnModified(IssueTableMap::COL_TIMESTAMP)) {
-            $modifiedColumns[':p' . $index++]  = 'Timestamp';
+        if ($this->isColumnModified(IssueTableMap::COL_ISSUENUMBERID)) {
+            $modifiedColumns[':p' . $index++]  = 'issueNumberID';
         }
         if ($this->isColumnModified(IssueTableMap::COL_PROPERTYID)) {
-            $modifiedColumns[':p' . $index++]  = 'PropertyID';
+            $modifiedColumns[':p' . $index++]  = 'propertyID';
         }
         if ($this->isColumnModified(IssueTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'Name';
+            $modifiedColumns[':p' . $index++]  = 'name';
         }
-        if ($this->isColumnModified(IssueTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'Description';
+        if ($this->isColumnModified(IssueTableMap::COL_DETAILS)) {
+            $modifiedColumns[':p' . $index++]  = 'details';
         }
-        if ($this->isColumnModified(IssueTableMap::COL_FOUND)) {
-            $modifiedColumns[':p' . $index++]  = 'Found';
+        if ($this->isColumnModified(IssueTableMap::COL_FOUNDDATE)) {
+            $modifiedColumns[':p' . $index++]  = 'foundDate';
         }
-        if ($this->isColumnModified(IssueTableMap::COL_REPAIRED)) {
-            $modifiedColumns[':p' . $index++]  = 'Repaired';
-        }
-        if ($this->isColumnModified(IssueTableMap::COL_COST)) {
-            $modifiedColumns[':p' . $index++]  = 'Cost';
+        if ($this->isColumnModified(IssueTableMap::COL_REPAIRDATE)) {
+            $modifiedColumns[':p' . $index++]  = 'repairDate';
         }
 
         $sql = sprintf(
@@ -959,29 +846,23 @@ abstract class Issue implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':
-                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                    case 'issueNumberID':
+                        $stmt->bindValue($identifier, $this->issuenumberid, PDO::PARAM_INT);
                         break;
-                    case 'Timestamp':
-                        $stmt->bindValue($identifier, $this->timestamp ? $this->timestamp->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
-                        break;
-                    case 'PropertyID':
+                    case 'propertyID':
                         $stmt->bindValue($identifier, $this->propertyid, PDO::PARAM_INT);
                         break;
-                    case 'Name':
+                    case 'name':
                         $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
                         break;
-                    case 'Description':
-                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
+                    case 'details':
+                        $stmt->bindValue($identifier, $this->details, PDO::PARAM_STR);
                         break;
-                    case 'Found':
-                        $stmt->bindValue($identifier, $this->found ? $this->found->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
+                    case 'foundDate':
+                        $stmt->bindValue($identifier, $this->founddate ? $this->founddate->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
-                    case 'Repaired':
-                        $stmt->bindValue($identifier, $this->repaired ? $this->repaired->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
-                        break;
-                    case 'Cost':
-                        $stmt->bindValue($identifier, $this->cost, PDO::PARAM_INT);
+                    case 'repairDate':
+                        $stmt->bindValue($identifier, $this->repairdate ? $this->repairdate->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -996,7 +877,7 @@ abstract class Issue implements ActiveRecordInterface
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', 0, $e);
         }
-        $this->setId($pk);
+        $this->setIssuenumberid($pk);
 
         $this->setNew(false);
     }
@@ -1046,28 +927,22 @@ abstract class Issue implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getId();
+                return $this->getIssuenumberid();
                 break;
             case 1:
-                return $this->getTimestamp();
-                break;
-            case 2:
                 return $this->getPropertyid();
                 break;
-            case 3:
+            case 2:
                 return $this->getName();
                 break;
+            case 3:
+                return $this->getDetails();
+                break;
             case 4:
-                return $this->getDescription();
+                return $this->getFounddate();
                 break;
             case 5:
-                return $this->getFound();
-                break;
-            case 6:
-                return $this->getRepaired();
-                break;
-            case 7:
-                return $this->getCost();
+                return $this->getRepairdate();
                 break;
             default:
                 return null;
@@ -1086,11 +961,10 @@ abstract class Issue implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
         if (isset($alreadyDumpedObjects['Issue'][$this->hashCode()])) {
@@ -1099,25 +973,19 @@ abstract class Issue implements ActiveRecordInterface
         $alreadyDumpedObjects['Issue'][$this->hashCode()] = true;
         $keys = IssueTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getId(),
-            $keys[1] => $this->getTimestamp(),
-            $keys[2] => $this->getPropertyid(),
-            $keys[3] => $this->getName(),
-            $keys[4] => $this->getDescription(),
-            $keys[5] => $this->getFound(),
-            $keys[6] => $this->getRepaired(),
-            $keys[7] => $this->getCost(),
+            $keys[0] => $this->getIssuenumberid(),
+            $keys[1] => $this->getPropertyid(),
+            $keys[2] => $this->getName(),
+            $keys[3] => $this->getDetails(),
+            $keys[4] => $this->getFounddate(),
+            $keys[5] => $this->getRepairdate(),
         );
-        if ($result[$keys[1]] instanceof \DateTimeInterface) {
-            $result[$keys[1]] = $result[$keys[1]]->format('c');
+        if ($result[$keys[4]] instanceof \DateTimeInterface) {
+            $result[$keys[4]] = $result[$keys[4]]->format('c');
         }
 
         if ($result[$keys[5]] instanceof \DateTimeInterface) {
             $result[$keys[5]] = $result[$keys[5]]->format('c');
-        }
-
-        if ($result[$keys[6]] instanceof \DateTimeInterface) {
-            $result[$keys[6]] = $result[$keys[6]]->format('c');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -1125,23 +993,6 @@ abstract class Issue implements ActiveRecordInterface
             $result[$key] = $virtualColumn;
         }
 
-        if ($includeForeignObjects) {
-            if (null !== $this->aProperty) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'property';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'property';
-                        break;
-                    default:
-                        $key = 'Property';
-                }
-
-                $result[$key] = $this->aProperty->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-        }
 
         return $result;
     }
@@ -1176,28 +1027,22 @@ abstract class Issue implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setId($value);
+                $this->setIssuenumberid($value);
                 break;
             case 1:
-                $this->setTimestamp($value);
-                break;
-            case 2:
                 $this->setPropertyid($value);
                 break;
-            case 3:
+            case 2:
                 $this->setName($value);
                 break;
+            case 3:
+                $this->setDetails($value);
+                break;
             case 4:
-                $this->setDescription($value);
+                $this->setFounddate($value);
                 break;
             case 5:
-                $this->setFound($value);
-                break;
-            case 6:
-                $this->setRepaired($value);
-                break;
-            case 7:
-                $this->setCost($value);
+                $this->setRepairdate($value);
                 break;
         } // switch()
 
@@ -1226,28 +1071,22 @@ abstract class Issue implements ActiveRecordInterface
         $keys = IssueTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setId($arr[$keys[0]]);
+            $this->setIssuenumberid($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setTimestamp($arr[$keys[1]]);
+            $this->setPropertyid($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setPropertyid($arr[$keys[2]]);
+            $this->setName($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setName($arr[$keys[3]]);
+            $this->setDetails($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setDescription($arr[$keys[4]]);
+            $this->setFounddate($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setFound($arr[$keys[5]]);
-        }
-        if (array_key_exists($keys[6], $arr)) {
-            $this->setRepaired($arr[$keys[6]]);
-        }
-        if (array_key_exists($keys[7], $arr)) {
-            $this->setCost($arr[$keys[7]]);
+            $this->setRepairdate($arr[$keys[5]]);
         }
     }
 
@@ -1290,11 +1129,8 @@ abstract class Issue implements ActiveRecordInterface
     {
         $criteria = new Criteria(IssueTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(IssueTableMap::COL_ID)) {
-            $criteria->add(IssueTableMap::COL_ID, $this->id);
-        }
-        if ($this->isColumnModified(IssueTableMap::COL_TIMESTAMP)) {
-            $criteria->add(IssueTableMap::COL_TIMESTAMP, $this->timestamp);
+        if ($this->isColumnModified(IssueTableMap::COL_ISSUENUMBERID)) {
+            $criteria->add(IssueTableMap::COL_ISSUENUMBERID, $this->issuenumberid);
         }
         if ($this->isColumnModified(IssueTableMap::COL_PROPERTYID)) {
             $criteria->add(IssueTableMap::COL_PROPERTYID, $this->propertyid);
@@ -1302,17 +1138,14 @@ abstract class Issue implements ActiveRecordInterface
         if ($this->isColumnModified(IssueTableMap::COL_NAME)) {
             $criteria->add(IssueTableMap::COL_NAME, $this->name);
         }
-        if ($this->isColumnModified(IssueTableMap::COL_DESCRIPTION)) {
-            $criteria->add(IssueTableMap::COL_DESCRIPTION, $this->description);
+        if ($this->isColumnModified(IssueTableMap::COL_DETAILS)) {
+            $criteria->add(IssueTableMap::COL_DETAILS, $this->details);
         }
-        if ($this->isColumnModified(IssueTableMap::COL_FOUND)) {
-            $criteria->add(IssueTableMap::COL_FOUND, $this->found);
+        if ($this->isColumnModified(IssueTableMap::COL_FOUNDDATE)) {
+            $criteria->add(IssueTableMap::COL_FOUNDDATE, $this->founddate);
         }
-        if ($this->isColumnModified(IssueTableMap::COL_REPAIRED)) {
-            $criteria->add(IssueTableMap::COL_REPAIRED, $this->repaired);
-        }
-        if ($this->isColumnModified(IssueTableMap::COL_COST)) {
-            $criteria->add(IssueTableMap::COL_COST, $this->cost);
+        if ($this->isColumnModified(IssueTableMap::COL_REPAIRDATE)) {
+            $criteria->add(IssueTableMap::COL_REPAIRDATE, $this->repairdate);
         }
 
         return $criteria;
@@ -1331,7 +1164,7 @@ abstract class Issue implements ActiveRecordInterface
     public function buildPkeyCriteria()
     {
         $criteria = ChildIssueQuery::create();
-        $criteria->add(IssueTableMap::COL_ID, $this->id);
+        $criteria->add(IssueTableMap::COL_ISSUENUMBERID, $this->issuenumberid);
 
         return $criteria;
     }
@@ -1344,7 +1177,7 @@ abstract class Issue implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getId();
+        $validPk = null !== $this->getIssuenumberid();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1364,18 +1197,18 @@ abstract class Issue implements ActiveRecordInterface
      */
     public function getPrimaryKey()
     {
-        return $this->getId();
+        return $this->getIssuenumberid();
     }
 
     /**
-     * Generic method to set the primary key (id column).
+     * Generic method to set the primary key (issuenumberid column).
      *
      * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setId($key);
+        $this->setIssuenumberid($key);
     }
 
     /**
@@ -1384,7 +1217,7 @@ abstract class Issue implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getId();
+        return null === $this->getIssuenumberid();
     }
 
     /**
@@ -1400,16 +1233,14 @@ abstract class Issue implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setTimestamp($this->getTimestamp());
         $copyObj->setPropertyid($this->getPropertyid());
         $copyObj->setName($this->getName());
-        $copyObj->setDescription($this->getDescription());
-        $copyObj->setFound($this->getFound());
-        $copyObj->setRepaired($this->getRepaired());
-        $copyObj->setCost($this->getCost());
+        $copyObj->setDetails($this->getDetails());
+        $copyObj->setFounddate($this->getFounddate());
+        $copyObj->setRepairdate($this->getRepairdate());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setIssuenumberid(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1436,76 +1267,21 @@ abstract class Issue implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildProperty object.
-     *
-     * @param  ChildProperty $v
-     * @return $this|\Issue The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setProperty(ChildProperty $v = null)
-    {
-        if ($v === null) {
-            $this->setPropertyid(NULL);
-        } else {
-            $this->setPropertyid($v->getId());
-        }
-
-        $this->aProperty = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildProperty object, it will not be re-added.
-        if ($v !== null) {
-            $v->addIssue($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildProperty object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildProperty The associated ChildProperty object.
-     * @throws PropelException
-     */
-    public function getProperty(ConnectionInterface $con = null)
-    {
-        if ($this->aProperty === null && ($this->propertyid != 0)) {
-            $this->aProperty = ChildPropertyQuery::create()->findPk($this->propertyid, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aProperty->addIssues($this);
-             */
-        }
-
-        return $this->aProperty;
-    }
-
-    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
-        if (null !== $this->aProperty) {
-            $this->aProperty->removeIssue($this);
-        }
-        $this->id = null;
-        $this->timestamp = null;
+        $this->issuenumberid = null;
         $this->propertyid = null;
         $this->name = null;
-        $this->description = null;
-        $this->found = null;
-        $this->repaired = null;
-        $this->cost = null;
+        $this->details = null;
+        $this->founddate = null;
+        $this->repairdate = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
@@ -1524,7 +1300,6 @@ abstract class Issue implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aProperty = null;
     }
 
     /**

@@ -10,7 +10,6 @@ use Map\PictureTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -20,17 +19,17 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  *
- * @method     ChildPictureQuery orderById($order = Criteria::ASC) Order by the ID column
- * @method     ChildPictureQuery orderByTimestamp($order = Criteria::ASC) Order by the Timestamp column
- * @method     ChildPictureQuery orderByPropertyid($order = Criteria::ASC) Order by the PropertyID column
- * @method     ChildPictureQuery orderByLink($order = Criteria::ASC) Order by the Link column
- * @method     ChildPictureQuery orderByDescription($order = Criteria::ASC) Order by the Description column
+ * @method     ChildPictureQuery orderByPicturenumberid($order = Criteria::ASC) Order by the pictureNumberID column
+ * @method     ChildPictureQuery orderByAdddate($order = Criteria::ASC) Order by the addDate column
+ * @method     ChildPictureQuery orderByPropertyid($order = Criteria::ASC) Order by the propertyID column
+ * @method     ChildPictureQuery orderByLink($order = Criteria::ASC) Order by the link column
+ * @method     ChildPictureQuery orderByDetails($order = Criteria::ASC) Order by the details column
  *
- * @method     ChildPictureQuery groupById() Group by the ID column
- * @method     ChildPictureQuery groupByTimestamp() Group by the Timestamp column
- * @method     ChildPictureQuery groupByPropertyid() Group by the PropertyID column
- * @method     ChildPictureQuery groupByLink() Group by the Link column
- * @method     ChildPictureQuery groupByDescription() Group by the Description column
+ * @method     ChildPictureQuery groupByPicturenumberid() Group by the pictureNumberID column
+ * @method     ChildPictureQuery groupByAdddate() Group by the addDate column
+ * @method     ChildPictureQuery groupByPropertyid() Group by the propertyID column
+ * @method     ChildPictureQuery groupByLink() Group by the link column
+ * @method     ChildPictureQuery groupByDetails() Group by the details column
  *
  * @method     ChildPictureQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildPictureQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -40,42 +39,30 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPictureQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildPictureQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildPictureQuery leftJoinProperty($relationAlias = null) Adds a LEFT JOIN clause to the query using the Property relation
- * @method     ChildPictureQuery rightJoinProperty($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Property relation
- * @method     ChildPictureQuery innerJoinProperty($relationAlias = null) Adds a INNER JOIN clause to the query using the Property relation
- *
- * @method     ChildPictureQuery joinWithProperty($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Property relation
- *
- * @method     ChildPictureQuery leftJoinWithProperty() Adds a LEFT JOIN clause and with to the query using the Property relation
- * @method     ChildPictureQuery rightJoinWithProperty() Adds a RIGHT JOIN clause and with to the query using the Property relation
- * @method     ChildPictureQuery innerJoinWithProperty() Adds a INNER JOIN clause and with to the query using the Property relation
- *
- * @method     \PropertyQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
- *
  * @method     ChildPicture findOne(ConnectionInterface $con = null) Return the first ChildPicture matching the query
  * @method     ChildPicture findOneOrCreate(ConnectionInterface $con = null) Return the first ChildPicture matching the query, or a new ChildPicture object populated from the query conditions when no match is found
  *
- * @method     ChildPicture findOneById(int $ID) Return the first ChildPicture filtered by the ID column
- * @method     ChildPicture findOneByTimestamp(string $Timestamp) Return the first ChildPicture filtered by the Timestamp column
- * @method     ChildPicture findOneByPropertyid(int $PropertyID) Return the first ChildPicture filtered by the PropertyID column
- * @method     ChildPicture findOneByLink(string $Link) Return the first ChildPicture filtered by the Link column
- * @method     ChildPicture findOneByDescription(string $Description) Return the first ChildPicture filtered by the Description column *
+ * @method     ChildPicture findOneByPicturenumberid(int $pictureNumberID) Return the first ChildPicture filtered by the pictureNumberID column
+ * @method     ChildPicture findOneByAdddate(string $addDate) Return the first ChildPicture filtered by the addDate column
+ * @method     ChildPicture findOneByPropertyid(int $propertyID) Return the first ChildPicture filtered by the propertyID column
+ * @method     ChildPicture findOneByLink(string $link) Return the first ChildPicture filtered by the link column
+ * @method     ChildPicture findOneByDetails(string $details) Return the first ChildPicture filtered by the details column *
 
  * @method     ChildPicture requirePk($key, ConnectionInterface $con = null) Return the ChildPicture by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPicture requireOne(ConnectionInterface $con = null) Return the first ChildPicture matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildPicture requireOneById(int $ID) Return the first ChildPicture filtered by the ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPicture requireOneByTimestamp(string $Timestamp) Return the first ChildPicture filtered by the Timestamp column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPicture requireOneByPropertyid(int $PropertyID) Return the first ChildPicture filtered by the PropertyID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPicture requireOneByLink(string $Link) Return the first ChildPicture filtered by the Link column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPicture requireOneByDescription(string $Description) Return the first ChildPicture filtered by the Description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByPicturenumberid(int $pictureNumberID) Return the first ChildPicture filtered by the pictureNumberID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByAdddate(string $addDate) Return the first ChildPicture filtered by the addDate column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByPropertyid(int $propertyID) Return the first ChildPicture filtered by the propertyID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByLink(string $link) Return the first ChildPicture filtered by the link column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPicture requireOneByDetails(string $details) Return the first ChildPicture filtered by the details column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPicture[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPicture objects based on current ModelCriteria
- * @method     ChildPicture[]|ObjectCollection findById(int $ID) Return ChildPicture objects filtered by the ID column
- * @method     ChildPicture[]|ObjectCollection findByTimestamp(string $Timestamp) Return ChildPicture objects filtered by the Timestamp column
- * @method     ChildPicture[]|ObjectCollection findByPropertyid(int $PropertyID) Return ChildPicture objects filtered by the PropertyID column
- * @method     ChildPicture[]|ObjectCollection findByLink(string $Link) Return ChildPicture objects filtered by the Link column
- * @method     ChildPicture[]|ObjectCollection findByDescription(string $Description) Return ChildPicture objects filtered by the Description column
+ * @method     ChildPicture[]|ObjectCollection findByPicturenumberid(int $pictureNumberID) Return ChildPicture objects filtered by the pictureNumberID column
+ * @method     ChildPicture[]|ObjectCollection findByAdddate(string $addDate) Return ChildPicture objects filtered by the addDate column
+ * @method     ChildPicture[]|ObjectCollection findByPropertyid(int $propertyID) Return ChildPicture objects filtered by the propertyID column
+ * @method     ChildPicture[]|ObjectCollection findByLink(string $link) Return ChildPicture objects filtered by the link column
+ * @method     ChildPicture[]|ObjectCollection findByDetails(string $details) Return ChildPicture objects filtered by the details column
  * @method     ChildPicture[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -174,7 +161,7 @@ abstract class PictureQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT ID, Timestamp, PropertyID, Link, Description FROM picture WHERE ID = :p0';
+        $sql = 'SELECT pictureNumberID, addDate, propertyID, link, details FROM picture WHERE pictureNumberID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -248,7 +235,7 @@ abstract class PictureQuery extends ModelCriteria
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(PictureTableMap::COL_ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(PictureTableMap::COL_PICTURENUMBERID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -261,20 +248,20 @@ abstract class PictureQuery extends ModelCriteria
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(PictureTableMap::COL_ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(PictureTableMap::COL_PICTURENUMBERID, $keys, Criteria::IN);
     }
 
     /**
-     * Filter the query on the ID column
+     * Filter the query on the pictureNumberID column
      *
      * Example usage:
      * <code>
-     * $query->filterById(1234); // WHERE ID = 1234
-     * $query->filterById(array(12, 34)); // WHERE ID IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE ID > 12
+     * $query->filterByPicturenumberid(1234); // WHERE pictureNumberID = 1234
+     * $query->filterByPicturenumberid(array(12, 34)); // WHERE pictureNumberID IN (12, 34)
+     * $query->filterByPicturenumberid(array('min' => 12)); // WHERE pictureNumberID > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param     mixed $picturenumberid The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -282,16 +269,16 @@ abstract class PictureQuery extends ModelCriteria
      *
      * @return $this|ChildPictureQuery The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterByPicturenumberid($picturenumberid = null, $comparison = null)
     {
-        if (is_array($id)) {
+        if (is_array($picturenumberid)) {
             $useMinMax = false;
-            if (isset($id['min'])) {
-                $this->addUsingAlias(PictureTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
+            if (isset($picturenumberid['min'])) {
+                $this->addUsingAlias(PictureTableMap::COL_PICTURENUMBERID, $picturenumberid['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($id['max'])) {
-                $this->addUsingAlias(PictureTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
+            if (isset($picturenumberid['max'])) {
+                $this->addUsingAlias(PictureTableMap::COL_PICTURENUMBERID, $picturenumberid['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -302,20 +289,20 @@ abstract class PictureQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PictureTableMap::COL_ID, $id, $comparison);
+        return $this->addUsingAlias(PictureTableMap::COL_PICTURENUMBERID, $picturenumberid, $comparison);
     }
 
     /**
-     * Filter the query on the Timestamp column
+     * Filter the query on the addDate column
      *
      * Example usage:
      * <code>
-     * $query->filterByTimestamp('2011-03-14'); // WHERE Timestamp = '2011-03-14'
-     * $query->filterByTimestamp('now'); // WHERE Timestamp = '2011-03-14'
-     * $query->filterByTimestamp(array('max' => 'yesterday')); // WHERE Timestamp > '2011-03-13'
+     * $query->filterByAdddate('2011-03-14'); // WHERE addDate = '2011-03-14'
+     * $query->filterByAdddate('now'); // WHERE addDate = '2011-03-14'
+     * $query->filterByAdddate(array('max' => 'yesterday')); // WHERE addDate > '2011-03-13'
      * </code>
      *
-     * @param     mixed $timestamp The value to use as filter.
+     * @param     mixed $adddate The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
@@ -325,16 +312,16 @@ abstract class PictureQuery extends ModelCriteria
      *
      * @return $this|ChildPictureQuery The current query, for fluid interface
      */
-    public function filterByTimestamp($timestamp = null, $comparison = null)
+    public function filterByAdddate($adddate = null, $comparison = null)
     {
-        if (is_array($timestamp)) {
+        if (is_array($adddate)) {
             $useMinMax = false;
-            if (isset($timestamp['min'])) {
-                $this->addUsingAlias(PictureTableMap::COL_TIMESTAMP, $timestamp['min'], Criteria::GREATER_EQUAL);
+            if (isset($adddate['min'])) {
+                $this->addUsingAlias(PictureTableMap::COL_ADDDATE, $adddate['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($timestamp['max'])) {
-                $this->addUsingAlias(PictureTableMap::COL_TIMESTAMP, $timestamp['max'], Criteria::LESS_EQUAL);
+            if (isset($adddate['max'])) {
+                $this->addUsingAlias(PictureTableMap::COL_ADDDATE, $adddate['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -345,20 +332,18 @@ abstract class PictureQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PictureTableMap::COL_TIMESTAMP, $timestamp, $comparison);
+        return $this->addUsingAlias(PictureTableMap::COL_ADDDATE, $adddate, $comparison);
     }
 
     /**
-     * Filter the query on the PropertyID column
+     * Filter the query on the propertyID column
      *
      * Example usage:
      * <code>
-     * $query->filterByPropertyid(1234); // WHERE PropertyID = 1234
-     * $query->filterByPropertyid(array(12, 34)); // WHERE PropertyID IN (12, 34)
-     * $query->filterByPropertyid(array('min' => 12)); // WHERE PropertyID > 12
+     * $query->filterByPropertyid(1234); // WHERE propertyID = 1234
+     * $query->filterByPropertyid(array(12, 34)); // WHERE propertyID IN (12, 34)
+     * $query->filterByPropertyid(array('min' => 12)); // WHERE propertyID > 12
      * </code>
-     *
-     * @see       filterByProperty()
      *
      * @param     mixed $propertyid The value to use as filter.
      *              Use scalar values for equality.
@@ -392,12 +377,12 @@ abstract class PictureQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the Link column
+     * Filter the query on the link column
      *
      * Example usage:
      * <code>
-     * $query->filterByLink('fooValue');   // WHERE Link = 'fooValue'
-     * $query->filterByLink('%fooValue%', Criteria::LIKE); // WHERE Link LIKE '%fooValue%'
+     * $query->filterByLink('fooValue');   // WHERE link = 'fooValue'
+     * $query->filterByLink('%fooValue%', Criteria::LIKE); // WHERE link LIKE '%fooValue%'
      * </code>
      *
      * @param     string $link The value to use as filter.
@@ -417,105 +402,28 @@ abstract class PictureQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the Description column
+     * Filter the query on the details column
      *
      * Example usage:
      * <code>
-     * $query->filterByDescription('fooValue');   // WHERE Description = 'fooValue'
-     * $query->filterByDescription('%fooValue%', Criteria::LIKE); // WHERE Description LIKE '%fooValue%'
+     * $query->filterByDetails('fooValue');   // WHERE details = 'fooValue'
+     * $query->filterByDetails('%fooValue%', Criteria::LIKE); // WHERE details LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $description The value to use as filter.
+     * @param     string $details The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildPictureQuery The current query, for fluid interface
      */
-    public function filterByDescription($description = null, $comparison = null)
+    public function filterByDetails($details = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($description)) {
+            if (is_array($details)) {
                 $comparison = Criteria::IN;
             }
         }
 
-        return $this->addUsingAlias(PictureTableMap::COL_DESCRIPTION, $description, $comparison);
-    }
-
-    /**
-     * Filter the query by a related \Property object
-     *
-     * @param \Property|ObjectCollection $property The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @throws \Propel\Runtime\Exception\PropelException
-     *
-     * @return ChildPictureQuery The current query, for fluid interface
-     */
-    public function filterByProperty($property, $comparison = null)
-    {
-        if ($property instanceof \Property) {
-            return $this
-                ->addUsingAlias(PictureTableMap::COL_PROPERTYID, $property->getId(), $comparison);
-        } elseif ($property instanceof ObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(PictureTableMap::COL_PROPERTYID, $property->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByProperty() only accepts arguments of type \Property or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the Property relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildPictureQuery The current query, for fluid interface
-     */
-    public function joinProperty($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Property');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Property');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the Property relation Property object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \PropertyQuery A secondary query class using the current class as primary query
-     */
-    public function usePropertyQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinProperty($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Property', '\PropertyQuery');
+        return $this->addUsingAlias(PictureTableMap::COL_DETAILS, $details, $comparison);
     }
 
     /**
@@ -528,7 +436,7 @@ abstract class PictureQuery extends ModelCriteria
     public function prune($picture = null)
     {
         if ($picture) {
-            $this->addUsingAlias(PictureTableMap::COL_ID, $picture->getId(), Criteria::NOT_EQUAL);
+            $this->addUsingAlias(PictureTableMap::COL_PICTURENUMBERID, $picture->getPicturenumberid(), Criteria::NOT_EQUAL);
         }
 
         return $this;

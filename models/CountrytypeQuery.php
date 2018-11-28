@@ -1,9 +1,9 @@
 <?php
 
-use Base\Money as BaseMoney;
+use Base\CountrytypeQuery as BaseCountrytypeQuery;
 
 /**
- * Skeleton subclass for representing a row from the 'money' table.
+ * Skeleton subclass for performing query and update operations on the 'countrytype' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\Money as BaseMoney;
  * long as it does not already exist in the output directory.
  *
  */
-class Money extends BaseMoney
+class CountrytypeQuery extends BaseCountrytypeQuery
 {
 
 }

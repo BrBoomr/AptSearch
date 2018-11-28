@@ -1,9 +1,9 @@
 <?php
 
-use Base\OwedQuery as BaseOwedQuery;
+use Base\Countrytype as BaseCountrytype;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'owed' table.
+ * Skeleton subclass for representing a row from the 'countrytype' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\OwedQuery as BaseOwedQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class OwedQuery extends BaseOwedQuery
+class Countrytype extends BaseCountrytype
 {
 
 }

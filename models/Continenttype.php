@@ -1,9 +1,9 @@
 <?php
 
-use Base\AuthenticationQuery as BaseAuthenticationQuery;
+use Base\Continenttype as BaseContinenttype;
 
 /**
- * Skeleton subclass for performing query and update operations on the 'authentication' table.
+ * Skeleton subclass for representing a row from the 'continenttype' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\AuthenticationQuery as BaseAuthenticationQuery;
  * long as it does not already exist in the output directory.
  *
  */
-class AuthenticationQuery extends BaseAuthenticationQuery
+class Continenttype extends BaseContinenttype
 {
 
 }

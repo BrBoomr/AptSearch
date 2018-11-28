@@ -10,7 +10,6 @@ use Map\PhoneTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
@@ -20,17 +19,21 @@ use Propel\Runtime\Exception\PropelException;
  *
  *
  *
- * @method     ChildPhoneQuery orderById($order = Criteria::ASC) Order by the ID column
- * @method     ChildPhoneQuery orderByTimestamp($order = Criteria::ASC) Order by the Timestamp column
- * @method     ChildPhoneQuery orderByUserid($order = Criteria::ASC) Order by the UserID column
- * @method     ChildPhoneQuery orderByNumber($order = Criteria::ASC) Order by the Number column
- * @method     ChildPhoneQuery orderByDescription($order = Criteria::ASC) Order by the Description column
+ * @method     ChildPhoneQuery orderByPhonenumberid($order = Criteria::ASC) Order by the phoneNumberID column
+ * @method     ChildPhoneQuery orderByUserid($order = Criteria::ASC) Order by the userID column
+ * @method     ChildPhoneQuery orderByAdddate($order = Criteria::ASC) Order by the addDate column
+ * @method     ChildPhoneQuery orderByAreacode($order = Criteria::ASC) Order by the areaCode column
+ * @method     ChildPhoneQuery orderByNumber($order = Criteria::ASC) Order by the number column
+ * @method     ChildPhoneQuery orderByExtension($order = Criteria::ASC) Order by the extension column
+ * @method     ChildPhoneQuery orderByDescription($order = Criteria::ASC) Order by the description column
  *
- * @method     ChildPhoneQuery groupById() Group by the ID column
- * @method     ChildPhoneQuery groupByTimestamp() Group by the Timestamp column
- * @method     ChildPhoneQuery groupByUserid() Group by the UserID column
- * @method     ChildPhoneQuery groupByNumber() Group by the Number column
- * @method     ChildPhoneQuery groupByDescription() Group by the Description column
+ * @method     ChildPhoneQuery groupByPhonenumberid() Group by the phoneNumberID column
+ * @method     ChildPhoneQuery groupByUserid() Group by the userID column
+ * @method     ChildPhoneQuery groupByAdddate() Group by the addDate column
+ * @method     ChildPhoneQuery groupByAreacode() Group by the areaCode column
+ * @method     ChildPhoneQuery groupByNumber() Group by the number column
+ * @method     ChildPhoneQuery groupByExtension() Group by the extension column
+ * @method     ChildPhoneQuery groupByDescription() Group by the description column
  *
  * @method     ChildPhoneQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildPhoneQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -40,42 +43,36 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPhoneQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildPhoneQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildPhoneQuery leftJoinUser($relationAlias = null) Adds a LEFT JOIN clause to the query using the User relation
- * @method     ChildPhoneQuery rightJoinUser($relationAlias = null) Adds a RIGHT JOIN clause to the query using the User relation
- * @method     ChildPhoneQuery innerJoinUser($relationAlias = null) Adds a INNER JOIN clause to the query using the User relation
- *
- * @method     ChildPhoneQuery joinWithUser($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the User relation
- *
- * @method     ChildPhoneQuery leftJoinWithUser() Adds a LEFT JOIN clause and with to the query using the User relation
- * @method     ChildPhoneQuery rightJoinWithUser() Adds a RIGHT JOIN clause and with to the query using the User relation
- * @method     ChildPhoneQuery innerJoinWithUser() Adds a INNER JOIN clause and with to the query using the User relation
- *
- * @method     \UserQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
- *
  * @method     ChildPhone findOne(ConnectionInterface $con = null) Return the first ChildPhone matching the query
  * @method     ChildPhone findOneOrCreate(ConnectionInterface $con = null) Return the first ChildPhone matching the query, or a new ChildPhone object populated from the query conditions when no match is found
  *
- * @method     ChildPhone findOneById(int $ID) Return the first ChildPhone filtered by the ID column
- * @method     ChildPhone findOneByTimestamp(string $Timestamp) Return the first ChildPhone filtered by the Timestamp column
- * @method     ChildPhone findOneByUserid(int $UserID) Return the first ChildPhone filtered by the UserID column
- * @method     ChildPhone findOneByNumber(string $Number) Return the first ChildPhone filtered by the Number column
- * @method     ChildPhone findOneByDescription(string $Description) Return the first ChildPhone filtered by the Description column *
+ * @method     ChildPhone findOneByPhonenumberid(int $phoneNumberID) Return the first ChildPhone filtered by the phoneNumberID column
+ * @method     ChildPhone findOneByUserid(int $userID) Return the first ChildPhone filtered by the userID column
+ * @method     ChildPhone findOneByAdddate(string $addDate) Return the first ChildPhone filtered by the addDate column
+ * @method     ChildPhone findOneByAreacode(string $areaCode) Return the first ChildPhone filtered by the areaCode column
+ * @method     ChildPhone findOneByNumber(string $number) Return the first ChildPhone filtered by the number column
+ * @method     ChildPhone findOneByExtension(string $extension) Return the first ChildPhone filtered by the extension column
+ * @method     ChildPhone findOneByDescription(string $description) Return the first ChildPhone filtered by the description column *
 
  * @method     ChildPhone requirePk($key, ConnectionInterface $con = null) Return the ChildPhone by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPhone requireOne(ConnectionInterface $con = null) Return the first ChildPhone matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildPhone requireOneById(int $ID) Return the first ChildPhone filtered by the ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPhone requireOneByTimestamp(string $Timestamp) Return the first ChildPhone filtered by the Timestamp column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPhone requireOneByUserid(int $UserID) Return the first ChildPhone filtered by the UserID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPhone requireOneByNumber(string $Number) Return the first ChildPhone filtered by the Number column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPhone requireOneByDescription(string $Description) Return the first ChildPhone filtered by the Description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPhone requireOneByPhonenumberid(int $phoneNumberID) Return the first ChildPhone filtered by the phoneNumberID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPhone requireOneByUserid(int $userID) Return the first ChildPhone filtered by the userID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPhone requireOneByAdddate(string $addDate) Return the first ChildPhone filtered by the addDate column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPhone requireOneByAreacode(string $areaCode) Return the first ChildPhone filtered by the areaCode column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPhone requireOneByNumber(string $number) Return the first ChildPhone filtered by the number column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPhone requireOneByExtension(string $extension) Return the first ChildPhone filtered by the extension column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPhone requireOneByDescription(string $description) Return the first ChildPhone filtered by the description column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPhone[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPhone objects based on current ModelCriteria
- * @method     ChildPhone[]|ObjectCollection findById(int $ID) Return ChildPhone objects filtered by the ID column
- * @method     ChildPhone[]|ObjectCollection findByTimestamp(string $Timestamp) Return ChildPhone objects filtered by the Timestamp column
- * @method     ChildPhone[]|ObjectCollection findByUserid(int $UserID) Return ChildPhone objects filtered by the UserID column
- * @method     ChildPhone[]|ObjectCollection findByNumber(string $Number) Return ChildPhone objects filtered by the Number column
- * @method     ChildPhone[]|ObjectCollection findByDescription(string $Description) Return ChildPhone objects filtered by the Description column
+ * @method     ChildPhone[]|ObjectCollection findByPhonenumberid(int $phoneNumberID) Return ChildPhone objects filtered by the phoneNumberID column
+ * @method     ChildPhone[]|ObjectCollection findByUserid(int $userID) Return ChildPhone objects filtered by the userID column
+ * @method     ChildPhone[]|ObjectCollection findByAdddate(string $addDate) Return ChildPhone objects filtered by the addDate column
+ * @method     ChildPhone[]|ObjectCollection findByAreacode(string $areaCode) Return ChildPhone objects filtered by the areaCode column
+ * @method     ChildPhone[]|ObjectCollection findByNumber(string $number) Return ChildPhone objects filtered by the number column
+ * @method     ChildPhone[]|ObjectCollection findByExtension(string $extension) Return ChildPhone objects filtered by the extension column
+ * @method     ChildPhone[]|ObjectCollection findByDescription(string $description) Return ChildPhone objects filtered by the description column
  * @method     ChildPhone[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -174,7 +171,7 @@ abstract class PhoneQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT ID, Timestamp, UserID, Number, Description FROM phone WHERE ID = :p0';
+        $sql = 'SELECT phoneNumberID, userID, addDate, areaCode, number, extension, description FROM phone WHERE phoneNumberID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -248,7 +245,7 @@ abstract class PhoneQuery extends ModelCriteria
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(PhoneTableMap::COL_ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(PhoneTableMap::COL_PHONENUMBERID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -261,20 +258,20 @@ abstract class PhoneQuery extends ModelCriteria
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(PhoneTableMap::COL_ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(PhoneTableMap::COL_PHONENUMBERID, $keys, Criteria::IN);
     }
 
     /**
-     * Filter the query on the ID column
+     * Filter the query on the phoneNumberID column
      *
      * Example usage:
      * <code>
-     * $query->filterById(1234); // WHERE ID = 1234
-     * $query->filterById(array(12, 34)); // WHERE ID IN (12, 34)
-     * $query->filterById(array('min' => 12)); // WHERE ID > 12
+     * $query->filterByPhonenumberid(1234); // WHERE phoneNumberID = 1234
+     * $query->filterByPhonenumberid(array(12, 34)); // WHERE phoneNumberID IN (12, 34)
+     * $query->filterByPhonenumberid(array('min' => 12)); // WHERE phoneNumberID > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param     mixed $phonenumberid The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
@@ -282,16 +279,16 @@ abstract class PhoneQuery extends ModelCriteria
      *
      * @return $this|ChildPhoneQuery The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterByPhonenumberid($phonenumberid = null, $comparison = null)
     {
-        if (is_array($id)) {
+        if (is_array($phonenumberid)) {
             $useMinMax = false;
-            if (isset($id['min'])) {
-                $this->addUsingAlias(PhoneTableMap::COL_ID, $id['min'], Criteria::GREATER_EQUAL);
+            if (isset($phonenumberid['min'])) {
+                $this->addUsingAlias(PhoneTableMap::COL_PHONENUMBERID, $phonenumberid['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
-            if (isset($id['max'])) {
-                $this->addUsingAlias(PhoneTableMap::COL_ID, $id['max'], Criteria::LESS_EQUAL);
+            if (isset($phonenumberid['max'])) {
+                $this->addUsingAlias(PhoneTableMap::COL_PHONENUMBERID, $phonenumberid['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -302,63 +299,18 @@ abstract class PhoneQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PhoneTableMap::COL_ID, $id, $comparison);
+        return $this->addUsingAlias(PhoneTableMap::COL_PHONENUMBERID, $phonenumberid, $comparison);
     }
 
     /**
-     * Filter the query on the Timestamp column
+     * Filter the query on the userID column
      *
      * Example usage:
      * <code>
-     * $query->filterByTimestamp('2011-03-14'); // WHERE Timestamp = '2011-03-14'
-     * $query->filterByTimestamp('now'); // WHERE Timestamp = '2011-03-14'
-     * $query->filterByTimestamp(array('max' => 'yesterday')); // WHERE Timestamp > '2011-03-13'
+     * $query->filterByUserid(1234); // WHERE userID = 1234
+     * $query->filterByUserid(array(12, 34)); // WHERE userID IN (12, 34)
+     * $query->filterByUserid(array('min' => 12)); // WHERE userID > 12
      * </code>
-     *
-     * @param     mixed $timestamp The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildPhoneQuery The current query, for fluid interface
-     */
-    public function filterByTimestamp($timestamp = null, $comparison = null)
-    {
-        if (is_array($timestamp)) {
-            $useMinMax = false;
-            if (isset($timestamp['min'])) {
-                $this->addUsingAlias(PhoneTableMap::COL_TIMESTAMP, $timestamp['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($timestamp['max'])) {
-                $this->addUsingAlias(PhoneTableMap::COL_TIMESTAMP, $timestamp['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PhoneTableMap::COL_TIMESTAMP, $timestamp, $comparison);
-    }
-
-    /**
-     * Filter the query on the UserID column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByUserid(1234); // WHERE UserID = 1234
-     * $query->filterByUserid(array(12, 34)); // WHERE UserID IN (12, 34)
-     * $query->filterByUserid(array('min' => 12)); // WHERE UserID > 12
-     * </code>
-     *
-     * @see       filterByUser()
      *
      * @param     mixed $userid The value to use as filter.
      *              Use scalar values for equality.
@@ -392,12 +344,80 @@ abstract class PhoneQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the Number column
+     * Filter the query on the addDate column
      *
      * Example usage:
      * <code>
-     * $query->filterByNumber('fooValue');   // WHERE Number = 'fooValue'
-     * $query->filterByNumber('%fooValue%', Criteria::LIKE); // WHERE Number LIKE '%fooValue%'
+     * $query->filterByAdddate('2011-03-14'); // WHERE addDate = '2011-03-14'
+     * $query->filterByAdddate('now'); // WHERE addDate = '2011-03-14'
+     * $query->filterByAdddate(array('max' => 'yesterday')); // WHERE addDate > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $adddate The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPhoneQuery The current query, for fluid interface
+     */
+    public function filterByAdddate($adddate = null, $comparison = null)
+    {
+        if (is_array($adddate)) {
+            $useMinMax = false;
+            if (isset($adddate['min'])) {
+                $this->addUsingAlias(PhoneTableMap::COL_ADDDATE, $adddate['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($adddate['max'])) {
+                $this->addUsingAlias(PhoneTableMap::COL_ADDDATE, $adddate['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PhoneTableMap::COL_ADDDATE, $adddate, $comparison);
+    }
+
+    /**
+     * Filter the query on the areaCode column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByAreacode('fooValue');   // WHERE areaCode = 'fooValue'
+     * $query->filterByAreacode('%fooValue%', Criteria::LIKE); // WHERE areaCode LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $areacode The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPhoneQuery The current query, for fluid interface
+     */
+    public function filterByAreacode($areacode = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($areacode)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PhoneTableMap::COL_AREACODE, $areacode, $comparison);
+    }
+
+    /**
+     * Filter the query on the number column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNumber('fooValue');   // WHERE number = 'fooValue'
+     * $query->filterByNumber('%fooValue%', Criteria::LIKE); // WHERE number LIKE '%fooValue%'
      * </code>
      *
      * @param     string $number The value to use as filter.
@@ -417,12 +437,37 @@ abstract class PhoneQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the Description column
+     * Filter the query on the extension column
      *
      * Example usage:
      * <code>
-     * $query->filterByDescription('fooValue');   // WHERE Description = 'fooValue'
-     * $query->filterByDescription('%fooValue%', Criteria::LIKE); // WHERE Description LIKE '%fooValue%'
+     * $query->filterByExtension('fooValue');   // WHERE extension = 'fooValue'
+     * $query->filterByExtension('%fooValue%', Criteria::LIKE); // WHERE extension LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $extension The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPhoneQuery The current query, for fluid interface
+     */
+    public function filterByExtension($extension = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($extension)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PhoneTableMap::COL_EXTENSION, $extension, $comparison);
+    }
+
+    /**
+     * Filter the query on the description column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDescription('fooValue');   // WHERE description = 'fooValue'
+     * $query->filterByDescription('%fooValue%', Criteria::LIKE); // WHERE description LIKE '%fooValue%'
      * </code>
      *
      * @param     string $description The value to use as filter.
@@ -442,83 +487,6 @@ abstract class PhoneQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \User object
-     *
-     * @param \User|ObjectCollection $user The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @throws \Propel\Runtime\Exception\PropelException
-     *
-     * @return ChildPhoneQuery The current query, for fluid interface
-     */
-    public function filterByUser($user, $comparison = null)
-    {
-        if ($user instanceof \User) {
-            return $this
-                ->addUsingAlias(PhoneTableMap::COL_USERID, $user->getId(), $comparison);
-        } elseif ($user instanceof ObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(PhoneTableMap::COL_USERID, $user->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByUser() only accepts arguments of type \User or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the User relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildPhoneQuery The current query, for fluid interface
-     */
-    public function joinUser($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('User');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'User');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the User relation User object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \UserQuery A secondary query class using the current class as primary query
-     */
-    public function useUserQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        return $this
-            ->joinUser($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'User', '\UserQuery');
-    }
-
-    /**
      * Exclude object from result
      *
      * @param   ChildPhone $phone Object to remove from the list of results
@@ -528,7 +496,7 @@ abstract class PhoneQuery extends ModelCriteria
     public function prune($phone = null)
     {
         if ($phone) {
-            $this->addUsingAlias(PhoneTableMap::COL_ID, $phone->getId(), Criteria::NOT_EQUAL);
+            $this->addUsingAlias(PhoneTableMap::COL_PHONENUMBERID, $phone->getPhonenumberid(), Criteria::NOT_EQUAL);
         }
 
         return $this;

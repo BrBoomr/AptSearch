@@ -1,9 +1,9 @@
 <?php
 
-use Base\Tenant as BaseTenant;
+use Base\PerkQuery as BasePerkQuery;
 
 /**
- * Skeleton subclass for representing a row from the 'tenant' table.
+ * Skeleton subclass for performing query and update operations on the 'perk' table.
  *
  *
  *
@@ -12,7 +12,7 @@ use Base\Tenant as BaseTenant;
  * long as it does not already exist in the output directory.
  *
  */
-class Tenant extends BaseTenant
+class PerkQuery extends BasePerkQuery
 {
 
 }

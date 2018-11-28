@@ -3,9 +3,6 @@
 namespace Base;
 
 use \AmenityQuery as ChildAmenityQuery;
-use \Property as ChildProperty;
-use \PropertyQuery as ChildPropertyQuery;
-use \DateTime;
 use \Exception;
 use \PDO;
 use Map\AmenityTableMap;
@@ -20,7 +17,6 @@ use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
-use Propel\Runtime\Util\PropelDateTime;
 
 /**
  * Base class that represents a row from the 'amenity' table.
@@ -64,18 +60,11 @@ abstract class Amenity implements ActiveRecordInterface
     protected $virtualColumns = array();
 
     /**
-     * The value for the id field.
+     * The value for the amenitynumberid field.
      *
      * @var        int
      */
-    protected $id;
-
-    /**
-     * The value for the timestamp field.
-     *
-     * @var        DateTime
-     */
-    protected $timestamp;
+    protected $amenitynumberid;
 
     /**
      * The value for the propertyid field.
@@ -85,30 +74,18 @@ abstract class Amenity implements ActiveRecordInterface
     protected $propertyid;
 
     /**
-     * The value for the name field.
+     * The value for the amenitytypeid field.
+     *
+     * @var        int
+     */
+    protected $amenitytypeid;
+
+    /**
+     * The value for the details field.
      *
      * @var        string
      */
-    protected $name;
-
-    /**
-     * The value for the description field.
-     *
-     * @var        string
-     */
-    protected $description;
-
-    /**
-     * The value for the private field.
-     *
-     * @var        boolean
-     */
-    protected $private;
-
-    /**
-     * @var        ChildProperty
-     */
-    protected $aProperty;
+    protected $details;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -344,33 +321,13 @@ abstract class Amenity implements ActiveRecordInterface
     }
 
     /**
-     * Get the [id] column value.
+     * Get the [amenitynumberid] column value.
      *
      * @return int
      */
-    public function getId()
+    public function getAmenitynumberid()
     {
-        return $this->id;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [timestamp] column value.
-     *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getTimestamp($format = NULL)
-    {
-        if ($format === null) {
-            return $this->timestamp;
-        } else {
-            return $this->timestamp instanceof \DateTimeInterface ? $this->timestamp->format($format) : null;
-        }
+        return $this->amenitynumberid;
     }
 
     /**
@@ -384,84 +341,44 @@ abstract class Amenity implements ActiveRecordInterface
     }
 
     /**
-     * Get the [name] column value.
+     * Get the [amenitytypeid] column value.
+     *
+     * @return int
+     */
+    public function getAmenitytypeid()
+    {
+        return $this->amenitytypeid;
+    }
+
+    /**
+     * Get the [details] column value.
      *
      * @return string
      */
-    public function getName()
+    public function getDetails()
     {
-        return $this->name;
+        return $this->details;
     }
 
     /**
-     * Get the [description] column value.
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Get the [private] column value.
-     *
-     * @return boolean
-     */
-    public function getPrivate()
-    {
-        return $this->private;
-    }
-
-    /**
-     * Get the [private] column value.
-     *
-     * @return boolean
-     */
-    public function isPrivate()
-    {
-        return $this->getPrivate();
-    }
-
-    /**
-     * Set the value of [id] column.
+     * Set the value of [amenitynumberid] column.
      *
      * @param int $v new value
      * @return $this|\Amenity The current object (for fluent API support)
      */
-    public function setId($v)
+    public function setAmenitynumberid($v)
     {
         if ($v !== null) {
             $v = (int) $v;
         }
 
-        if ($this->id !== $v) {
-            $this->id = $v;
-            $this->modifiedColumns[AmenityTableMap::COL_ID] = true;
+        if ($this->amenitynumberid !== $v) {
+            $this->amenitynumberid = $v;
+            $this->modifiedColumns[AmenityTableMap::COL_AMENITYNUMBERID] = true;
         }
 
         return $this;
-    } // setId()
-
-    /**
-     * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
-     *
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
-     * @return $this|\Amenity The current object (for fluent API support)
-     */
-    public function setTimestamp($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->timestamp !== null || $dt !== null) {
-            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d") !== $this->timestamp->format("Y-m-d")) {
-                $this->timestamp = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[AmenityTableMap::COL_TIMESTAMP] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setTimestamp()
+    } // setAmenitynumberid()
 
     /**
      * Set the value of [propertyid] column.
@@ -480,80 +397,48 @@ abstract class Amenity implements ActiveRecordInterface
             $this->modifiedColumns[AmenityTableMap::COL_PROPERTYID] = true;
         }
 
-        if ($this->aProperty !== null && $this->aProperty->getId() !== $v) {
-            $this->aProperty = null;
-        }
-
         return $this;
     } // setPropertyid()
 
     /**
-     * Set the value of [name] column.
+     * Set the value of [amenitytypeid] column.
+     *
+     * @param int $v new value
+     * @return $this|\Amenity The current object (for fluent API support)
+     */
+    public function setAmenitytypeid($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->amenitytypeid !== $v) {
+            $this->amenitytypeid = $v;
+            $this->modifiedColumns[AmenityTableMap::COL_AMENITYTYPEID] = true;
+        }
+
+        return $this;
+    } // setAmenitytypeid()
+
+    /**
+     * Set the value of [details] column.
      *
      * @param string $v new value
      * @return $this|\Amenity The current object (for fluent API support)
      */
-    public function setName($v)
+    public function setDetails($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->name !== $v) {
-            $this->name = $v;
-            $this->modifiedColumns[AmenityTableMap::COL_NAME] = true;
+        if ($this->details !== $v) {
+            $this->details = $v;
+            $this->modifiedColumns[AmenityTableMap::COL_DETAILS] = true;
         }
 
         return $this;
-    } // setName()
-
-    /**
-     * Set the value of [description] column.
-     *
-     * @param string $v new value
-     * @return $this|\Amenity The current object (for fluent API support)
-     */
-    public function setDescription($v)
-    {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->description !== $v) {
-            $this->description = $v;
-            $this->modifiedColumns[AmenityTableMap::COL_DESCRIPTION] = true;
-        }
-
-        return $this;
-    } // setDescription()
-
-    /**
-     * Sets the value of the [private] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     *
-     * @param  boolean|integer|string $v The new value
-     * @return $this|\Amenity The current object (for fluent API support)
-     */
-    public function setPrivate($v)
-    {
-        if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
-        }
-
-        if ($this->private !== $v) {
-            $this->private = $v;
-            $this->modifiedColumns[AmenityTableMap::COL_PRIVATE] = true;
-        }
-
-        return $this;
-    } // setPrivate()
+    } // setDetails()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -591,26 +476,17 @@ abstract class Amenity implements ActiveRecordInterface
     {
         try {
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : AmenityTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id = (null !== $col) ? (int) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : AmenityTableMap::translateFieldName('Amenitynumberid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->amenitynumberid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : AmenityTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00') {
-                $col = null;
-            }
-            $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : AmenityTableMap::translateFieldName('Propertyid', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : AmenityTableMap::translateFieldName('Propertyid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->propertyid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : AmenityTableMap::translateFieldName('Name', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->name = (null !== $col) ? (string) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : AmenityTableMap::translateFieldName('Amenitytypeid', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->amenitytypeid = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : AmenityTableMap::translateFieldName('Description', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->description = (null !== $col) ? (string) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : AmenityTableMap::translateFieldName('Private', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->private = (null !== $col) ? (boolean) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : AmenityTableMap::translateFieldName('Details', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->details = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -619,7 +495,7 @@ abstract class Amenity implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = AmenityTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = AmenityTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Amenity'), 0, $e);
@@ -641,9 +517,6 @@ abstract class Amenity implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
-        if ($this->aProperty !== null && $this->propertyid !== $this->aProperty->getId()) {
-            $this->aProperty = null;
-        }
     } // ensureConsistency
 
     /**
@@ -683,7 +556,6 @@ abstract class Amenity implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aProperty = null;
         } // if (deep)
     }
 
@@ -787,18 +659,6 @@ abstract class Amenity implements ActiveRecordInterface
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their corresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aProperty !== null) {
-                if ($this->aProperty->isModified() || $this->aProperty->isNew()) {
-                    $affectedRows += $this->aProperty->save($con);
-                }
-                $this->setProperty($this->aProperty);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -830,29 +690,23 @@ abstract class Amenity implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[AmenityTableMap::COL_ID] = true;
-        if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . AmenityTableMap::COL_ID . ')');
+        $this->modifiedColumns[AmenityTableMap::COL_AMENITYNUMBERID] = true;
+        if (null !== $this->amenitynumberid) {
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . AmenityTableMap::COL_AMENITYNUMBERID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(AmenityTableMap::COL_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'ID';
-        }
-        if ($this->isColumnModified(AmenityTableMap::COL_TIMESTAMP)) {
-            $modifiedColumns[':p' . $index++]  = 'Timestamp';
+        if ($this->isColumnModified(AmenityTableMap::COL_AMENITYNUMBERID)) {
+            $modifiedColumns[':p' . $index++]  = 'amenityNumberID';
         }
         if ($this->isColumnModified(AmenityTableMap::COL_PROPERTYID)) {
-            $modifiedColumns[':p' . $index++]  = 'PropertyID';
+            $modifiedColumns[':p' . $index++]  = 'propertyID';
         }
-        if ($this->isColumnModified(AmenityTableMap::COL_NAME)) {
-            $modifiedColumns[':p' . $index++]  = 'Name';
+        if ($this->isColumnModified(AmenityTableMap::COL_AMENITYTYPEID)) {
+            $modifiedColumns[':p' . $index++]  = 'amenityTypeID';
         }
-        if ($this->isColumnModified(AmenityTableMap::COL_DESCRIPTION)) {
-            $modifiedColumns[':p' . $index++]  = 'Description';
-        }
-        if ($this->isColumnModified(AmenityTableMap::COL_PRIVATE)) {
-            $modifiedColumns[':p' . $index++]  = 'Private';
+        if ($this->isColumnModified(AmenityTableMap::COL_DETAILS)) {
+            $modifiedColumns[':p' . $index++]  = 'details';
         }
 
         $sql = sprintf(
@@ -865,23 +719,17 @@ abstract class Amenity implements ActiveRecordInterface
             $stmt = $con->prepare($sql);
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
-                    case 'ID':
-                        $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                    case 'amenityNumberID':
+                        $stmt->bindValue($identifier, $this->amenitynumberid, PDO::PARAM_INT);
                         break;
-                    case 'Timestamp':
-                        $stmt->bindValue($identifier, $this->timestamp ? $this->timestamp->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
-                        break;
-                    case 'PropertyID':
+                    case 'propertyID':
                         $stmt->bindValue($identifier, $this->propertyid, PDO::PARAM_INT);
                         break;
-                    case 'Name':
-                        $stmt->bindValue($identifier, $this->name, PDO::PARAM_STR);
+                    case 'amenityTypeID':
+                        $stmt->bindValue($identifier, $this->amenitytypeid, PDO::PARAM_INT);
                         break;
-                    case 'Description':
-                        $stmt->bindValue($identifier, $this->description, PDO::PARAM_STR);
-                        break;
-                    case 'Private':
-                        $stmt->bindValue($identifier, (int) $this->private, PDO::PARAM_INT);
+                    case 'details':
+                        $stmt->bindValue($identifier, $this->details, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -896,7 +744,7 @@ abstract class Amenity implements ActiveRecordInterface
         } catch (Exception $e) {
             throw new PropelException('Unable to get autoincrement id.', 0, $e);
         }
-        $this->setId($pk);
+        $this->setAmenitynumberid($pk);
 
         $this->setNew(false);
     }
@@ -946,22 +794,16 @@ abstract class Amenity implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                return $this->getId();
+                return $this->getAmenitynumberid();
                 break;
             case 1:
-                return $this->getTimestamp();
-                break;
-            case 2:
                 return $this->getPropertyid();
                 break;
+            case 2:
+                return $this->getAmenitytypeid();
+                break;
             case 3:
-                return $this->getName();
-                break;
-            case 4:
-                return $this->getDescription();
-                break;
-            case 5:
-                return $this->getPrivate();
+                return $this->getDetails();
                 break;
             default:
                 return null;
@@ -980,11 +822,10 @@ abstract class Amenity implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
     {
 
         if (isset($alreadyDumpedObjects['Amenity'][$this->hashCode()])) {
@@ -993,39 +834,16 @@ abstract class Amenity implements ActiveRecordInterface
         $alreadyDumpedObjects['Amenity'][$this->hashCode()] = true;
         $keys = AmenityTableMap::getFieldNames($keyType);
         $result = array(
-            $keys[0] => $this->getId(),
-            $keys[1] => $this->getTimestamp(),
-            $keys[2] => $this->getPropertyid(),
-            $keys[3] => $this->getName(),
-            $keys[4] => $this->getDescription(),
-            $keys[5] => $this->getPrivate(),
+            $keys[0] => $this->getAmenitynumberid(),
+            $keys[1] => $this->getPropertyid(),
+            $keys[2] => $this->getAmenitytypeid(),
+            $keys[3] => $this->getDetails(),
         );
-        if ($result[$keys[1]] instanceof \DateTimeInterface) {
-            $result[$keys[1]] = $result[$keys[1]]->format('c');
-        }
-
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
-        if ($includeForeignObjects) {
-            if (null !== $this->aProperty) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'property';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'property';
-                        break;
-                    default:
-                        $key = 'Property';
-                }
-
-                $result[$key] = $this->aProperty->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-        }
 
         return $result;
     }
@@ -1060,22 +878,16 @@ abstract class Amenity implements ActiveRecordInterface
     {
         switch ($pos) {
             case 0:
-                $this->setId($value);
+                $this->setAmenitynumberid($value);
                 break;
             case 1:
-                $this->setTimestamp($value);
-                break;
-            case 2:
                 $this->setPropertyid($value);
                 break;
+            case 2:
+                $this->setAmenitytypeid($value);
+                break;
             case 3:
-                $this->setName($value);
-                break;
-            case 4:
-                $this->setDescription($value);
-                break;
-            case 5:
-                $this->setPrivate($value);
+                $this->setDetails($value);
                 break;
         } // switch()
 
@@ -1104,22 +916,16 @@ abstract class Amenity implements ActiveRecordInterface
         $keys = AmenityTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) {
-            $this->setId($arr[$keys[0]]);
+            $this->setAmenitynumberid($arr[$keys[0]]);
         }
         if (array_key_exists($keys[1], $arr)) {
-            $this->setTimestamp($arr[$keys[1]]);
+            $this->setPropertyid($arr[$keys[1]]);
         }
         if (array_key_exists($keys[2], $arr)) {
-            $this->setPropertyid($arr[$keys[2]]);
+            $this->setAmenitytypeid($arr[$keys[2]]);
         }
         if (array_key_exists($keys[3], $arr)) {
-            $this->setName($arr[$keys[3]]);
-        }
-        if (array_key_exists($keys[4], $arr)) {
-            $this->setDescription($arr[$keys[4]]);
-        }
-        if (array_key_exists($keys[5], $arr)) {
-            $this->setPrivate($arr[$keys[5]]);
+            $this->setDetails($arr[$keys[3]]);
         }
     }
 
@@ -1162,23 +968,17 @@ abstract class Amenity implements ActiveRecordInterface
     {
         $criteria = new Criteria(AmenityTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(AmenityTableMap::COL_ID)) {
-            $criteria->add(AmenityTableMap::COL_ID, $this->id);
-        }
-        if ($this->isColumnModified(AmenityTableMap::COL_TIMESTAMP)) {
-            $criteria->add(AmenityTableMap::COL_TIMESTAMP, $this->timestamp);
+        if ($this->isColumnModified(AmenityTableMap::COL_AMENITYNUMBERID)) {
+            $criteria->add(AmenityTableMap::COL_AMENITYNUMBERID, $this->amenitynumberid);
         }
         if ($this->isColumnModified(AmenityTableMap::COL_PROPERTYID)) {
             $criteria->add(AmenityTableMap::COL_PROPERTYID, $this->propertyid);
         }
-        if ($this->isColumnModified(AmenityTableMap::COL_NAME)) {
-            $criteria->add(AmenityTableMap::COL_NAME, $this->name);
+        if ($this->isColumnModified(AmenityTableMap::COL_AMENITYTYPEID)) {
+            $criteria->add(AmenityTableMap::COL_AMENITYTYPEID, $this->amenitytypeid);
         }
-        if ($this->isColumnModified(AmenityTableMap::COL_DESCRIPTION)) {
-            $criteria->add(AmenityTableMap::COL_DESCRIPTION, $this->description);
-        }
-        if ($this->isColumnModified(AmenityTableMap::COL_PRIVATE)) {
-            $criteria->add(AmenityTableMap::COL_PRIVATE, $this->private);
+        if ($this->isColumnModified(AmenityTableMap::COL_DETAILS)) {
+            $criteria->add(AmenityTableMap::COL_DETAILS, $this->details);
         }
 
         return $criteria;
@@ -1197,7 +997,7 @@ abstract class Amenity implements ActiveRecordInterface
     public function buildPkeyCriteria()
     {
         $criteria = ChildAmenityQuery::create();
-        $criteria->add(AmenityTableMap::COL_ID, $this->id);
+        $criteria->add(AmenityTableMap::COL_AMENITYNUMBERID, $this->amenitynumberid);
 
         return $criteria;
     }
@@ -1210,7 +1010,7 @@ abstract class Amenity implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getId();
+        $validPk = null !== $this->getAmenitynumberid();
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -1230,18 +1030,18 @@ abstract class Amenity implements ActiveRecordInterface
      */
     public function getPrimaryKey()
     {
-        return $this->getId();
+        return $this->getAmenitynumberid();
     }
 
     /**
-     * Generic method to set the primary key (id column).
+     * Generic method to set the primary key (amenitynumberid column).
      *
      * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
     {
-        $this->setId($key);
+        $this->setAmenitynumberid($key);
     }
 
     /**
@@ -1250,7 +1050,7 @@ abstract class Amenity implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getId();
+        return null === $this->getAmenitynumberid();
     }
 
     /**
@@ -1266,14 +1066,12 @@ abstract class Amenity implements ActiveRecordInterface
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setTimestamp($this->getTimestamp());
         $copyObj->setPropertyid($this->getPropertyid());
-        $copyObj->setName($this->getName());
-        $copyObj->setDescription($this->getDescription());
-        $copyObj->setPrivate($this->getPrivate());
+        $copyObj->setAmenitytypeid($this->getAmenitytypeid());
+        $copyObj->setDetails($this->getDetails());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
+            $copyObj->setAmenitynumberid(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1300,72 +1098,16 @@ abstract class Amenity implements ActiveRecordInterface
     }
 
     /**
-     * Declares an association between this object and a ChildProperty object.
-     *
-     * @param  ChildProperty $v
-     * @return $this|\Amenity The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setProperty(ChildProperty $v = null)
-    {
-        if ($v === null) {
-            $this->setPropertyid(NULL);
-        } else {
-            $this->setPropertyid($v->getId());
-        }
-
-        $this->aProperty = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildProperty object, it will not be re-added.
-        if ($v !== null) {
-            $v->addAmenity($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated ChildProperty object
-     *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildProperty The associated ChildProperty object.
-     * @throws PropelException
-     */
-    public function getProperty(ConnectionInterface $con = null)
-    {
-        if ($this->aProperty === null && ($this->propertyid != 0)) {
-            $this->aProperty = ChildPropertyQuery::create()->findPk($this->propertyid, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aProperty->addAmenities($this);
-             */
-        }
-
-        return $this->aProperty;
-    }
-
-    /**
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
      */
     public function clear()
     {
-        if (null !== $this->aProperty) {
-            $this->aProperty->removeAmenity($this);
-        }
-        $this->id = null;
-        $this->timestamp = null;
+        $this->amenitynumberid = null;
         $this->propertyid = null;
-        $this->name = null;
-        $this->description = null;
-        $this->private = null;
+        $this->amenitytypeid = null;
+        $this->details = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1386,7 +1128,6 @@ abstract class Amenity implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
-        $this->aProperty = null;
     }
 
     /**
