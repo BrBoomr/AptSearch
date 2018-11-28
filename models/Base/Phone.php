@@ -486,17 +486,10 @@ abstract class Phone implements ActiveRecordInterface
     public function setAdddate($v)
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-<<<<<<< HEAD
         if ($this->adddate !== null || $dt !== null) {
             if ($this->adddate === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->adddate->format("Y-m-d H:i:s.u")) {
                 $this->adddate = $dt === null ? null : clone $dt;
                 $this->modifiedColumns[PhoneTableMap::COL_ADDDATE] = true;
-=======
-        if ($this->timestamp !== null || $dt !== null) {
-            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->timestamp->format("Y-m-d H:i:s.u")) {
-                $this->timestamp = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[PhoneTableMap::COL_TIMESTAMP] = true;
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
             }
         } // if either are not null
 
@@ -622,14 +615,10 @@ abstract class Phone implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : PhoneTableMap::translateFieldName('Phonenumberid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->phonenumberid = (null !== $col) ? (int) $col : null;
 
-<<<<<<< HEAD
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PhoneTableMap::translateFieldName('Userid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->userid = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PhoneTableMap::translateFieldName('Adddate', TableMap::TYPE_PHPNAME, $indexType)];
-=======
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PhoneTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }

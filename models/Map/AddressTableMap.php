@@ -167,7 +167,6 @@ class AddressTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-<<<<<<< HEAD
         $this->addColumn('continentTypeID', 'Continenttypeid', 'INTEGER', true, null, null);
         $this->addColumn('countryTypeID', 'Countrytypeid', 'INTEGER', true, null, null);
         $this->addColumn('state', 'State', 'LONGVARCHAR', false, null, null);
@@ -176,17 +175,6 @@ class AddressTableMap extends TableMap
         $this->addColumn('streetName', 'Streetname', 'LONGVARCHAR', false, null, null);
         $this->addColumn('buildingIndentifier', 'Buildingindentifier', 'LONGVARCHAR', false, null, null);
         $this->addColumn('apartmentIdentifier', 'Apartmentidentifier', 'LONGVARCHAR', false, null, null);
-=======
-        $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
-        $this->addColumn('Continent', 'Continent', 'VARCHAR', true, 128, null);
-        $this->addColumn('Country', 'Country', 'VARCHAR', true, 128, null);
-        $this->addColumn('State', 'State', 'VARCHAR', false, 128, null);
-        $this->addColumn('City', 'City', 'VARCHAR', true, 128, null);
-        $this->addColumn('Zip', 'Zip', 'INTEGER', false, null, null);
-        $this->addColumn('StreetName', 'Streetname', 'VARCHAR', true, 128, null);
-        $this->addColumn('BuildingNumber', 'Buildingnumber', 'INTEGER', true, null, null);
-        $this->addColumn('ApartmentID', 'Apartmentid', 'INTEGER', false, null, null);
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
     } // initialize()
 
     /**

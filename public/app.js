@@ -23,8 +23,9 @@ $('#loginSubmit').click(function(){
 $("#registerSubmit").click(function(){
     event.preventDefault()
     //registration = []
-    registerFirstName = $("#registerFirstName").val()
-    registerLastName = $("#registerLastName").val()
+    //registerFirstName = $("#registerFirstName").val()
+    //registerLastName = $("#registerLastName").val()
+    registerName = $("#registerFirstName").val() + $("#registerLastName").val()
     registerEmail = $("#registerEmail").val()
     //Using attr() here does not work. prop() gets the CURRENT value of a checkbox
     registerType = $("#landlordCheck").prop("checked")
@@ -35,8 +36,7 @@ $("#registerSubmit").click(function(){
     $.ajax({
         method: "get",
         url: baseurl + "/register_verification",
-        data: {"firstName" : registerFirstName,
-                "lastName" : registerLastName,
+        data: {"name" : registerName,
                 "email" : registerEmail,
                 "type" : registerType,
                 "password" : registerPassword,

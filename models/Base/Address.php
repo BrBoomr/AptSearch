@@ -69,19 +69,7 @@ abstract class Address implements ActiveRecordInterface
     /**
      * The value for the continenttypeid field.
      *
-<<<<<<< HEAD
      * @var        int
-=======
-     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
-     * @var        DateTime
-     */
-    protected $timestamp;
-
-    /**
-     * The value for the continent field.
-     *
-     * @var        string
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
      */
     protected $continenttypeid;
 
@@ -143,31 +131,10 @@ abstract class Address implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-<<<<<<< HEAD
-=======
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildProperty[]
-     */
-    protected $propertiesScheduledForDeletion = null;
-
-    /**
-     * Applies default values to this object.
-     * This method should be called from the object's constructor (or
-     * equivalent initialization method).
-     * @see __construct()
-     */
-    public function applyDefaultValues()
-    {
-    }
-
-    /**
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
      * Initializes internal state of Base\Address object.
-     * @see applyDefaults()
      */
     public function __construct()
     {
-        $this->applyDefaultValues();
     }
 
     /**
@@ -399,31 +366,7 @@ abstract class Address implements ActiveRecordInterface
     }
 
     /**
-<<<<<<< HEAD
      * Get the [continenttypeid] column value.
-=======
-     * Get the [optionally formatted] temporal [timestamp] column value.
-     *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getTimestamp($format = NULL)
-    {
-        if ($format === null) {
-            return $this->timestamp;
-        } else {
-            return $this->timestamp instanceof \DateTimeInterface ? $this->timestamp->format($format) : null;
-        }
-    }
-
-    /**
-     * Get the [continent] column value.
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
      *
      * @return int
      */
@@ -525,31 +468,7 @@ abstract class Address implements ActiveRecordInterface
     /**
      * Set the value of [continenttypeid] column.
      *
-<<<<<<< HEAD
      * @param int $v new value
-=======
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
-     * @return $this|\Address The current object (for fluent API support)
-     */
-    public function setTimestamp($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->timestamp !== null || $dt !== null) {
-            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->timestamp->format("Y-m-d H:i:s.u")) {
-                $this->timestamp = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[AddressTableMap::COL_TIMESTAMP] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setTimestamp()
-
-    /**
-     * Set the value of [continent] column.
-     *
-     * @param string $v new value
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
      * @return $this|\Address The current object (for fluent API support)
      */
     public function setContinenttypeid($v)
@@ -745,19 +664,8 @@ abstract class Address implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : AddressTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-<<<<<<< HEAD
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : AddressTableMap::translateFieldName('Continenttypeid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->continenttypeid = (null !== $col) ? (int) $col : null;
-=======
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : AddressTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00 00:00:00') {
-                $col = null;
-            }
-            $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : AddressTableMap::translateFieldName('Continent', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->continent = (null !== $col) ? (string) $col : null;
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : AddressTableMap::translateFieldName('Countrytypeid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->countrytypeid = (null !== $col) ? (int) $col : null;
@@ -1507,7 +1415,6 @@ abstract class Address implements ActiveRecordInterface
         $this->apartmentidentifier = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
-        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

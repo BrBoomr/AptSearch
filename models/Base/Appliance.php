@@ -69,12 +69,7 @@ abstract class Appliance implements ActiveRecordInterface
     /**
      * The value for the propertyid field.
      *
-<<<<<<< HEAD
      * @var        int
-=======
-     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
-     * @var        DateTime
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
      */
     protected $propertyid;
 
@@ -101,22 +96,10 @@ abstract class Appliance implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Applies default values to this object.
-     * This method should be called from the object's constructor (or
-     * equivalent initialization method).
-     * @see __construct()
-     */
-    public function applyDefaultValues()
-    {
-    }
-
-    /**
      * Initializes internal state of Base\Appliance object.
-     * @see applyDefaults()
      */
     public function __construct()
     {
-        $this->applyDefaultValues();
     }
 
     /**
@@ -348,17 +331,7 @@ abstract class Appliance implements ActiveRecordInterface
     }
 
     /**
-<<<<<<< HEAD
      * Get the [propertyid] column value.
-=======
-     * Get the [optionally formatted] temporal [timestamp] column value.
-     *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
      *
      * @return int
      */
@@ -408,31 +381,7 @@ abstract class Appliance implements ActiveRecordInterface
     } // setAppliancenumberid()
 
     /**
-<<<<<<< HEAD
      * Set the value of [propertyid] column.
-=======
-     * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
-     *
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
-     * @return $this|\Appliance The current object (for fluent API support)
-     */
-    public function setTimestamp($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->timestamp !== null || $dt !== null) {
-            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->timestamp->format("Y-m-d H:i:s.u")) {
-                $this->timestamp = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[ApplianceTableMap::COL_TIMESTAMP] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setTimestamp()
-
-    /**
-     * Set the value of [name] column.
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
      *
      * @param int $v new value
      * @return $this|\Appliance The current object (for fluent API support)
@@ -530,19 +479,8 @@ abstract class Appliance implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : ApplianceTableMap::translateFieldName('Appliancenumberid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->appliancenumberid = (null !== $col) ? (int) $col : null;
 
-<<<<<<< HEAD
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ApplianceTableMap::translateFieldName('Propertyid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->propertyid = (null !== $col) ? (int) $col : null;
-=======
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ApplianceTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00 00:00:00') {
-                $col = null;
-            }
-            $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ApplianceTableMap::translateFieldName('Name', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->name = (null !== $col) ? (string) $col : null;
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ApplianceTableMap::translateFieldName('Appliancetypeid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->appliancetypeid = (null !== $col) ? (int) $col : null;
@@ -1172,7 +1110,6 @@ abstract class Appliance implements ActiveRecordInterface
         $this->details = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
-        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

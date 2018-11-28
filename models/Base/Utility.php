@@ -64,19 +64,7 @@ abstract class Utility implements ActiveRecordInterface
      *
      * @var        int
      */
-<<<<<<< HEAD
     protected $utilitynumberid;
-=======
-    protected $id;
-
-    /**
-     * The value for the timestamp field.
-     *
-     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
-     * @var        DateTime
-     */
-    protected $timestamp;
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
 
     /**
      * The value for the propertyid field.
@@ -139,12 +127,9 @@ abstract class Utility implements ActiveRecordInterface
      */
     public function applyDefaultValues()
     {
-<<<<<<< HEAD
         $this->available = true;
         $this->includedinrent = true;
         $this->expectedcostpermonth = 0.0;
-=======
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
     }
 
     /**
@@ -385,17 +370,7 @@ abstract class Utility implements ActiveRecordInterface
     }
 
     /**
-<<<<<<< HEAD
      * Get the [propertyid] column value.
-=======
-     * Get the [optionally formatted] temporal [timestamp] column value.
-     *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
      *
      * @return int
      */
@@ -502,7 +477,6 @@ abstract class Utility implements ActiveRecordInterface
      */
     public function setPropertyid($v)
     {
-<<<<<<< HEAD
         if ($v !== null) {
             $v = (int) $v;
         }
@@ -511,15 +485,6 @@ abstract class Utility implements ActiveRecordInterface
             $this->propertyid = $v;
             $this->modifiedColumns[UtilityTableMap::COL_PROPERTYID] = true;
         }
-=======
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->timestamp !== null || $dt !== null) {
-            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->timestamp->format("Y-m-d H:i:s.u")) {
-                $this->timestamp = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[UtilityTableMap::COL_TIMESTAMP] = true;
-            }
-        } // if either are not null
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
 
         return $this;
     } // setPropertyid()
@@ -688,19 +653,8 @@ abstract class Utility implements ActiveRecordInterface
     {
         try {
 
-<<<<<<< HEAD
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : UtilityTableMap::translateFieldName('Utilitynumberid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->utilitynumberid = (null !== $col) ? (int) $col : null;
-=======
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : UtilityTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->id = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : UtilityTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00 00:00:00') {
-                $col = null;
-            }
-            $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : UtilityTableMap::translateFieldName('Propertyid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->propertyid = (null !== $col) ? (int) $col : null;

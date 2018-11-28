@@ -141,18 +141,10 @@ class ApplianceTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(true);
         // columns
-<<<<<<< HEAD
         $this->addPrimaryKey('applianceNumberID', 'Appliancenumberid', 'INTEGER', true, null, null);
         $this->addColumn('propertyID', 'Propertyid', 'INTEGER', true, null, null);
         $this->addColumn('applianceTypeID', 'Appliancetypeid', 'INTEGER', true, null, null);
         $this->addColumn('details', 'Details', 'LONGVARCHAR', false, null, null);
-=======
-        $this->addColumn('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
-        $this->addColumn('Name', 'Name', 'VARCHAR', true, 128, null);
-        $this->addColumn('Description', 'Description', 'VARCHAR', true, 128, null);
-        $this->addForeignKey('PropertyID', 'Propertyid', 'INTEGER', 'property', 'ID', true, null, null);
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
     } // initialize()
 
     /**

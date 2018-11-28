@@ -1,9 +1,6 @@
 ﻿vendor/*
 composer.json
-<<<<<<< HEAD
-=======
 composer.lock
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
 propel.yml
 propel.yml.dist
 schema.xml

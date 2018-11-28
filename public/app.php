@@ -40,17 +40,15 @@ $app->get('/login', function ($request, $response, $args) {
 
 //login verification route
 $app->post('/login_verification', function ($request, $response, $args) {
-	// get the data from the post body
-	$email = $this->request->getParam('email');
-	$password = $this->request->getParam('password');
-	return json_encode($arr);
+	$email = $this->request->getParams("email");
+	$user = UserQuery::create()->findOneByEmail($email);
+	if($user && $user->login($this->request->getParams("password"))){
+		return ['verified' => 'true', 'userID' => $user->getId()];
+	}
+	return ['verified' => 'false'];
 });
 
 $app->post("/success_login",function($request,$response,$args){
-	$userID = $this->request->getParam('userID');
-	$user = UserQuery::create()->findPk($userID);
-	//$userType = EmailQuery::create()->findOneByAuthorid($userID)->getDescription();
-	$this->view->render($response, "index.html", ['user'=>$user]);
 	return $response;
 });
 
@@ -58,45 +56,10 @@ $app->post("/success_login",function($request,$response,$args){
 ///////REGISTER ROUTES////////
 //////////////////////////////
 function createUser($firstName, $lastName, $email, $type, $password){
-	$newUser = new User();
-	$newUser->setFirstName($firstName);
-	$newUser->setLastName($lastName);
-	$newUser->setPassword($password);
-	$newUser->save();
-	return $newUser->getId();
+	
 }
 $app->get('/register_verification', function ($request, $response, $args) {
-	$firstName = $this->request->getParam("firstName");
-	$lastName = $this->request->getParam("lastName");
-	$email = $this->request->getParam("email");
-	$type = $this->request->getParam("type");
-	$type = $type ? "landlord" : "tenant";
-	$password = $this->request->getParam("password");
-	$confirm = $this->request->getParam("confirm");
 
-	$fields = array($firstName, $lastName, $email , $password ,$confirm);
-	//CHECK IF ALL FIELDS ARE SET
-	foreach($fields as $field){
-		if(empty($field)){
-			//echo $field. " is empty!";
-			return json_encode( ['invalid' =>'true']);
-		}
-	}
-	//CHECK THAT PASSWORDS MATCH
-	if($password != $confirm){
-		//$code["invalid"]='true';
-		return json_encode( ["mismatch"=>'true'] );
-	}
-	//CHECK IF EMAIL IS ALREADY IN USE
-	$check_email = EmailQuery::create()->findOneByEmail($email);
-	if($check_email){
-		//$code["duplicate"]='true';
-		return json_encode(["duplicate"=>'true']);
-	}
-
-	//Create the user and it's respective email.
-	$userID = createUser($firstName,$lastName,$email,$type,$password);
-	return json_encode(["verified"=>"true", "userID"=>$userID]);
 });
 
 $app->run();

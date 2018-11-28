@@ -66,19 +66,7 @@ abstract class Issue implements ActiveRecordInterface
      *
      * @var        int
      */
-<<<<<<< HEAD
     protected $issuenumberid;
-=======
-    protected $id;
-
-    /**
-     * The value for the timestamp field.
-     *
-     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
-     * @var        DateTime
-     */
-    protected $timestamp;
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
 
     /**
      * The value for the propertyid field.
@@ -368,31 +356,7 @@ abstract class Issue implements ActiveRecordInterface
      */
     public function getIssuenumberid()
     {
-<<<<<<< HEAD
         return $this->issuenumberid;
-=======
-        return $this->id;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [timestamp] column value.
-     *
-     *
-     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw DateTime object will be returned.
-     *
-     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getTimestamp($format = NULL)
-    {
-        if ($format === null) {
-            return $this->timestamp;
-        } else {
-            return $this->timestamp instanceof \DateTimeInterface ? $this->timestamp->format($format) : null;
-        }
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
     }
 
     /**
@@ -483,31 +447,7 @@ abstract class Issue implements ActiveRecordInterface
         }
 
         return $this;
-<<<<<<< HEAD
     } // setIssuenumberid()
-=======
-    } // setId()
-
-    /**
-     * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
-     *
-     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
-     *               Empty strings are treated as NULL.
-     * @return $this|\Issue The current object (for fluent API support)
-     */
-    public function setTimestamp($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->timestamp !== null || $dt !== null) {
-            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->timestamp->format("Y-m-d H:i:s.u")) {
-                $this->timestamp = $dt === null ? null : clone $dt;
-                $this->modifiedColumns[IssueTableMap::COL_TIMESTAMP] = true;
-            }
-        } // if either are not null
-
-        return $this;
-    } // setTimestamp()
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
 
     /**
      * Set the value of [propertyid] column.
@@ -648,17 +588,7 @@ abstract class Issue implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : IssueTableMap::translateFieldName('Issuenumberid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->issuenumberid = (null !== $col) ? (int) $col : null;
 
-<<<<<<< HEAD
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : IssueTableMap::translateFieldName('Propertyid', TableMap::TYPE_PHPNAME, $indexType)];
-=======
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : IssueTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00 00:00:00') {
-                $col = null;
-            }
-            $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : IssueTableMap::translateFieldName('Propertyid', TableMap::TYPE_PHPNAME, $indexType)];
->>>>>>> 40d1c9abff46885142bd47e75e80d811803ae6eb
             $this->propertyid = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : IssueTableMap::translateFieldName('Name', TableMap::TYPE_PHPNAME, $indexType)];
