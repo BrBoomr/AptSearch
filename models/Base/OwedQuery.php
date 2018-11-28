@@ -94,7 +94,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildOwed findOneOrCreate(ConnectionInterface $con = null) Return the first ChildOwed matching the query, or a new ChildOwed object populated from the query conditions when no match is found
  *
  * @method     ChildOwed findOneById(int $ID) Return the first ChildOwed filtered by the ID column
- * @method     ChildOwed findOneByTimestamp(int $Timestamp) Return the first ChildOwed filtered by the Timestamp column
+ * @method     ChildOwed findOneByTimestamp(string $Timestamp) Return the first ChildOwed filtered by the Timestamp column
  * @method     ChildOwed findOneBySenderid(int $SenderID) Return the first ChildOwed filtered by the SenderID column
  * @method     ChildOwed findOneByReceiverid(int $ReceiverID) Return the first ChildOwed filtered by the ReceiverID column
  * @method     ChildOwed findOneByAmount(int $Amount) Return the first ChildOwed filtered by the Amount column
@@ -107,7 +107,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildOwed requireOne(ConnectionInterface $con = null) Return the first ChildOwed matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildOwed requireOneById(int $ID) Return the first ChildOwed filtered by the ID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildOwed requireOneByTimestamp(int $Timestamp) Return the first ChildOwed filtered by the Timestamp column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildOwed requireOneByTimestamp(string $Timestamp) Return the first ChildOwed filtered by the Timestamp column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildOwed requireOneBySenderid(int $SenderID) Return the first ChildOwed filtered by the SenderID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildOwed requireOneByReceiverid(int $ReceiverID) Return the first ChildOwed filtered by the ReceiverID column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildOwed requireOneByAmount(int $Amount) Return the first ChildOwed filtered by the Amount column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -118,7 +118,7 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildOwed[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildOwed objects based on current ModelCriteria
  * @method     ChildOwed[]|ObjectCollection findById(int $ID) Return ChildOwed objects filtered by the ID column
- * @method     ChildOwed[]|ObjectCollection findByTimestamp(int $Timestamp) Return ChildOwed objects filtered by the Timestamp column
+ * @method     ChildOwed[]|ObjectCollection findByTimestamp(string $Timestamp) Return ChildOwed objects filtered by the Timestamp column
  * @method     ChildOwed[]|ObjectCollection findBySenderid(int $SenderID) Return ChildOwed objects filtered by the SenderID column
  * @method     ChildOwed[]|ObjectCollection findByReceiverid(int $ReceiverID) Return ChildOwed objects filtered by the ReceiverID column
  * @method     ChildOwed[]|ObjectCollection findByAmount(int $Amount) Return ChildOwed objects filtered by the Amount column
@@ -360,12 +360,14 @@ abstract class OwedQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByTimestamp(1234); // WHERE Timestamp = 1234
-     * $query->filterByTimestamp(array(12, 34)); // WHERE Timestamp IN (12, 34)
-     * $query->filterByTimestamp(array('min' => 12)); // WHERE Timestamp > 12
+     * $query->filterByTimestamp('2011-03-14'); // WHERE Timestamp = '2011-03-14'
+     * $query->filterByTimestamp('now'); // WHERE Timestamp = '2011-03-14'
+     * $query->filterByTimestamp(array('max' => 'yesterday')); // WHERE Timestamp > '2011-03-13'
      * </code>
      *
      * @param     mixed $timestamp The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.

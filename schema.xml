@@ -2,7 +2,7 @@
 <database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
   <table name="address" idMethod="native" phpName="Address">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="Continent" phpName="Continent" type="VARCHAR" size="128" required="true"/>
     <column name="Country" phpName="Country" type="VARCHAR" size="128" required="true"/>
     <column name="State" phpName="State" type="VARCHAR" size="128"/>
@@ -17,7 +17,7 @@
   </table>
   <table name="amenity" idMethod="native" phpName="Amenity">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
     <column name="Name" phpName="Name" type="VARCHAR" size="56" required="true"/>
     <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>
@@ -34,7 +34,7 @@
   </table>
   <table name="appliance" idMethod="native" phpName="Appliance">
     <column name="ID" phpName="Id" type="INTEGER" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="Name" phpName="Name" type="VARCHAR" size="128" required="true"/>
     <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>
     <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
@@ -50,7 +50,7 @@
   </table>
   <table name="cost" idMethod="native" phpName="Cost">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
     <column name="Name" phpName="Name" type="VARCHAR" size="56" required="true"/>
     <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>
@@ -67,7 +67,7 @@
   </table>
   <table name="email" idMethod="native" phpName="Email">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="UserID" phpName="Userid" type="INTEGER" required="true"/>
     <column name="Email" phpName="Email" type="VARCHAR" size="128" required="true"/>
     <column name="Description" phpName="Description" type="CHAR" sqlType="enum('general','tenant','landlord','')"/>
@@ -83,7 +83,7 @@
   </table>
   <table name="fee" idMethod="native" phpName="Fee">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
     <column name="Name" phpName="Name" type="VARCHAR" size="56" required="true"/>
     <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>
@@ -94,7 +94,7 @@
   </table>
   <table name="issue" idMethod="native" phpName="Issue">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
     <column name="Name" phpName="Name" type="VARCHAR" size="56" required="true"/>
     <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>
@@ -113,7 +113,7 @@
   </table>
   <table name="limitation" idMethod="native" phpName="Limitation">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
     <column name="Name" phpName="Name" type="VARCHAR" size="56" required="true"/>
     <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>
@@ -129,7 +129,7 @@
   </table>
   <table name="lives" idMethod="native" phpName="Lives">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="UserID" phpName="Userid" type="INTEGER" required="true"/>
     <column name="Name" phpName="Name" type="VARCHAR" size="128" required="true"/>
     <column name="TenantRelation" phpName="Tenantrelation" type="VARCHAR" size="128" required="true"/>
@@ -148,7 +148,7 @@
   </table>
   <table name="money" idMethod="native" phpName="Money">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="UserID" phpName="Userid" type="INTEGER" required="true"/>
     <column name="Send" phpName="Send" type="BOOLEAN" size="1" required="true"/>
     <column name="Receive" phpName="Receive" type="BOOLEAN" size="1" required="true"/>
@@ -158,7 +158,7 @@
   </table>
   <table name="owed" idMethod="native" phpName="Owed">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="INTEGER" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="SenderID" phpName="Senderid" type="INTEGER" required="true"/>
     <column name="ReceiverID" phpName="Receiverid" type="INTEGER" required="true"/>
     <column name="Amount" phpName="Amount" type="INTEGER" required="true"/>
@@ -190,7 +190,7 @@
   </table>
   <table name="payment" idMethod="native" phpName="Payment">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="SenderID" phpName="Senderid" type="INTEGER" required="true"/>
     <column name="ReceiverID" phpName="Receiverid" type="INTEGER" required="true"/>
     <column name="OwedID" phpName="Owedid" type="INTEGER" required="true"/>
@@ -218,7 +218,7 @@
   </table>
   <table name="phone" idMethod="native" phpName="Phone">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="UserID" phpName="Userid" type="INTEGER" required="true"/>
     <column name="Number" phpName="Number" type="VARCHAR" size="64" required="true"/>
     <column name="Description" phpName="Description" type="CHAR" sqlType="enum('work','home','cell','')" required="true"/>
@@ -234,7 +234,7 @@
   </table>
   <table name="picture" idMethod="native" phpName="Picture">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
     <column name="Link" phpName="Link" type="VARCHAR" size="128" required="true"/>
     <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>
@@ -250,7 +250,7 @@
   </table>
   <table name="property" idMethod="native" phpName="Property">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="LandlordID" phpName="Landlordid" type="INTEGER" required="true"/>
     <column name="AddressID" phpName="Addressid" type="INTEGER" required="true"/>
     <column name="FPL" phpName="Fpl" type="INTEGER"/>
@@ -276,7 +276,7 @@
   </table>
   <table name="tenant" idMethod="native" phpName="Tenant">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="UserID" phpName="Userid" type="INTEGER" required="true"/>
     <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
     <column name="Name" phpName="Name" type="VARCHAR" size="128" required="true"/>
@@ -312,7 +312,7 @@
   </table>
   <table name="utility" idMethod="native" phpName="Utility">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="Timestamp" phpName="Timestamp" type="DATE" required="true"/>
+    <column name="Timestamp" phpName="Timestamp" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="PropertyID" phpName="Propertyid" type="INTEGER" required="true"/>
     <column name="Name" phpName="Name" type="VARCHAR" size="56" required="true"/>
     <column name="Description" phpName="Description" type="VARCHAR" size="128" required="true"/>

@@ -152,7 +152,7 @@ class FeeTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
+        $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
         $this->addColumn('PropertyID', 'Propertyid', 'INTEGER', true, null, null);
         $this->addColumn('Name', 'Name', 'VARCHAR', true, 56, null);
         $this->addColumn('Description', 'Description', 'VARCHAR', true, 128, null);

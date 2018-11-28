@@ -172,7 +172,7 @@ class AddressTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
+        $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
         $this->addColumn('Continent', 'Continent', 'VARCHAR', true, 128, null);
         $this->addColumn('Country', 'Country', 'VARCHAR', true, 128, null);
         $this->addColumn('State', 'State', 'VARCHAR', false, 128, null);

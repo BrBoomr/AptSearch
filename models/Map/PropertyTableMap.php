@@ -167,7 +167,7 @@ class PropertyTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
+        $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
         $this->addForeignKey('LandlordID', 'Landlordid', 'INTEGER', 'user', 'ID', true, null, null);
         $this->addForeignKey('AddressID', 'Addressid', 'INTEGER', 'address', 'ID', true, null, null);
         $this->addColumn('FPL', 'Fpl', 'INTEGER', false, null, null);

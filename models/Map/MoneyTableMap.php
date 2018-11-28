@@ -147,7 +147,7 @@ class MoneyTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
+        $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
         $this->addColumn('UserID', 'Userid', 'INTEGER', true, null, null);
         $this->addColumn('Send', 'Send', 'BOOLEAN', true, 1, null);
         $this->addColumn('Receive', 'Receive', 'BOOLEAN', true, 1, null);

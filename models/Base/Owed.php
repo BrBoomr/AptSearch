@@ -78,7 +78,8 @@ abstract class Owed implements ActiveRecordInterface
     /**
      * The value for the timestamp field.
      *
-     * @var        int
+     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
+     * @var        DateTime
      */
     protected $timestamp;
 
@@ -167,10 +168,22 @@ abstract class Owed implements ActiveRecordInterface
     protected $paymentsRelatedByOwedidScheduledForDeletion = null;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
+     */
+    public function applyDefaultValues()
+    {
+    }
+
+    /**
      * Initializes internal state of Base\Owed object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -402,13 +415,23 @@ abstract class Owed implements ActiveRecordInterface
     }
 
     /**
-     * Get the [timestamp] column value.
+     * Get the [optionally formatted] temporal [timestamp] column value.
      *
-     * @return int
+     *
+     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw DateTime object will be returned.
+     *
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getTimestamp()
+    public function getTimestamp($format = NULL)
     {
-        return $this->timestamp;
+        if ($format === null) {
+            return $this->timestamp;
+        } else {
+            return $this->timestamp instanceof \DateTimeInterface ? $this->timestamp->format($format) : null;
+        }
     }
 
     /**
@@ -512,21 +535,21 @@ abstract class Owed implements ActiveRecordInterface
     } // setId()
 
     /**
-     * Set the value of [timestamp] column.
+     * Sets the value of [timestamp] column to a normalized version of the date/time value specified.
      *
-     * @param int $v new value
+     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
+     *               Empty strings are treated as NULL.
      * @return $this|\Owed The current object (for fluent API support)
      */
     public function setTimestamp($v)
     {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->timestamp !== $v) {
-            $this->timestamp = $v;
-            $this->modifiedColumns[OwedTableMap::COL_TIMESTAMP] = true;
-        }
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->timestamp !== null || $dt !== null) {
+            if ($this->timestamp === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->timestamp->format("Y-m-d H:i:s.u")) {
+                $this->timestamp = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[OwedTableMap::COL_TIMESTAMP] = true;
+            }
+        } // if either are not null
 
         return $this;
     } // setTimestamp()
@@ -723,7 +746,10 @@ abstract class Owed implements ActiveRecordInterface
             $this->id = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : OwedTableMap::translateFieldName('Timestamp', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->timestamp = (null !== $col) ? (int) $col : null;
+            if ($col === '0000-00-00 00:00:00') {
+                $col = null;
+            }
+            $this->timestamp = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : OwedTableMap::translateFieldName('Senderid', TableMap::TYPE_PHPNAME, $indexType)];
             $this->senderid = (null !== $col) ? (int) $col : null;
@@ -1056,7 +1082,7 @@ abstract class Owed implements ActiveRecordInterface
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
                     case 'Timestamp':
-                        $stmt->bindValue($identifier, $this->timestamp, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->timestamp ? $this->timestamp->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
                     case 'SenderID':
                         $stmt->bindValue($identifier, $this->senderid, PDO::PARAM_INT);
@@ -1208,6 +1234,10 @@ abstract class Owed implements ActiveRecordInterface
             $keys[7] => $this->getDetails(),
             $keys[8] => $this->getPaymentid(),
         );
+        if ($result[$keys[1]] instanceof \DateTimeInterface) {
+            $result[$keys[1]] = $result[$keys[1]]->format('c');
+        }
+
         if ($result[$keys[5]] instanceof \DateTimeInterface) {
             $result[$keys[5]] = $result[$keys[5]]->format('c');
         }
@@ -2068,6 +2098,7 @@ abstract class Owed implements ActiveRecordInterface
         $this->paymentid = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

@@ -147,7 +147,7 @@ class PhoneTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('Timestamp', 'Timestamp', 'DATE', true, null, null);
+        $this->addColumn('Timestamp', 'Timestamp', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
         $this->addForeignKey('UserID', 'Userid', 'INTEGER', 'user', 'ID', true, null, null);
         $this->addColumn('Number', 'Number', 'VARCHAR', true, 64, null);
         $this->addColumn('Description', 'Description', 'CHAR', true, null, null);
