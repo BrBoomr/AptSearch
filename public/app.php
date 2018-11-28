@@ -102,7 +102,44 @@ $app->post('/register_verification', function ($request, $response, $args) {
 //////////////////////////////
 ///////PROPERTY ROUTES////////
 //////////////////////////////
-$app->get('/add_property', function ($request, $response, $args) {
+$app->get('/view_listing', function ($request, $response, $args) {
+	
+});
+function createAddress($continent,$country,$state,$city,$zipcode,$street,$bldNum,$aptNum){
+	$newAddr = new Address();
+	$newAddr->setContinenttypeid($continent);
+	$newAddr->setCountrytypeid($country);
+	$newAddr->setState($state);
+	$newAddr->setLocality($city);
+	$newAddr->setZipcode($zipcode);
+	$newAddr->setStreetname($street);
+	$newAddr->setBuildingindentifier($bldNum);
+	$newAddr->setApartmentidentifier($aptNum);
+
+	//$newAddr->save();
+	echo "Address Added on ".$street." !</br>";
+}
+function createPropery($addrId,$userID,$postName,$available,$rent,$sqrFoot,$bedrooms,$bathrooms,$details){
+	$newProp = new Property();
+	$newProp->setAddressid($addrId);
+	$newProp->setUserid($userID);
+	$newProp->setPostname($postName);
+	$newProp->setAvailable($available);
+	$newProp->setExpectedrentpermonth($rent);
+	$newProp->setSquarefootage($sqrFoot);
+	$newProp->setBedroomcount($bedrooms);
+	$newProp->setBathroomcount($bathrooms);
+	$newProp->setDetails($details);
+
+	//$newProp->save();
+	echo "New Property Added!</br>";
+}
+$app->get('/add_listing', function ($request, $response, $args) {
+	//createAddress(1,321,"Texas","Mission",78572,"East Street",1,1);
+	//createPropery(37,5,"W.B1.A1",TRUE, 900, 750 ,1,1,"Single Bedroom");
+	return $response;
+});
+$app->post('/update_listing', function ($request, $response, $args) {
 	
 });
 
