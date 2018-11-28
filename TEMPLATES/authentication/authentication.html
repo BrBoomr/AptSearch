@@ -2,6 +2,67 @@
 
 {% block content %}
     <h1> AUTHENTICATION HERE </h1>
+
+    <div class="container login-container">
+        <div class="row">
+            <!--LOGIN CARD-->
+            <div class="col-md-6 login-form-1">
+                <h3>Login</h3>
+                <form>
+                    <div class="form-group">
+                        <input id="loginEmail" type="text" class="form-control" placeholder="Email" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <input id="loginPassword" type="password" class="form-control" placeholder="Password" value=""/>
+                    </div>
+                    <div class="form-group">
+
+                        <input id="loginSubmit" type="submit" class="btnSubmit" value="Login"/>
+                    </div>
+                    <div class="form-group">
+                        <!-- Error message for incorrect logins that can be closed -->
+                        <div id="loginError" class="alert alert-danger alert-dismissible d-none">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>Incorrect Login</strong>
+                        </div>
+                        <!-- <a href="#" class="ForgetPwd">Forget Password?</a> -->
+                    </div>
+                </form>
+            </div>
+            <!--REGISTER CARD-->
+            <div class="col-md-6 login-form-2">
+                <h3>Sign up</h3>
+                <form>
+                    <div class="form-group">
+                        <input id="registerFirstName" type="text" class="form-control" placeholder="First Name" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <input id="registerLastName" type="text" class="form-control" placeholder="Last Name" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <input id="registerEmail" type="text" class="form-control" placeholder="Email" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <input id="registerPassword" type="password" class="form-control" placeholder="Password" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <input id="confirmPassword" type="password" class="form-control" placeholder="Confirm Password" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <input id="registerSubmit" type="submit" class="btnSubmit" value="Sign up"/>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div id="registerError" class="alert alert-danger alert-dismissible d-none">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>DEFAULT ERROR MESSAGE</strong>
+                        </div>
+                        <!-- <a href="#" class="ForgetPwd" value="Login">Forget Password?</a> -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block styles %}

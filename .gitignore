@@ -1,9 +1,11 @@
 generated-conf/*
 generated-sql/*
-models/*
+models/Base/*
+models/Map/*
 schema/*
 vendor/*
 composer.json
 composer.lock
 propel.yml
 propel.yml.dist
+schema.*
