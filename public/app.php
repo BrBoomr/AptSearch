@@ -22,21 +22,16 @@ $container['view'] = function($container) {
 	
 	return $view;
 };
-$app->get('/createUser', function ($request, $response, $args) {
-	$user = new User();
-	$user->setFirstName("Zhixiang");
-	$user->setLastName("Chen");
-	$user->setPassword("zchen");
-	//$user->save();
-	echo ($user->getFirstName(). " created!");
-	return $response;
-});
 // home page route
 $app->get('/', function ($request, $response, $args) {
 	$this->view->render($response, "index.html");
 	return $response;
 });
 
+
+//////////////////////////////
+/////////LOGIN ROUTES/////////
+//////////////////////////////
 // The route for testing out the new login page
 $app->get('/login', function ($request, $response, $args) {
 	$this->view->render($response, "login.html");
@@ -51,7 +46,6 @@ $app->post('/login_verification', function ($request, $response, $args) {
 	//find user object in database
 	$email = EmailQuery::create()->findOneByEmail($email);
 	// If null is not caught, the following query will return a 500 error
-
 	if (is_null($email)){
 		$arr["verified"]="false";
 		return json_encode($arr);
@@ -69,10 +63,64 @@ $app->post('/login_verification', function ($request, $response, $args) {
 	return json_encode($arr);
 });
 
-$app->post("/success",function($request,$response,$args){
+$app->post("/success_login",function($request,$response,$args){
 	$userID = $this->request->getParam('userID');
-	$this->view->render($response, "index.html", ['user'=>UserQuery::create()->findPk($userID)]);
+	$user = UserQuery::create()->findPk($userID);
+	//$userType = EmailQuery::create()->findOneByAuthorid($userID)->getDescription();
+	$this->view->render($response, "index.html", ['user'=>$user]);
 	return $response;
+});
+
+//////////////////////////////
+///////REGISTER ROUTES////////
+//////////////////////////////
+function createUser($firstName, $lastName, $email, $type, $password){
+	$newUser = new User();
+	$newUser->setFirstName($firstName);
+	$newUser->setLastName($lastName);
+	$newUser->setPassword($password);
+	$newUser->save();
+
+	$newEmail = new Email();
+	$newEmail->setEmail($email);
+	$newEmail->setUserid((string)$newUser->getId());
+	$newEmail->setDescription($type);
+
+	$newEmail->save();
+	return $newUser->getId();
+}
+$app->get('/register_verification', function ($request, $response, $args) {
+	$firstName = $this->request->getParam("firstName");
+	$lastName = $this->request->getParam("lastName");
+	$email = $this->request->getParam("email");
+	$type = $this->request->getParam("type");
+	$type = $type ? "landlord" : "tenant";
+	$password = $this->request->getParam("password");
+	$confirm = $this->request->getParam("confirm");
+
+	$fields = array($firstName, $lastName, $email , $password ,$confirm);
+	//CHECK IF ALL FIELDS ARE SET
+	foreach($fields as $field){
+		if(empty($field)){
+			//echo $field. " is empty!";
+			return json_encode( ['invalid' =>'true']);
+		}
+	}
+	//CHECK THAT PASSWORDS MATCH
+	if($password != $confirm){
+		//$code["invalid"]='true';
+		return json_encode( ["mismatch"=>'true'] );
+	}
+	//CHECK IF EMAIL IS ALREADY IN USE
+	$check_email = EmailQuery::create()->findOneByEmail($email);
+	if($check_email){
+		//$code["duplicate"]='true';
+		return json_encode(["duplicate"=>'true']);
+	}
+
+	//Create the user and it's respective email.
+	$userID = createUser($firstName,$lastName,$email,$type,$password);
+	return json_encode(["verified"=>"true", "userID"=>$userID]);
 });
 
 $app->run();
