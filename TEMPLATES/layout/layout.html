@@ -33,11 +33,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-  <!-- Back to top button -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Merriweather:400,900,900i" rel="stylesheet">
+    <!--css reset-->
+    <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/layout/css/reset.css">
 
-  <a id="scrollToTop"></a>
+    <!-- Back to top button -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,900,900i" rel="stylesheet">
+
+    <a id="scrollToTop"></a>
 
     <!--nav bar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="nav">
@@ -71,16 +74,58 @@
     </nav>
 
     <!--body-->
-    <div class="container" id="body">
+    <div class="container content" id="body">
         <div id="mainDiv">
             {% block content %}{% endblock %}
         </div>
     </div>
 
     <!--footer-->
-    <div class="container" id="footer">
-        <p>For Educational Purposes.</p><p> Created by Jafet Reyes | Gerardo Guerrero | Bryan Cancel. &copy2018</p>
-    </div>
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h2 class="logo"><a href="#"> <img src="{{ base_url() }}/../../IMAGES/favicon.ico" alt="Logo" height="100" width="100"></a></h2>
+                </div>
+                <div class="col-sm-2">
+                    <h5>Get started</h5>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Log in</a></li>
+                        <li><a href="#">Sign up</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+                    <h5>About us</h5>
+                    <ul>
+                        <li><a href="#">Company Information</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-2">
+                    <h5>Support</h5>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Help desk</a></li>
+                        <li><a href="#">Forums</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <div class="social-networks">
+                        <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                        <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                        <a href="#" class="google"><i class="fa fa-google-plus"></i></a>
+                    </div>
+                    <button type="button" class="btn btn-default">Contact us</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <p>All Rights Reserved © 2018 By : Jafet Reyes | Gerardo Guerrero | Bryan Cancel</p>
+            <p>Created For Educational Purposes</p>
+        </div>
+    </footer>
 
     <!--layout style sheet-->
     <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/layout/css/layout.css">
