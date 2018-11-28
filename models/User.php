@@ -14,5 +14,12 @@ use Base\User as BaseUser;
  */
 class User extends BaseUser
 {
+    public function setPassword($password){
+		$this->setEncryptedpassword(password_hash($password,PASSWORD_DEFAULT));
+	}
 
+	public function login($password){
+		$hash=$this->getEncryptedpassword();
+		return password_verify($password,$hash);
+	}
 }
