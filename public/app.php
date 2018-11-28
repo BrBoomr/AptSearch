@@ -33,7 +33,6 @@ $app->get('/', function ($request, $response, $args) {
 	return $response;
 });
 
-
 //////////////////////////////
 /////////LOGIN ROUTES/////////
 //////////////////////////////
@@ -102,8 +101,23 @@ $app->post('/register_verification', function ($request, $response, $args) {
 //////////////////////////////
 ///////PROPERTY ROUTES////////
 //////////////////////////////
-$app->get('/view_listing', function ($request, $response, $args) {
+$app->get('/view_all_listing', function ($request, $response, $args) {
+	$listings = PropertyQuery::create();
+	$this->view->render($response, "listing/listing.html",['listings'=>$listings]);
+	return $response;
+});
+
+$app->get('/view_my_listing', function ($request, $response, $args) {
+	if(isset($_SESSION['user'])){
+		$current_user = $_SESSION['user'];
+		$listings = PropertyQuery::create()->filterByUserid($current_user->getId());
+		$this->view->render($response, "listing/listing.html",['listings'=>$listings]);
+	}
+	else{
+		$this->view->render($response, "authentication/authentication.html");
+	}
 	
+	return $response;
 });
 function createAddress($continent,$country,$state,$city,$zipcode,$street,$bldNum,$aptNum){
 	$newAddr = new Address();
