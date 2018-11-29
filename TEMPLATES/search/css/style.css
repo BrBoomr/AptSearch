@@ -1,18 +1,59 @@
+/*-----icons-----*/
+chevron-down:before{content:"\f078"}
+
 /*-----carousel settings-----*/
-#carouselContainer {
-    width: 350px;
-    height: 350px;
-    padding: auto;
-    vertical-align: middle;
-    text-align: center;
+#carouselExampleIndicators{
+    padding: 0px !important;
+    margin: auto !important;
+    width: 350px !important;
+    height: 350px !important;
+    background-color: red !important;
 }
 
-.carouselItem {
+/*-----carousel thumbnail styling-----*/
+
+.carousel-indicators {
+    padding: 0px !important;
+    height: 25px !important; /*height of thumbnails*/
+    width: auto !important; /*width automatically spans entire carousel container*/
+}
+
+.carousel-indicators > li {
+    /*where we could set the background color of the thumbnails if we wanted to*/
+    height: 100% !important;
+    width: auto !important;
+}
+
+.carousel-indicators > li > img {
+    height: 100% !important;
+    width: auto !important;
+}
+
+/*-----carousel image styling-----*/
+
+.carousel-inner, .carousel-item {
     height: 350px;
     width: 350px;
-    text-align: center;
-    align: center;
+}
 
+.carousel-item {
+    object-fit: contain !important;
+}
+
+.carousel-item > img{
+    width: auto !important;
+    object-fit: contain !important;
+}
+
+/*-----other carousel styling-----*/
+
+.carousel-control-prev, .carousel-control-next {
+    width: auto;
+    top: 0;
+    bottom: 0;
+    margin: 15px;
+    margin-top: 50%;
+    margin-bottom: 50%;
 }
 
 .carousel-controls {
