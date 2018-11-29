@@ -19,7 +19,7 @@ ORDER IS IMPORTANT
     "minimum-stability": "dev",
 
     "require": {
-        "slim/slim": "^3.9"
+        "slim/slim": "^3.11"
     }
 }
 5. run "composer require propel/propel" in root directory

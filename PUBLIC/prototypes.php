@@ -53,11 +53,24 @@ function createUser($name, $email, $password){
 
 //-------------------------GET-------------------------
 
-// home page route
+//---refined
+
+//homepage (search)
 $app->get('/', function ($request, $response, $args) {
 	$this->view->render($response, "/search/index.html", ['user'=>current_user()]);
 	return $response;
 });
+
+$app->get('/authentication', function ($request, $response, $args) {
+    $this->view->render($response, "authentication/index.html"
+    );
+	return $response;
+});
+
+//---unrefined
+
+// home page route
+
 
 $app->get('/TEMPLATE', function ($request, $response, $args) {
 	$this->view->render($response, "TEMPLATE/index.html");
@@ -65,10 +78,6 @@ $app->get('/TEMPLATE', function ($request, $response, $args) {
 });
 
 // Displays the login and registration forms
-$app->get('/authentication', function ($request, $response, $args) {
-	$this->view->render($response, "authentication/index.html");
-	return $response;
-});
 
 $app->get('/view_all_listing', function ($request, $response, $args) {
 	$listings = PropertyQuery::create();

@@ -160,7 +160,7 @@ center align the mainDiv in the body within the body*/
     line-height: 25px;
 }
 
-#footer .col-sm-3, #footer .col-sm-2 {
+#footer > .container > .row > div {
     text-align: center;
 }
 

@@ -27,7 +27,6 @@ require './prototypes.php'; //stores routes that don't yet have a page assigned 
 
 require '../TEMPLATES/authentication/app.php';
 require '../TEMPLATES/layout/app.php';
-require '../TEMPLATES/listing/app.php';
 require '../TEMPLATES/search/app.php';
 require '../TEMPLATES/TEMPLATE/app.php';
 
