@@ -1,0 +1,46 @@
+{% extends 'layout/layout.html' %}
+
+{% block content %}
+
+    <table class="table table-striped  table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Address ID</th>
+                <th scope="col">User ID</th>
+                <th scope="col">postName</th>
+                <th scope="col">Available</th>
+                <th scope="col">Rent</th>
+                <th scope="col">Sqr.Footage</th>
+                <th scope="col">Bedrooms</th>
+                <th scope="col">Bathrooms</th>
+                <th scope="col">Street Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in listings %}
+                <tr>
+                    <th scope ="row">{{ item.getAddressid() }}</th>
+                    <td>{{ item.getOwnerName() }}</td>
+                    <td>{{ item.getPostName() }}</td>
+                    <td>{{ item.getAvailable() }}</td>
+                    <td>{{ item.getExpectedrentpermonth() }}</td>
+                    <td>{{ item.getSquarefootage() }}</td>
+                    <td>{{ item.getBedroomcount() }}</td>
+                    <td>{{ item.getBathroomcount() }}</td>
+                    <td>{{ item.getAddressName() }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block styles %}
+    <!--style sheet-->
+    <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/listing/css/listing.css">
+{% endblock %}
+
+{% block scripts %}
+    <!--javascript connection but go before logic-->
+    <script src="{{ base_url() }}/../../TEMPLATES/listing/javascript/listing.js"></script>
+    <script src="{{ base_url() }}/../../TEMPLATES/listing/javascript/listing.js"></script>
+{% endblock %}

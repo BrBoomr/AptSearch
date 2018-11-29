@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2018 at 03:04 AM
--- Server version: 10.1.36-MariaDB
--- PHP Version: 7.2.11
+-- Generation Time: Nov 28, 2018 at 10:49 PM
+-- Server version: 10.1.34-MariaDB
+-- PHP Version: 7.2.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -39,6 +39,57 @@ CREATE TABLE `address` (
   `buildingIndentifier` text,
   `apartmentIdentifier` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `address`
+--
+
+INSERT INTO `address` (`ID`, `continentTypeID`, `countryTypeID`, `state`, `locality`, `zipCode`, `streetName`, `buildingIndentifier`, `apartmentIdentifier`) VALUES
+(1, 1, 321, 'Texas', 'Mission', '78572', 'Main Street', '1', '1'),
+(2, 1, 321, 'Texas', 'Mission', '78572', 'Main Street', '1', '2'),
+(3, 1, 321, 'Texas', 'Mission', '78572', 'Main Street', '1', '3'),
+(4, 1, 321, 'Texas', 'Mission', '78572', 'Main Street', '2', '1'),
+(5, 1, 321, 'Texas', 'Mission', '78572', 'Main Street', '2', '2'),
+(6, 1, 321, 'Texas', 'Mission', '78572', 'Main Street', '2', '3'),
+(7, 1, 321, 'Texas', 'Mission', '78572', 'Main Street', '3', '1'),
+(8, 1, 321, 'Texas', 'Mission', '78572', 'Main Street', '3', '2'),
+(9, 1, 321, 'Texas', 'Mission', '78572', 'Main Street', '3', '3'),
+(10, 1, 321, 'Texas', 'Mission', '78572', 'North Street', '1', '1'),
+(11, 1, 321, 'Texas', 'Mission', '78572', 'North Street', '1', '2'),
+(12, 1, 321, 'Texas', 'Mission', '78572', 'North Street', '1', '3'),
+(13, 1, 321, 'Texas', 'Mission', '78572', 'North Street', '2', '1'),
+(14, 1, 321, 'Texas', 'Mission', '78572', 'North Street', '2', '2'),
+(15, 1, 321, 'Texas', 'Mission', '78572', 'North Street', '2', '3'),
+(16, 1, 321, 'Texas', 'Mission', '78572', 'North Street', '3', '1'),
+(17, 1, 321, 'Texas', 'Mission', '78572', 'North Street', '3', '2'),
+(18, 1, 321, 'Texas', 'Mission', '78572', 'North Street', '3', '3'),
+(19, 1, 321, 'Texas', 'Mission', '78572', 'South Street', '1', '1'),
+(20, 1, 321, 'Texas', 'Mission', '78572', 'South Street', '1', '2'),
+(21, 1, 321, 'Texas', 'Mission', '78572', 'South Street', '1', '3'),
+(22, 1, 321, 'Texas', 'Mission', '78572', 'South Street', '2', '1'),
+(23, 1, 321, 'Texas', 'Mission', '78572', 'South Street', '2', '2'),
+(24, 1, 321, 'Texas', 'Mission', '78572', 'South Street', '2', '3'),
+(25, 1, 321, 'Texas', 'Mission', '78572', 'South Street', '3', '1'),
+(26, 1, 321, 'Texas', 'Mission', '78572', 'South Street', '3', '2'),
+(27, 1, 321, 'Texas', 'Mission', '78572', 'South Street', '3', '3'),
+(28, 1, 321, 'Texas', 'Mission', '78572', 'East Street', '1', '1'),
+(29, 1, 321, 'Texas', 'Mission', '78572', 'East Street', '1', '2'),
+(30, 1, 321, 'Texas', 'Mission', '78572', 'East Street', '1', '3'),
+(31, 1, 321, 'Texas', 'Mission', '78572', 'East Street', '2', '1'),
+(32, 1, 321, 'Texas', 'Mission', '78572', 'East Street', '2', '2'),
+(33, 1, 321, 'Texas', 'Mission', '78572', 'East Street', '2', '3'),
+(34, 1, 321, 'Texas', 'Mission', '78572', 'East Street', '3', '1'),
+(35, 1, 321, 'Texas', 'Mission', '78572', 'East Street', '3', '2'),
+(36, 1, 321, 'Texas', 'Mission', '78572', 'East Street', '3', '3'),
+(37, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '1', '1'),
+(38, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '1', '2'),
+(39, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '1', '3'),
+(40, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '2', '1'),
+(41, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '2', '2'),
+(42, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '2', '3'),
+(43, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '3', '1'),
+(44, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '3', '2'),
+(45, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '3', '3');
 
 -- --------------------------------------------------------
 
@@ -361,7 +412,8 @@ INSERT INTO `countrytype` (`ID`, `addDate`, `name`, `useCount`) VALUES
 (317, '2018-11-27 23:58:11', 'Württemberg', 0),
 (318, '2018-11-27 23:58:11', 'Yemen', 0),
 (319, '2018-11-27 23:58:11', 'Zambia', 0),
-(320, '2018-11-27 23:58:11', 'Zimbabwe', 0);
+(320, '2018-11-27 23:58:11', 'Zimbabwe', 0),
+(321, '2018-11-28 20:25:07', 'United States', 0);
 
 -- --------------------------------------------------------
 
@@ -455,6 +507,57 @@ CREATE TABLE `property` (
   `details` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `property`
+--
+
+INSERT INTO `property` (`ID`, `addressID`, `userID`, `addDate`, `lastUpdated`, `postName`, `available`, `expectedRentPerMonth`, `squareFootage`, `bedroomCount`, `bathroomCount`, `details`) VALUES
+(1, 1, 1, '2018-11-28 21:23:35', '2018-11-28 21:23:35', 'M.B1.A1', 1, 750, 950, 1, 1, 'Single Bedroom'),
+(2, 2, 1, '2018-11-28 21:25:11', '2018-11-28 21:25:11', 'M.B1.A2', 1, 900, 1000, 2, 1, 'Double Bedroom, Shared Bathroom'),
+(3, 3, 1, '2018-11-28 21:26:41', '2018-11-28 21:26:41', 'M.B1.A3', 1, 800, 900, 1, 1, 'Single Bedroom'),
+(4, 4, 1, '2018-11-28 21:30:14', '2018-11-28 21:30:14', 'M.B2.A1', 1, 950, 800, 1, 1, 'Single Bedroom'),
+(5, 5, 1, '2018-11-28 21:30:57', '2018-11-28 21:30:57', 'M.B2.A2', 1, 1100, 1200, 2, 2, 'Double Bedroom'),
+(6, 6, 1, '2018-11-28 21:31:42', '2018-11-28 21:31:42', 'M.B2.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(7, 7, 1, '2018-11-28 21:36:15', '2018-11-28 21:36:15', 'M.B3.A1', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(8, 8, 1, '2018-11-28 21:36:15', '2018-11-28 21:36:15', 'M.B3.A2', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(9, 9, 1, '2018-11-28 21:36:15', '2018-11-28 21:36:15', 'M.B3.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(10, 10, 2, '2018-11-28 21:37:59', '2018-11-28 21:37:59', 'N.B1.A1', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(11, 11, 2, '2018-11-28 21:37:59', '2018-11-28 21:37:59', 'N.B1.A2', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(12, 12, 2, '2018-11-28 21:37:59', '2018-11-28 21:37:59', 'N.B1.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(13, 13, 2, '2018-11-28 21:37:59', '2018-11-28 21:37:59', 'N.B2.A1', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(14, 14, 2, '2018-11-28 21:37:59', '2018-11-28 21:37:59', 'N.B2.A2', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(15, 15, 2, '2018-11-28 21:37:59', '2018-11-28 21:37:59', 'N.B2.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(16, 16, 2, '2018-11-28 21:37:59', '2018-11-28 21:37:59', 'N.B3.A1', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(17, 17, 2, '2018-11-28 21:37:59', '2018-11-28 21:37:59', 'N.B3.A2', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(18, 18, 2, '2018-11-28 21:37:59', '2018-11-28 21:37:59', 'N.B3.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(19, 19, 3, '2018-11-28 21:39:27', '2018-11-28 21:39:27', 'S.B1.A1', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(20, 20, 3, '2018-11-28 21:39:27', '2018-11-28 21:39:27', 'S.B1.A2', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(21, 21, 3, '2018-11-28 21:39:27', '2018-11-28 21:39:27', 'S.B1.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(22, 22, 3, '2018-11-28 21:39:27', '2018-11-28 21:39:27', 'S.B2.A1', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(23, 23, 3, '2018-11-28 21:39:27', '2018-11-28 21:39:27', 'S.B2.A2', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(24, 24, 3, '2018-11-28 21:39:27', '2018-11-28 21:39:27', 'S.B2.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(25, 25, 3, '2018-11-28 21:39:27', '2018-11-28 21:39:27', 'S.B3.A1', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(26, 26, 3, '2018-11-28 21:39:27', '2018-11-28 21:39:27', 'S.B3.A2', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(27, 27, 3, '2018-11-28 21:39:27', '2018-11-28 21:39:27', 'S.B3.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(28, 28, 4, '2018-11-28 21:40:53', '2018-11-28 21:40:53', 'E.B1.A1', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(29, 29, 4, '2018-11-28 21:40:53', '2018-11-28 21:40:53', 'E.B1.A2', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(30, 30, 4, '2018-11-28 21:40:53', '2018-11-28 21:40:53', 'E.B1.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(31, 31, 4, '2018-11-28 21:40:53', '2018-11-28 21:40:53', 'E.B2.A1', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(32, 32, 4, '2018-11-28 21:40:53', '2018-11-28 21:40:53', 'E.B2.A2', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(33, 33, 4, '2018-11-28 21:40:53', '2018-11-28 21:40:53', 'E.B2.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(34, 34, 4, '2018-11-28 21:40:53', '2018-11-28 21:40:53', 'E.B3.A1', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(35, 35, 4, '2018-11-28 21:40:53', '2018-11-28 21:40:53', 'E.B3.A2', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(36, 36, 4, '2018-11-28 21:40:53', '2018-11-28 21:40:53', 'E.B3.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(37, 37, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B1.A1', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(38, 38, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B1.A2', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(39, 39, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B1.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(40, 40, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B2.A1', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(41, 41, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B2.A2', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(42, 42, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B2.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(43, 43, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B3.A1', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(44, 44, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B3.A2', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(45, 45, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B3.A3', 1, 900, 750, 1, 1, 'Single Bedroom');
+
 -- --------------------------------------------------------
 
 --
@@ -468,6 +571,17 @@ CREATE TABLE `user` (
   `encryptedPassword` text NOT NULL,
   `name` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`ID`, `addDate`, `email`, `encryptedPassword`, `name`) VALUES
+(1, '2018-11-28 21:22:39', 'z@Chen.com', '$2y$10$6Tcc4Jw1.iN0zEU9QXhnZ.3WIy7qTlvjyKZGJzi1S0RMU27lCcQJm', 'Zhixiang Chen'),
+(2, '2018-11-28 21:22:42', 'j@Reyes.com', '$2y$10$74Y4HMLcJPfQj/Ho5ijKsuBqNZ2WHxfFvKxaaPJo.SFvybIxkf3yW', 'Jafet Reyes'),
+(3, '2018-11-28 21:22:45', 'b@Cancel.com', '$2y$10$Abcn5liCO35zfDuKGgzEaOOmO37k1hqMDMMrJuiAsfP0Z9w1EWeUq', 'Bryan Cancel'),
+(4, '2018-11-28 21:22:47', 'j@Guerrero.com', '$2y$10$53WshITNu79fB403gmIbgOEBmewACdZIdIeEl4FDoYkmTz.tAZ2Pi', 'Jerry Guerrero'),
+(5, '2018-11-28 21:42:22', 'e@Musk.com', '$2y$10$hiPo0TVwEL5JRmy90YHZ2uQDPzXczjfVLWxmqYemPr1IdxrA.RDMy', 'Elon Musk');
 
 -- --------------------------------------------------------
 
@@ -621,7 +735,7 @@ ALTER TABLE `utilitytype`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `amenity`
@@ -657,7 +771,7 @@ ALTER TABLE `continenttype`
 -- AUTO_INCREMENT for table `countrytype`
 --
 ALTER TABLE `countrytype`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=321;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=322;
 
 --
 -- AUTO_INCREMENT for table `issue`
@@ -693,13 +807,13 @@ ALTER TABLE `picture`
 -- AUTO_INCREMENT for table `property`
 --
 ALTER TABLE `property`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `utility`

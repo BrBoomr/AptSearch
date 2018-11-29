@@ -14,5 +14,13 @@ use Base\Property as BaseProperty;
  */
 class Property extends BaseProperty
 {
+    public function getOwnerName(){
+        $owner = UserQuery::create()->findPk($this->getUserid());
+        return $owner->getName();
+    }
 
+    public function getAddressName(){
+        $address = AddressQuery::create()->findPk($this->getAddressid());
+        return $address->getStreetname();
+    }
 }
