@@ -31,7 +31,7 @@ function current_user(){
 
 // home page route
 $app->get('/', function ($request, $response, $args) {
-	$this->view->render($response, "/search/search.html", ['user'=>current_user()]);
+	$this->view->render($response, "/search/index.html", ['user'=>current_user()]);
 	return $response;
 });
 
@@ -39,9 +39,14 @@ $app->get('/', function ($request, $response, $args) {
 //////////////////////////////
 /////////LOGIN ROUTES/////////
 //////////////////////////////
+$app->get('/TEMPLATE', function ($request, $response, $args) {
+	$this->view->render($response, "TEMPLATE/index.html");
+	return $response;
+});
+
 // Displays the login and registration forms
 $app->get('/authentication', function ($request, $response, $args) {
-	$this->view->render($response, "authentication/authentication.html");
+	$this->view->render($response, "authentication/index.html");
 	return $response;
 });
 // Frees up the $_SESSION variables, essentially logging an user out.
@@ -106,7 +111,7 @@ $app->post('/register_verification', function ($request, $response, $args) {
 //////////////////////////////
 $app->get('/view_all_listing', function ($request, $response, $args) {
 	$listings = PropertyQuery::create();
-	$this->view->render($response, "listing/listing.html",['user'=>current_user(),'listings'=>$listings]);
+	$this->view->render($response, "listing/index.html",['user'=>current_user(),'listings'=>$listings]);
 	return $response;
 });
 
@@ -114,10 +119,10 @@ $app->get('/view_my_listing', function ($request, $response, $args) {
 	if(current_user()){
 		$current_user = $_SESSION['user'];
 		$listings = PropertyQuery::create()->filterByUserid($current_user->getId());
-		$this->view->render($response, "listing/listing.html",['user'=>current_user(), 'listings'=>$listings,]);
+		$this->view->render($response, "listing/index.html",['user'=>current_user(), 'listings'=>$listings,]);
 	}
 	else{
-		$this->view->render($response, "authentication/authentication.html");
+		$this->view->render($response, "authentication/index.html");
 	}
 	
 	return $response;

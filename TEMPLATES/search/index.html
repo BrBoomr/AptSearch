@@ -1,4 +1,4 @@
-{% extends 'layout/layout.html' %}
+{% extends 'layout/index.html' %}
 
 {% block content %}
     <h1> SEARCH PAGE </h1>
@@ -106,11 +106,11 @@
 
 {% block styles %}
     <!--style sheet-->
-    <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/search/css/search.css">
+    <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/search/css/style.css">
 {% endblock %}
 
 {% block scripts %}
     <!--javascript connection but go before logic-->
-    <script src="{{ base_url() }}/../../TEMPLATES/search/javascript/searchConnection.js"></script>
-    <script src="{{ base_url() }}/../../TEMPLATES/search/javascript/searchLogic.js"></script>
+    <script src="{{ base_url() }}/../../TEMPLATES/search/javascript/connection.js"></script>
+    <script src="{{ base_url() }}/../../TEMPLATES/search/javascript/logic.js"></script>
 {% endblock %}
