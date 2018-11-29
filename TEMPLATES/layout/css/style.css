@@ -15,7 +15,7 @@ center align the mainDiv in the body within the body*/
 #scrollToTop { /*default button style*/
     /*unchanging*/
     display: table; 
-    background-color: #000000;
+    background-color: hsl(0, 0%, 0%);
     text-align: center;
     position: fixed;
     bottom: 30px;

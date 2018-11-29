@@ -1,16 +1,13 @@
 /*
+---IDs created for DOM manipulation---
+#scrollToTop
+#nav
 #navbarText
 #loginSpan
 #loginButton
-#greetSpan
+#logoutSpan
 #logoutButton
-
-
-#nav
 #body
-#footer
-
 #mainDiv
-
-#scrollToTop
+#footer
 */
