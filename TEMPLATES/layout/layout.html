@@ -44,10 +44,10 @@
 
     <!--nav bar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="nav">
-        <!--what is alwasy displayed on the nav bar-->
+        <!--what is ALWAYS displayed on the nav bar-->
         <a class="navbar-brand" href="{{ base_url() }}">
-          <img src="{{ base_url() }}/../../IMAGES/favicon.ico" width="30" height="30" class="d-inline-block align-top" alt="Logo">
-          Apartment Finder
+          <img src="{{ base_url() }}/../../IMAGES/favicon.ico" width="30" height="30" style="margin-right: 5px" class="d-inline-block align-top" alt="Logo">
+          Apartment Searcher |
         </a>
 
         <!--drop down button generated when screen becomes small-->
@@ -57,19 +57,31 @@
 
         <!--what the drop down button shows-->
         <div class="collapse navbar-collapse" id="navbarText">
-            {% if not user %}
-              <span class="navbar-text" id = "loginSpan">
-                  <button type="button" class="btn btn-primary btn-sm" id="loginButton">
-                      <a href="{{ base_url() }}/authentication">Login</a>
-                  </button>
-              </span>
-            {% else %}
-            <!--TODO add navigation to all the other user pages-->
-            <span class="navbar-text" id ="greetSpan">
-                <p userid = "{{ user.getId() }}"> Welcome, {{ user.getName() }}</p>
-                <button type="button" class="btn btn-primary btn-sm" id="logoutButton">Logout</button>
-            </span>
-            {% endif %}
+          <!--LEFT Aligned Elements-->
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+                {% if not user %}
+                  <span class="navbar-text" id = "loginSpan">
+                      <form action="{{ base_url() }}/authentication">
+                        <button type="submit" class="btn btn-sm" id="loginButton">Log in</button>
+                      </form>
+                  </span>
+                {% else %}
+                <!--TODO add navigation to all the other user pages-->
+                <span class="navbar-text" id ="greetSpan">
+                    <p userid = "{{ user.getId() }}"> Welcome, {{ user.getName() }}</p>
+                    <button type="button" class="btn btn-sm" id="logoutButton">Logout</button>
+                </span>
+                {% endif %}
+            </li>
+          </ul>
+            
+          <!--RIGHT aligned Elements-->
+          <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Other Links and stuff</a>
+            </li>
+          </ul>
         </div>
     </nav>
 

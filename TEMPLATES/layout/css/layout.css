@@ -55,6 +55,12 @@ center align the mainDiv in the body within the body*/
     opacity: .5;
 }
 
+/*-------------------------nav bar styling-------------------------*/
+
+#nav{
+    font-size: 1.5em;
+}
+
 /*-------------------------footer styling-------------------------*/
 
 #footer {
@@ -156,4 +162,10 @@ center align the mainDiv in the body within the body*/
 
 #footer .col-sm-3, #footer .col-sm-2 {
     text-align: center;
+}
+
+/*-------------------------login button styling-------------------------*/
+
+#loginButton{
+    background-color: #d84b6b;
 }
