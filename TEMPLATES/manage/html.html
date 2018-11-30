@@ -1,0 +1,23 @@
+{% extends 'layout/html.html' %}
+
+{% block content %}
+    <h1>MANAGE PROPERTIES PAGE</h1>
+    <br>
+    <ul>
+        <li>this should allow us to view all of our own properties the same way a user would view them</li>
+        <li>unlike the search page the show more button should be replaced by an edit property button</li>
+        <li>on each property there should be some form of switch that will allow us to change the availability status of a property [we might want to also show this in the search page]</li>
+        <li>IT WOULD BE NICE: if this had some sort of "sort by" tool</li>
+        <li>IT WOULD BE NICE: if you could rearrange the properties by this would require a new attribute to the properties table (no you can't just use the properties ID because well its ID must stay the same)</li>
+    </ul>
+{% endblock %}
+
+{% block styles %}
+    <!--style sheet-->
+    <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/manage/css.css">
+{% endblock %}
+
+{% block scripts %}
+    <!--javascript-->
+    <script src="{{ base_url() }}/../../TEMPLATES/manage/js.js"></script>
+{% endblock %}

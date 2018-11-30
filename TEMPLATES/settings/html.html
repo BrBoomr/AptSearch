@@ -1,0 +1,20 @@
+{% extends 'layout/html.html' %}
+
+{% block content %}
+<h1>SETTINGS PAGE</h1>
+<br>
+<ul>
+    <li>this should allow the user to change anything about their account with much friction (for now)</li>
+    <li>IT MIGHT BE NICE if we made something so that the user needs to use their password to make big changes</li>
+</ul>
+{% endblock %}
+
+{% block styles %}
+    <!--style sheet-->
+    <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/settings/css.css">
+{% endblock %}
+
+{% block scripts %}
+    <!--javascript-->
+    <script src="{{ base_url() }}/../../TEMPLATES/settings/js.js"></script>
+{% endblock %}
