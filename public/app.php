@@ -25,12 +25,6 @@ $container['view'] = function ($container) {
 //-------------------------IMPORT ALL PHP FILES FROM OTHER PAGES-------------------------
 require './prototypes.php'; //stores routes that don't yet have a page assigned to them
 
-require '../TEMPLATES/authentication/app.php';
-require '../TEMPLATES/layout/app.php';
-require '../TEMPLATES/search/app.php';
-require '../TEMPLATES/addProperty/app.php';
-require '../TEMPLATES/TEMPLATE/app.php';
-
 //-------------------------START THE APP-------------------------
 $app->run();
 ?>

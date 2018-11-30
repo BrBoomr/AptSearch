@@ -3,6 +3,19 @@
 //THIS FILE SHOULD BE AS EMPTY AS POSSIBLE
 //--------------------------------------------------
 
+//-------------------------UI TEST ROUTES-------------------------
+
+$app->get('/UI', function ($request, $response, $args) {
+	$this->view->render($response, "searchUI/index.html");
+	return $response;
+});
+
+$app->get('/authenticationUI', function ($request, $response, $args) {
+    $this->view->render($response, "authenticationUI/index.html");
+	return $response;
+});
+
+
 //-------------------------FUNCTIONS-------------------------
 
 function createAddress($continent,$country,$state,$city,$zipcode,$street,$bldNum,$aptNum){
@@ -53,27 +66,25 @@ function createUser($name, $email, $password){
 
 //-------------------------GET-------------------------
 
-//---refined
-
 //homepage (search)
 $app->get('/', function ($request, $response, $args) {
-	$this->view->render($response, "/search/index.html", ['user'=>current_user()]);
+	$listings = PropertyQuery::create();
+	$this->view->render($response, "/search/index.html",['user'=>current_user(),'listings'=>$listings]);
 	return $response;
 });
 
-$app->get('/authentication', function ($request, $response, $args) {
-    $this->view->render($response, "authentication/index.html"
-    );
-	return $response;
-});
-
-//---unrefined
 
 // home page route
 
 
 $app->get('/TEMPLATE', function ($request, $response, $args) {
 	$this->view->render($response, "TEMPLATE/index.html");
+	return $response;
+});
+
+$app->get('/authentication', function ($request, $response, $args) {
+    $this->view->render($response, "authentication/index.html"
+    );
 	return $response;
 });
 
@@ -161,5 +172,6 @@ $app->post('/update_listing', function ($request, $response, $args) {
 //-------------------------PATCH-------------------------
 
 //-------------------------DELETE-------------------------
+
 
 ?>
