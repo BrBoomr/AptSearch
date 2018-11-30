@@ -6,12 +6,13 @@
 //-------------------------UI TEST ROUTES-------------------------
 
 $app->get('/UI', function ($request, $response, $args) {
-	$this->view->render($response, "searchUI/index.html");
+	$this->view->render($response, "searchUI/html.html");
 	return $response;
 });
 
 $app->get('/authenticationUI', function ($request, $response, $args) {
-    $this->view->render($response, "authenticationUI/index.html");
+	$this->view->render($response, "authenticationUI/html.html",
+	['login'=>false]);
 	return $response;
 });
 
@@ -37,7 +38,7 @@ function createUser($name, $email, $password){
 //homepage (search)
 $app->get('/', function ($request, $response, $args) {
 	$listings = PropertyQuery::create();
-	$this->view->render($response, "/search/index.html",['user'=>current_user(),'listings'=>$listings]);
+	$this->view->render($response, "/search/html.html",['user'=>current_user(),'listings'=>$listings]);
 	return $response;
 });
 
@@ -46,12 +47,12 @@ $app->get('/', function ($request, $response, $args) {
 
 
 $app->get('/TEMPLATE', function ($request, $response, $args) {
-	$this->view->render($response, "TEMPLATE/index.html");
+	$this->view->render($response, "TEMPLATE/html.html");
 	return $response;
 });
 
 $app->get('/authentication', function ($request, $response, $args) {
-    $this->view->render($response, "authentication/index.html"
+    $this->view->render($response, "authentication/html.html"
     );
 	return $response;
 });
@@ -60,7 +61,7 @@ $app->get('/authentication', function ($request, $response, $args) {
 
 $app->get('/view_all_listing', function ($request, $response, $args) {
 	$listings = PropertyQuery::create();
-	$this->view->render($response, "listing/index.html",['user'=>current_user(),'listings'=>$listings]);
+	$this->view->render($response, "listing/html.html",['user'=>current_user(),'listings'=>$listings]);
 	return $response;
 });
 
@@ -68,10 +69,10 @@ $app->get('/view_my_listing', function ($request, $response, $args) {
 	if(current_user()){
 		$current_user = $_SESSION['user'];
 		$listings = PropertyQuery::create()->filterByUserid($current_user->getId());
-		$this->view->render($response, "listing/index.html",['user'=>current_user(), 'listings'=>$listings,]);
+		$this->view->render($response, "listing/html.html",['user'=>current_user(), 'listings'=>$listings,]);
 	}
 	else{
-		$this->view->render($response, "authentication/index.html");
+		$this->view->render($response, "authentication/html.html");
 	}
 	
 	return $response;
@@ -142,10 +143,10 @@ $app->post('/update_listing', function ($request, $response, $args) {
 ////////////////////////////////////////////////////////////////////////
 $app->get('/add_property', function ($request, $response, $args) {
 	if(current_user()){
-		$this->view->render($response, "/addProperty/index.html", ['user'=>current_user()]);
+		$this->view->render($response, "/addProperty/html.html", ['user'=>current_user()]);
 		return $response;
 	}
-	$this->view->render($response, "/authentication/index.html", ['user'=>current_user()]);
+	$this->view->render($response, "/authentication/html.html", ['user'=>current_user()]);
 	return $response;
 });
 

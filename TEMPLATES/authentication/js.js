@@ -1,6 +1,7 @@
 //console.log("authentication's logic file loaded (hopefully after connection)")
 $('#loginSubmit').click(function(){
     event.preventDefault(); //prevents page from reloading before authentication is done
+    console.log("logging in")
     loginEmail = $('#loginEmail').val()
     loginPassword = $('#loginPassword').val()
 
@@ -22,6 +23,7 @@ $('#loginSubmit').click(function(){
 
 $("#registerSubmit").click(function(){
     event.preventDefault()
+    console.log("registering")
     //registration = []
     //registerFirstName = $("#registerFirstName").val()
     //registerLastName = $("#registerLastName").val()

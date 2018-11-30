@@ -1,3 +1,17 @@
+/*
+---IDs created for DOM manipulation---
+#scrollToTop
+#nav
+#navbarText
+#loginSpan
+#loginButton
+#logoutSpan
+#logoutButton
+#body
+#mainDiv
+#footer
+*/
+
 //using the (1) height of the screen and the (2) height of the navbar
 //make the min height of the body just large enough to keep the footer out of view
 

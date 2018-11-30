@@ -65,11 +65,10 @@
 
 {% block styles %}
     <!--style sheet-->
-    <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/addProperty/css/style.css">
+    <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/addProperty/css.css">
 {% endblock %}
 
 {% block scripts %}
-    <!--javascript connection but go before logic-->
-    <script src="{{ base_url() }}/../../TEMPLATES/addProperty/javascript/connection.js"></script>
-    <script src="{{ base_url() }}/../../TEMPLATES/addProperty/javascript/logic.js"></script>
+    <!--javascript-->
+    <script type="module" src="{{ base_url() }}/../../TEMPLATES/addProperty/js.js"></script>
 {% endblock %}

@@ -66,11 +66,10 @@
 
 {% block styles %}
     <!--style sheet-->
-    <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/authentication/css/style.css">
+    <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/authentication/css.css">
 {% endblock %}
 
 {% block scripts %}
-    <!--javascript connection but go before logic-->
-    <script src="{{ base_url() }}/../../TEMPLATES/authentication/javascript/connection.js"></script>
-    <script src="{{ base_url() }}/../../TEMPLATES/authentication/javascript/logic.js"></script>
+    <!--javascript-->
+    <script type="module" src="{{ base_url() }}/../../TEMPLATES/authentication/js.js"></script>
 {% endblock %}

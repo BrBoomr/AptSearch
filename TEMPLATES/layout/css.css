@@ -1,3 +1,35 @@
+/*-------------------------styling reset-------------------------*/
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+ margin:0;
+ padding:0;
+ border:0;
+ outline:0;
+ background:transparent;
+}
+
+body{
+    font-size: 1em;
+}
+
+h1 { font-size: 1.75em; }
+h2 { font-size: 1.55em; }
+h3 { font-size: 1.35em; }
+h4 { font-size: 1.15em; }
+h5 { font-size: .95em; }
+h6 { font-size: .75em; }
+
 /*since the body might have a larger min height than what is in it
 center align the mainDiv in the body within the body*/
 
