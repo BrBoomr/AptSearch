@@ -65,7 +65,8 @@ function createUser($name, $email, $password){
 
 //homepage (search)
 $app->get('/', function ($request, $response, $args) {
-	$this->view->render($response, "/search/index.html", ['user'=>current_user()]);
+	$listings = PropertyQuery::create();
+	$this->view->render($response, "/search/index.html",['user'=>current_user(),'listings'=>$listings]);
 	return $response;
 });
 
