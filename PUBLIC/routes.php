@@ -1,5 +1,94 @@
 <?php
 
+//-------------------------FUNCTIONS-------------------------
+
+function current_user(){
+	if(isset($_SESSION['user'])){
+		return $_SESSION['user'];
+	}
+}
+
+//-------------------------SEARCH PAGE-------------------------
+
+$app->get('/', function ($request, $response, $args) {
+	$listings = PropertyQuery::create();
+	$this->view->render($response, "/search/html.html",
+		['user'=>current_user(),
+		'listings'=>$listings
+	]);
+	return $response;
+});
+
+//-------------------------AUTHENTICATION PAGE-------------------------
+
+$app->get('/authentication', function ($request, $response, $args) {
+    $this->view->render($response, "authentication/html.html",
+    ['login'=>false]); //NOTE this is an option paramter and therefore we can automatically send someone to the login or sign up page
+	return $response;
+});
+
+$app->post('/login', function($request, $response, $args) {
+	$postVars = $request->getParsedBody();
+	$email = $postVars['email'];
+	$password = $postVars['password'];
+
+	//retreive user by username
+	$user = UserQuery::create()->findOneByEmail($email);
+	$userID = -1;
+	$message = "";
+
+	//react to finding user
+	if($user){ //if user exists make sure they have the right password
+		if(password_verify($password, $user->getEncryptedpassword())) $userID = $user->getId();
+		else $message = "Incorrect password";
+	}
+	else{ //else create an account for that user
+		$message = "This email isn't registered <br> You can create an account by pressing the link below";
+	}
+
+	//return required data
+	echo json_encode(array('userID' => $userID, 'message' => $message));
+});
+
+$app->post('/signup', function ($request, $response, $args) {
+	$postVars = $request->getParsedBody();
+	$name = $postVars['name'];
+	$email = $postVars['email'];
+	$password = $postVars['password'];
+	$confirmPassword = $postVars['confirmPassword'];
+
+	//attempt to retreive user by email
+	$user = UserQuery::create()->findOneByEmail($email);
+	$userID = -1;
+	$message = "";
+
+	//react to finding user
+	if($user) $message ="This email is already registered <br> You can login to the account by pressing the link below";
+	else{
+		$newUser = new User();
+		$newUser->setName($name);
+		$newUser->setEmail($email);
+		$newUser->setPassword($password);
+		$newUser->save();
+		$userID = $newUser->getId();
+	}
+
+	//return required data
+	echo json_encode(array('userID' => $userID, 'message' => $message));
+});
+
+//post request used to store user into Session
+$app->post("/success",function($request,$response,$args){
+	$userID = $request->getParsedBody()['userID'];
+
+	$user = UserQuery::create()->findPk($userID);
+	if($user){
+		$_SESSION['user'] = $user;
+		echo "";
+	}
+	else echo "Internal Error <br> User Not Found";
+});
+
 //-------------------------UI TEST ROUTES-------------------------
 
 $app->get('/UI', function ($request, $response, $args) {
@@ -7,61 +96,12 @@ $app->get('/UI', function ($request, $response, $args) {
 	return $response;
 });
 
-$app->get('/authenticationUI', function ($request, $response, $args) {
-	$this->view->render($response, "authenticationUI/html.html",
-	['login'=>false]);
-	return $response;
-});
 
-$app->post('/login', function($request, $response, $args) {
-	$postVars = $request->getParsedBody();
-	$username = $postVars['email'];
-	$password = $postVars['password'];
-	//retreive user by username
-	$user = UserQuery::create()->findOneByUsername($username);
-	
-	if($user){ //if user exists make sure they have the right password
-		if(password_verify($password, $user->getPasswordHash())){
-			echo $user->getPasswordHash();
-		}
-		else{
-			echo "none";
-		}
-	}
-	else{ //else create an account for that user
-		$newUser = new User();
-		$newUser->setUsername($username);
-		$newUser->setPasswordHash(password_hash($password, PASSWORD_DEFAULT));
-		$newUser->save();
-		echo $newUser->getPasswordHash();
-	}
-});
-
-
-//-------------------------FUNCTIONS-------------------------
-function current_user(){
-	if(isset($_SESSION['user'])){
-		return $_SESSION['user'];
-	}
-}
-
-function createUser($name, $email, $password){
-	$newUser = new User();
-	$newUser->setName($name);
-	$newUser->setEmail($email);
-	$newUser->setPassword($password);
-	$newUser->save();
-	return $newUser->getId();
-}
 
 //-------------------------GET-------------------------
 
 //homepage (search)
-$app->get('/', function ($request, $response, $args) {
-	$listings = PropertyQuery::create();
-	$this->view->render($response, "/search/html.html",['user'=>current_user(),'listings'=>$listings]);
-	return $response;
-});
+
 
 
 // home page route
@@ -72,11 +112,7 @@ $app->get('/TEMPLATE', function ($request, $response, $args) {
 	return $response;
 });
 
-$app->get('/authentication', function ($request, $response, $args) {
-    $this->view->render($response, "authentication/html.html"
-    );
-	return $response;
-});
+
 
 // Displays the login and registration forms
 
@@ -124,36 +160,9 @@ $app->post('/login_verification', function ($request, $response, $args) {
 	return json_encode(['verified' => 'false']);
 });
 
-$app->post("/success_login",function($request,$response,$args){
-	$userID = $this->request->getParam('userID');
-	$_SESSION['user']=UserQuery::create()->findPk($userID);
-});
 
-$app->post('/register_verification', function ($request, $response, $args) {
-	$name = $this->request->getParam("name");
-	$email = $this->request->getParam("email");
-	$password = $this->request->getParam("password");
-	$confirm = $this->request->getParam("confirm");
 
-	$fields = array($name,$email,$password,$confirm);
-	foreach($fields as $field){
-		if(empty($field)){
-			return json_encode(['invalid'=>'true']);
-		}
-	}
 
-	if($password != $confirm){
-		//$code["invalid"]='true';
-		return json_encode( ["mismatch"=>'true'] );
-	}
-
-	$check_user = UserQuery::create()->findOneByEmail($email);
-	if($check_user){
-		return json_encode(['duplicate'=>'true']);
-	}
-	$userID=createUser($name,$email,$password);
-	return json_encode(['verified'=>'true','userID'=>$userID]);
-});
 
 $app->post('/update_listing', function ($request, $response, $args) {
 	

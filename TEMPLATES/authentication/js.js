@@ -47,27 +47,26 @@ $(submitButton).on("click", function(){
 })
 
 function logIn(){
-    message = checkEmail() + checkIfEmpty(password, "password")
+    //check for input error
+    var message = checkEmail() + checkIfEmpty(password, "password")
+
+    //depeding on input try to login
     if(message == ""){
+        //hide the error
         hideError()
 
         //try to login (error checks will be done on server)
-        /*
         $.ajax({
-            method: "post",
-            url: baseurl + "/login_verification",
-            data: {"email" : loginEmail, "password" : loginPassword},
-            dataType: "json",
+            method: "POST",
+            url: baseurl + "/login",
+            data: {
+                "email" : $(email).val(),
+                "password" : $(password).val()
+            },
             success: function (response) {
-                if(response['verified'] == "true"){
-                    loginPage(response['userID'])
-                }
-                else{
-                    $('#loginError').show()
-                }
+                reactToSuccess(response)
             }
         });
-        */
     }
     else{
         showError(message)
@@ -75,66 +74,59 @@ function logIn(){
 }
 
 function signUp(){
-    message = checkIfEmpty(name, "name") + checkEmail() + checkIfEmpty(password, "password") + checkIfEmpty(confirmPassword, "password confirmation")
+    //check for input error
+    var message = checkIfEmpty(name, "name") 
+        + checkEmail() 
+        + checkIfEmpty(password, "password") 
+        + checkIfEmpty(confirmPassword, "password confirmation") 
+        + checkPasswordMatch()
+
+    //depending on input try to sign up
     if(message == ""){
         hideError()
 
         //try to signup (error checks will be done on server)
-        /*
         $.ajax({
-            method: "post",
-            url: baseurl + "/register_verification",
-            data: {"name" : registerName,
-                    "email" : registerEmail,
-                    "password" : registerPassword,
-                    "confirm" : confirmPassword},
-            dataType: "json",
+            method: "POST",
+            url: baseurl + "/signup",
+            data: {
+                "name" : $(name).val(),
+                "email" : $(email).val(),
+                "password" : $(password).val(),
+                "confirmPassword" : $(confirmPassword).val()
+            },
             success: function (response) {
-                if(response['verified']=='true'){
-                    loginPage(response["userID"])
-                }
-                else if(response['mismatch'] == 'true'){
-                    //console.log("Passwords mismatch")
-                    $("#registerError").removeClass("d-none")
-                    $("#registerError").text("Passwords Do Not Match!")
-                }
-                else if(response['invalid'] == 'true'){
-                    //console.log("Fields Cannot Be Empty!")
-                    $("#registerError").removeClass("d-none")
-                    $("#registerError").text("Fields Cannot Be Empty!")
-                }
-                else if(response['duplicate']== 'true'){
-                    //console.log("Email already in use!")
-                    $("#registerError").removeClass("d-none")
-                    $("#registerError").text("Email Already In Use!")
-                }
-                else{
-                    //console.log("All's fucked")
-                    $("#registerError").removeClass("d-none")
-                    $("#registerError").text("You Broke Something, Go Away!")
-                    //Internal Error Handling.
-                }
+                reactToSuccess(response)
             }
         });
-        */
     }
     else{
         showError(message)
     }
 }
 
-function mysterymethod(userID){
-    $.ajax({
-        method: "post",
-        url: baseurl + "/success_login",
-        data: {"userID" : userID},
-        dataType: "text",
-        success: function (r) {
-            //$("body").html(r)
-            //$("p").attr("userid",userID) //Assigns the tag the current user's ID. Not sure how we can use this yet.
-            window.location(baseurl + "/")
-        }
-    });
+function reactToSuccess(response){
+
+    //save user data
+    response = JSON.parse(response)
+    var userID = response["userID"]
+    var message = response["message"]
+
+    //try to reroute to our login page
+    if(message == ""){
+        //ajax request to save our user using SESSION
+        $.ajax({
+            method: "post",
+            url: baseurl + "/success", 
+            data: {"userID" : userID},
+            success: function(response){
+                //TODO... reroute this to go into manage page that shows you all your own listing
+                if(response == "") window.location.replace(baseurl + "/")
+                else showError(response)
+            }
+        });
+    }
+    else showError(message)
 }
 
 //------------------------------Error Management
@@ -144,30 +136,30 @@ function hideError(){
 }
 
 function showError(message){
-    $(error).clear()
-    $(error).text(message)
+    $(error).show()
+    $(error).html(message)
 }
 
 //------------------------------Client Side Error Checking
 
 function checkIfEmpty(elem, elemName){
-    if(isEmpty(elem)) return "You forgot your " + elemName + "\n"
+    if(isEmpty(elem)) return "You forgot your " + elemName + "<br>"
     else return ""
 }
 
 function checkEmail(){
-    if(isEmpty(email)) return "You forgot your email\n"
-    else if(validate($(email).text()) == false) return "You didn't plug in a valid email\n"
+    if(isEmpty(email)) return "You forgot your email<br>"
+    else if(validateEmail($(email).val()) == false) return "You didn't plug in a valid email<br>"
     else return ""
 }
 
 function checkPasswordMatch(){
-    if($(password).text() == $(confirmPassword).text()) return ""
-    else return "Your passwords don't match\n"
+    if($(password).val() == $(confirmPassword).val()) return ""
+    else return "Your passwords don't match<br>"
 }
 
 function isEmpty(elem){
-    if($(elem).text() == "") return true
+    if($(elem).val() == "") return true
     else false
 }
 

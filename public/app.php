@@ -6,8 +6,9 @@ require '../vendor/autoload.php';
 require_once '../generated-conf/config.php';
 
 //-------------------------SETUP-------------------------
-// adding an external config file to show errors
+//start our session
 session_start();
+// adding an external config file to show errors
 $settings = ['displayErrorDetails' => true];
 $app = new \Slim\App(['settings' => $settings]);
 // Twig setup
