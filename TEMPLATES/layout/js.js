@@ -12,6 +12,17 @@
 #footer
 */
 
+$("#logout").on("click", function(){
+    event.preventDefault()
+    $.ajax({
+        method: "POST",
+        url: baseurl + "/logout",
+        success: function (response) {
+            location.reload(true); //TODO... replae this with a javascript function that changes the elements in the page that need it
+        }
+    });
+})
+
 //using the (1) height of the screen and the (2) height of the navbar
 //make the min height of the body just large enough to keep the footer out of view
 

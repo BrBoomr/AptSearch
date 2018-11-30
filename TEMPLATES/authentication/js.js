@@ -120,8 +120,7 @@ function reactToSuccess(response){
             url: baseurl + "/success", 
             data: {"userID" : userID},
             success: function(response){
-                //TODO... reroute this to go into manage page that shows you all your own listing
-                if(response == "") window.location.replace(baseurl + "/")
+                if(response == "") window.location.assign(baseurl + "/manage")
                 else showError(response)
             }
         });
