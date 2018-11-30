@@ -22,7 +22,7 @@ $("#registerSubmit").click((e)=>{
     //console.log(fields)
     $.ajax({
         method: "post",
-        url: baseurl + "/verifyProperty",
+        url: baseurl + "/verify_property",
         data: fields,
         dataType: "json",
         success: function (response) {

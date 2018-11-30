@@ -140,7 +140,7 @@ $app->post('/update_listing', function ($request, $response, $args) {
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////addProperty//////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
-$app->get('/addProperty', function ($request, $response, $args) {
+$app->get('/add_property', function ($request, $response, $args) {
 	if(current_user()){
 		$this->view->render($response, "/addProperty/index.html", ['user'=>current_user()]);
 		return $response;
@@ -149,7 +149,7 @@ $app->get('/addProperty', function ($request, $response, $args) {
 	return $response;
 });
 
-$app->post('/verifyProperty', function ($request, $response, $args) {
+$app->post('/verify_property', function ($request, $response, $args) {
 	//$fields = $this->request->getQueryParams();
 	$fields = $_POST;
 	foreach($fields as $field){
