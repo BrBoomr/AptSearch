@@ -5,8 +5,13 @@
 
 //-------------------------UI TEST ROUTES-------------------------
 
-$app->get('/ui', function ($request, $response, $args) {
-	$this->view->render($response, "/searchUI/index.html");
+$app->get('/UI', function ($request, $response, $args) {
+	$this->view->render($response, "searchUI/index.html");
+	return $response;
+});
+
+$app->get('/authenticationUI', function ($request, $response, $args) {
+    $this->view->render($response, "authenticationUI/index.html");
 	return $response;
 });
 
@@ -61,8 +66,6 @@ function createUser($name, $email, $password){
 
 //-------------------------GET-------------------------
 
-//---refined
-
 //homepage (search)
 $app->get('/', function ($request, $response, $args) {
 	$listings = PropertyQuery::create();
@@ -70,19 +73,18 @@ $app->get('/', function ($request, $response, $args) {
 	return $response;
 });
 
-$app->get('/authentication', function ($request, $response, $args) {
-    $this->view->render($response, "authentication/index.html"
-    );
-	return $response;
-});
-
-//---unrefined
 
 // home page route
 
 
 $app->get('/TEMPLATE', function ($request, $response, $args) {
 	$this->view->render($response, "TEMPLATE/index.html");
+	return $response;
+});
+
+$app->get('/authentication', function ($request, $response, $args) {
+    $this->view->render($response, "authentication/index.html"
+    );
 	return $response;
 });
 
