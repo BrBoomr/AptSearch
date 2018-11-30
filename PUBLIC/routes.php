@@ -1,7 +1,4 @@
 <?php
-//--------------------------------------------------
-//THIS FILE SHOULD BE AS EMPTY AS POSSIBLE
-//--------------------------------------------------
 
 //-------------------------UI TEST ROUTES-------------------------
 
@@ -14,6 +11,30 @@ $app->get('/authenticationUI', function ($request, $response, $args) {
 	$this->view->render($response, "authenticationUI/html.html",
 	['login'=>false]);
 	return $response;
+});
+
+$app->post('/login', function($request, $response, $args) {
+	$postVars = $request->getParsedBody();
+	$username = $postVars['email'];
+	$password = $postVars['password'];
+	//retreive user by username
+	$user = UserQuery::create()->findOneByUsername($username);
+	
+	if($user){ //if user exists make sure they have the right password
+		if(password_verify($password, $user->getPasswordHash())){
+			echo $user->getPasswordHash();
+		}
+		else{
+			echo "none";
+		}
+	}
+	else{ //else create an account for that user
+		$newUser = new User();
+		$newUser->setUsername($username);
+		$newUser->setPasswordHash(password_hash($password, PASSWORD_DEFAULT));
+		$newUser->save();
+		echo $newUser->getPasswordHash();
+	}
 });
 
 
