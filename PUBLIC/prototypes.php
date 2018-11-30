@@ -3,6 +3,14 @@
 //THIS FILE SHOULD BE AS EMPTY AS POSSIBLE
 //--------------------------------------------------
 
+//-------------------------UI TEST ROUTES-------------------------
+
+$app->get('/ui', function ($request, $response, $args) {
+	$this->view->render($response, "/searchUI/index.html");
+	return $response;
+});
+
+
 //-------------------------FUNCTIONS-------------------------
 
 function createAddress($continent,$country,$state,$city,$zipcode,$street,$bldNum,$aptNum){
@@ -161,5 +169,6 @@ $app->post('/update_listing', function ($request, $response, $args) {
 //-------------------------PATCH-------------------------
 
 //-------------------------DELETE-------------------------
+
 
 ?>
