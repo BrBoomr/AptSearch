@@ -7,6 +7,7 @@ require_once '../generated-conf/config.php';
 
 //-------------------------SETUP-------------------------
 // adding an external config file to show errors
+session_start();
 $settings = ['displayErrorDetails' => true];
 $app = new \Slim\App(['settings' => $settings]);
 // Twig setup

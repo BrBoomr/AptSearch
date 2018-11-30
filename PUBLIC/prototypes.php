@@ -119,7 +119,7 @@ $app->get('/add_listing', function ($request, $response, $args) {
 //-------------------------POST-------------------------
 
 // Frees up the $_SESSION variables, essentially logging an user out.
-$app->post('/logout', function ($request, $response, $args) {
+$app->get('/logout', function ($request, $response, $args) {
 	session_destroy();
 });
 
@@ -169,7 +169,7 @@ $app->post('/update_listing', function ($request, $response, $args) {
 	
 });
 
-$app->get('/newProperty', function ($request, $response, $args) {
+$app->get('/addProperty', function ($request, $response, $args) {
 	if(current_user()){
 		$this->view->render($response, "/addProperty/index.html", ['user'=>current_user()]);
 		return $response;

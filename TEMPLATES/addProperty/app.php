@@ -2,8 +2,6 @@
 
 
 //homepage (search)
-
-
 $app->post('/verifyProperty', function ($request, $response, $args) {
 	$fields = $this->request->getQueryParams();
 	foreach($fields as $field){
