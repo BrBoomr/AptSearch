@@ -17,38 +17,6 @@ $app->get('/authenticationUI', function ($request, $response, $args) {
 
 
 //-------------------------FUNCTIONS-------------------------
-
-function createAddress($continent,$country,$state,$city,$zipcode,$street,$bldNum,$aptNum){
-	$newAddr = new Address();
-	$newAddr->setContinenttypeid($continent);
-	$newAddr->setCountrytypeid($country);
-	$newAddr->setState($state);
-	$newAddr->setLocality($city);
-	$newAddr->setZipcode($zipcode);
-	$newAddr->setStreetname($street);
-	$newAddr->setBuildingindentifier($bldNum);
-	$newAddr->setApartmentidentifier($aptNum);
-
-	//$newAddr->save();
-	echo "Address Added on ".$street." !</br>";
-}
-
-function createPropery($addrId,$userID,$postName,$available,$rent,$sqrFoot,$bedrooms,$bathrooms,$details){
-	$newProp = new Property();
-	$newProp->setAddressid($addrId);
-	$newProp->setUserid($userID);
-	$newProp->setPostname($postName);
-	$newProp->setAvailable($available);
-	$newProp->setExpectedrentpermonth($rent);
-	$newProp->setSquarefootage($sqrFoot);
-	$newProp->setBedroomcount($bedrooms);
-	$newProp->setBathroomcount($bathrooms);
-	$newProp->setDetails($details);
-
-	//$newProp->save();
-	echo "New Property Added!</br>";
-}
-
 function current_user(){
 	if(isset($_SESSION['user'])){
 		return $_SESSION['user'];
@@ -169,6 +137,9 @@ $app->post('/update_listing', function ($request, $response, $args) {
 	
 });
 
+////////////////////////////////////////////////////////////////////////
+///////////////////////addProperty//////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 $app->get('/addProperty', function ($request, $response, $args) {
 	if(current_user()){
 		$this->view->render($response, "/addProperty/index.html", ['user'=>current_user()]);
@@ -177,6 +148,44 @@ $app->get('/addProperty', function ($request, $response, $args) {
 	$this->view->render($response, "/authentication/index.html", ['user'=>current_user()]);
 	return $response;
 });
+
+$app->post('/verifyProperty', function ($request, $response, $args) {
+	//$fields = $this->request->getQueryParams();
+	$fields = $_POST;
+	foreach($fields as $field){
+		if(empty($field)){
+			return json_encode(['valid'=>'false']);
+		}
+	}
+	createProperty($fields);
+	return json_encode(['valid'=>'true']);
+});
+
+function createProperty($fields){
+	$newAddr = new Address();
+	$newAddr->setContinenttypeid(1);
+	$newAddr->setCountrytypeid(321);
+	$newAddr->setState($fields['state']);
+	$newAddr->setLocality($fields['locality']);
+	$newAddr->setZipcode($fields['zip']);
+	$newAddr->setStreetname($fields['street']);
+	$newAddr->setBuildingindentifier($fields['buildNum']);
+	$newAddr->setApartmentidentifier($fields['aptNum']);
+	$newAddr->save();
+
+	$newProperty = new Property();
+	$newProperty->setAddressid($newAddr->getId());
+	$newProperty->setUserid(current_user()->getId());
+	$newProperty->setPostname($fields['postName']);
+	$newProperty->setAvailable(true);
+	$newProperty->setExpectedrentpermonth($fields['rent']);
+	$newProperty->setSquarefootage($fields['sqrFootage']);
+	$newProperty->setBedroomcount($fields['bedrooms']);
+	$newProperty->setBathroomcount($fields['bathrooms']);
+	$newProperty->save();
+}
+////////////////////////////////////////////////////////////////////////
+
 
 //-------------------------PATCH-------------------------
 

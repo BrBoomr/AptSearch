@@ -17,16 +17,17 @@ $("#registerSubmit").click((e)=>{
         bedrooms : $("#registerBedrooms").val(),
         bathrooms : $("#registerBathrooms").val(),
     }
-    //console.log(fields)
-    fields = JSON.stringify(fields)
     
+    //fields = JSON.stringify(fields)
+    //console.log(fields)
     $.ajax({
         method: "post",
         url: baseurl + "/verifyProperty",
         data: fields,
         dataType: "json",
         success: function (response) {
-            //console.log(response)
+            //console.log(response['valid'])
+
             if(response['valid']=='true'){
                 $("#registerError").text("Successfuly Added Property!")
                 $("#registerError").addClass("alert-success")
