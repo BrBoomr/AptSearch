@@ -169,6 +169,15 @@ $app->post('/update_listing', function ($request, $response, $args) {
 	
 });
 
+$app->get('/newProperty', function ($request, $response, $args) {
+	if(current_user()){
+		$this->view->render($response, "/addProperty/index.html", ['user'=>current_user()]);
+		return $response;
+	}
+	$this->view->render($response, "/authentication/index.html", ['user'=>current_user()]);
+	return $response;
+});
+
 //-------------------------PATCH-------------------------
 
 //-------------------------DELETE-------------------------

@@ -2,13 +2,7 @@
 
 
 //homepage (search)
-$app->get('/newProperty', function ($request, $response, $args) {
-	if(current_user()){
-		$this->view->render($response, "/addProperty/index.html", ['user'=>current_user()]);
-	}
-	$this->view->render($response, "/search/index.html", ['user'=>current_user()]);
-	return $response;
-});
+
 
 $app->post('/verifyProperty', function ($request, $response, $args) {
 	$fields = $this->request->getQueryParams();
