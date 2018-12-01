@@ -13,8 +13,13 @@ function current_user(){
 $app->get('/', function ($request, $response, $args) {
 	$properties = PropertyQuery::create()->filterByAvailable(true); //only show properties that are currently available
 	$pictures = PictureQuery::create(); //pass all the pictures and simply filter through this for every property in the html
+	$addresses = AddressQuery::create(); //ditto as above
 	$this->view->render($response, "/properties/html.html", 
-		['user'=>current_user(), 'search'=>true, 'properties'=>$properties, 'pictures'=>$pictures]);
+		['user'=>current_user(), 
+		'search'=>true, 
+		'properties'=>$properties, 
+		'pictures'=>$pictures,
+		'addresses'=>$addresses]);
 	return $response;
 });
 
@@ -122,8 +127,13 @@ $app->get('/manage', function ($request, $response, $args) {
 	if($user != null){
 		$properties = PropertyQuery::create()->filterByUserid($user->getId()); //only show properties that belond to this user
 		$pictures = PictureQuery::create(); //pass all the pictures and simply filter through this for every property in the html
+		$addresses = AddressQuery::create(); //ditto as above
 		$this->view->render($response, "/properties/html.html", 
-		['user'=>current_user(), 'search'=>false, 'properties'=>$properties, 'pictures'=>$pictures]);
+			['user'=>current_user(), 
+			'search'=>false, 
+			'properties'=>$properties, 
+			'pictures'=>$pictures,
+			'addresses'=>$addresses]);
 		return $response;
 	}
 	else{
