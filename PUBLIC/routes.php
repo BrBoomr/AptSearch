@@ -206,6 +206,12 @@ $app->get('/UI', function ($request, $response, $args) {
 	return $response;
 });
 
+$app->get('/properties', function ($request, $response, $args) {
+	$this->view->render($response, "properties/html.html",
+	['user'=>$user, 'search'=>true]);
+	return $response;
+});
+
 //-------------------------TEMPLATE ROUTE-------------------------
 
 $app->get('/TEMPLATE', function ($request, $response, $args) {

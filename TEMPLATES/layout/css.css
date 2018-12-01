@@ -201,3 +201,9 @@ center align the mainDiv in the body within the body*/
 #loginButton{
     background-color: #d84b6b;
 }
+
+/*-------------------------disagreements with bootstrap-------------------------*/
+
+.row {
+    margin:  0px;
+}
