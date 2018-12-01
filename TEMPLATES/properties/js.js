@@ -4,18 +4,16 @@ var redirectButton = ".redirectButton"
 
 //-------------------------Logic-------------------------
 
-$(redirectButton).on("click", function(){
-    if($(redirectButton).text() == "More Details"){
-        $.ajax({
-            method: 'GET',
-            url : baseurl + "/viewProperty/" + $(redirectButton).id,
-            dataType : "text",
-        });
+$(redirectButton).on("click", function(event){
+    event.preventDefault();
+    var id = $(redirectButton).attr('id')
+    if($(this).hasClass("search")){
+        window.location.assign(baseurl + "/viewProperty/" + id);
     }
     else{
         $.ajax({
             method: 'POST',
-            url : baseurl + "/editProperty/",
+            url : baseurl + "/editProperty",
             data: {
                 "id" : $(redirectButton).id,
             },

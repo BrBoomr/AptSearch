@@ -10,6 +10,8 @@ function current_user(){
 
 //-------------------------SEARCH PAGE-------------------------
 
+//(1) Page is bookmarkable
+//(2) We are able to go back to this page
 $app->get('/', function ($request, $response, $args) {
 	$properties = PropertyQuery::create()->filterByAvailable(true); //only show properties that are currently available
 	$pictures = PictureQuery::create(); //pass all the pictures and simply filter through this for every property in the html
@@ -31,6 +33,8 @@ $app->get('/', function ($request, $response, $args) {
 	return $response;
 });
 
+//(1) Page is bookmarkable
+//(2) We are able to go back to this page
 $app->get('/viewProperty/{id}', function ($request, $response, $args) {
 	//TODO... what happens when we don't pass it a paramters?!
 	$property = PropertyQuery::create()->findPk($args['id']);
@@ -43,6 +47,7 @@ $app->get('/viewProperty/{id}', function ($request, $response, $args) {
 
 //-------------------------AUTHENTICATION PAGE-------------------------
 
+//(1) TODO we should not be able to come back to this page after bein redirected (ONLY occurs after [a] logged in OR [b] signed up)
 $app->get('/authentication', function ($request, $response, $args) {
 	if(current_user() == null){
 		//NOTE this should be an optional paramter and therefore we can automatically send someone to the login or sign up page
@@ -56,6 +61,7 @@ $app->get('/authentication', function ($request, $response, $args) {
 	}
 });
 
+//TODO switch to fully server side checks
 $app->post('/login', function($request, $response, $args) {
 	if(current_user() == null){
 		$postVars = $request->getParsedBody();
@@ -81,6 +87,7 @@ $app->post('/login', function($request, $response, $args) {
 	}
 });
 
+//TODO switch to fully server side checks
 $app->post('/signup', function ($request, $response, $args) {
 	if(current_user() == null){
 		$postVars = $request->getParsedBody();
@@ -110,8 +117,8 @@ $app->post('/signup', function ($request, $response, $args) {
 	}
 });
 
-//post request used to store user into Session
-$app->post("/success",function($request,$response,$args){
+//saver user into session
+$app->post("/success", function($request,$response,$args){
 	if(current_user() == null){
 		$userID = $request->getParsedBody()['userID'];
 
@@ -130,8 +137,10 @@ $app->post('/logout', function ($request, $response, $args) {
 
 //--------------------------------------------------MUST BE AUTHENTICATED--------------------------------------------------
 
-//-------------------------AUTHENTICATION PAGE-------------------------
+//-------------------------MANAGE PAGE-------------------------
 
+//(1) Page is bookmarkable
+//(2) We are able to go back to this page
 $app->get('/manage', function ($request, $response, $args) {
 	$user = current_user();
 	if($user != null){
@@ -158,8 +167,11 @@ $app->get('/manage', function ($request, $response, $args) {
 	}
 });
 
-//-------------------------AUTHENTICATION PAGE-------------------------
+//-------------------------SETTINGS PAGE-------------------------
 
+//(1) Page is bookmarkable
+//(2) We are able to go back to this page
+//TODO switch to fully client side checks
 $app->get('/settings', function ($request, $response, $args) {
 	$user = current_user();
 	if($user != null){
@@ -172,6 +184,7 @@ $app->get('/settings', function ($request, $response, $args) {
 		exit();
 	}
 });
+
 $app->get('/settings/verify', function ($request, $response, $args) {
 	if(empty($_GET['name']) || empty($_GET['email'])){
 		if($_GET['name']==current_user()->getName()){
@@ -202,6 +215,14 @@ $app->get('/settings/verify', function ($request, $response, $args) {
 
 //-------------------------ADD PROPERTY PAGE-------------------------
 
+//TODO... 
+//(1) needs to use post (params passed not in url) => so that the page is not bookmarkable
+//(2) plan for going to the page without parameters
+//(3) this page should also be replaced after changes SAVED or DISCARDED
+//		[a] replace it with new page (IF previous page != next page)
+//		[b] replace it with the previous page (IF previous page == next page)
+//		[*] replacement occurs so you cant go back to the same page
+//TODO switch to fully client side checks
 $app->get('/addProperty', function ($request, $response, $args) {
 	$user = current_user();
 	if($user != null){
@@ -217,7 +238,15 @@ $app->get('/addProperty', function ($request, $response, $args) {
 
 //-------------------------EDIT PROPERTY PAGE-------------------------
 
-$app->get('/editProperty', function ($request, $response, $args) {
+//TODO... 
+//(1) needs to use post (params passed not in url) => so that the page is not bookmarkable
+//(2) plan for going to the page without parameters
+//(3) this page should also be replaced after changes SAVED or DISCARDED
+//		[a] replace it with new page (IF previous page != next page)
+//		[b] replace it with the previous page (IF previous page == next page)
+//		[*] replacement occurs so you cant go back to the same page
+//TODO switch to fully client side checks
+$app->post('/editProperty', function ($request, $response, $args) {
 	$id = $request->getParsedBody()['id'];
 	//TODO... what happens when we don't pass it a paramters?!
 	$property = PropertyQuery::create()->findPk($id);

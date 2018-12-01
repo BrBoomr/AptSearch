@@ -167,7 +167,11 @@
                         <br>
                         <h2>$<span>{{ property.getExpectedrentpermonth() }}</span></h2>
                         <br>
-                        <button type="submit" id="{{ property.getId() }}" class="btn btn-default btn-sm btn-primary redirectButton">
+                        <button type="button" id="{{ property.getId() }}" class="btn btn-default btn-sm btn-primary redirectButton 
+                            {% if search %}
+                                search
+                            {% endif %}
+                        ">
                             <span>
                                 {% if search %}
                                     More Details
