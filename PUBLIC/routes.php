@@ -14,7 +14,7 @@ function current_user(){
 //-------------------------SEARCH PAGE-------------------------
 
 $app->get('/', function ($request, $response, $args) {
-	$listings = PropertyQuery::create();
+	$listings = PropertyQuery::create()->filterByAvailable(true);
 	$this->view->render($response, "/search/html.html", 
 		['user'=>current_user(), 'listings'=>$listings]);
 	return $response;
@@ -143,31 +143,31 @@ $app->get('/settings', function ($request, $response, $args) {
 		exit();
 	}
 });
-$app->post('/settings', function ($request, $response, $args) {
-	$codes = [];
-	//Both the name and email field must be filled out, else return an error
-	if(isset($_POST['name']) && isset($_POST['email'])){
-		//check if different than original
-		if($_POST['name']!=current_user()->getName()){
-			current_user()->setName($_POST['name']);
+$app->get('/settings/verify', function ($request, $response, $args) {
+	if(empty($_GET['name']) || empty($_GET['email'])){
+		if($_GET['name']==current_user()->getName()){
+			//echo "Same Name!<br>";
 		}
-		if($_POST['email']!=current_user()->getEmail()){
-			current_user()->setEmail($_POST['email']);
+		else{
+			current_user()->setName($_GET['name']);
+		}
+		if($_GET['email']==current_user()->getEmail()){
+			//echo "Same Email!<br>";
+		}
+		else{
+			current_user()->setEmail($_GET['email']);
+		}
+	}
+	else if(empty($_GET['newPassword']) && empty($_GET['confirmPassword'])){
+		if($_GET['newPassword'] == $_GET['confirmPassword']){
+
+		}
+		else{
+
 		}
 	}
 	else{
-		//if empty
-		$codes['invalid']='true';
-	}
-	//if both of these are empty, ignore them.
-	if( !(isset($_POST['newPassword']) && isset($_POST['confirmPassord']))){
-
-	}
-	//otherwise check that both are filled out
-	else if(isset($_POST['newPassword']) && isset($_POST['confirmPassord'])){
-		if($_POST["newPassword"] == $_POST['confirmPassword']){
-			
-		}
+		
 	}
 });
 
