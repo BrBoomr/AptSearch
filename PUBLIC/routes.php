@@ -17,6 +17,7 @@ $app->get('/', function ($request, $response, $args) {
 	$phones = PhoneQuery::create(); //ditto as above
 	$continentTypes = ContinenttypeQuery::create(); //ditto as above
 	$countryTypes = CountrytypeQuery::create(); //ditto as above
+	$owners = UserQuery::create(); //ditto as above
 	$this->view->render($response, "/properties/html.html", 
 		['user'=>current_user(), 
 		'search'=>true, 
@@ -25,7 +26,8 @@ $app->get('/', function ($request, $response, $args) {
 		'addresses'=>$addresses,
 		'phones'=>$phones,
 		'continentTypes'=>$continentTypes,
-		'countryTypes'=>$countryTypes]);
+		'countryTypes'=>$countryTypes,
+		'owners'=>$owners]);
 	return $response;
 });
 
@@ -136,8 +138,10 @@ $app->get('/manage', function ($request, $response, $args) {
 		$properties = PropertyQuery::create()->filterByUserid($user->getId()); //only show properties that belond to this user
 		$pictures = PictureQuery::create(); //pass all the pictures and simply filter through this for every property in the html
 		$addresses = AddressQuery::create(); //ditto as above
+		//NOTE: we dont have to pass phones because we are viewing our own properties and don't need our own contact information
 		$continentTypes = ContinenttypeQuery::create(); //ditto as above
 		$countryTypes = CountrytypeQuery::create(); //ditto as above
+		//NOTE: we dont have to pass owners because we are the only owner
 		$this->view->render($response, "/properties/html.html", 
 			['user'=>current_user(), 
 			'search'=>false, 
@@ -145,7 +149,7 @@ $app->get('/manage', function ($request, $response, $args) {
 			'pictures'=>$pictures,
 			'addresses'=>$addresses,
 			'continentTypes'=>$continentTypes,
-			'countryTypes'=>$countryTypes]);
+			'countryTypes'=>$countryTypes,]);
 		return $response;
 	}
 	else{

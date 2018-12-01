@@ -7,70 +7,64 @@
         <div class="card propertyCard">
             <div class="card-header topSection">
                 <div class="row mainRow">
-                    <!--Find Out If This Property Has Any Photos-->
-                    {% set photoCount = 0 %}
+                    <!--Find these properties pictures-->
+                    {% set propertyPictures = [] %}
                     {% for picture in pictures %}
                         {% if picture.getPropertyid() == property.getId() %}
-                            {% set photoCount = photoCount + 1 %}
+                            {% set propertyPictures = propertyPictures|merge([picture]) %}
                         {% endif %}
                     {% endfor %}
                     <!--If this Property has photos then display them-->
-                    {% if photoCount > 0 %}
+                    {% if propertyPictures|length > 0 %}
                         <div class="col-md-auto">
                             <div class="carousel slide" id="slideShow{{ property.getId() }}" data-ride="carousel">
                                 <!--If we only have 1 photo then display that single photo-->
-                                {% if photoCount == 1 %}
-                                    {% for picture in pictures %}
-                                        {% if picture.getPropertyid() == property.getId() %}
-                                            <div class="carousel-inner">
-                                                <div class="carousel-item active">
-                                                    <img class="d-block imageInSlide" src="{{ picture.getLink() }}" alt="{{ picture.getDetails() }}">
-                                                    <div class="carousel-caption d-none d-md-block">
-                                                        <h5 class="carouselCaptionTitle">{{ picture.getDetails() }}</h5>
-                                                        <br>
-                                                        <p class="carouselCaptionDate">uploaded: {{ picture.getAdddate()|date("m/d/Y") }}</p>
-                                                    </div>
+                                {% if propertyPictures|length == 1 %}
+                                    {% for propertyPicture in propertyPictures %}
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                <img class="d-block imageInSlide" src="{{ propertyPicture.getLink() }}" alt="{{ propertyPicture.getDetails() }}">
+                                                <div class="carousel-caption d-none d-md-block">
+                                                    <h5 class="carouselCaptionTitle">{{ propertyPicture.getDetails() }}</h5>
+                                                    <br>
+                                                    <p class="carouselCaptionDate">uploaded: {{ propertyPicture.getAdddate()|date("m/d/Y") }}</p>
                                                 </div>
-                                            </div> 
-                                        {% endif %}
+                                            </div>
+                                        </div> 
                                     {% endfor %}
                                 <!--Other wise display a carousel of photos-->
                                 {% else %}
                                     <ol class="carousel-indicators">
                                         <!--Generate all the thumbnails-->
                                         {% set slideID = 0 %}
-                                        {% for picture in pictures %}
-                                            {% if picture.getPropertyid() == property.getId() %}
-                                                <li data-target="#slideShow{{ property.getId() }}" data-slide-to="{{ slideID }}" 
-                                                    {% if slideID == 0 %}
-                                                        class="active"
-                                                    {% endif %}
-                                                >
-                                                    <img class="d-block w-100 imageInThumbnail" src="{{ picture.getLink() }}" alt="{{ picture.getDetails() }}">
-                                                </li>
-                                                {% set slideID = slideID +  1 %}
-                                            {% endif %}
+                                        {% for propertyPicture in propertyPictures %}
+                                            <li data-target="#slideShow{{ property.getId() }}" data-slide-to="{{ slideID }}" 
+                                                {% if slideID == 0 %}
+                                                    class="active"
+                                                {% endif %}
+                                            >
+                                                <img class="d-block w-100 imageInThumbnail" src="{{ propertyPicture.getLink() }}" alt="{{ propertyPicture.getDetails() }}">
+                                            </li>
+                                            {% set slideID = slideID +  1 %}
                                         {% endfor %}
                                     </ol>
                                     <div class="carousel-inner">
                                         <!--Generate all the Slides-->
                                         {% set slideID = 0 %}
-                                        {% for picture in pictures %}
-                                            {% if picture.getPropertyid() == property.getId() %}
-                                                <div class="carousel-item 
-                                                {% if slideID == 0 %}
-                                                    active
-                                                {% endif %}
-                                                ">
-                                                    <img class="d-block imageInSlide" src="{{ picture.getLink() }}" alt="{{ picture.getDetails() }}">
-                                                    <div class="carousel-caption d-none d-md-block">
-                                                        <h5 class="carouselCaptionTitle">{{ picture.getDetails() }}</h5>
-                                                        <br>
-                                                        <p class="carouselCaptionDate">uploaded: {{ picture.getAdddate()|date("m/d/Y") }}</p>
-                                                    </div>
-                                                </div>
-                                                {% set slideID = slideID +  1 %}
+                                        {% for propertyPicture in propertyPictures %}
+                                            <div class="carousel-item 
+                                            {% if slideID == 0 %}
+                                                active
                                             {% endif %}
+                                            ">
+                                                <img class="d-block imageInSlide" src="{{ propertyPicture.getLink() }}" alt="{{ propertyPicture.getDetails() }}">
+                                                <div class="carousel-caption d-none d-md-block">
+                                                    <h5 class="carouselCaptionTitle">{{ propertyPicture.getDetails() }}</h5>
+                                                    <br>
+                                                    <p class="carouselCaptionDate">uploaded: {{ propertyPicture.getAdddate()|date("m/d/Y") }}</p>
+                                                </div>
+                                            </div>
+                                            {% set slideID = slideID +  1 %}
                                         {% endfor %}
                                     </div>
                                     <a class="carousel-control-prev" href="#slideShow{{ property.getId() }}" role="button" data-slide="prev">
@@ -88,69 +82,74 @@
                     <div class="col">
                         <h1>{{ property.getPostname() }}</h1>
                         <h5>
+                            <!--find the address for this particular property-->
+                            {% set propertyAddress = null %}
                             {% for address in addresses %}
                                 {% if address.getId() == property.getAddressid() %}
-                                    <!--find our continent name-->
-                                    {% set continentName = "" %}
-                                    {% for continentType in continentTypes %}
-                                        {% if continentType.getId() == address.getContinenttypeid() %}
-                                            {% set continentName = continentType.getName() %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    <!--find our country name-->
-                                    {% set countryName = "" %}
-                                    {% for countryType in countryTypes %}
-                                        {% if countryType.getId()  == address.getCountrytypeid() %}
-                                            {% set countryName = countryType.getName() %}
-                                        {% endif %}
-                                    {% endfor %}
-                                    <!--declare our empty address string-->
-                                    {% set formattedAddress = "" %}
-                                    <!--generate our address string-->
-                                    <!--ADDRESS FORMAT => 
-                                        :Apt 3A | 
-                                        :101 Grover Rd | 
-                                        :Edinburg, Texas | 
-                                        :United States, America
-                                        : | 78342-->
-                                    <!--add the apartment identifier if we have it-->
-                                    {% if address.getApartmentidentifier() %}
-                                        {% set formattedAddress = formattedAddress ~ "Apt " ~ address.getApartmentidentifier() ~ " | "%}
-                                    {% endif %}
-                                    <!--add the building identifier and street name combo-->
-                                    {% if address.getBuildingIndentifier() %}
-                                        {% set formattedAddress = formattedAddress ~ address.getBuildingIndentifier() %}
-                                        {% if address.getStreetname() %}
-                                            {% set formattedAddress = formattedAddress ~ " " ~ address.getStreetname()%}
-                                        {% endif %}
-                                        {% set formattedAddress = formattedAddress  ~ " | " %}
-                                    {% else %}
-                                        {% if address.getStreetname() %}
-                                            {% set formattedAddress = formattedAddress ~ address.getStreetname() ~ " | " %}
-                                        {% endif %}
-                                    {% endif %}
-                                    <!--add the locality state combo-->
-                                    {% if address.getLocality() %}
-                                        {% set formattedAddress = formattedAddress ~ address.getLocality() %}
-                                        {% if address.getState() %}
-                                            {% set formattedAddress = formattedAddress ~ ", " ~ address.getState()%}
-                                        {% endif %}
-                                        {% set formattedAddress = formattedAddress  ~ " | " %}
-                                    {% else %}
-                                        {% if address.getState() %}
-                                            {% set formattedAddress = formattedAddress ~ address.getState() ~ " | " %}
-                                        {% endif %}
-                                    {% endif %}
-                                    <!--we know we are going to have a country and a continent so we simply the problem a bit-->
-                                    {% set formattedAddress = formattedAddress ~ countryName ~ ", " ~ continentName %}
-                                    <!--add the zip code if we have it-->
-                                    {% if address.getZipcode() %}
-                                        {% set formattedAddress = formattedAddress ~ " | " ~ address.getZipcode() %}
-                                    {% endif %}
-                                    <!--print the string we calculated above-->
-                                    {{ formattedAddress }}
+                                    {% set propertyAddress = address %}
                                 {% endif %}
                             {% endfor %}
+
+                            <!--find our continent name-->
+                            {% set continentName = "" %}
+                            {% for continentType in continentTypes %}
+                                {% if continentType.getId() == propertyAddress.getContinenttypeid() %}
+                                    {% set continentName = continentType.getName() %}
+                                {% endif %}
+                            {% endfor %}
+                            <!--find our country name-->
+                            {% set countryName = "" %}
+                            {% for countryType in countryTypes %}
+                                {% if countryType.getId()  == propertyAddress.getCountrytypeid() %}
+                                    {% set countryName = countryType.getName() %}
+                                {% endif %}
+                            {% endfor %}
+                            <!--declare our empty address string-->
+                            {% set formattedAddress = "" %}
+
+                            <!--*****Generate the Address String*****-->
+                            <!--ADDRESS FORMAT => 
+                                :Apt 3A | 
+                                :101 Grover Rd | 
+                                :Edinburg, Texas | 
+                                :United States, America
+                                : | 78342-->
+                            <!--add the apartment identifier if we have it-->
+                            {% if propertyAddress.getApartmentidentifier() %}
+                                {% set formattedAddress = formattedAddress ~ "Apt " ~ propertyAddress.getApartmentidentifier() ~ " | "%}
+                            {% endif %}
+                            <!--add the building identifier and street name combo-->
+                            {% if propertyAddress.getBuildingIndentifier() %}
+                                {% set formattedAddress = formattedAddress ~ propertyAddress.getBuildingIndentifier() %}
+                                {% if propertyAddress.getStreetname() %}
+                                    {% set formattedAddress = formattedAddress ~ " " ~ propertyAddress.getStreetname()%}
+                                {% endif %}
+                                {% set formattedAddress = formattedAddress  ~ " | " %}
+                            {% else %}
+                                {% if propertyAddress.getStreetname() %}
+                                    {% set formattedAddress = formattedAddress ~ propertyAddress.getStreetname() ~ " | " %}
+                                {% endif %}
+                            {% endif %}
+                            <!--add the locality state combo-->
+                            {% if propertyAddress.getLocality() %}
+                                {% set formattedAddress = formattedAddress ~ propertyAddress.getLocality() %}
+                                {% if propertyAddress.getState() %}
+                                    {% set formattedAddress = formattedAddress ~ ", " ~ propertyAddress.getState()%}
+                                {% endif %}
+                                {% set formattedAddress = formattedAddress  ~ " | " %}
+                            {% else %}
+                                {% if propertyAddress.getState() %}
+                                    {% set formattedAddress = formattedAddress ~ propertyAddress.getState() ~ " | " %}
+                                {% endif %}
+                            {% endif %}
+                            <!--we know we are going to have a country and a continent so we simply the problem a bit-->
+                            {% set formattedAddress = formattedAddress ~ countryName ~ ", " ~ continentName %}
+                            <!--add the zip code if we have it-->
+                            {% if propertyAddress.getZipcode() %}
+                                {% set formattedAddress = formattedAddress ~ " | " ~ propertyAddress.getZipcode() %}
+                            {% endif %}
+                            <!--print the string we calculated above-->
+                            {{ formattedAddress }}
                         </h5>
                         <p>posted: {{ property.getAdddate()|date("m/d/Y") }} | updated: {{ property.getLastupdated()|date("m/d/Y") }}</p>
                         <br>
@@ -191,22 +190,41 @@
                         </div>
                         <div class="col-lg m-3">
                             <ul class="list-group userPhones">
-                                    <li class="list-group-item list-group-item-dark">
-                                        <span class="fas fa-phone"></span> Phone Numbers
-                                    </li>
-                                    {% for phone in phones %}
-                                        {% if phone.getUserid() == user.getId() %}
-                                            <li class="list-group-item">
-                                                {% if phone.getDescription() %}
-                                                    {{ phone.getDescription() }}&nbsp;|&nbsp;
-                                                {% endif %}
-                                                ({{ phone.getAreacode() }})&nbsp;{{ phone.getNumber() }}
-                                                {% if phone.getExtension() %}
-                                                &nbsp;ext&nbsp;{{ phone.getExtension() }}
-                                                {% endif %}
-                                            </li>
-                                        {% endif %}
+                                <!--find the owner of this property-->
+                                {% set propertyOwner = null %}
+                                {% for owner in owners %}
+                                    {% if property.getUserid() == owner.getId() %}
+                                        {% set propertyOwner = owner %}
+                                    {% endif %}
+                                {% endfor %}
+
+                                <!--find all the phone number of this owner-->
+                                {% set propertyOwnerPhones = [] %}
+                                {% for phone in phones %}
+                                    {% if phone.getUserid() == owner.getId() %}
+                                        {% set propertyOwnerPhones = propertyOwnerPhones|merge([phone]) %}
+                                    {% endif %}
+                                {% endfor %}
+
+                                <!--If we have phone numbers display them-->
+                                {% if propertyOwnerPhones|length > 0 %}
+                                    <!--print phone number title-->
+                                        <li class="list-group-item list-group-item-dark">
+                                            <span class="fas fa-phone"></span> Phone Numbers
+                                        </li>
+                                    <!--print all the phone numbers-->
+                                    {% for propertyOwnerPhone in propertyOwnerPhones %}
+                                        <li class="list-group-item">
+                                            {% if propertyOwnerPhone.getDescription() %}
+                                                {{ propertyOwnerPhone.getDescription() }}&nbsp;|&nbsp;
+                                            {% endif %}
+                                            ({{ propertyOwnerPhone.getAreacode() }})&nbsp;{{ propertyOwnerPhone.getNumber() }}
+                                            {% if propertyOwnerPhone.getExtension() %}
+                                                &nbsp;ext&nbsp;{{ propertyOwnerPhone.getExtension() }}
+                                            {% endif %}
+                                        </li>
                                     {% endfor %}
+                                {% endif %}
                             </ul>
                         </div>
                     </div>
