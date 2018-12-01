@@ -4,12 +4,20 @@ propertyCard
     ***
         ***
             ***
-                ownerName
+                userName
             ***
-                ownerEmail
+                userEmail
             ***
-                ownerPhones
+                userPhones
 */
+
+#addPropertySection {
+    overflow: auto
+}
+
+#addPropertyButton {
+    float: right;
+}
 
 /*-----carousel settings-----*/
 #car1, #car2{

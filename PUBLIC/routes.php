@@ -1,7 +1,4 @@
 <?php
-
-define("BASE_URL","/");
-
 //-------------------------FUNCTIONS-------------------------
 
 function current_user(){
@@ -14,14 +11,15 @@ function current_user(){
 //-------------------------SEARCH PAGE-------------------------
 
 $app->get('/', function ($request, $response, $args) {
-	$listings = PropertyQuery::create()->filterByAvailable(true);
-	$this->view->render($response, "/search/html.html", 
-		['user'=>current_user(), 'listings'=>$listings]);
+	$properties = PropertyQuery::create()->filterByAvailable(true); //only show properties that are currently available
+	$this->view->render($response, "/properties/html.html", 
+		['user'=>current_user(), 'search'=>true, 'properties'=>$properties]);
 	return $response;
 });
 
 $app->get('/viewProperty', function ($request, $response, $args) {
-	$this->view->render($response, "/viewProperty/html.html", ['user'=>current_user()]);
+	$this->view->render($response, "/viewProperty/html.html", 
+		['user'=>current_user()]);
 	return $response;
 });
 
@@ -32,7 +30,8 @@ $app->get('/viewProperty', function ($request, $response, $args) {
 $app->get('/authentication', function ($request, $response, $args) {
 	if(current_user() == null){
 		//NOTE this should be an optional paramter and therefore we can automatically send someone to the login or sign up page
-		$this->view->render($response, "authentication/html.html", ['login'=>false]); 
+		$this->view->render($response, "authentication/html.html", 
+			['user'=>current_user(), 'login'=>false]); 
 		return $response;
 	}
 	else{
@@ -62,7 +61,7 @@ $app->post('/login', function($request, $response, $args) {
 		}
 	
 		//return required data
-		echo json_encode(array('userID' => $userID, 'message' => $message));
+		return json_encode(array('userID' => $userID, 'message' => $message));
 	}
 });
 
@@ -91,7 +90,7 @@ $app->post('/signup', function ($request, $response, $args) {
 		}
 
 		//return required data
-		echo json_encode(array('userID' => $userID, 'message' => $message));
+		return json_encode(array('userID' => $userID, 'message' => $message));
 	}
 });
 
@@ -120,8 +119,9 @@ $app->post('/logout', function ($request, $response, $args) {
 $app->get('/manage', function ($request, $response, $args) {
 	$user = current_user();
 	if($user != null){
-		
-		$this->view->render($response, "manage/html.html",['user'=>$user]);
+		$properties = PropertyQuery::create()->filterByUserid($user->getId()); //only show properties that belond to this user
+		$this->view->render($response, "/properties/html.html", 
+			['user'=>$user, 'search'=>false, 'properties'=>$properties]);
 		return $response;
 	}
 	else{
@@ -135,7 +135,8 @@ $app->get('/manage', function ($request, $response, $args) {
 $app->get('/settings', function ($request, $response, $args) {
 	$user = current_user();
 	if($user != null){
-		$this->view->render($response, "settings/html.html",['user'=>$user, 'phoneQuery'=>$user->getAllPhones()]);
+		$this->view->render($response, "settings/html.html",
+			['user'=>$user, 'phoneQuery'=>$user->getAllPhones()]);
 		return $response;
 	}
 	else{
@@ -176,7 +177,8 @@ $app->get('/settings/verify', function ($request, $response, $args) {
 $app->get('/addProperty', function ($request, $response, $args) {
 	$user = current_user();
 	if($user != null){
-		$this->view->render($response, "addProperty/html.html",['user'=>$user]);
+		$this->view->render($response, "addProperty/html.html",
+			['user'=>$user]);
 		return $response;
 	}
 	else{
@@ -190,7 +192,8 @@ $app->get('/addProperty', function ($request, $response, $args) {
 $app->get('/editProperty', function ($request, $response, $args) {
 	$user = current_user();
 	if($user != null){
-		$this->view->render($response, "editProperty/html.html",['user'=>$user]);
+		$this->view->render($response, "editProperty/html.html",
+			['user'=>$user]);
 		return $response;
 	}
 	else{
@@ -202,20 +205,22 @@ $app->get('/editProperty', function ($request, $response, $args) {
 //-------------------------UI TEST ROUTES-------------------------
 
 $app->get('/UI', function ($request, $response, $args) {
-	$this->view->render($response, "searchUI/html.html",['user'=>$user]);
+	$this->view->render($response, "searchUI/html.html",
+		['user'=>$user]);
 	return $response;
 });
 
 $app->get('/properties', function ($request, $response, $args) {
 	$this->view->render($response, "properties/html.html",
-	['user'=>$user, 'search'=>true]);
+		['user'=>$user, 'search'=>true]);
 	return $response;
 });
 
 //-------------------------TEMPLATE ROUTE-------------------------
 
 $app->get('/TEMPLATE', function ($request, $response, $args) {
-	$this->view->render($response, "TEMPLATE/html.html",['user'=>$user]);
+	$this->view->render($response, "TEMPLATE/html.html",
+		['user'=>$user]);
 	return $response;
 });
 
