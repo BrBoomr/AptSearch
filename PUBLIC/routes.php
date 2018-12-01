@@ -21,7 +21,7 @@ $app->get('/', function ($request, $response, $args) {
 });
 
 $app->get('/viewProperty', function ($request, $response, $args) {
-	$this->view->render($response, "/viewProperty/html.html");
+	$this->view->render($response, "/viewProperty/html.html", ['user'=>current_user()]);
 	return $response;
 });
 
@@ -54,7 +54,7 @@ $app->post('/login', function($request, $response, $args) {
 	
 		//react to finding user
 		if($user){ //if user exists make sure they have the right password
-			if(password_verify($password, $user->getEncryptedpassword())) $userID = $user->getId();
+			if($user->login($password)) $userID = $user->getId();
 			else $message = "Incorrect password";
 		}
 		else{ //else create an account for that user
@@ -120,7 +120,8 @@ $app->post('/logout', function ($request, $response, $args) {
 $app->get('/manage', function ($request, $response, $args) {
 	$user = current_user();
 	if($user != null){
-		$this->view->render($response, "manage/html.html");
+		
+		$this->view->render($response, "manage/html.html",['user'=>$user]);
 		return $response;
 	}
 	else{
@@ -134,12 +135,39 @@ $app->get('/manage', function ($request, $response, $args) {
 $app->get('/settings', function ($request, $response, $args) {
 	$user = current_user();
 	if($user != null){
-		$this->view->render($response, "settings/html.html");
+		$this->view->render($response, "settings/html.html",['user'=>$user, 'phoneQuery'=>$user->getAllPhones()]);
 		return $response;
 	}
 	else{
 		Header("Location: ./authentication");
 		exit();
+	}
+});
+$app->post('/settings', function ($request, $response, $args) {
+	$codes = [];
+	//Both the name and email field must be filled out, else return an error
+	if(isset($_POST['name']) && isset($_POST['email'])){
+		//check if different than original
+		if($_POST['name']!=current_user()->getName()){
+			current_user()->setName($_POST['name']);
+		}
+		if($_POST['email']!=current_user()->getEmail()){
+			current_user()->setEmail($_POST['email']);
+		}
+	}
+	else{
+		//if empty
+		$codes['invalid']='true';
+	}
+	//if both of these are empty, ignore them.
+	if( !(isset($_POST['newPassword']) && isset($_POST['confirmPassord']))){
+
+	}
+	//otherwise check that both are filled out
+	else if(isset($_POST['newPassword']) && isset($_POST['confirmPassord'])){
+		if($_POST["newPassword"] == $_POST['confirmPassword']){
+			
+		}
 	}
 });
 
@@ -148,7 +176,7 @@ $app->get('/settings', function ($request, $response, $args) {
 $app->get('/addProperty', function ($request, $response, $args) {
 	$user = current_user();
 	if($user != null){
-		$this->view->render($response, "addProperty/html.html");
+		$this->view->render($response, "addProperty/html.html",['user'=>$user]);
 		return $response;
 	}
 	else{
@@ -162,7 +190,7 @@ $app->get('/addProperty', function ($request, $response, $args) {
 $app->get('/editProperty', function ($request, $response, $args) {
 	$user = current_user();
 	if($user != null){
-		$this->view->render($response, "editProperty/html.html");
+		$this->view->render($response, "editProperty/html.html",['user'=>$user]);
 		return $response;
 	}
 	else{
@@ -174,14 +202,14 @@ $app->get('/editProperty', function ($request, $response, $args) {
 //-------------------------UI TEST ROUTES-------------------------
 
 $app->get('/UI', function ($request, $response, $args) {
-	$this->view->render($response, "searchUI/html.html");
+	$this->view->render($response, "searchUI/html.html",['user'=>$user]);
 	return $response;
 });
 
 //-------------------------TEMPLATE ROUTE-------------------------
 
 $app->get('/TEMPLATE', function ($request, $response, $args) {
-	$this->view->render($response, "TEMPLATE/html.html");
+	$this->view->render($response, "TEMPLATE/html.html",['user'=>$user]);
 	return $response;
 });
 

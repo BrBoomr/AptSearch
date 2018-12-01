@@ -22,4 +22,9 @@ class User extends BaseUser
 		$hash=$this->getEncryptedpassword();
 		return password_verify($password,$hash);
 	}
+
+	public function getAllPhones(){
+		$phoneQuery = PhoneQuery::create()->filterByUserid($this->getId());
+		return (isset($phoneQuery) ? $phoneQuery : null);
+	}
 }

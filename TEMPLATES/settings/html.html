@@ -1,12 +1,43 @@
 {% extends 'layout/html.html' %}
 
 {% block content %}
-<h1>SETTINGS PAGE</h1>
-<br>
-<ul>
-    <li>this should allow the user to change anything about their account with much friction (for now)</li>
-    <li>IT MIGHT BE NICE if we made something so that the user needs to use their password to make big changes</li>
-</ul>
+    <h1>SETTINGS PAGE</h1>
+    <br>
+    <ul>
+        <li>this should allow the user to change anything about their account with much friction (for now)</li>
+        <li>IT MIGHT BE NICE if we made something so that the user needs to use their password to make big changes</li>
+    </ul>
+    <br>
+    <hr>
+    <br>
+
+    <div class="container editUser-container">
+        <div class="row">
+            <div class="col-md-6 newProperty-form-1">
+                <form>
+                    <h1>User Settings</h1>
+                    <div class="form-group">
+                        <input id="editName" type="text" class="form-control" value="{{user.getName()}}"></input>
+                    </div>
+                    <div class="form-group">
+                        <input id="editEmail" type="text" class="form-control" value="{{user.getEmail()}}"></input>
+                    </div>
+                    <div class="form-group">
+                        <input id="newPassword" type="password" class="form-control" placeholder="New Password" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <input id="confirmPassword" type="password" class="form-control" placeholder="Confirm New Password" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <input id="currentPassword" type="password" class="form-control" placeholder="Current Password" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <input id="editSubmit" type="submit" class="btnSubmit" value="Submit Changes"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block styles %}
@@ -18,3 +49,20 @@
     <!--javascript-->
     <script src="{{ base_url() }}/../../TEMPLATES/settings/js.js"></script>
 {% endblock %}
+
+{#
+{% for phone in phoneQuery %}
+                        <div class="form-group">
+                        <input id="editPhone" type="text" class="form-control" placeholder = "New Phone" value="{{phone.getNumber}}"></input>
+                        <label class="radio-inline"> <input type="radio" name="phoneType" id="workPhone" value="work" checked> Work </label>
+                        <label class="radio-inline"> <input type="radio" name="phoneType" id="mobilePhone" value="mobile"> Mobile </label>
+                        <label class="radio-inline"> <input type="radio" name="phoneType" id="homePhone" value="home"> Home </label>
+                    </div>
+                    {% endfor %}
+                    <div class="form-group">
+                        <input id="newPhone" type="text" class="form-control" placeholder = "New Phone" value=""></input>
+                        <label class="radio-inline"> <input type="radio" name="phoneType" id="workPhone" value="work" checked> Work </label>
+                        <label class="radio-inline"> <input type="radio" name="phoneType" id="mobilePhone" value="mobile"> Mobile </label>
+                        <label class="radio-inline"> <input type="radio" name="phoneType" id="homePhone" value="home"> Home </label>
+                    </div>
+#}

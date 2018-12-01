@@ -18,7 +18,7 @@
         </thead>
         <tbody>
             {% for item in listings %}
-                <tr>
+                <tr propertyId = "{{ item.getId() }}">
                     <th scope ="row">{{ item.getAddressid() }}</th>
                     <td>{{ item.getOwnerName() }}</td>
                     <td>{{ item.getPostName() }}</td>
