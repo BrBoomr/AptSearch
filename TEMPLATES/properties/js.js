@@ -4,11 +4,24 @@ var redirectButton = ".redirectButton"
 
 //-------------------------Logic-------------------------
 
-//TODO... redirect button to redirect based on the id
-//AND based on whether we are in search or in manage
-
-//desired address formatting
-//Apt 3A | 101 Grover Rd | Edinburg, Texas | United States, America | 78342
+$(redirectButton).on("click", function(){
+    if($(redirectButton).text() == "More Details"){
+        $.ajax({
+            method: 'GET',
+            url : baseurl + "/viewProperty/" + $(redirectButton).id,
+            dataType : "text",
+        });
+    }
+    else{
+        $.ajax({
+            method: 'POST',
+            url : baseurl + "/editProperty/",
+            data: {
+                "id" : $(redirectButton).id,
+            },
+        });
+    }
+})
 
 //-------------------------Objects-------------------------
 //NOTE: these should not contain anything with an ID since objects are intended for duplication

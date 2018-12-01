@@ -12,7 +12,8 @@ propertyCard
 */
 
 #addPropertySection {
-    overflow: auto
+    overflow: auto;
+    margin-bottom: 15px;
 }
 
 #addPropertyButton {

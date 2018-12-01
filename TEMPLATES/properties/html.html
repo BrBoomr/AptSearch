@@ -88,31 +88,31 @@
                     <div class="col">
                         <h1>{{ property.getPostname() }}</h1>
                         <h5>
-                            <!--find our continent name-->
-                            {% set continentName = "" %}
-                            {% for continentType in continentTypes %}
-                                {% if continentType.getId()  == address.getContinenttypeid() %}
-                                    {% set continentName = continentType.getName() %}
-                                {% endif %}
-                            {% endfor %}
-                            <!--find our country name-->
-                            {% set countryName = "" %}
-                            {% for countryType in countryTypes %}
-                                {% if countryType.getId()  == address.getCountrytypeid() %}
-                                    {% set countryName = countryType.getName() %}
-                                {% endif %}
-                            {% endfor %}
-                            <!--declare our empty address string-->
-                            {% set formattedAddress = "" %}
-                            <!--generate our address string-->
-                            <!--ADDRESS FORMAT => 
-                                :Apt 3A | 
-                                :101 Grover Rd | 
-                                :Edinburg, Texas | 
-                                :United States, America
-                                : | 78342-->
                             {% for address in addresses %}
                                 {% if address.getId() == property.getAddressid() %}
+                                    <!--find our continent name-->
+                                    {% set continentName = "" %}
+                                    {% for continentType in continentTypes %}
+                                        {% if continentType.getId() == address.getContinenttypeid() %}
+                                            {% set continentName = continentType.getName() %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <!--find our country name-->
+                                    {% set countryName = "" %}
+                                    {% for countryType in countryTypes %}
+                                        {% if countryType.getId()  == address.getCountrytypeid() %}
+                                            {% set countryName = countryType.getName() %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    <!--declare our empty address string-->
+                                    {% set formattedAddress = "" %}
+                                    <!--generate our address string-->
+                                    <!--ADDRESS FORMAT => 
+                                        :Apt 3A | 
+                                        :101 Grover Rd | 
+                                        :Edinburg, Texas | 
+                                        :United States, America
+                                        : | 78342-->
                                     <!--add the apartment identifier if we have it-->
                                     {% if address.getApartmentidentifier() %}
                                         {% set formattedAddress = formattedAddress ~ "Apt " ~ address.getApartmentidentifier() ~ " | "%}
@@ -147,10 +147,10 @@
                                     {% if address.getZipcode() %}
                                         {% set formattedAddress = formattedAddress ~ " | " ~ address.getZipcode() %}
                                     {% endif %}
+                                    <!--print the string we calculated above-->
+                                    {{ formattedAddress }}
                                 {% endif %}
                             {% endfor %}
-                            <!--print the string we calculated above-->
-                            {{ formattedAddress }}
                         </h5>
                         <p>posted: {{ property.getAdddate()|date("m/d/Y") }} | updated: {{ property.getLastupdated()|date("m/d/Y") }}</p>
                         <br>
@@ -168,7 +168,7 @@
                         <br>
                         <h2>$<span>{{ property.getExpectedrentpermonth() }}</span></h2>
                         <br>
-                        <button type="button" class="redirectButton" id="{{ property.getId() }}" class="btn btn-default btn-sm btn-primary">
+                        <button type="submit" id="{{ property.getId() }}" class="btn btn-default btn-sm btn-primary redirectButton">
                             <span>
                                 {% if search %}
                                     More Details
@@ -181,7 +181,7 @@
                 </div>
             </div>
             {% if search %}
-                <div class="bottomSection">
+                <div class="bottomSection card-header">
                     <div class="row">
                         <div class="col-lg m-3">
                             <span class="fas fa-user"></span><span>{{ user.getName() }}</span>

@@ -29,9 +29,11 @@ $app->get('/', function ($request, $response, $args) {
 	return $response;
 });
 
-$app->get('/viewProperty', function ($request, $response, $args) {
+$app->get('/viewProperty/{id}', function ($request, $response, $args) {
+	//TODO... what happens when we don't pass it a paramters?!
+	$property = PropertyQuery::create()->findPk($args['id']);
 	$this->view->render($response, "/viewProperty/html.html", 
-		['user'=>current_user()]);
+		['user'=>current_user(), 'property'=>$property]);
 	return $response;
 });
 
@@ -212,10 +214,13 @@ $app->get('/addProperty', function ($request, $response, $args) {
 //-------------------------EDIT PROPERTY PAGE-------------------------
 
 $app->get('/editProperty', function ($request, $response, $args) {
+	$id = $request->getParsedBody()['id'];
+	//TODO... what happens when we don't pass it a paramters?!
+	$property = PropertyQuery::create()->findPk($id);
 	$user = current_user();
 	if($user != null){
 		$this->view->render($response, "editProperty/html.html",
-			['user'=>$user]);
+			['user'=>$user, 'property'=>$property]);
 		return $response;
 	}
 	else{
