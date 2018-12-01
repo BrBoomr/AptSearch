@@ -182,26 +182,26 @@
             {% if search %}
                 <div class="bottomSection card-header">
                     <div class="row">
+                        <!--find the owner of this property-->
+                        {% set propertyOwner = null %}
+                        {% for owner in owners %}
+                            {% if property.getUserid() == owner.getId() %}
+                                {% set propertyOwner = owner %}
+                            {% endif %}
+                        {% endfor %}
+
                         <div class="col-lg m-3">
-                            <span class="fas fa-user"></span><span>{{ user.getName() }}</span>
+                            <span class="fas fa-user"></span><span>{{ propertyOwner.getName() }}</span>
                         </div>
                         <div class="col-lg m-3">
-                            <span class="fas fa-envelope"></span><span>{{ user.getEmail() }}</span>
+                            <span class="fas fa-envelope"></span><span>{{ propertyOwner.getEmail() }}</span>
                         </div>
                         <div class="col-lg m-3">
                             <ul class="list-group userPhones">
-                                <!--find the owner of this property-->
-                                {% set propertyOwner = null %}
-                                {% for owner in owners %}
-                                    {% if property.getUserid() == owner.getId() %}
-                                        {% set propertyOwner = owner %}
-                                    {% endif %}
-                                {% endfor %}
-
                                 <!--find all the phone number of this owner-->
                                 {% set propertyOwnerPhones = [] %}
                                 {% for phone in phones %}
-                                    {% if phone.getUserid() == owner.getId() %}
+                                    {% if phone.getUserid() == propertyOwner.getId() %}
                                         {% set propertyOwnerPhones = propertyOwnerPhones|merge([phone]) %}
                                     {% endif %}
                                 {% endfor %}
