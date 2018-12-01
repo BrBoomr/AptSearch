@@ -88,7 +88,69 @@
                     <div class="col">
                         <h1>{{ property.getPostname() }}</h1>
                         <h5>
-                            Apt 3A | 101 Grover Rd | Edinburg, Texas | United States, America | 78342
+                            <!--find our continent name-->
+                            {% set continentName = "" %}
+                            {% for continentType in continentTypes %}
+                                {% if continentType.getId()  == address.getContinenttypeid() %}
+                                    {% set continentName = continentType.getName() %}
+                                {% endif %}
+                            {% endfor %}
+                            <!--find our country name-->
+                            {% set countryName = "" %}
+                            {% for countryType in countryTypes %}
+                                {% if countryType.getId()  == address.getCountrytypeid() %}
+                                    {% set countryName = countryType.getName() %}
+                                {% endif %}
+                            {% endfor %}
+                            <!--declare our empty address string-->
+                            {% set formattedAddress = "" %}
+                            <!--generate our address string-->
+                            <!--ADDRESS FORMAT => 
+                                :Apt 3A | 
+                                :101 Grover Rd | 
+                                :Edinburg, Texas | 
+                                :United States, America
+                                : | 78342-->
+                            {% for address in addresses %}
+                                {% if address.getId() == property.getAddressid() %}
+                                    <!--add the apartment identifier if we have it-->
+                                    {% if address.getApartmentidentifier() %}
+                                        {% set formattedAddress = formattedAddress ~ "Apt " ~ address.getApartmentidentifier() ~ " | "%}
+                                    {% endif %}
+                                    <!--add the building identifier and street name combo-->
+                                    {% if address.getBuildingIndentifier() %}
+                                        {% set formattedAddress = formattedAddress ~ address.getBuildingIndentifier() %}
+                                        {% if address.getStreetname() %}
+                                            {% set formattedAddress = formattedAddress ~ " " ~ address.getStreetname()%}
+                                        {% endif %}
+                                        {% set formattedAddress = formattedAddress  ~ " | " %}
+                                    {% else %}
+                                        {% if address.getStreetname() %}
+                                            {% set formattedAddress = formattedAddress ~ address.getStreetname() ~ " | " %}
+                                        {% endif %}
+                                    {% endif %}
+                                    <!--add the locality state combo-->
+                                    {% if address.getLocality() %}
+                                        {% set formattedAddress = formattedAddress ~ address.getLocality() %}
+                                        {% if address.getState() %}
+                                            {% set formattedAddress = formattedAddress ~ ", " ~ address.getState()%}
+                                        {% endif %}
+                                        {% set formattedAddress = formattedAddress  ~ " | " %}
+                                    {% else %}
+                                        {% if address.getState() %}
+                                            {% set formattedAddress = formattedAddress ~ address.getState() ~ " | " %}
+                                        {% endif %}
+                                    {% endif %}
+                                    <!--we know we are going to have a country and a continent so we simply the problem a bit-->
+                                    {% set formattedAddress = formattedAddress ~ countryName ~ ", " ~ continentName %}
+                                    <!--add the zip code if we have it-->
+                                    {% if address.getZipcode() %}
+                                        {% set formattedAddress = formattedAddress ~ " | " ~ address.getZipcode() %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <!--print the string we calculated above-->
+                            {{ formattedAddress }}
                         </h5>
                         <p>posted: {{ property.getAdddate()|date("m/d/Y") }} | updated: {{ property.getLastupdated()|date("m/d/Y") }}</p>
                         <br>
@@ -97,17 +159,17 @@
                             <br>
                         {% endif %}
                         <h4>
-                            <span class="sqrft">{{ property.getSquarefootage() }}</span>&nbsp;sqrft 
+                            <span>{{ property.getSquarefootage() }}</span>&nbsp;sqrft 
                             | 
-                            <span class="bed">{{ property.getBedroomcount() }}</span>&nbsp;bed 
+                            <span>{{ property.getBedroomcount() }}</span>&nbsp;bed 
                             | 
-                            <span class="bath">{{ property.getBathroomcount() }}</span>&nbsp;bath
+                            <span>{{ property.getBathroomcount() }}</span>&nbsp;bath
                         </h4>
                         <br>
-                        <h2>$<span class="rent">{{ property.getExpectedrentpermonth() }}</span></h2>
+                        <h2>$<span>{{ property.getExpectedrentpermonth() }}</span></h2>
                         <br>
-                        <button type="button" id="{{ property.getId() }}" class="btn btn-default btn-sm btn-primary">
-                            <span class="redirectButton">
+                        <button type="button" class="redirectButton" id="{{ property.getId() }}" class="btn btn-default btn-sm btn-primary">
+                            <span>
                                 {% if search %}
                                     More Details
                                 {% else %}
@@ -122,13 +184,29 @@
                 <div class="bottomSection">
                     <div class="row">
                         <div class="col-lg m-3">
-                            <span class="fas fa-user"></span><span class="userName">Jefferson Lint</span>
+                            <span class="fas fa-user"></span><span>{{ user.getName() }}</span>
                         </div>
                         <div class="col-lg m-3">
-                            <span class="fas fa-envelope"></span><span class="userEmail">jeffIsLinty@weirdo.com</span>
+                            <span class="fas fa-envelope"></span><span>{{ user.getEmail() }}</span>
                         </div>
                         <div class="col-lg m-3">
                             <ul class="list-group userPhones">
+                                    <li class="list-group-item list-group-item-dark">
+                                        <span class="fas fa-phone"></span> Phone Numbers
+                                    </li>
+                                    {% for phone in phones %}
+                                        {% if phone.getUserid() == user.getId() %}
+                                            <li class="list-group-item">
+                                                {% if phone.getDescription() %}
+                                                    {{ phone.getDescription() }}&nbsp;|&nbsp;
+                                                {% endif %}
+                                                ({{ phone.getAreacode() }})&nbsp;{{ phone.getNumber() }}
+                                                {% if phone.getExtension() %}
+                                                &nbsp;ext&nbsp;{{ phone.getExtension() }}
+                                                {% endif %}
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
                             </ul>
                         </div>
                     </div>
