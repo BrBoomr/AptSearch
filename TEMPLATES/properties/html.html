@@ -2,11 +2,39 @@
 
 {% block content %}
 
+    <!--TODO REMOVE THESE TEST BUTTONS-->
+    <!--NOTE: you can also do this with AJAX and simply update the url as needed-->
+    <!--
+        The AJAX call would make a call to a get function
+        here the parameters would be read in
+        once again you would filter out the properties that didnt make the cut
+        this time you only need to return the properties that did make the cut
+        then you return this list as a json array to javascript
+        now you iterate through all your propertys (some of which are hidden)
+        IF their property id (stored as the id of .propertyCard) is within the chosen onces you do $(property).show()
+        ELSE you do $(property).hide()
+        then by some wizzard magic you replace the url without reloading the page
+
+        NOTE: regardless since you can book mark pages... the params read in should populate the search box with all the respective tags a user would normally use to get there
+    -->
+    <a href="{{ base_url() }}/?applianceTypeIDs=[1,3,4]">
+        <button type="submit" class="btn btn-default btn-sm btn-primary redirectButton">
+            Search for properties with appliance type 1 and 3 and 4
+        </button>
+    </a>
+    <br>
+    <br>
+    <a href="{{ base_url() }}/?continentTypeID=6&countryTypeID=104">
+        <button type="submit" class="btn btn-default btn-sm btn-primary redirectButton">
+            Search for properties with a continent id of 6 AND a country id of 104
+        </button>
+    </a>
+
     <!--Loop through all the properties to display all of them-->
     {% for property in properties %}
         <!--If you are searching then hide all the properties that dont current meet your conditions-->
         <!--If you params you can simply unhide them with ajax-->
-        <div class="card propertyCard"
+        <div class="card propertyCard" id="property{{ property.getId() }}"
             {% if search %}
                 {% if property.getId() not in desiredPropertyIDs %}
                     style="display:none";
@@ -176,23 +204,19 @@
                         <h2>$<span>{{ property.getExpectedrentpermonth() }}</span></h2>
                         <br>
                         {% if search %}
-                            <a href="{{ base_url() }}/viewProperty/{{ property.getId() }}">
+                            <a href="{{ base_url() }}/viewProperty?propertyID={{ property.getId() }}">
                                 <button type="submit" class="btn btn-default btn-sm btn-primary redirectButton">
                                     <span>More Details</span>
                                     <span class="fas fa-chevron-down margin-left: 15px;"></span>
                                 </button>
                             </a>
                         {% else %}
-                            <form name="manageRedirect" action="{{ base_url() }}/editProperty">
-                                <button 
-                                    type="button" 
-                                    class="btn btn-default btn-sm btn-primary redirectButton"
-                                    name="id" value="{{ property.getId() }}" 
-                                >
-                                    <span>Edit Details</span>
+                            <a href="{{ base_url() }}/editProperty?propertyID={{ property.getId() }}">
+                                <button type="submit" class="btn btn-default btn-sm btn-primary redirectButton">
+                                    <span>More Details</span>
                                     <span class="fas fa-chevron-down margin-left: 15px;"></span>
                                 </button>
-                            </form>
+                            </a>
                         {% endif %}
                     </div>
                 </div>
