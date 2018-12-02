@@ -106,7 +106,6 @@ function signUp(){
 }
 
 function reactToSuccess(response){
-
     //save user data
     response = JSON.parse(response)
     var userID = response["userID"]

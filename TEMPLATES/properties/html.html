@@ -2,9 +2,19 @@
 
 {% block content %}
 
+    BETWEEN|{{ echo }}|AND HERE
+
     <!--Loop through all the properties to display all of them-->
     {% for property in properties %}
-        <div class="card propertyCard">
+        <!--If you are searching then hide all the properties that dont current meet your conditions-->
+        <!--If you params you can simply unhide them with ajax-->
+        <div class="card propertyCard"
+            {% if search %}
+                {% if property.getId() not in desiredPropertyIDs %}
+                    style="display:none";
+                {% endif %}
+            {% endif %}
+        >
             <div class="card-header topSection">
                 <div class="row mainRow">
                     <!--Find these properties pictures-->
@@ -167,75 +177,28 @@
                         <br>
                         <h2>$<span>{{ property.getExpectedrentpermonth() }}</span></h2>
                         <br>
-                        <button type="button" id="{{ property.getId() }}" class="btn btn-default btn-sm btn-primary redirectButton 
-                            {% if search %}
-                                search
-                            {% endif %}
-                        ">
-                            <span>
-                                {% if search %}
-                                    More Details
-                                {% else %}
-                                    Edit Details
-                                {% endif %}
-                            </span><span class="fas fa-chevron-down margin-left: 15px;"></span>
-                        </button>
+                        {% if search %}
+                            <a href="{{ base_url() }}/viewProperty/{{ property.getId() }}">
+                                <button type="submit" class="btn btn-default btn-sm btn-primary redirectButton">
+                                    <span>More Details</span>
+                                    <span class="fas fa-chevron-down margin-left: 15px;"></span>
+                                </button>
+                            </a>
+                        {% else %}
+                            <form name="manageRedirect" action="{{ base_url() }}/editProperty">
+                                <button 
+                                    type="button" 
+                                    class="btn btn-default btn-sm btn-primary redirectButton"
+                                    name="id" value="{{ property.getId() }}" 
+                                >
+                                    <span>Edit Details</span>
+                                    <span class="fas fa-chevron-down margin-left: 15px;"></span>
+                                </button>
+                            </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-            {% if search %}
-                <div class="bottomSection card-header">
-                    <div class="row">
-                        <!--find the owner of this property-->
-                        {% set propertyOwner = null %}
-                        {% for owner in owners %}
-                            {% if property.getUserid() == owner.getId() %}
-                                {% set propertyOwner = owner %}
-                            {% endif %}
-                        {% endfor %}
-
-                        <div class="col-lg m-3">
-                            <span class="fas fa-user"></span><span>{{ propertyOwner.getName() }}</span>
-                        </div>
-                        <div class="col-lg m-3">
-                            <span class="fas fa-envelope"></span><span>{{ propertyOwner.getEmail() }}</span>
-                        </div>
-                        <div class="col-lg m-3">
-                            <ul class="list-group userPhones">
-                                <!--find all the phone number of this owner-->
-                                {% set propertyOwnerPhones = [] %}
-                                {% for phone in phones %}
-                                    {% if phone.getUserid() == propertyOwner.getId() %}
-                                        {% set propertyOwnerPhones = propertyOwnerPhones|merge([phone]) %}
-                                    {% endif %}
-                                {% endfor %}
-
-                                <!--If we have phone numbers display them-->
-                                {% if propertyOwnerPhones|length > 0 %}
-                                    <!--print phone number title-->
-                                        <li class="list-group-item list-group-item-dark">
-                                            <span class="fas fa-phone"></span> Phone Numbers
-                                        </li>
-                                    <!--print all the phone numbers-->
-                                    {% for propertyOwnerPhone in propertyOwnerPhones %}
-                                        <li class="list-group-item">
-                                            {% if propertyOwnerPhone.getDescription() %}
-                                                {{ propertyOwnerPhone.getDescription() }}&nbsp;|&nbsp;
-                                            {% endif %}
-                                            ({{ propertyOwnerPhone.getAreacode() }})&nbsp;{{ propertyOwnerPhone.getNumber() }}
-                                            {% if propertyOwnerPhone.getExtension() %}
-                                                &nbsp;ext&nbsp;{{ propertyOwnerPhone.getExtension() }}
-                                            {% endif %}
-                                        </li>
-                                    {% endfor %}
-                                {% endif %}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            {% else %}
-                <p>availability switch here</p>
-            {% endif %}
         </div>
     {% endfor %}
 

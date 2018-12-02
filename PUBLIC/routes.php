@@ -12,34 +12,136 @@ function current_user(){
 
 //(1) Page is bookmarkable
 //(2) We are able to go back to this page
+//(3) All parameters are optional
 $app->get('/', function ($request, $response, $args) {
+	//Variables from property
+	$rentMin = $_GET['rentMin'];
+	$rentMax = $_GET['rentMax'];
+	$squareFootageMin = $_GET['squareFootageMin'];
+	$squareFootageMax = $_GET['squareFootageMax'];
+	$bedMin = $_GET['bedMin'];
+	$bedMax = $_GET['bedMax'];
+	$bathMin = $_GET['bathMin'];
+	$bathMax = $_GET['bathMax'];
+	//Variables from address
+	$continentTypeID = $_GET['continentTypeID']; //tested
+	$countryTypeID = $_GET['countryTypeID']; //tested
+	$state = $_GET['state'];
+	$locality = $_GET['locality'];
+	$zipCode = $_GET['zipCode'];
+	//Grab all list type variables (TODO figure out how to extract this data since it should be in json format)
+	$applianceTypeIDs = json_decode($_GET['applianceTypeIDs']);
+	$amenityTypeIDs = $_GET['amenityTypeIDs'];
+	$utilityTypes = $_GET['utilityTypes'];
+	$perkTypeIDs = $_GET['perkTypeIDs'];
+
+	//Filter out properties that are not available
 	$properties = PropertyQuery::create()->filterByAvailable(true); //only show properties that are currently available
-	$pictures = PictureQuery::create(); //pass all the pictures and simply filter through this for every property in the html
-	$addresses = AddressQuery::create(); //ditto as above
-	$phones = PhoneQuery::create(); //ditto as above
-	$continentTypes = ContinenttypeQuery::create(); //ditto as above
-	$countryTypes = CountrytypeQuery::create(); //ditto as above
-	$owners = UserQuery::create(); //ditto as above
+
+	$echo = "";
+
+	//Gather properties that meet our search requirements
+	$desiredPropertyIDs = [];
+	foreach($properties as &$property){
+		//Variables from property
+		$rent = $property->getExpectedrentpermonth();
+		if($rentMin && $rentMin > $rent) continue;
+		if($rentMax && $rent > $rentMax) continue;
+
+		$sqrft = $property->getSquarefootage();
+		if($squareFootageMin && $squareFootageMin > $sqrft) continue;
+		if($squareFootageMax && $sqrft > $squareFootageMax) continue;
+
+		$bed = $property->getBedroomcount();
+		if($bedMin && $bedMin > $bed) continue;
+		if($bedMax && $bed > $bedMax) continue;
+
+		$bath = $property->getBathroomcount();
+		if($bathMin && $bathMin > $bath) continue;
+		if($bathMax && $bath > $bathMax) continue;
+
+		//Variables from address
+		$propertyAddress = AddressQuery::create()->findPk($property->getAddressid());
+
+		if($continentTypeID && $continentTypeID != $propertyAddress->getContinenttypeid()) continue;
+		if($countryTypeID && $countryTypeID != $propertyAddress->getCountrytypeid()) continue;
+		if($state && $state != $propertyAddress->getState()) continue;
+		if($locality && $locality != $propertyAddress->getLocality()) continue;
+		if($zipCode && $zipCode != $propertyAddress->getZipcode()) continue;
+		
+		//Grab all list type variables
+		$propertyAppliances = ApplianceQuery::create()->filterByPropertyid($property->getId());
+		$propertyHasAllAppliances = true;
+		$echo = $echo . " --------------- PROPERTY " . $property->getId() . " with " . count($propertyAppliances) . " appliances => ";
+		foreach($applianceTypeIDs as &$applianceTypeID){
+			$propertyAppliancesWithTypeID = $propertyAppliances->filterByAppliancetypeid($applianceTypeID);
+			$echo = $echo . " with Appliance " . $applianceTypeID . " quantity " . count($propertyAppliancesWithTypeID);
+			if(count($propertyAppliancesWithTypeID) == 0){
+				$propertyHasAllAppliances = false;
+			}
+		}
+		if($propertyHasAllAppliances == false) continue;
+
+		//since we have meet all the condition because php has not continued to the next iteration
+		array_push($desiredPropertyIDs, $property->getId());
+	}
+
+	//pass the entirety of the database because 
+	//(1) we have yet to find a way to do queries inside of the html file with twig
+	//(2) filter here is possible but would take quite a while
+	$pictures = PictureQuery::create(); 
+	$addresses = AddressQuery::create();
+	$continentTypes = ContinenttypeQuery::create(); 
+	$countryTypes = CountrytypeQuery::create(); 
+
+	//pass all the parameters and generate the page
 	$this->view->render($response, "/properties/html.html", 
 		['user'=>current_user(), 
 		'search'=>true, 
+
+		//passing all the ids of the objects that meet the query conditions (this is better than passing the IDs of those that didn't)
+		'desiredPropertyIDs'=>$desiredPropertyIDs,
+		
+		//pass all the properties so that we dont need to relaod the page to have a working search
 		'properties'=>$properties, 
+
+		//passing entire tables that will be filtered later
 		'pictures'=>$pictures,
 		'addresses'=>$addresses,
-		'phones'=>$phones,
 		'continentTypes'=>$continentTypes,
 		'countryTypes'=>$countryTypes,
-		'owners'=>$owners]);
+		'echo'=>$echo]);
 	return $response;
 });
 
 //(1) Page is bookmarkable
 //(2) We are able to go back to this page
-$app->get('/viewProperty/{id}', function ($request, $response, $args) {
-	//TODO... what happens when we don't pass it a paramters?!
-	$property = PropertyQuery::create()->findPk($args['id']);
+//(3) TODO plan what to do when no parameter is passed
+$app->get('/viewProperty', function ($request, $response, $args) {
+	//find the property
+	$property = PropertyQuery::create()->findPk($_GET['propertyID']); 
+	//find the pictures (for property)
+	$pictures = PictureQuery::create()->filterByProperid($property->getId());
+	//find the address (for property)
+	$address = AddressQuery::create()->findPk($property->getAddressid());
+	//find the continent name (for address)
+	$continent = ContinenttypeQuery::create()->findPk($address->getContinenttypeid());
+	//find the country name (for address)
+	$country = CountrytypeQuery::create()->findPk($address->getCountrytypeid());
+	//find all the below (for property)
+	$appliances = ApplianceQuery::create()->filterByProperid($property->getId());
+	$utilities = Utilities::create()->filterByProperid($property->getId());
+	$amenities = AmenityQuery::create()->filterByProperid($property->getId());
+	$perks = PerkQuery::create()->filterByProperid($property->getId());
+	$issues = IssueQuery::create()->filterByProperid($property->getId());
+	$owner = UserQuery::create()->filterByProperid($property->getId());
+	$phones = PhoneQuery::create()->filterByProperid($property->getId());
+
+	//pass all the parameters to the page
 	$this->view->render($response, "/viewProperty/html.html", 
-		['user'=>current_user(), 'property'=>$property]);
+		['user'=>current_user(), 
+		'property'=>$property,
+		]);
 	return $response;
 });
 
@@ -63,6 +165,10 @@ $app->get('/authentication', function ($request, $response, $args) {
 
 //TODO switch to fully server side checks
 $app->post('/login', function($request, $response, $args) {
+	$this->view->render($response, "TEMPLATE/html.html", 
+			['user'=>current_user()]); 
+
+	/*
 	if(current_user() == null){
 		$postVars = $request->getParsedBody();
 		$email = $postVars['email'];
@@ -85,6 +191,7 @@ $app->post('/login', function($request, $response, $args) {
 		//return required data
 		return json_encode(array('userID' => $userID, 'message' => $message));
 	}
+	*/
 });
 
 //TODO switch to fully server side checks
@@ -147,14 +254,13 @@ $app->get('/manage', function ($request, $response, $args) {
 		$properties = PropertyQuery::create()->filterByUserid($user->getId()); //only show properties that belond to this user
 		$pictures = PictureQuery::create(); //pass all the pictures and simply filter through this for every property in the html
 		$addresses = AddressQuery::create(); //ditto as above
-		//NOTE: we dont have to pass phones because we are viewing our own properties and don't need our own contact information
 		$continentTypes = ContinenttypeQuery::create(); //ditto as above
 		$countryTypes = CountrytypeQuery::create(); //ditto as above
-		//NOTE: we dont have to pass owners because we are the only owner
 		$this->view->render($response, "/properties/html.html", 
 			['user'=>current_user(), 
 			'search'=>false, 
 			'properties'=>$properties, 
+
 			'pictures'=>$pictures,
 			'addresses'=>$addresses,
 			'continentTypes'=>$continentTypes,
@@ -263,12 +369,6 @@ $app->post('/editProperty', function ($request, $response, $args) {
 });
 
 //-------------------------UI TEST ROUTES-------------------------
-
-$app->get('/UI', function ($request, $response, $args) {
-	$this->view->render($response, "searchUI/html.html",
-		['user'=>$user]);
-	return $response;
-});
 
 $app->get('/properties', function ($request, $response, $args) {
 	$this->view->render($response, "properties/html.html",

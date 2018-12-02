@@ -4,6 +4,7 @@ var redirectButton = ".redirectButton"
 
 //-------------------------Logic-------------------------
 
+/*
 $(redirectButton).on("click", function(event){
     event.preventDefault();
     var id = $(redirectButton).attr('id')
@@ -20,6 +21,7 @@ $(redirectButton).on("click", function(event){
         });
     }
 })
+*/
 
 //-------------------------Objects-------------------------
 //NOTE: these should not contain anything with an ID since objects are intended for duplication
