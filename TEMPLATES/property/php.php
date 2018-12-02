@@ -92,7 +92,7 @@ function createProperty($fields){
 	$newProperty->save();
 }
 function updateProperty($fields, $propertyID){
-
+	
 	$editProperty = PropertyQuery::create()->findPk($propertyID);
 	$editProperty->setPostname($fields['postName']);
 	$editProperty->setAvailable(true);
@@ -101,5 +101,14 @@ function updateProperty($fields, $propertyID){
 	$editProperty->setBedroomcount($fields['bedrooms']);
 	$editProperty->setBathroomcount($fields['bathrooms']);
 	$editProperty->save();
+
+	$editAddr = AddressQuery::create()->findPk($editProperty->getAddressid());
+	$editAddr->setState($fields['state']);
+	$editAddr->setLocality($fields['locality']);
+	$editAddr->setZipcode($fields['zip']);
+	$editAddr->setStreetname($fields['street']);
+	$editAddr->setBuildingindentifier($fields['buildNum']);
+	$editAddr->setApartmentidentifier($fields['aptNum']);
+	$editAddr->save();
 }
 ?>

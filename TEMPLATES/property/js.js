@@ -21,14 +21,12 @@ var formResponse = "#registerError"
 
 //-Edit Form
 //--Address Fields
-/*
 var E_formState = "#editState"
 var E_formLocality = "#editLocality"
 var E_formZip = "#editZipCode"
 var E_formStreet = "#editStreetName"
 var E_formBuildNum = "#editBuildingNum"
 var E_formAptNum = "#editAptNum"
-*/
 //--Property Fields
 var E_formPostName="#editPostName"
 var E_formRent="#editRent"
@@ -88,12 +86,12 @@ $(formSubmit).click((e)=>{
 $(E_formSubmit).click((e)=>{
     e.preventDefault()
     fields = {
-        //state : $(E_formState).val(),
-        //locality : $(E_formLocality).val(),
-        //zip : $(E_formZip).val(),
-        //street : $(E_formStreet).val(),
-        //buildNum : $(E_formBuildNum).val(),
-        //aptNum : $(E_formAptNum).val(),
+        state : $(E_formState).val(),
+        locality : $(E_formLocality).val(),
+        zip : $(E_formZip).val(),
+        street : $(E_formStreet).val(),
+        buildNum : $(E_formBuildNum).val(),
+        aptNum : $(E_formAptNum).val(),
         postName : $(E_formPostName).val(),
         rent : $(E_formRent).val(),
         sqrFootage : $(E_formSqrFootage).val(),
