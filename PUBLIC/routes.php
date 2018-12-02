@@ -31,19 +31,17 @@ $app->get('/', function ($request, $response, $args) {
 	$zipCode = $_GET['zipCode'];
 	//Grab all list type variables (TODO figure out how to extract this data since it should be in json format)
 	$applianceTypeIDs = json_decode($_GET['applianceTypeIDs']);
-	$amenityTypeIDs = $_GET['amenityTypeIDs'];
-	$utilityTypes = $_GET['utilityTypes'];
+	$utilityTypeIDs = $_GET['utilityTypeIDs'];
 	$perkTypeIDs = $_GET['perkTypeIDs'];
+	$amenityTypeIDs = $_GET['amenityTypeIDs'];
 
 	//Filter out properties that are not available
-	$properties = PropertyQuery::create()->filterByAvailable(true); //only show properties that are currently available
-
-	$echo = "";
+	$properties = PropertyQuery::create()->filterByAvailable(true)->find(); //only show properties that are currently available
 
 	//Gather properties that meet our search requirements
 	$desiredPropertyIDs = [];
 	foreach($properties as &$property){
-		//Variables from property
+		//-----Variables from property
 		$rent = $property->getExpectedrentpermonth();
 		if($rentMin && $rentMin > $rent) continue;
 		if($rentMax && $rent > $rentMax) continue;
@@ -60,8 +58,8 @@ $app->get('/', function ($request, $response, $args) {
 		if($bathMin && $bathMin > $bath) continue;
 		if($bathMax && $bath > $bathMax) continue;
 
-		//Variables from address
-		$propertyAddress = AddressQuery::create()->findPk($property->getAddressid());
+		//-----Variables from address
+		$propertyAddress = AddressQuery::create()->findPk($property->getAddressid())->find();
 
 		if($continentTypeID && $continentTypeID != $propertyAddress->getContinenttypeid()) continue;
 		if($countryTypeID && $countryTypeID != $propertyAddress->getCountrytypeid()) continue;
@@ -69,18 +67,43 @@ $app->get('/', function ($request, $response, $args) {
 		if($locality && $locality != $propertyAddress->getLocality()) continue;
 		if($zipCode && $zipCode != $propertyAddress->getZipcode()) continue;
 		
-		//Grab all list type variables
-		$propertyAppliances = ApplianceQuery::create()->filterByPropertyid($property->getId());
-		$propertyHasAllAppliances = true;
-		$echo = $echo . " --------------- PROPERTY " . $property->getId() . " with " . count($propertyAppliances) . " appliances => ";
+		//-----Grab all list type variables
+		//appliances
+		$propertyHasAllAppliances = true; //tested
 		foreach($applianceTypeIDs as &$applianceTypeID){
-			$propertyAppliancesWithTypeID = $propertyAppliances->filterByAppliancetypeid($applianceTypeID);
-			$echo = $echo . " with Appliance " . $applianceTypeID . " quantity " . count($propertyAppliancesWithTypeID);
+			$propertyAppliancesWithTypeID = ApplianceQuery::create()->filterByPropertyid($property->getId())->filterByAppliancetypeid($applianceTypeID)->find();
 			if(count($propertyAppliancesWithTypeID) == 0){
 				$propertyHasAllAppliances = false;
 			}
 		}
 		if($propertyHasAllAppliances == false) continue;
+		//utilities
+		$propertyHasAllUtilities = true;
+		foreach($utilityTypeIDS as &$utilityTypeID){
+			$propertyUtilitiesWithTypeID = UtilityQuery::create()->filterByPropertyid($property->getId())->filterByAppliancetypeid($utilityTypeID)->find();
+			if(count($propertyUtilitiesWithTypeID) == 0){
+				$propertyHasAllUtilities = false;
+			}
+		}
+		if($propertyHasAllUtilities == false) continue;
+		//perks
+		$propertyHasAllPerks = true;
+		foreach($perkTypeIDs as &$perkTypeID){
+			$propertyPerksWithTypeID = PerkQuery::create()->filterByPropertyid($property->getId())->filterByAppliancetypeid($perkTypeID)->find();
+			if(count($propertyPerksWithTypeID) == 0){
+				$propertyHasAllPerks = false;
+			}
+		}
+		if($propertyHasAllPerks == false) continue;
+		//amenities
+		$propertyHasAllAmenities = true;
+		foreach($amenityTypeIDs as &$amenityTypeID){
+			$propertyAmenitiesWithTypeID = AmenityQuery::create()->filterByPropertyid($property->getId())->filterByAppliancetypeid($amenityTypeID)->find();
+			if(count($propertyAmenitiesWithTypeID) == 0){
+				$propertyHasAllAmenities = false;
+			}
+		}
+		if($propertyHasAllAmenities == false) continue;
 
 		//since we have meet all the condition because php has not continued to the next iteration
 		array_push($desiredPropertyIDs, $property->getId());
@@ -89,10 +112,10 @@ $app->get('/', function ($request, $response, $args) {
 	//pass the entirety of the database because 
 	//(1) we have yet to find a way to do queries inside of the html file with twig
 	//(2) filter here is possible but would take quite a while
-	$pictures = PictureQuery::create(); 
-	$addresses = AddressQuery::create();
-	$continentTypes = ContinenttypeQuery::create(); 
-	$countryTypes = CountrytypeQuery::create(); 
+	$pictures = PictureQuery::create()->find(); 
+	$addresses = AddressQuery::create()->find();
+	$continentTypes = ContinenttypeQuery::create()->find(); 
+	$countryTypes = CountrytypeQuery::create()->find(); 
 
 	//pass all the parameters and generate the page
 	$this->view->render($response, "/properties/html.html", 
@@ -109,8 +132,7 @@ $app->get('/', function ($request, $response, $args) {
 		'pictures'=>$pictures,
 		'addresses'=>$addresses,
 		'continentTypes'=>$continentTypes,
-		'countryTypes'=>$countryTypes,
-		'echo'=>$echo]);
+		'countryTypes'=>$countryTypes]);
 	return $response;
 });
 
@@ -121,7 +143,7 @@ $app->get('/viewProperty', function ($request, $response, $args) {
 	//find the property
 	$property = PropertyQuery::create()->findPk($_GET['propertyID']); 
 	//find the pictures (for property)
-	$pictures = PictureQuery::create()->filterByProperid($property->getId());
+	$pictures = PictureQuery::create()->filterByPropertyid($property->getId())->find();
 	//find the address (for property)
 	$address = AddressQuery::create()->findPk($property->getAddressid());
 	//find the continent name (for address)
@@ -129,13 +151,13 @@ $app->get('/viewProperty', function ($request, $response, $args) {
 	//find the country name (for address)
 	$country = CountrytypeQuery::create()->findPk($address->getCountrytypeid());
 	//find all the below (for property)
-	$appliances = ApplianceQuery::create()->filterByProperid($property->getId());
-	$utilities = Utilities::create()->filterByProperid($property->getId());
-	$amenities = AmenityQuery::create()->filterByProperid($property->getId());
-	$perks = PerkQuery::create()->filterByProperid($property->getId());
-	$issues = IssueQuery::create()->filterByProperid($property->getId());
-	$owner = UserQuery::create()->filterByProperid($property->getId());
-	$phones = PhoneQuery::create()->filterByProperid($property->getId());
+	$appliances = ApplianceQuery::create()->filterByPropertyid($property->getId())->find();
+	$utilities = Utilities::create()->filterByPropertyid($property->getId())->find();
+	$amenities = AmenityQuery::create()->filterByPropertyid($property->getId())->find();
+	$perks = PerkQuery::create()->filterByPropertyid($property->getId())->find();
+	$issues = IssueQuery::create()->filterByPropertyid($property->getId())->find();
+	$owner = UserQuery::create()->filterByPropertyid($property->getId())->find();
+	$phones = PhoneQuery::create()->filterByPropertyid($property->getId())->find();
 
 	//pass all the parameters to the page
 	$this->view->render($response, "/viewProperty/html.html", 
@@ -165,10 +187,6 @@ $app->get('/authentication', function ($request, $response, $args) {
 
 //TODO switch to fully server side checks
 $app->post('/login', function($request, $response, $args) {
-	$this->view->render($response, "TEMPLATE/html.html", 
-			['user'=>current_user()]); 
-
-	/*
 	if(current_user() == null){
 		$postVars = $request->getParsedBody();
 		$email = $postVars['email'];
@@ -191,7 +209,6 @@ $app->post('/login', function($request, $response, $args) {
 		//return required data
 		return json_encode(array('userID' => $userID, 'message' => $message));
 	}
-	*/
 });
 
 //TODO switch to fully server side checks
@@ -251,11 +268,11 @@ $app->post('/logout', function ($request, $response, $args) {
 $app->get('/manage', function ($request, $response, $args) {
 	$user = current_user();
 	if($user != null){
-		$properties = PropertyQuery::create()->filterByUserid($user->getId()); //only show properties that belond to this user
-		$pictures = PictureQuery::create(); //pass all the pictures and simply filter through this for every property in the html
-		$addresses = AddressQuery::create(); //ditto as above
-		$continentTypes = ContinenttypeQuery::create(); //ditto as above
-		$countryTypes = CountrytypeQuery::create(); //ditto as above
+		$properties = PropertyQuery::create()->filterByUserid($user->getId())->find(); //only show properties that belond to this user
+		$pictures = PictureQuery::create()->find(); //pass all the pictures and simply filter through this for every property in the html
+		$addresses = AddressQuery::create()->find(); //ditto as above
+		$continentTypes = ContinenttypeQuery::create()->find(); //ditto as above
+		$countryTypes = CountrytypeQuery::create()->find(); //ditto as above
 		$this->view->render($response, "/properties/html.html", 
 			['user'=>current_user(), 
 			'search'=>false, 
