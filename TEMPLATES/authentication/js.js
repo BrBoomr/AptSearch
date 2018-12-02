@@ -41,7 +41,7 @@ function setForm(login){
 $(submitButton).on("click", function(){
     event.preventDefault();
     if(isLogin()) reRoute("login")
-    else reRoute("signUp")
+    else reRoute("signup")
 })
 
 function reRoute(route){

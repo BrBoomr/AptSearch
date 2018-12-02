@@ -27,9 +27,9 @@ $container['view'] = function ($container) {
 //-------------------------IMPORT ALL PHP FILES FROM OTHER PAGES-------------------------
 
 require './shared.php';
-require './routes.php'; //TODO... we should be able to remove this
+require './inprogressRoutes.php'; //TODO... we should be able to remove this
 
-require '../TEMPLATES/layout/php.php'
+require '../TEMPLATES/layout/php.php';
 require '../TEMPLATES/authentication/php.php';
 require '../TEMPLATES/properties/php.php';
 require '../TEMPLATES/viewProperty/php.php';
