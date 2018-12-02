@@ -47,15 +47,24 @@ $app->get('/editProperty', function ($request, $response, $args) {
 	}
 });
 
-$app->post('/verify_property', function ($request, $response, $args) {
+$app->post('/verifyProperty', function ($request, $response, $args) {
     $fields = $_POST;
-    
 	foreach($fields as $field){
 		if(empty($field)){
 			return json_encode(['valid'=>'false']);
 		}
 	}
 	createProperty($fields);
+	return json_encode(['valid'=>'true']);
+});
+$app->post('/verifyProperty/edit', function ($request, $response, $args) {
+    $fields = $_POST;
+	foreach($fields as $field){
+		if(empty($field)){
+			return json_encode(['valid'=>'false']);
+		}
+	}
+	updateProperty($fields, $fields['propertyID']);
 	return json_encode(['valid'=>'true']);
 });
 
@@ -81,5 +90,16 @@ function createProperty($fields){
 	$newProperty->setBedroomcount($fields['bedrooms']);
 	$newProperty->setBathroomcount($fields['bathrooms']);
 	$newProperty->save();
+}
+function updateProperty($fields, $propertyID){
+
+	$editProperty = PropertyQuery::create()->findPk($propertyID);
+	$editProperty->setPostname($fields['postName']);
+	$editProperty->setAvailable(true);
+	$editProperty->setExpectedrentpermonth($fields['rent']);
+	$editProperty->setSquarefootage($fields['sqrFootage']);
+	$editProperty->setBedroomcount($fields['bedrooms']);
+	$editProperty->setBathroomcount($fields['bathrooms']);
+	$editProperty->save();
 }
 ?>

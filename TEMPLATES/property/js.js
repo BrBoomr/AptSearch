@@ -1,5 +1,7 @@
 //console.log("logic js file loaded (hopefully after connection js file)")
 //CONNECTIONS
+
+//-Register Form
 //--Address Fields
 var formState = "#registerState"
 var formLocality = "#registerLocality"
@@ -17,8 +19,29 @@ var formSubmit = "#registerSubmit"
 //--Response Card (Success/Error)
 var formResponse = "#registerError"
 
+//-Edit Form
+//--Address Fields
+/*
+var E_formState = "#editState"
+var E_formLocality = "#editLocality"
+var E_formZip = "#editZipCode"
+var E_formStreet = "#editStreetName"
+var E_formBuildNum = "#editBuildingNum"
+var E_formAptNum = "#editAptNum"
+*/
+//--Property Fields
+var E_formPostName="#editPostName"
+var E_formRent="#editRent"
+var E_formSqrFootage="#editSqrFootage"
+var E_formBedrooms = "#editBedrooms"
+var E_formBathrooms = "#editBathrooms"
+var E_formSubmit = "#editSubmit"
+var E_propertyID = $("h3[propertyid]").attr("propertyid")
+//--Response Card (Success/Error)
+var E_formResponse = "#editError"
 
-$("#registerSubmit").click((e)=>{
+
+$(formSubmit).click((e)=>{
     e.preventDefault()
     fields = {
         state : $(formState).val(),
@@ -38,7 +61,7 @@ $("#registerSubmit").click((e)=>{
     //console.log(fields)
     $.ajax({
         method: "post",
-        url: baseurl + "/verify_property",
+        url: baseurl + "/verifyProperty",
         data: fields,
         dataType: "json",
         success: function (response) {
@@ -53,6 +76,49 @@ $("#registerSubmit").click((e)=>{
                 $(formResponse).text("Invalid Input!")
                 $(formResponse).addClass("alert-danger")
                 $(formResponse).removeClass("d-none")
+            }
+        },
+        fail: function(response){
+            console.log("Internal Error")
+        },
+
+    })
+})
+
+$(E_formSubmit).click((e)=>{
+    e.preventDefault()
+    fields = {
+        //state : $(E_formState).val(),
+        //locality : $(E_formLocality).val(),
+        //zip : $(E_formZip).val(),
+        //street : $(E_formStreet).val(),
+        //buildNum : $(E_formBuildNum).val(),
+        //aptNum : $(E_formAptNum).val(),
+        postName : $(E_formPostName).val(),
+        rent : $(E_formRent).val(),
+        sqrFootage : $(E_formSqrFootage).val(),
+        bedrooms : $(E_formBedrooms).val(),
+        bathrooms : $(E_formBathrooms).val(),
+        propertyID : E_propertyID,
+    }
+    //fields = JSON.stringify(fields)
+    //console.log(fields)
+    $.ajax({
+        method: "post",
+        url: baseurl + "/verifyProperty/edit",
+        data: fields,
+        dataType: "json",
+        success: function (response) {
+            //console.log(response['valid'])
+            if(response['valid']=='true'){
+                $(E_formResponse).text("Successfuly Edited Property!")
+                $(E_formResponse).addClass("alert-success")
+                $(E_formResponse).removeClass("d-none")
+            }
+            else {
+                $(E_formResponse).text("Invalid Input!")
+                $(E_formResponse).addClass("alert-danger")
+                $(E_formResponse).removeClass("d-none")
             }
         },
         fail: function(response){
