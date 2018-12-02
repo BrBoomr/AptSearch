@@ -1,0 +1,88 @@
+{% extends 'layout/html.html' %}
+
+{% block content %}
+
+    {% if add %}
+        <h1>ADD PROPERTY PAGE</h1>
+        <br>
+        <ol>
+            <li>this should have a section where you area allowed to import photos by either specifying a file or a link</li>
+            <li>this should also have a section to specify of the regular property details</li>
+            <li>this should also have a section to add all the tags and everything associated with them</li>
+        </ol>
+    
+        <h1>
+            Add Property
+        </h1>
+        <hr>
+        <!--REGISTER CARD-->
+        <div class="container addProperty-container">
+            <div class="row">
+                <div class="col-md-6 newProperty-form-1">
+                    <form>
+                        <h3>Address Fields</h3>
+                        <div class="form-group">
+                            <input id="registerState" type="text" class="form-control" placeholder="State" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerLocality" type="text" class="form-control" placeholder="Locality/City" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerZipCode" type="text" class="form-control" placeholder="Zip Code" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerStreetName" type="text" class="form-control" placeholder="Street Name" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerBuildingNum" type="text" class="form-control" placeholder="Building Number" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerAptNum" type="text" class="form-control" placeholder="Apartment Number" value=""/>
+                        </div>
+                        <hr>
+                        <h3>Property Fields</h3>
+                        <div class="form-group">
+                            <input id="registerPostName" type="text" class="form-control" placeholder="postName" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerRent" type="text" class="form-control" placeholder="Rent" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerSqrFootage" type="text" class="form-control" placeholder="Square Footage" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerBedrooms" type="text" class="form-control" placeholder="Bedrooms" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerBathrooms" type="text" class="form-control" placeholder="Bathrooms" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerSubmit" type="submit" class="btnSubmit" value="Register Property"/>
+                        </div>
+                        <div class="form-group">
+    
+                            <div id="registerError" class="alert alert-dismissible d-none">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>DEFAULT ERROR MESSAGE</strong>
+                            </div>
+                            <!-- <a href="#" class="ForgetPwd" value="Login">Forget Password?</a> -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <h1>EDIT PROPERTY PAGE</h1>
+    {% endif %}
+
+{% endblock %}
+
+{% block styles %}
+    <!--style sheet-->
+    <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/property/css.css">
+{% endblock %}
+
+{% block scripts %}
+    <!--javascript-->
+    <script src="{{ base_url() }}/../../TEMPLATES/property/js.js"></script>
+{% endblock %}

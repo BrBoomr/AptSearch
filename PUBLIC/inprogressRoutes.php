@@ -1,30 +1,45 @@
 <?php
 
-//FOR UNREFINED ROUTES
+//--------------------------------------------------NEEDS REFINING--------------------------------------------------
 
-//--------------------------------------------------MUST BE AUTHENTICATED--------------------------------------------------
+//-------------------------ADD PROPERTY PAGE-------------------------
 
-//-------------------------MANAGE PAGE-------------------------
-
-//(1) Page is bookmarkable
-//(2) We are able to go back to this page
-$app->get('/manage', function ($request, $response, $args) {
+//TODO... 
+//(1) needs to use post (params passed not in url) => so that the page is not bookmarkable
+//(2) plan for going to the page without parameters
+//(3) this page should also be replaced after changes SAVED or DISCARDED
+//		[a] replace it with new page (IF previous page != next page)
+//		[b] replace it with the previous page (IF previous page == next page)
+//		[*] replacement occurs so you cant go back to the same page
+//TODO switch to fully client side checks
+$app->get('/addProperty', function ($request, $response, $args) {
 	$user = current_user();
 	if($user != null){
-		$properties = PropertyQuery::create()->filterByUserid($user->getId())->find(); //only show properties that belond to this user
-		$pictures = PictureQuery::create()->find(); //pass all the pictures and simply filter through this for every property in the html
-		$addresses = AddressQuery::create()->find(); //ditto as above
-		$continentTypes = ContinenttypeQuery::create()->find(); //ditto as above
-		$countryTypes = CountrytypeQuery::create()->find(); //ditto as above
-		$this->view->render($response, "/properties/html.html", 
-			['user'=>current_user(), 
-			'search'=>false, 
-			'properties'=>$properties, 
+		$this->view->render($response, "property/html.html",
+			['user'=>$user, 'add'=>true]);
+		return $response;
+	}
+	else{
+		Header("Location: ./authentication");
+		exit();
+	}
+});
 
-			'pictures'=>$pictures,
-			'addresses'=>$addresses,
-			'continentTypes'=>$continentTypes,
-			'countryTypes'=>$countryTypes,]);
+//-------------------------EDIT PROPERTY PAGE-------------------------
+
+//TODO... 
+//(1) needs to use post (params passed not in url) => so that the page is not bookmarkable
+//(2) plan for going to the page without parameters
+//(3) this page should also be replaced after changes SAVED or DISCARDED
+//		[a] replace it with new page (IF previous page != next page)
+//		[b] replace it with the previous page (IF previous page == next page)
+//		[*] replacement occurs so you cant go back to the same page
+//TODO switch to fully client side checks
+$app->get('/editProperty', function ($request, $response, $args) {
+	$user = current_user();
+	if($user != null){
+		$this->view->render($response, "property/html.html",
+			['user'=>$user, 'property'=>$property, 'add'=>false]);
 		return $response;
 	}
 	else{
@@ -79,73 +94,6 @@ $app->get('/settings/verify', function ($request, $response, $args) {
 	}
 });
 
-//-------------------------ADD PROPERTY PAGE-------------------------
-
-//TODO... 
-//(1) needs to use post (params passed not in url) => so that the page is not bookmarkable
-//(2) plan for going to the page without parameters
-//(3) this page should also be replaced after changes SAVED or DISCARDED
-//		[a] replace it with new page (IF previous page != next page)
-//		[b] replace it with the previous page (IF previous page == next page)
-//		[*] replacement occurs so you cant go back to the same page
-//TODO switch to fully client side checks
-$app->get('/addProperty', function ($request, $response, $args) {
-	$user = current_user();
-	if($user != null){
-		$this->view->render($response, "addProperty/html.html",
-			['user'=>$user]);
-		return $response;
-	}
-	else{
-		Header("Location: ./authentication");
-		exit();
-	}
-});
-
-//-------------------------EDIT PROPERTY PAGE-------------------------
-
-//TODO... 
-//(1) needs to use post (params passed not in url) => so that the page is not bookmarkable
-//(2) plan for going to the page without parameters
-//(3) this page should also be replaced after changes SAVED or DISCARDED
-//		[a] replace it with new page (IF previous page != next page)
-//		[b] replace it with the previous page (IF previous page == next page)
-//		[*] replacement occurs so you cant go back to the same page
-//TODO switch to fully client side checks
-$app->post('/editProperty', function ($request, $response, $args) {
-	$id = $request->getParsedBody()['id'];
-	//TODO... what happens when we don't pass it a paramters?!
-	$property = PropertyQuery::create()->findPk($id);
-	$user = current_user();
-	if($user != null){
-		$this->view->render($response, "editProperty/html.html",
-			['user'=>$user, 'property'=>$property]);
-		return $response;
-	}
-	else{
-		Header("Location: ./authentication");
-		exit();
-	}
-});
-
-//-------------------------UI TEST ROUTES-------------------------
-
-$app->get('/properties', function ($request, $response, $args) {
-	$this->view->render($response, "properties/html.html",
-		['user'=>$user, 'search'=>true]);
-	return $response;
-});
-
-//-------------------------TEMPLATE ROUTE-------------------------
-
-$app->get('/TEMPLATE', function ($request, $response, $args) {
-	$this->view->render($response, "TEMPLATE/html.html",
-		['user'=>$user]);
-	return $response;
-});
-
-//--------------------------------------------------IDK LOOKS IMPORTANT--------------------------------------------------
-
 $app->post('/verify_property', function ($request, $response, $args) {
 	//$fields = $this->request->getQueryParams();
 	$fields = $_POST;
@@ -181,4 +129,49 @@ function createProperty($fields){
 	$newProperty->setBathroomcount($fields['bathrooms']);
 	$newProperty->save();
 }
+
+//--------------------------------------------------For UI Development--------------------------------------------------
+
+$app->get('/viewPropertyUI', function ($request, $response, $args) {
+	$this->view->render($response, "UI/viewPropertyUI/html.html",
+		['user'=>current_user()]);
+	return $response;
+});
+
+$app->get('/settingsUI', function ($request, $response, $args) {
+	$this->view->render($response, "UI/settingsUI/html.html",
+		['user'=>current_user()]);
+	return $response;
+});
+
+$app->get('/addPropertyUI', function ($request, $response, $args) {
+	$this->view->render($response, "UI/propertyUI/html.html",
+		['user'=>current_user(), 'add'=>true]);
+	return $response;
+});
+
+$app->get('/editPropertyUI', function ($request, $response, $args) {
+	$this->view->render($response, "UI/propertyUI/html.html",
+		['user'=>current_user(), 'add'=>false]);
+	return $response;
+});
+
+//--------------------------------------------------For Testing--------------------------------------------------
+
+//-------------------------TEMPLATE ROUTE-------------------------
+
+$app->get('/TEMPLATE', function ($request, $response, $args) {
+	$this->view->render($response, "TEMPLATE/html.html",
+		['user'=>current_user()]);
+	return $response;
+});
+
+//-------------------------DEBUG ROUTE-------------------------
+
+$app->get('/DEBUG', function ($request, $response, $args) {
+	$this->view->render($response, "DEBUG/html.html",
+		['user'=>current_user()]);
+	return $response;
+});
+
 ?>

@@ -45,4 +45,3 @@ $("#registerSubmit").click((e)=>{
 
     })
 })
-

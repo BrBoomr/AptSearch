@@ -1,11 +1,13 @@
 <?php
 
+//--------------------------------------------------Search Page--------------------------------------------------
+
 //(1) Page is bookmarkable
 //(2) We are able to go back to this page
 //(3) All parameters are optional
 $app->get('/', function ($request, $response, $args) {
 
-    //-------------------------read in optional parameters-------------------------
+    //-------------------------read in optional parameters
 
 	//Variables from property
 	$rentMin = (isset($_GET['rentMin'])) ? $_GET['rentMin'] : null;
@@ -28,7 +30,7 @@ $app->get('/', function ($request, $response, $args) {
 	$perkTypeIDs = (isset($_GET['perkTypeIDs'])) ? json_decode($_GET['perkTypeIDs']) : null;
     $amenityTypeIDs = (isset($_GET['amenityTypeIDs'])) ? json_decode($_GET['amenityTypeIDs']) : null;
     
-    //-------------------------filter properties-------------------------
+    //-------------------------filter properties
 
 	//Filter out properties that are not available
 	$properties = PropertyQuery::create()->filterByAvailable(true)->find(); //only show properties that are currently available
@@ -112,7 +114,7 @@ $app->get('/', function ($request, $response, $args) {
 		array_push($desiredPropertyIDs, $property->getId());
     }
     
-    //-------------------------pass data to twig template-------------------------
+    //-------------------------pass data to twig template
 
 	//pass the entirety of the database because 
 	//(1) we have yet to find a way to do queries inside of the html file with twig
@@ -139,6 +141,35 @@ $app->get('/', function ($request, $response, $args) {
 		'continentTypes'=>$continentTypes,
 		'countryTypes'=>$countryTypes]);
 	return $response;
+});
+
+//--------------------------------------------------Manage Page--------------------------------------------------
+
+//(1) Page is bookmarkable
+//(2) We are able to go back to this page
+$app->get('/manage', function ($request, $response, $args) {
+	$user = current_user();
+	if($user != null){
+		$properties = PropertyQuery::create()->filterByUserid($user->getId())->find(); //only show properties that belond to this user
+		$pictures = PictureQuery::create()->find(); //pass all the pictures and simply filter through this for every property in the html
+		$addresses = AddressQuery::create()->find(); //ditto as above
+		$continentTypes = ContinenttypeQuery::create()->find(); //ditto as above
+		$countryTypes = CountrytypeQuery::create()->find(); //ditto as above
+		$this->view->render($response, "/properties/html.html", 
+			['user'=>current_user(), 
+			'search'=>false, 
+			'properties'=>$properties, 
+
+			'pictures'=>$pictures,
+			'addresses'=>$addresses,
+			'continentTypes'=>$continentTypes,
+			'countryTypes'=>$countryTypes,]);
+		return $response;
+	}
+	else{
+		Header("Location: ./authentication");
+		exit();
+	}
 });
 
 ?>

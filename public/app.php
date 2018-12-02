@@ -32,7 +32,9 @@ require './inprogressRoutes.php'; //TODO... we should be able to remove this
 require '../TEMPLATES/layout/php.php';
 require '../TEMPLATES/authentication/php.php';
 require '../TEMPLATES/properties/php.php';
+require '../TEMPLATES/property/php.php';
 require '../TEMPLATES/viewProperty/php.php';
+require '../TEMPLATES/settings/php.php';
 
 //-------------------------START THE APP-------------------------
 $app->run();
