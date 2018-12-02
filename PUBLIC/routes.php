@@ -24,19 +24,19 @@ $app->get('/', function ($request, $response, $args) {
 	$bathMin = $_GET['bathMin'];
 	$bathMax = $_GET['bathMax'];
 	//Variables from address
-	$continentTypeID = $_GET['continentTypeID']; //tested
-	$countryTypeID = $_GET['countryTypeID']; //tested
+	$continentTypeID = $_GET['continentTypeID'];
+	$countryTypeID = $_GET['countryTypeID']; 
 	$state = $_GET['state'];
 	$locality = $_GET['locality'];
 	$zipCode = $_GET['zipCode'];
 	//Grab all list type variables (TODO figure out how to extract this data since it should be in json format)
 	$applianceTypeIDs = json_decode($_GET['applianceTypeIDs']);
-	$utilityTypeIDs = $_GET['utilityTypeIDs'];
-	$perkTypeIDs = $_GET['perkTypeIDs'];
-	$amenityTypeIDs = $_GET['amenityTypeIDs'];
+	$utilityTypeIDs = json_decode($_GET['utilityTypeIDs']);
+	$perkTypeIDs = json_decode($_GET['perkTypeIDs']);
+	$amenityTypeIDs = json_decode($_GET['amenityTypeIDs']);
 
 	//Filter out properties that are not available
-	$properties = PropertyQuery::create()->filterByAvailable(true)->find(); //only show properties that are currently available
+	$properties = PropertyQuery::create()->filterByAvailable(true); //only show properties that are currently available
 
 	//Gather properties that meet our search requirements
 	$desiredPropertyIDs = [];
@@ -59,7 +59,7 @@ $app->get('/', function ($request, $response, $args) {
 		if($bathMax && $bath > $bathMax) continue;
 
 		//-----Variables from address
-		$propertyAddress = AddressQuery::create()->findPk($property->getAddressid())->find();
+		$propertyAddress = AddressQuery::create()->findPk($property->getAddressid());
 
 		if($continentTypeID && $continentTypeID != $propertyAddress->getContinenttypeid()) continue;
 		if($countryTypeID && $countryTypeID != $propertyAddress->getCountrytypeid()) continue;
@@ -69,7 +69,7 @@ $app->get('/', function ($request, $response, $args) {
 		
 		//-----Grab all list type variables
 		//appliances
-		$propertyHasAllAppliances = true; //tested
+		$propertyHasAllAppliances = true;
 		foreach($applianceTypeIDs as &$applianceTypeID){
 			$propertyAppliancesWithTypeID = ApplianceQuery::create()->filterByPropertyid($property->getId())->filterByAppliancetypeid($applianceTypeID)->find();
 			if(count($propertyAppliancesWithTypeID) == 0){
@@ -79,8 +79,8 @@ $app->get('/', function ($request, $response, $args) {
 		if($propertyHasAllAppliances == false) continue;
 		//utilities
 		$propertyHasAllUtilities = true;
-		foreach($utilityTypeIDS as &$utilityTypeID){
-			$propertyUtilitiesWithTypeID = UtilityQuery::create()->filterByPropertyid($property->getId())->filterByAppliancetypeid($utilityTypeID)->find();
+		foreach($utilityTypeIDs as &$utilityTypeID){
+			$propertyUtilitiesWithTypeID = UtilityQuery::create()->filterByPropertyid($property->getId())->filterByUtilitytypeid($utilityTypeID)->find();
 			if(count($propertyUtilitiesWithTypeID) == 0){
 				$propertyHasAllUtilities = false;
 			}
@@ -89,7 +89,7 @@ $app->get('/', function ($request, $response, $args) {
 		//perks
 		$propertyHasAllPerks = true;
 		foreach($perkTypeIDs as &$perkTypeID){
-			$propertyPerksWithTypeID = PerkQuery::create()->filterByPropertyid($property->getId())->filterByAppliancetypeid($perkTypeID)->find();
+			$propertyPerksWithTypeID = PerkQuery::create()->filterByPropertyid($property->getId())->filterByPerktypeid($perkTypeID)->find();
 			if(count($propertyPerksWithTypeID) == 0){
 				$propertyHasAllPerks = false;
 			}
@@ -98,7 +98,7 @@ $app->get('/', function ($request, $response, $args) {
 		//amenities
 		$propertyHasAllAmenities = true;
 		foreach($amenityTypeIDs as &$amenityTypeID){
-			$propertyAmenitiesWithTypeID = AmenityQuery::create()->filterByPropertyid($property->getId())->filterByAppliancetypeid($amenityTypeID)->find();
+			$propertyAmenitiesWithTypeID = AmenityQuery::create()->filterByPropertyid($property->getId())->filterByAmenitytypeid($amenityTypeID)->find();
 			if(count($propertyAmenitiesWithTypeID) == 0){
 				$propertyHasAllAmenities = false;
 			}
@@ -112,10 +112,10 @@ $app->get('/', function ($request, $response, $args) {
 	//pass the entirety of the database because 
 	//(1) we have yet to find a way to do queries inside of the html file with twig
 	//(2) filter here is possible but would take quite a while
-	$pictures = PictureQuery::create()->find(); 
-	$addresses = AddressQuery::create()->find();
-	$continentTypes = ContinenttypeQuery::create()->find(); 
-	$countryTypes = CountrytypeQuery::create()->find(); 
+	$pictures = PictureQuery::create(); 
+	$addresses = AddressQuery::create();
+	$continentTypes = ContinenttypeQuery::create(); 
+	$countryTypes = CountrytypeQuery::create(); 
 
 	//pass all the parameters and generate the page
 	$this->view->render($response, "/properties/html.html", 
