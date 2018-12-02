@@ -226,7 +226,7 @@
 
     {% if user %}
         <div class="container" id="addPropertySection">
-            <form action="{{ base_url() }}/addProperty">
+            <form action="{{ base_url() }}/addProperty" method ="post">
                 <button type="submit" class="btn btn-primary" id="addPropertyButton">Add Property</button>
             </form>
         </div>
