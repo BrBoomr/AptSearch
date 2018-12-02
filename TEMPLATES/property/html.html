@@ -73,6 +73,61 @@
         </div>
     {% else %}
         <h1>EDIT PROPERTY PAGE</h1>
+        <div class="container addProperty-container">
+            <div class="row">
+                <div class="col-md-6 newProperty-form-1">
+                    <form>
+                        <h3>Address Fields</h3>
+                        <div class="form-group">
+                            <input id="registerState" type="text" class="form-control" placeholder="State" value="{{property.getState()}}"/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerLocality" type="text" class="form-control" placeholder="Locality/City" value="{{property.getLocality()}}"/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerZipCode" type="text" class="form-control" placeholder="Zip Code" value="{{property.getZipcode()}}"/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerStreetName" type="text" class="form-control" placeholder="Street Name" value="{{property.getStreetname()}}"/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerBuildingNum" type="text" class="form-control" placeholder="Building Number" value="{{property.getBuildingidentifier()}}"/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerAptNum" type="text" class="form-control" placeholder="Apartment Number" value="{{property.getApartmentidentifier()}}"/>
+                        </div>
+                        <hr>
+                        <h3>Property Fields</h3>
+                        <div class="form-group">
+                            <input id="registerPostName" type="text" class="form-control" placeholder="postName" value="{{property.getPostname()}}"/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerRent" type="text" class="form-control" placeholder="Rent" value="{{property.getExpectedrentpermonth()}}"/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerSqrFootage" type="text" class="form-control" placeholder="Square Footage" value="{{property.getSquarefootage()}}"/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerBedrooms" type="text" class="form-control" placeholder="Bedrooms" value="{{property.getBedroomcount()}}"/>
+                        </div>
+                        <div class="form-group">
+                            <input id="registerBathrooms" type="text" class="form-control" placeholder="Bathrooms" value="{{property.getBathroomcount()}}"/>
+                        </div>
+                        <div class="form-group">
+                            <input id="editSubmit" type="submit" class="btnSubmit" value="Edit Property"/>
+                        </div>
+                        <div class="form-group">
+    
+                            <div id="registerError" class="alert alert-dismissible d-none">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>DEFAULT ERROR MESSAGE</strong>
+                            </div>
+                            <!-- <a href="#" class="ForgetPwd" value="Login">Forget Password?</a> -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     {% endif %}
 
 {% endblock %}

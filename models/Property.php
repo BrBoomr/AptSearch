@@ -14,12 +14,34 @@ use Base\Property as BaseProperty;
  */
 class Property extends BaseProperty
 {
+    //USER INFORMATION
     public function getOwnerName(){
         $owner = UserQuery::create()->findPk($this->getUserid());
         return $owner->getName();
     }
 
-    public function getAddressName(){
+    //ADDRESS INFORMATION
+    public function getState(){
+        $address = AddressQuery::create()->findPk($this->getAddressid());
+        return $address->getState();
+    }
+    public function getLocality(){
+        $address = AddressQuery::create()->findPk($this->getAddressid());
+        return $address->getLocality();
+    }
+    public function getZipcode(){
+        $address = AddressQuery::create()->findPk($this->getAddressid());
+        return $address->getZipcode();
+    }
+    public function getBuildingindentifier(){
+        $address = AddressQuery::create()->findPk($this->getAddressid());
+        return $address->getBuildingindentifier();
+    }
+    public function getApartmentidentifier(){
+        $address = AddressQuery::create()->findPk($this->getAddressid());
+        return $address->getApartmentidentifier();
+    }
+    public function getStreetname(){
         $address = AddressQuery::create()->findPk($this->getAddressid());
         return $address->getStreetname();
     }
