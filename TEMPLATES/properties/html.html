@@ -13,7 +13,7 @@
             <hr class="style1">
             <!--!!!!!!!!!!!!!!!!!!!!!!!!!Sliders!!!!!!!!!!!!!!!!!!!!!!!!!-->
             <!--******************************Rent Slider*************************-->
-            <div class="row sliderContainer" id="rentSlider">
+            <div class="row sliderContainer d-none" id="rentSlider">
                 <div class="col-auto sliderTitle">
                     <h4>Rent</h4>
                 </div>
@@ -43,7 +43,7 @@
                 </div>
             </div>
             <!--******************************Sqft Slider*************************-->
-            <div class="row sliderContainer" id="sqrftSlider">
+            <div class="row sliderContainer d-none" id="sqrftSlider">
                 <div class="col-auto sliderTitle">
                     <h4>Square Footage</h4>
                 </div>
@@ -73,7 +73,7 @@
                 </div>
             </div>
             <!--******************************Bedrooms Slider*************************-->
-            <div class="row sliderContainer" id="bedSlider">
+            <div class="row sliderContainer d-none" id="bedSlider">
                 <div class="col-auto sliderTitle">
                     <h4>Bedrooms</h4>
                 </div>
@@ -97,7 +97,7 @@
                 </div>
             </div>
             <!--******************************Bathrooms Slider*************************-->
-            <div class="row sliderContainer" id="bathSlider">
+            <div class="row sliderContainer d-none" id="bathSlider">
                 <div class="col-auto sliderTitle">
                     <h4>Bathrooms</h4>
                 </div>
@@ -123,7 +123,7 @@
             <!--******************************+++++*************************-->
             <hr class="style1">
             <!--!!!!!!!!!!!!!!!!!!!!!!!!!Location Search Section!!!!!!!!!!!!!!!!!!!!!!!!!-->
-            <div class="row" id="locationSection">
+            <div class="row d-none" id="locationSection">
                 <div class="row">
                     <span class="col-auto"><h3>Continent</h3></span>
                     <div class="col-auto">
@@ -173,7 +173,7 @@
             </div>
             <hr class="style1">
             <!--!!!!!!!!!!!!!!!!!!!!!!!!!Chip Based Search Sections!!!!!!!!!!!!!!!!!!!!!!!!!-->
-            <div class="row">
+            <div class="row d-none">
                     <div class="sectionTitle"><h3>Appliances</h3></div>
                     <div class="chip">
                         Refridgerator
@@ -204,7 +204,7 @@
                     </button>
             </div>
             <hr class="style1">
-            <div class="row">
+            <div class="row d-none">
                     <div class="sectionTitle"><h3>Utilities</h3></div>
                     <div class="chip">
                         Electricity
@@ -253,14 +253,14 @@
                     </button>
             </div>
             <hr class="style1">
-            <div class="row">
+            <div class="row d-none">
                     <div class="sectionTitle"><h3>Perk</h3></div>
                     <button type="button" class="btn btn-primary addChipButton">
                         <i class="fa fa-plus"></i>
                     </button>
             </div>
             <hr class="style1">
-            <div class="row">
+            <div class="row d-none">
                     <div class="sectionTitle"><h3>Amenities</h3></div>
                     <div class="chip">
                         Pool
@@ -310,11 +310,11 @@
             </div>
             <hr class="style1">
             <!--!!!!!!!!!!!!!!!!!!!!!!!!!Apply Filter Buttons!!!!!!!!!!!!!!!!!!!!!!!!!-->
-            <div class="row">
-                <button type="button" class="btn btn-primary fitlerAddButton">Rent</button>
-                <button type="button" class="btn btn-secondary fitlerAddButton">Square Footage</button>
-                <button type="button" class="btn btn-success fitlerAddButton">Bedrooms</button>
-                <button type="button" class="btn btn-danger fitlerAddButton">Bathrooms</button>
+            <div class="row btn-row">
+                <button type="button" rowid = "rentSlider"class="btn btn-primary fitlerAddButton">Rent</button>
+                <button type="button" rowid = "sqrftSlider" class="btn btn-secondary fitlerAddButton">Square Footage</button>
+                <button type="button" rowid = "bedSlider" class="btn btn-success fitlerAddButton">Bedrooms</button>
+                <button type="button" rowid = "bathSlider" class="btn btn-danger fitlerAddButton">Bathrooms</button>
                 <button type="button" class="btn btn-warning fitlerAddButton">Location</button>
                 <button type="button" class="btn btn-info fitlerAddButton">Appliances</button>
                 <button type="button" class="btn btn-primary fitlerAddButton">Utilities</button>

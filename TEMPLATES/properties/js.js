@@ -63,4 +63,7 @@ $( document ).ready(function() {
 
 });
 
+$(".btn").click(function(){
+    $row = $(this).attr('rowid')
+})
 //-------------------------Objects-------------------------
