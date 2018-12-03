@@ -45,6 +45,8 @@ center align the mainDiv in the body within the body*/
     display: table-cell;
     vertical-align: middle;
     padding: 15px;
+    width: 100%;
+    max-width: 1000px;
 }
 
 /*-------------------------for scroll to top button-------------------------*/

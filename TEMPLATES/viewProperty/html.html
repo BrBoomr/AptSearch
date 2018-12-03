@@ -1,6 +1,7 @@
 {% extends 'layout/html.html' %}
 
 {% block content %}
+<!--
     <h1>VIEW PROPERTY PAGE</h1>
     <br>
     Because we have access to the property tuple we have access to its id which is: {{ property.getId() }}
@@ -24,10 +25,108 @@
     Because we have access to this property's issues we can tell you there are {{ issues|length }} "issues"
     <br>
     The owner of this property is {{ owner.getName() }} and has email {{ owner.getEmail() }} and has {{ phones|length }} phones
+-->
+
+    <div class="card">
+        {% if pictures|length > 0 %}
+            <div class="col-md-auto" id="imageColumn">
+                <div class="carousel slide" id="slideShow{{ property.getId() }}" data-ride="carousel">
+                    <!--If we only have 1 photo then display that single photo-->
+                    {% if pictures|length == 1 %}
+                        {% for picture in pictures %}
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img class="d-block imageInSlide" src="{{ picture.getLink() }}" alt="{{ picture.getDetails() }}">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5 class="carouselCaptionTitle">{{ picture.getDetails() }}</h5>
+                                        <br>
+                                        <p class="carouselCaptionDate">uploaded: {{ picture.getAdddate()|date("m/d/Y") }}</p>
+                                    </div>
+                                </div>
+                            </div> 
+                        {% endfor %}
+                    <!--Other wise display a carousel of photos-->
+                    {% else %}
+                        <ol class="carousel-indicators">
+                            <!--Generate all the thumbnails-->
+                            {% set slideID = 0 %}
+                            {% for picture in pictures %}
+                                <li data-target="#slideShow{{ property.getId() }}" data-slide-to="{{ slideID }}" 
+                                    {% if slideID == 0 %}
+                                        class="active"
+                                    {% endif %}
+                                >
+                                    <img class="d-block w-100 imageInThumbnail" src="{{ picture.getLink() }}" alt="{{ picture.getDetails() }}">
+                                </li>
+                                {% set slideID = slideID +  1 %}
+                            {% endfor %}
+                        </ol>
+                        <div class="carousel-inner">
+                            <!--Generate all the Slides-->
+                            {% set slideID = 0 %}
+                            {% for picture in pictures %}
+                                <div class="carousel-item 
+                                {% if slideID == 0 %}
+                                    active
+                                {% endif %}
+                                ">
+                                    <img class="d-block imageInSlide" src="{{ picture.getLink() }}" alt="{{ picture.getDetails() }}">
+                                    <div class="carousel-caption d-none d-md-block">
+                                        <h5 class="carouselCaptionTitle">{{ picture.getDetails() }}</h5>
+                                        <br>
+                                        <p class="carouselCaptionDate">uploaded: {{ picture.getAdddate()|date("m/d/Y") }}</p>
+                                    </div>
+                                </div>
+                                {% set slideID = slideID +  1 %}
+                            {% endfor %}
+                        </div>
+                        <a class="carousel-control-prev" href="#slideShow{{ property.getId() }}" role="button" data-slide="prev">
+                            <span class="carousel-controls carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#slideShow{{ property.getId() }}" role="button" data-slide="next">
+                            <span class="carousel-controls carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+        <hr class="style1">
+        <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+    </div>
+
+
+<!--
+            <div class="card-header">
+            <div class="row">
+                <div class="col-lg m-3" id="ownerName">
+                    <span class="fas fa-user"></span> Jefferson Lint
+                </div>
+                <div class="col-lg m-3" id="ownerEmail">
+                    <span class="fas fa-envelope"></span> jeffIsLinty@weirdo.com
+                </div>
+                <div class="col-lg m-3" id="ownerPhones">
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-dark"><span class="fas fa-phone"></span> Phone Numbers</li>
+                        <li class="list-group-item">Work | (956) 789-2342 ext 345</li>
+                        <li class="list-group-item">Home | (956) 789-2342</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+-->
+
+
 {% endblock %}
 
 {% block styles %}
     <!--style sheet-->
+    <link rel="stylesheet" href="{{ base_url() }}/../../PUBLIC/shared.css">
     <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/viewProperty/css.css">
 {% endblock %}
 
