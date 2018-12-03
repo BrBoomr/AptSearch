@@ -1,3 +1,68 @@
+nameInputButton = $("#nameInputButton")
+nameInput = $("#nameInput")
+nameError = $("#nameError")
+emailInputButton = $("#emailInputButton")
+emailInput = $("#emailInput")
+emailError = $("#emailError")
+passwordInputButton = $("passwordInputButton")
+passwordInput = $("passwordInput")
+passwordError = $("#passwordError")
+
+function generateUserListener(name, inputButton, input, error){
+
+    //listener that enables the button for editing once you click the edit button
+    $(inputButton).on("click", function(){
+        event.preventDefault(); //prevent reload on click
+
+        $(input).prop('disabled', false); //enable the input tag
+        $(input).select(); //select all the text in the input tag
+    })
+
+    //create the listener that unfocuses the field on enter press
+    $(input).keypress(function(key) {
+        if ( event.which == 13 ) { //Enter key
+            $(input).blur()
+        }
+    });
+
+    //create the listener that submits the value on focus out
+    $(input).focusout(function(){
+        //disable the input tag again
+        $(this).prop('disabled', true); 
+
+        //try to upate the item on the server
+        $.ajax({
+            method: "POST",
+            url: baseurl + "/settings/verify",
+            data: {
+                name : $(input).val()
+            },
+            success: function (response) {
+                //grab data
+                response = JSON.parse(response)
+                var newValue = response["newValue"]
+                var message = response["message"]
+
+                //display value
+                $(input).val(newValue)
+                
+                //display message
+                if(message == "") $(error).hide()
+                else{
+                    $(error).text(message)
+                    $(error).show()
+                }
+            }
+        });
+    })
+
+}
+
+generateUserListener("name", nameInput, nameInputButton, nameError)
+generateUserListener("email", emailInput, emailInputButton, emailError)
+generateUserListener("password", passwordInput, passwordInputButton, passwordError)
+
+/*
 //Connections
 //-USER SETTINGS
 var formName = "#editName"
@@ -86,5 +151,5 @@ $(formEditSubmit).click((e)=>{
         }
     });
 })
-
+*/
 

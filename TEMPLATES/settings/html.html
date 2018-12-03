@@ -74,34 +74,40 @@
 
     <h1>User Settings</h1>
     <hr class="style1">
-
+    <!--name-->
     <div class="form-group">
         <label for="nameInput">Name</label>
         <div class="input-group">
-            <input id="nameInput" type="text" class="form-control" placeholder="Name" value="{{ user.getName() }}" disabled>
+            <input type="text" class="form-control" placeholder="Name" value="{{ user.getName() }}" id="nameInput" disabled>
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
+                <button class="btn btn-outline-secondary" type="button" id="nameInputButton"><i class="fas fa-pen"></i></button>
             </div>
         </div>
+        <div id="nameError" class="alert-danger p-2 mb-2 error" style="display: none;"></div>
     </div>
+    <!--email-->
     <div class="form-group">
         <label for="emailInput">Email</label>
         <div class="input-group">
-            <input id="emailInput" type="email" class="form-control" placeholder="Email" value="{{ user.getEmail() }}" disabled>
+            <input id="emailInput" type="email" class="form-control" placeholder="Email" value="{{ user.getEmail() }}" id="emailInput" disabled>
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
+                <button class="btn btn-outline-secondary" type="button" id="emailInputButton"><i class="fas fa-pen"></i></button>
             </div>
         </div>
+        <div id="emailError" class="alert-danger p-2 mb-2 error" style="display: none;"></div>
     </div>
+    <!--password-->
     <div class="form-group">
         <label for="passwordInput">Password</label>
         <div class="input-group">
-            <input id="passwordInput" type="password" class="form-control" placeholder="New Password Here" disabled>
+            <input id="passwordInput" type="password" class="form-control" placeholder="New Password" id="passwordInput" disabled>
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
+                <button class="btn btn-outline-secondary" type="button" id="passwordInputButton"><i class="fas fa-pen"></i></button>
             </div>
         </div>
+        <div id="passwordError" class="alert-danger p-2 mb-2 error" style="display: none;"></div>
     </div>
+    
     <div class="form-group">
         <label>Phones</label>
         <div class="row phoneRow">
