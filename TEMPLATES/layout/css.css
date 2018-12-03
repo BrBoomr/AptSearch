@@ -35,11 +35,16 @@ center align the mainDiv in the body within the body*/
 
 #body{
     display: table;
+    padding: 0px;
+    margin: auto;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 #mainDiv {
     display: table-cell;
     vertical-align: middle;
+    padding: 15px;
 }
 
 /*-------------------------for scroll to top button-------------------------*/

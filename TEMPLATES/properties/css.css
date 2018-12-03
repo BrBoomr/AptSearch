@@ -11,13 +11,43 @@ propertyCard
                 userPhones
 */
 
+/*-----slider text boxes-----*/
+
+.sliderTitle {
+    margin: auto;
+}
+
+.sliderClass {
+    height: auto;
+}
+
+.input-group {
+    width: 75px;
+}
+
+/*-----slider override-----*/
+
+.ui-slider-range {
+    background-color: #38c;
+}
+
+.ui-state-hover {
+    border: 1px solid #c5c5c5 !important;
+    background-color: #f6f6f6 !important;
+}
+
+.ui-state-active {
+    border: 1px solid #c5c5c5 !important;
+    background-color: #f6f6f6 !important;
+}
+
+/*-----new stuff-----*/
+
 .propertyMinMaxSection > .col > div, .propertyMinMaxSection > .col > h4{ 
     display: inline-block !important;
 }
 
-.input-group {
-    width: auto;
-}
+
 
 #to {
     margin: auto;
