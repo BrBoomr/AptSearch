@@ -1,0 +1,26 @@
+
+.phoneRow > div {
+    margin: 5px;
+    display:inline-block;
+}
+
+.phoneRow > div:first-child {
+    margin-left: 0px;
+}
+
+.phoneRow > div:last-child {
+    margin-right: 0px;
+}
+
+.fa-plus {
+    margin-left: 5px;
+}
+
+.fa-times {
+
+}
+
+.col-auto {
+    margin-right: 0px;
+    padding-right: 0px;
+}
