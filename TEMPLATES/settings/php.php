@@ -22,22 +22,26 @@ $app->post('/settings/verify', function($request, $response, $args) {
 
     //make sure our user exits
     if($user != null){
+        $name = isset($_POST['name']) ? $_POST['name'] : null;
+        $email = isset($_POST['email']) ? $_POST['email'] : null;
+        $password = isset($_POST['password']) ? $_POST['password'] : null;
 
         //make the variables we will be passing back to our javascript
         $newValue = ""; //store the new value the input field will have after the setting
         $message = ""; //store the error message here
+        $passedThing = "{|" . (($name == null) ? "NULL" : $name) . "|" . (($email == null) ? "NULL" : $email) . "|" . (($password == null) ? "NULL" : $password) . "|}";
 
         //check which one of the three values we are changing
-        if(isset($_POST['name'])){
-            $name = $_POST['name'];
+        if($name != null){
+            $passedThing = $passedThing . "name";
             //check for errors
             if(empty($name) == false) $user->setName($name); //update success on server
             else $message = "Your name must not be blank"; //update error on client
             //update on client
             $newValue = $user->getName();
         }
-        else if(isset($_POST['email'])){
-            $email = $_POST['email'];
+        else if($name != null){
+            $passedThing = $passedThing . "email";
             //check for errors
             if(empty($email) == false){
                 if(filter_var($email, FILTER_VALIDATE_EMAIL)) $user->setEmail($email); //update on server
@@ -47,10 +51,10 @@ $app->post('/settings/verify', function($request, $response, $args) {
             //update on client
             $newValue = $user->getEmail(); 
         }
-        else if(isset($_POST['password'])){
-            $password = $_POST['password'];
+        else if($name != null){
+            $passedThing = $passedThing . "password";
             //check for errors
-            if(empty($password) == false) $user->setEncryptedpassword($password); //update on server
+            if(empty($password) == false) $user->setPassword($password); //update on server
             else $message = "Your password must not be blank"; //update error on client
             //update on client
             $newValue = $user->getEncryptedpassword(); 
@@ -60,7 +64,7 @@ $app->post('/settings/verify', function($request, $response, $args) {
         $user->save();
 
         //send results to client
-        return json_encode(array('newValue' => $newValue, 'message' => $message));
+        return json_encode(array('newValue' => $newValue, 'message' => $message, 'passedThing' => $passedThing));
     }
 });
 

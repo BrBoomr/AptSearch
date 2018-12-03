@@ -89,7 +89,7 @@
     <div class="form-group">
         <label for="emailInput">Email</label>
         <div class="input-group">
-            <input id="emailInput" type="email" class="form-control" placeholder="Email" value="{{ user.getEmail() }}" id="emailInput" disabled>
+            <input type="email" class="form-control" placeholder="Email" value="{{ user.getEmail() }}" id="emailInput" disabled>
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="button" id="emailInputButton"><i class="fas fa-pen"></i></button>
             </div>
@@ -100,29 +100,25 @@
     <div class="form-group">
         <label for="passwordInput">Password</label>
         <div class="input-group">
-            <input id="passwordInput" type="password" class="form-control" placeholder="New Password" id="passwordInput" disabled>
+            <input type="password" class="form-control" placeholder="New Password" id="passwordInput" disabled>
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="button" id="passwordInputButton"><i class="fas fa-pen"></i></button>
             </div>
         </div>
         <div id="passwordError" class="alert-danger p-2 mb-2 error" style="display: none;"></div>
     </div>
-    
+    <!--phones-->
     <div class="form-group">
         <label>Phones</label>
         <div class="row phoneRow">
             <div>
                 <div class="input-group">
-                    <select class="form-control" disabled>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                    <select class="form-control">
+                        <option disabled value="">Select One</option>
+                        <option value="work" >Work</option>
+                        <option value="mobile">Mobile</option>
+                        <option value="home">Home</option>
                     </select>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
-                    </div>
                 </div>
             </div>
             <div>
@@ -153,19 +149,18 @@
                 <button type="button" class="btn btn-secondary"><i class="fas fa-times"></i></button>
             </div>
         </div>
+
+        <hr class="style1">
+
         <div class="row phoneRow">
             <div>
                 <div class="input-group">
-                    <select class="form-control" disabled>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                    <select class="form-control">
+                        <option disabled value="">Select One</option>
+                        <option value="work" >Work</option>
+                        <option value="mobile">Mobile</option>
+                        <option value="home">Home</option>
                     </select>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
-                    </div>
                 </div>
             </div>
             <div>
@@ -196,19 +191,18 @@
                 <button type="button" class="btn btn-secondary"><i class="fas fa-times"></i></button>
             </div>
         </div>
+
+        <hr class="style1">
+
         <div class="row phoneRow">
             <div>
                 <div class="input-group">
-                    <select class="form-control" disabled>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                    <select class="form-control">
+                        <option disabled value="">Select One</option>
+                        <option value="work" >Work</option>
+                        <option value="mobile">Mobile</option>
+                        <option value="home">Home</option>
                     </select>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
-                    </div>
                 </div>
             </div>
             <div>
@@ -242,7 +236,7 @@
         <div class="row phoneRow">
             <div class="col"></div>
             <div class="col-auto">
-                <button type="button" class="btn btn-primary">Add New Number<i class="fas fa-plus"></i></button>
+                <button type="button" class="btn btn-primary" id="addNumber">Add New Number<i class="fas fa-plus"></i></button>
             </div>
         </div>
     </div>

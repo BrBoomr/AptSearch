@@ -1,18 +1,22 @@
 nameInputButton = $("#nameInputButton")
 nameInput = $("#nameInput")
 nameError = $("#nameError")
+
 emailInputButton = $("#emailInputButton")
 emailInput = $("#emailInput")
 emailError = $("#emailError")
-passwordInputButton = $("passwordInputButton")
-passwordInput = $("passwordInput")
+
+passwordInputButton = $("#passwordInputButton")
+passwordInput = $("#passwordInput")
 passwordError = $("#passwordError")
 
-function generateUserListener(name, inputButton, input, error){
+function generateUserListener(name, button, input, error){
 
     //listener that enables the button for editing once you click the edit button
-    $(inputButton).on("click", function(){
+    $(button).on("click", function(){
         event.preventDefault(); //prevent reload on click
+
+        console.log("pressed " + name + " button")
 
         $(input).prop('disabled', false); //enable the input tag
         $(input).select(); //select all the text in the input tag
@@ -30,6 +34,8 @@ function generateUserListener(name, inputButton, input, error){
         //disable the input tag again
         $(this).prop('disabled', true); 
 
+        console.log("pressed " + name + " with value " + $(input).val())
+
         //try to upate the item on the server
         $.ajax({
             method: "POST",
@@ -38,11 +44,16 @@ function generateUserListener(name, inputButton, input, error){
                 name : $(input).val()
             },
             success: function (response) {
+                console.log("response: " + response)
+                /*
                 //grab data
                 response = JSON.parse(response)
                 var newValue = response["newValue"]
                 var message = response["message"]
-
+                var passedThing = response["passedThing"]
+                
+                console.log("the server understood that we passed it " + passedThing)
+                
                 //display value
                 $(input).val(newValue)
                 
@@ -52,15 +63,17 @@ function generateUserListener(name, inputButton, input, error){
                     $(error).text(message)
                     $(error).show()
                 }
+                */
+                
             }
         });
     })
 
 }
 
-generateUserListener("name", nameInput, nameInputButton, nameError)
-generateUserListener("email", emailInput, emailInputButton, emailError)
-generateUserListener("password", passwordInput, passwordInputButton, passwordError)
+generateUserListener("name", nameInputButton, nameInput, nameError)
+generateUserListener("email", emailInputButton, emailInput, emailError)
+generateUserListener("password", passwordInputButton, passwordInput, passwordError)
 
 /*
 //Connections
