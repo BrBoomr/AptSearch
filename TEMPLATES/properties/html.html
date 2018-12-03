@@ -7,40 +7,319 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    
-    <div class="row">
-        <div class="col-auto sliderTitle">
-            <h4>Rent</h4>
-        </div>
-        <div class="col-auto">
-            <div class="input-group input-group-sm">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">$</span>
-                </div>
-                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Min.">
-            </div>
-        </div>
-        <div class="col" class="sliderClass">
-            <div id="slider-range" style="margin-top: calc((1.8125rem + 2px)/3);"></div>
-        </div>
-        <div class="col-auto">
-            <div class="input-group input-group-sm">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">$</span>
-                </div>
-                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Max.">
-            </div>
-        </div>
-    </div>
-
-    <div style="height:300px;"></div>
-
     <div class="card">
         <div class="card-header">
-            <h1>Filter Results</h1>
+            <h1>Filter By...</h1>
             <hr class="style1">
-            <div class="row" class="propertyMinMaxSection">
-                this stores all the columns for RENT | SQUARE FOOTAGE | BEDROOM COUNT | BATHROOMS
+            <!--!!!!!!!!!!!!!!!!!!!!!!!!!Sliders!!!!!!!!!!!!!!!!!!!!!!!!!-->
+            <!--******************************Rent Slider*************************-->
+            <div class="row sliderContainer" id="rentSlider">
+                <div class="col-auto sliderTitle">
+                    <h4>Rent</h4>
+                </div>
+                <div class="col-auto">
+                    <div class="input-group input-group-sm rentTag">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Min.">
+                    </div>
+                </div>
+                <div class="col" class="sliderClass">
+                    <div class="theSlider" style="margin-top: calc((1.8125rem + 2px)/3);"></div>
+                </div>
+                <div class="col-auto">
+                    <div class="input-group input-group-sm rentTag">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Max.">
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-secondary btn-circle">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <!--******************************Rent Slider*************************-->
+            <div class="row sliderContainer" id="sqrftSlider">
+                <div class="col-auto sliderTitle">
+                    <h4>Square Footage</h4>
+                </div>
+                <div class="col-auto">
+                    <div class="input-group input-group-sm sqftTag">
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Min.">
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon2">sqft</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" class="sliderClass">
+                    <div class="theSlider" style="margin-top: calc((1.8125rem + 2px)/3);"></div>
+                </div>
+                <div class="col-auto">
+                    <div class="input-group input-group-sm sqftTag">
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Max.">
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="basic-addon2">sqft</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-secondary btn-circle">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <!--******************************Rent Slider*************************-->
+            <div class="row sliderContainer" id="bedSlider">
+                <div class="col-auto sliderTitle">
+                    <h4>Bedrooms</h4>
+                </div>
+                <div class="col-auto">
+                    <div class="input-group input-group-sm textTag">
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Min.">
+                    </div>
+                </div>
+                <div class="col" class="sliderClass">
+                    <div class="theSlider" style="margin-top: calc((1.8125rem + 2px)/3);"></div>
+                </div>
+                <div class="col-auto">
+                    <div class="input-group input-group-sm textTag">
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Max.">
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-secondary btn-circle">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <!--******************************Rent Slider*************************-->
+            <div class="row sliderContainer" id="bathSlider">
+                <div class="col-auto sliderTitle">
+                    <h4>Bathrooms</h4>
+                </div>
+                <div class="col-auto">
+                    <div class="input-group input-group-sm textTag">
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Min.">
+                    </div>
+                </div>
+                <div class="col" class="sliderClass">
+                    <div class="theSlider" style="margin-top: calc((1.8125rem + 2px)/3);"></div>
+                </div>
+                <div class="col-auto">
+                    <div class="input-group input-group-sm textTag">
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Max.">
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-secondary btn-circle">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <!--******************************+++++*************************-->
+            <hr class="style1">
+            <!--!!!!!!!!!!!!!!!!!!!!!!!!!Location Search Section!!!!!!!!!!!!!!!!!!!!!!!!!-->
+            <div class="row" id="locationSection">
+                <div class="row">
+                    <span class="col-auto"><h3>Continent</h3></span>
+                    <div class="col-auto">
+                        <select class="form-control">
+                            <option>Africa</option>
+                            <option>North America</option>
+                            <option>South America</option>
+                            <option>Europa</option>
+                            <option>Asia</option>
+                            <option>Australia</option>
+                            <option>Antartica</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <span class="col-auto"><h3>Country</h3></span>
+                    <div class="col-auto">
+                        <select class="form-control">
+                            <option>Country 1</option>
+                            <option>Country 2</option>
+                            <option>Country 3</option>
+                            <option>Country 4</option>
+                            <option>Country 5</option>
+                            <option>Country 6</option>
+                            <option>Country 7</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <span class="col-auto"><h3>State</h3></span>
+                    <div class="col-auto">
+                        <input type="text" class="form-control" placeholder="State">
+                    </div>
+                </div>
+                <div class="row">
+                    <span class="col-auto"><h3>Locality</h3></span>
+                    <div class="col-auto">
+                        <input type="text" class="form-control" placeholder="City">
+                    </div>
+                </div>
+                <div class="row">
+                    <span class="col-auto"><h3>Zip Code</h3></span>
+                    <div class="col-auto">
+                        <input type="text" class="form-control" placeholder="Zip">
+                    </div>
+                </div>
+            </div>
+            <hr class="style1">
+            <!--!!!!!!!!!!!!!!!!!!!!!!!!!Chip Based Search Sections!!!!!!!!!!!!!!!!!!!!!!!!!-->
+            <div class="row">
+                    <div class="sectionTitle"><h3>Appliances</h3></div>
+                    <div class="chip">
+                        Refridgerator
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chip">
+                        Gas Stove
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chip">
+                        Oven
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chip">
+                        Dishwasher
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-circle3">
+                        <i class="fa fa-plus"></i>
+                    </button>
+            </div>
+            <hr class="style1">
+            <div class="row">
+                    <div class="sectionTitle"><h3>Utilities</h3></div>
+                    <div class="chip">
+                        Electricity
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chip">
+                        Water
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chip">
+                        High Speed Internet
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chip">
+                        Recycling Pick Up
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chip">
+                        Trash Pick Up
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chip">
+                        Dish Cable
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chip">
+                        Water Heating
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-circle3">
+                        <i class="fa fa-plus"></i>
+                    </button>
+            </div>
+            <hr class="style1">
+            <div class="row">
+                    <div class="sectionTitle"><h3>Perk</h3></div>
+                    <button type="button" class="btn btn-primary btn-circle3">
+                        <i class="fa fa-plus"></i>
+                    </button>
+            </div>
+            <hr class="style1">
+            <div class="row">
+                    <div class="sectionTitle"><h3>Amenities</h3></div>
+                    <div class="chip">
+                        Pool
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chip">
+                        Gym
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chip">
+                        Laundromat
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chip">
+                        John Doe
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chip">
+                        Game Room
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chip">
+                        Playground
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chip">
+                        Jogging Trails
+                        <button type="button" class="btn btn-light btn-circle2">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-circle3">
+                        <i class="fa fa-plus"></i>
+                    </button>
+            </div>
+            <hr class="style1">
+            <!--!!!!!!!!!!!!!!!!!!!!!!!!!Apply Filter Buttons!!!!!!!!!!!!!!!!!!!!!!!!!-->
+            <div class="row">
+                <button type="button" class="btn btn-primary fitlerAddButton">Rent</button>
+                <button type="button" class="btn btn-secondary fitlerAddButton">Square Footage</button>
+                <button type="button" class="btn btn-success fitlerAddButton">Bedrooms</button>
+                <button type="button" class="btn btn-danger fitlerAddButton">Bathrooms</button>
+                <button type="button" class="btn btn-warning fitlerAddButton">Location</button>
+                <button type="button" class="btn btn-info fitlerAddButton">Appliances</button>
+                <button type="button" class="btn btn-primary fitlerAddButton">Utilities</button>
+                <button type="button" class="btn btn-secondary fitlerAddButton">Perks</button>
+                <button type="button" class="btn btn-success fitlerAddButton">Amenities</button>
             </div>
         </div>
     </div>

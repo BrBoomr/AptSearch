@@ -11,7 +11,83 @@ propertyCard
                 userPhones
 */
 
+#locationSection > div{
+    margin: 5px;
+}
+
+.sectionTitle {
+    margin: 0px;
+    margin-left: 5px;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+/*-----chip styling----*/
+
+.chip {
+    display: inline-block;
+    padding: 5px;
+    padding-left: 15px;
+    line-height: 100%;
+    color: white;
+    font-size: 16px;
+    border-radius: 24px;
+    background-color: #6c757d;
+    margin: 5px;
+}
+
+.btn-circle2 { /*in chip*/
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    text-align: center;
+    padding: 0px;
+    line-height: 100%;
+    font-size: 10px;
+}
+
+.btn-circle3 { /*to create more chips */
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    text-align: center;
+    padding: 0px;
+    line-height: 100%;
+    font-size: 12px;
+    margin: auto;
+    margin-left: 5px; 
+    margin-right: 5px;
+}
+
+/*-----filter remove button-----*/
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    text-align: center;
+    padding: 0px;
+    line-height: 100%;
+    font-size: 12px;
+}
+
+/*-----filter add button-----*/
+
+.fitlerAddButton {
+    margin: 5px;
+}
+
 /*-----slider text boxes-----*/
+
+.col-auto {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.sliderContainer {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 
 .sliderTitle {
     margin: auto;
@@ -21,8 +97,16 @@ propertyCard
     height: auto;
 }
 
-.input-group {
+.rentTag {
     width: 75px;
+}
+
+.sqftTag {
+    width: 90px;
+}
+
+.textTag {
+    width: 50px;
 }
 
 /*-----slider override-----*/
