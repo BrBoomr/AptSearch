@@ -29,6 +29,12 @@
 
     <!--make the base url accessible to javascript files-->
     <script> var baseurl = "{{ base_url() }}"; </script>
+
+    <!--MDB Style Sheets-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="MDB/css/bootstrap.min.css" rel="stylesheet">
+    <link href="MDB/css/mdb.min.css" rel="stylesheet">
+    <link href="MDB/css/style.css" rel="stylesheet">
 </head>
 <body>
     <!--bootstrap javascript imports(includes jquery)-->
@@ -147,6 +153,12 @@
 
     <!--javascript-->
     <script src="{{ base_url() }}/../../TEMPLATES/layout/js.js"></script>
+
+    <!--MDB Scripts-->
+    <script type="text/javascript" src="MDB/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="MDB/js/popper.min.js"></script>
+    <script type="text/javascript" src="MDB/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="MDB/js/mdb.min.js"></script>
 
     {% block styles %}{% endblock %}
     {% block scripts %}{% endblock %}
