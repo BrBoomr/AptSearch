@@ -14,5 +14,15 @@ use Base\Appliance as BaseAppliance;
  */
 class Appliance extends BaseAppliance
 {
-
+    public function getAppliance(){
+        $appliances = AppliancetypeQuery::create()->findPK($this->getAppliancetypeid());
+        $name = $appliances->getName();
+        $details = $this->getDetails();
+        // sets the outputed format to {applianceName} | {details}
+        if ($details){
+            return $name . ' | ' . $details;
+        }
+        // if there is no details, then the outputed format is just {applianceName}
+        return $name;
+    }
 }
