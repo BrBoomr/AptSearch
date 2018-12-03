@@ -55,17 +55,51 @@ $app->get('/', function ($request, $response, $args) {
 	$minFootSlide = 0;
 	$maxFootSlide = 0;
 	foreach ($properties as $property) {
-		$rent = $property->getSquarefootage();
+		$sqrFoot = $property->getSquarefootage();
 		if($minFootSlide == 0 && $maxFootSlide == 0){
-			$minFootSlide=$rent;
-			$maxFootSlide=$rent;
+			$minFootSlide=$sqrFoot;
+			$maxFootSlide=$sqrFoot;
 			continue;
 		}
-		if($rent > $maxFootSlide){
-			$maxFootSlide = $rent;
+		if($sqrFoot > $maxFootSlide){
+			$maxFootSlide = $sqrFoot;
 		}
-		if($rent < $minFootSlide){
-			$minFootSlide = $rent;
+		if($sqrFoot < $minFootSlide){
+			$minFootSlide = $sqrFoot;
+		}
+	}
+	//Min and Max Slide values for Bedroom Slider
+	$minBedroomSlide = 0;
+	$maxBedroomSlide = 0;
+	foreach ($properties as $property) {
+		$bedrooms = $property->getBedroomcount();
+		if($minBedroomSlide == 0 && $maxBedroomSlide == 0){
+			$minBedroomSlide=$bedrooms;
+			$maxBedroomSlide=$bedrooms;
+			continue;
+		}
+		if($bedrooms > $maxBedroomSlide){
+			$maxBedroomSlide = $bedrooms;
+		}
+		if($bedrooms < $minBedroomSlide){
+			$minBedroomSlide = $bedrooms;
+		}
+	}
+	//Min and Max Slide values for Bathroom Slider
+	$minBathroomSlide = 0;
+	$maxBathroomSlide = 0;
+	foreach ($properties as $property) {
+		$bathrooms = $property->getBedroomcount();
+		if($minBathroomSlide == 0 && $maxBathroomSlide == 0){
+			$minBathroomSlide=$bathrooms;
+			$maxBathroomSlide=$bathrooms;
+			continue;
+		}
+		if($bathrooms > $maxBathroomSlide){
+			$maxBathroomSlide = $bathrooms;
+		}
+		if($bathrooms < $minBathroomSlide){
+			$minBathroomSlide = $bathrooms;
 		}
 	}
 	//===================================================
@@ -170,15 +204,26 @@ $app->get('/', function ($request, $response, $args) {
 		'properties'=>$properties,
 		
 		//pass the min and max of slides
+		//--Rent
 		'rentMin'=>$rentMin,
 		'rentMax'=>$rentMax,
 		'minRentSlide'=>$minRentSlide,
 		'maxRentSlide'=>$maxRentSlide,
+		//--Square Footage
 		'squareFootageMin'=>$squareFootageMin,
 		'squareFootageMax'=>$squareFootageMax,
 		'minFootSlide'=>$minFootSlide,
 		'maxFootSlide'=>$maxFootSlide,
-
+		//--Bedroom
+		'bedMin'=>$bedMin,
+		'bedMax'=>$bedMax,
+		'minBedroomSlide'=>$minBedroomSlide,
+		'maxBedroomSlide'=>$maxBedroomSlide,
+		//--Bathroom
+		'bathMin'=>$bathMin,
+		'bathMax'=>$bathMax,
+		'minBathroomSlide'=>$minBathroomSlide,
+		'maxBathroomSlide'=>$maxBathroomSlide,
 		//passing entire tables that will be filtered later
 		'pictures'=>$pictures,
 		'addresses'=>$addresses,
