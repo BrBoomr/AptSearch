@@ -33,226 +33,229 @@
     <br>
     <br>
 
-    <div class="card">
-        {% if pictures|length > 0 %}
-            <div class="col-md-auto" id="imageColumn">
-                <div class="carousel slide" id="slideShow{{ property.getId() }}" data-ride="carousel">
-                    <!--If we only have 1 photo then display that single photo-->
-                    {% if pictures|length == 1 %}
-                        {% for picture in pictures %}
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <img class="d-block imageInSlide" src="{{ picture.getLink() }}" alt="{{ picture.getDetails() }}">
-                                    <div class="carousel-caption d-none d-md-block">
-                                        <h5 class="carouselCaptionTitle">{{ picture.getDetails() }}</h5>
-                                        <br>
-                                        <p class="carouselCaptionDate">uploaded: {{ picture.getAdddate()|date("m/d/Y") }}</p>
-                                    </div>
-                                </div>
-                            </div> 
-                        {% endfor %}
-                    <!--Other wise display a carousel of photos-->
-                    {% else %}
-                        <ol class="carousel-indicators">
-                            <!--Generate all the thumbnails-->
-                            {% set slideID = 0 %}
-                            {% for picture in pictures %}
-                                <li data-target="#slideShow{{ property.getId() }}" data-slide-to="{{ slideID }}" 
-                                    {% if slideID == 0 %}
-                                        class="active"
-                                    {% endif %}
-                                >
-                                    <img class="d-block w-100 imageInThumbnail" src="{{ picture.getLink() }}" alt="{{ picture.getDetails() }}">
-                                </li>
-                                {% set slideID = slideID +  1 %}
-                            {% endfor %}
-                        </ol>
+    {% if pictures|length > 0 %}
+        <div class="col-md-auto" id="imageColumn">
+            <div class="carousel slide" id="slideShow{{ property.getId() }}" data-ride="carousel">
+                <!--If we only have 1 photo then display that single photo-->
+                {% if pictures|length == 1 %}
+                    {% for picture in pictures %}
                         <div class="carousel-inner">
-                            <!--Generate all the Slides-->
-                            {% set slideID = 0 %}
-                            {% for picture in pictures %}
-                                <div class="carousel-item 
-                                {% if slideID == 0 %}
-                                    active
-                                {% endif %}
-                                ">
-                                    <img class="d-block imageInSlide" src="{{ picture.getLink() }}" alt="{{ picture.getDetails() }}">
-                                    <div class="carousel-caption d-none d-md-block">
-                                        <h5 class="carouselCaptionTitle">{{ picture.getDetails() }}</h5>
-                                        <br>
-                                        <p class="carouselCaptionDate">uploaded: {{ picture.getAdddate()|date("m/d/Y") }}</p>
-                                    </div>
+                            <div class="carousel-item active">
+                                <img class="d-block imageInSlide" src="{{ picture.getLink() }}" alt="{{ picture.getDetails() }}">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5 class="carouselCaptionTitle">{{ picture.getDetails() }}</h5>
+                                    <br>
+                                    <p class="carouselCaptionDate">uploaded: {{ picture.getAdddate()|date("m/d/Y") }}</p>
                                 </div>
-                                {% set slideID = slideID +  1 %}
-                            {% endfor %}
-                        </div>
-                        <a class="carousel-control-prev" href="#slideShow{{ property.getId() }}" role="button" data-slide="prev">
-                            <span class="carousel-controls carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#slideShow{{ property.getId() }}" role="button" data-slide="next">
-                            <span class="carousel-controls carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    {% endif %}
-                </div>
-            </div>
-        {% endif %}
-        <hr class="style1">
-        <div class="card-body">
-            <h1 class="card-title">{{ property.getPostname() }}</h1>
-            <h5 class="card-title">
-                <!--declare our empty address string-->
-                {% set formattedAddress = "" %}
-                <!--*****Generate the Address String*****-->
-                <!--ADDRESS FORMAT => 
-                    :Apt 3A | 
-                    :101 Grover Rd | 
-                    :Edinburg, Texas | 
-                    :United States, America
-                    : | 78342-->
-                <!--add the apartment identifier if we have it-->
-                {% if address.getApartmentidentifier() %}
-                    {% set formattedAddress = formattedAddress ~ "Apt " ~ address.getApartmentidentifier() ~ " | "%}
-                {% endif %}
-                <!--add the building identifier and street name combo-->
-                {% if address.getBuildingIndentifier() %}
-                    {% set formattedAddress = formattedAddress ~ address.getBuildingIndentifier() %}
-                    {% if address.getStreetname() %}
-                        {% set formattedAddress = formattedAddress ~ " " ~ address.getStreetname()%}
-                    {% endif %}
-                    {% set formattedAddress = formattedAddress  ~ " | " %}
-                {% else %}
-                    {% if address.getStreetname() %}
-                        {% set formattedAddress = formattedAddress ~ address.getStreetname() ~ " | " %}
-                    {% endif %}
-                {% endif %}
-                <!--add the locality state combo-->
-                {% if address.getLocality() %}
-                    {% set formattedAddress = formattedAddress ~ address.getLocality() %}
-                    {% if address.getState() %}
-                        {% set formattedAddress = formattedAddress ~ ", " ~ address.getState()%}
-                    {% endif %}
-                    {% set formattedAddress = formattedAddress  ~ " | " %}
-                {% else %}
-                    {% if address.getState() %}
-                        {% set formattedAddress = formattedAddress ~ address.getState() ~ " | " %}
-                    {% endif %}
-                {% endif %}
-                <!--we know we are going to have a country and a continent so we simply the problem a bit-->
-                {% set formattedAddress = formattedAddress ~ country.getName() ~ ", " ~ continent.getName() %}
-                <!--add the zip code if we have it-->
-                {% if address.getZipcode() %}
-                    {% set formattedAddress = formattedAddress ~ " | " ~ address.getZipcode() %}
-                {% endif %}
-                <!--print the string we calculated above-->
-                {{ formattedAddress }}
-            </h5>
-            <p class="card-text">
-                {% if property.getDetails() %}
-                    <h5>{{ property.getDetails() }}</h5>
-                {% endif %}
-                <br>
-                <div class="row">
-                    <div class="col">$<span><h4>{{ property.getExpectedrentpermonth() }}</h4></span></div> |
-                    <div class="col"><span><h4>{{ property.getSquarefootage() }}</h4></span>&nbsp;sqrft</div> |
-                    <div class="col"><span><h4>{{ property.getBedroomcount() }}</h4></span>&nbsp;bed</div> |
-                    <div class="col"><span><h4>{{ property.getBathroomcount() }}</h4></span>&nbsp;bath</div>
-                </div>
-                <hr class="style1">
-                <!--chip section start-->
-                <div class="row">
-                        <div class="sectionTitle"><h3>Appliances</h3></div>
-                        {% for appliance in appliances %}
-                            <div class="chip">
-                                {{ appliance.getAppliance() }}
                             </div>
+                        </div> 
+                    {% endfor %}
+                <!--Other wise display a carousel of photos-->
+                {% else %}
+                    <ol class="carousel-indicators">
+                        <!--Generate all the thumbnails-->
+                        {% set slideID = 0 %}
+                        {% for picture in pictures %}
+                            <li data-target="#slideShow{{ property.getId() }}" data-slide-to="{{ slideID }}" 
+                                {% if slideID == 0 %}
+                                    class="active"
+                                {% endif %}
+                            >
+                                <img class="d-block w-100 imageInThumbnail" src="{{ picture.getLink() }}" alt="{{ picture.getDetails() }}">
+                            </li>
+                            {% set slideID = slideID +  1 %}
                         {% endfor %}
-                </div>
-                <hr class="style1">
-                <div class="row">
-                        <div class="sectionTitle"><h3>Utilities</h3></div>
-                        <div class="chip">
-                            Electricity
-                        </div>
-                        <div class="chip">
-                            Water
-                        </div>
-                        <div class="chip">
-                            High Speed Internet | from time warner cable
-                        </div>
-                        <div class="chip">
-                            Recycling Pick Up | every monday and wednesday
-                        </div>
-                        <div class="chip">
-                            Trash Pick Up | every tuesday and thursday
-                        </div>
-                        <div class="chip">
-                            Dish Cable
-                        </div>
-                        <div class="chip">
-                            Water Heating
-                        </div>
-                </div>
-                <hr class="style1">
-                <div class="row">
-                        <div class="sectionTitle"><h3>Perks</h3></div>
-                </div>
-                <hr class="style1">
-                <div class="row">
-                        <div class="sectionTitle"><h3>Amenities</h3></div>
-                        <div class="chip">
-                            Pool | public, life guard available from 8 am to 8 pm
-                        </div>
-                        <div class="chip">
-                            Laundromat
-                        </div>
-                        <div class="chip">
-                            Gym | with all the free weights anybody could want | $20 per month
-                        </div>
-                        <div class="chip">
-                            John Doe |  ;)
-                        </div>
-                        <div class="chip">
-                            Game Room
-                        </div>
-                        <div class="chip">
-                            Playground
-                        </div>
-                        <div class="chip">
-                            Jogging Trails
-                        </div>
-                </div>
-                <hr class="style1">
-                <div class="row">
-                    <div class="sectionTitle"><h3>Issues</h3></div>
-                    <div class="chip">
-                        No Wheel Chair Access | if you can walk dont even fret dawg
+                    </ol>
+                    <div class="carousel-inner">
+                        <!--Generate all the Slides-->
+                        {% set slideID = 0 %}
+                        {% for picture in pictures %}
+                            <div class="carousel-item 
+                            {% if slideID == 0 %}
+                                active
+                            {% endif %}
+                            ">
+                                <img class="d-block imageInSlide" src="{{ picture.getLink() }}" alt="{{ picture.getDetails() }}">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5 class="carouselCaptionTitle">{{ picture.getDetails() }}</h5>
+                                    <br>
+                                    <p class="carouselCaptionDate">uploaded: {{ picture.getAdddate()|date("m/d/Y") }}</p>
+                                </div>
+                            </div>
+                            {% set slideID = slideID +  1 %}
+                        {% endfor %}
                     </div>
-                </div>
-                <!--chip section end-->
-            </p>
+                    <a class="carousel-control-prev" href="#slideShow{{ property.getId() }}" role="button" data-slide="prev">
+                        <span class="carousel-controls carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#slideShow{{ property.getId() }}" role="button" data-slide="next">
+                        <span class="carousel-controls carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+    <hr class="style1">
+    <div class="card-body">
+        <h1 class="card-title">{{ property.getPostname() }}</h1>
+        <h5 class="card-title">
+            <!--declare our empty address string-->
+            {% set formattedAddress = "" %}
+            <!--*****Generate the Address String*****-->
+            <!--ADDRESS FORMAT => 
+                :Apt 3A | 
+                :101 Grover Rd | 
+                :Edinburg, Texas | 
+                :United States, America
+                : | 78342-->
+            <!--add the apartment identifier if we have it-->
+            {% if address.getApartmentidentifier() %}
+                {% set formattedAddress = formattedAddress ~ "Apt " ~ address.getApartmentidentifier() ~ " | "%}
+            {% endif %}
+            <!--add the building identifier and street name combo-->
+            {% if address.getBuildingIndentifier() %}
+                {% set formattedAddress = formattedAddress ~ address.getBuildingIndentifier() %}
+                {% if address.getStreetname() %}
+                    {% set formattedAddress = formattedAddress ~ " " ~ address.getStreetname()%}
+                {% endif %}
+                {% set formattedAddress = formattedAddress  ~ " | " %}
+            {% else %}
+                {% if address.getStreetname() %}
+                    {% set formattedAddress = formattedAddress ~ address.getStreetname() ~ " | " %}
+                {% endif %}
+            {% endif %}
+            <!--add the locality state combo-->
+            {% if address.getLocality() %}
+                {% set formattedAddress = formattedAddress ~ address.getLocality() %}
+                {% if address.getState() %}
+                    {% set formattedAddress = formattedAddress ~ ", " ~ address.getState()%}
+                {% endif %}
+                {% set formattedAddress = formattedAddress  ~ " | " %}
+            {% else %}
+                {% if address.getState() %}
+                    {% set formattedAddress = formattedAddress ~ address.getState() ~ " | " %}
+                {% endif %}
+            {% endif %}
+            <!--we know we are going to have a country and a continent so we simply the problem a bit-->
+            {% set formattedAddress = formattedAddress ~ country.getName() ~ ", " ~ continent.getName() %}
+            <!--add the zip code if we have it-->
+            {% if address.getZipcode() %}
+                {% set formattedAddress = formattedAddress ~ " | " ~ address.getZipcode() %}
+            {% endif %}
+            <!--print the string we calculated above-->
+            {{ formattedAddress }}
+        </h5>
+        <p class="card-text">
+            {% if property.getDetails() %}
+                <h5>{{ property.getDetails() }}</h5>
+            {% endif %}
+            <br>
+            <div class="row">
+                <div class="col">$<span><h4>{{ property.getExpectedrentpermonth() }}</h4></span></div> |
+                <div class="col"><span><h4>{{ property.getSquarefootage() }}</h4></span>&nbsp;sqrft</div> |
+                <div class="col"><span><h4>{{ property.getBedroomcount() }}</h4></span>&nbsp;bed</div> |
+                <div class="col"><span><h4>{{ property.getBathroomcount() }}</h4></span>&nbsp;bath</div>
+            </div>
             <hr class="style1">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-lg m-3" id="ownerName">
-                        <span class="fas fa-user"></span> Jefferson Lint
+            <!--chip section start-->
+            <div class="row">
+                    <div class="sectionTitle"><h3>Appliances</h3></div>
+                    <div class="chip">
+                        Refridgerator | can fit a cow
                     </div>
-                    <div class="col-lg m-3" id="ownerEmail">
-                        <span class="fas fa-envelope"></span> jeffIsLinty@weirdo.com
+                    <div class="chip">
+                        Gas Stove | as hot as your sister
                     </div>
-                    <div class="col-lg m-3" id="ownerPhones">
-                        <ul class="list-group">
-                            <li class="list-group-item list-group-item-dark"><span class="fas fa-phone"></span> Phone Numbers</li>
-                            <li class="list-group-item">Work | (956) 789-2342 ext 345</li>
-                            <li class="list-group-item">Home | (956) 789-2342</li>
-                        </ul>
+                    <div class="chip">
+                        Oven
                     </div>
+                    <div class="chip">
+                        Dishwasher | a.k.a. your mom
+                    </div>
+            </div>
+            <hr class="style1">
+            <div class="row">
+                    <div class="sectionTitle"><h3>Utilities</h3></div>
+                    <div class="chip">
+                        Electricity
+                    </div>
+                    <div class="chip">
+                        Water
+                    </div>
+                    <div class="chip">
+                        High Speed Internet | from time warner cable
+                    </div>
+                    <div class="chip">
+                        Recycling Pick Up | every monday and wednesday
+                    </div>
+                    <div class="chip">
+                        Trash Pick Up | every tuesday and thursday
+                    </div>
+                    <div class="chip">
+                        Dish Cable
+                    </div>
+                    <div class="chip">
+                        Water Heating
+                    </div>
+            </div>
+            <hr class="style1">
+            <div class="row">
+                    <div class="sectionTitle"><h3>Perks</h3></div>
+            </div>
+            <hr class="style1">
+            <div class="row">
+                    <div class="sectionTitle"><h3>Amenities</h3></div>
+                    <div class="chip">
+                        Pool | public, life guard available from 8 am to 8 pm
+                    </div>
+                    <div class="chip">
+                        Laundromat
+                    </div>
+                    <div class="chip">
+                        Gym | with all the free weights anybody could want | $20 per month
+                    </div>
+                    <div class="chip">
+                        John Doe |  ;)
+                    </div>
+                    <div class="chip">
+                        Game Room
+                    </div>
+                    <div class="chip">
+                        Playground
+                    </div>
+                    <div class="chip">
+                        Jogging Trails
+                    </div>
+            </div>
+            <hr class="style1">
+            <div class="row">
+                <div class="sectionTitle"><h3>Issues</h3></div>
+                <div class="chip">
+                    No Wheel Chair Access | if you can walk dont even fret dawg
                 </div>
             </div>
             <!--chip section end-->
-            <p class="card-text"><small class="text-muted">posted: {{ property.getAdddate()|date("m/d/Y") }} | updated: {{ property.getLastupdated()|date("m/d/Y") }}</small></p>
+        </p>
+        <hr class="style1">
+        <div class="row">
+            <div class="col-lg m-3" id="ownerName">
+                <span class="fas fa-user"></span> Jefferson Lint
+            </div>
+            <div class="col-lg m-3" id="ownerEmail">
+                <span class="fas fa-envelope"></span> jeffIsLinty@weirdo.com
+            </div>
+            <div class="col-lg m-3" id="ownerPhones">
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-dark"><span class="fas fa-phone"></span> Phone Numbers</li>
+                    <li class="list-group-item">Work | (956) 789-2342 ext 345</li>
+                    <li class="list-group-item">Home | (956) 789-2342</li>
+                </ul>
+            </div>
         </div>
+        <!--chip section end-->
+        <p class="card-text"><small class="text-muted">posted: {{ property.getAdddate()|date("m/d/Y") }} | updated: {{ property.getLastupdated()|date("m/d/Y") }}</small></p>
     </div>
 
 {% endblock %}
