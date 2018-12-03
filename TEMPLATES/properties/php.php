@@ -8,7 +8,6 @@
 $app->get('/', function ($request, $response, $args) {
 	
     //-------------------------read in optional parameters
-
 	//Variables from property
 	$rentMin = (isset($_GET['rentMin'])) ? $_GET['rentMin'] : null;
 	$rentMax = (isset($_GET['rentMax'])) ? $_GET['rentMax'] : null;
@@ -34,7 +33,42 @@ $app->get('/', function ($request, $response, $args) {
 
 	//Filter out properties that are not available
 	$properties = PropertyQuery::create()->filterByAvailable(true)->find(); //only show properties that are currently available
-
+	//=========================Min/Max Calculations
+	//Min and Max Slide values for Rent Slider
+	$minRentSlide = 0;
+	$maxRentSlide = 0;
+	foreach ($properties as $property) {
+		$rent = $property->getExpectedrentpermonth();
+		if($minRentSlide == 0 && $maxRentSlide == 0){
+			$minRentSlide=$rent;
+			$maxRentSlide=$rent;
+			continue;
+		}
+		if($rent > $maxRentSlide){
+			$maxRentSlide = $rent;
+		}
+		if($rent < $minRentSlide){
+			$minRentSlide = $rent;
+		}
+	}
+	//Min and Max Slide values for SqrFootage Slider
+	$minFootSlide = 0;
+	$maxFootSlide = 0;
+	foreach ($properties as $property) {
+		$rent = $property->getSquarefootage();
+		if($minFootSlide == 0 && $maxFootSlide == 0){
+			$minFootSlide=$rent;
+			$maxFootSlide=$rent;
+			continue;
+		}
+		if($rent > $maxFootSlide){
+			$maxFootSlide = $rent;
+		}
+		if($rent < $minFootSlide){
+			$minFootSlide = $rent;
+		}
+	}
+	//===================================================
 	//Gather properties that meet our search requirements
 	$desiredPropertyIDs = [];
 	foreach($properties as &$property){
@@ -133,7 +167,17 @@ $app->get('/', function ($request, $response, $args) {
 		'desiredPropertyIDs'=>$desiredPropertyIDs,
 		
 		//pass all the properties so that we dont need to relaod the page to have a working search
-		'properties'=>$properties, 
+		'properties'=>$properties,
+		
+		//pass the min and max of slides
+		'rentMin'=>$rentMin,
+		'rentMax'=>$rentMax,
+		'minRentSlide'=>$minRentSlide,
+		'maxRentSlide'=>$maxRentSlide,
+		'squareFootageMin'=>$squareFootageMin,
+		'squareFootageMax'=>$squareFootageMax,
+		'minFootSlide'=>$minFootSlide,
+		'maxFootSlide'=>$maxFootSlide,
 
 		//passing entire tables that will be filtered later
 		'pictures'=>$pictures,
