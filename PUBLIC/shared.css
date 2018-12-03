@@ -1,17 +1,63 @@
+/*-----chip styling----*/
+
+.chip {
+    display: inline-block;
+    padding: 5px;
+    padding-left: 15px;
+    line-height: 100%;
+    color: white;
+    font-size: 16px;
+    border-radius: 24px;
+    background-color: #6c757d;
+    margin: 5px;
+}
+
+.removeChipButton {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    text-align: center;
+    padding: 0px;
+    line-height: 100%;
+    font-size: 10px;
+}
+
+.addChipButton { /*to create more chips */
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    text-align: center;
+    padding: 0px;
+    line-height: 100%;
+    font-size: 12px;
+    margin: auto;
+    margin-left: 5px; 
+    margin-right: 5px;
+}
+
+/*-----filter remove button-----*/
+
+.removeSliderButton {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    text-align: center;
+    padding: 0px;
+    line-height: 100%;
+    font-size: 12px;
+}
+
+/*-----filter add button-----*/
+
+.fitlerAddButton {
+    margin: 5px;
+}
+
 /*-----carousel settings-----*/
+
 .carousel {
     padding: 0px;
     margin: auto;
-    width: 350px;
-    height: 350px;
-}
-
-.propertyCard {
-    margin: 15px;
-}
-
-.mainRow > div {
-    margin: 15px;
 }
 
 /*-----carousel thumbnail styling-----*/
@@ -40,12 +86,6 @@
     width: 100%;
 }
 
-.carousel-item {
-    /*override all to default*/
-    position: static;
-    align-items: stretch;
-}
-
 .carousel-item > img{
     object-fit: contain;
     width: 100%;
@@ -59,8 +99,8 @@
     top: 0;
     bottom: 0;
     margin: 15px;
-    margin-top: 50%;
-    margin-bottom: 50%;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .carousel-controls {
@@ -84,12 +124,12 @@
     display: inline-block;
     padding: 2px;
     background-color: rgba(0, 0, 0, 0.75);
-    font-size: .75em;
+    font-size: 1.25em;
 }
 
 .carouselCaptionDate {
     margin-left: 30px;
-    font-size: .5em;
+    font-size: .75em;
 }
 
 .carousel-caption {

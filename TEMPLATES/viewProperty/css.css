@@ -1,14 +1,18 @@
+#imageColumn {
+    padding: 0px;   
+}
+
 .carousel, .carousel-inner, .carousel-item, .carousel-item > img {
     width: 100%;
     height: auto;
-    max-height: 500px;
-} 
-
-
-.carousel-item > img{
-    object-fit: contain;
+    max-height: 350px;
 }
 
-#imageColumn {
-    padding: 0px;   
+span > h1, span > h2, span h3, span h4, span h5, span h6{
+    display: inline-block;
+}
+
+.chip {
+    padding-right: 15px;
+    background-color: #17a2b8;
 }
