@@ -41,7 +41,8 @@ function generateUserListener(name, button, input, error){
             method: "POST",
             url: baseurl + "/settings/verify",
             data: {
-                name : $(input).val()
+                "actionName" : name,
+                "actionData" : $(input).val()
             },
             success: function (response) {
                 console.log("response: " + response)

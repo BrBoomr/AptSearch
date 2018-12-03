@@ -22,49 +22,44 @@ $app->post('/settings/verify', function($request, $response, $args) {
 
     //make sure our user exits
     if($user != null){
-        $name = isset($_POST['name']) ? $_POST['name'] : null;
-        $email = isset($_POST['email']) ? $_POST['email'] : null;
-        $password = isset($_POST['password']) ? $_POST['password'] : null;
+        $actionName = isset($_POST['actionName']) ? $_POST['actionName'] : null;
+        $actionData = isset($_POST['actionData']) ? $_POST['actionData'] : null;
 
         //make the variables we will be passing back to our javascript
         $newValue = ""; //store the new value the input field will have after the setting
         $message = ""; //store the error message here
-        $passedThing = "{|" . (($name == null) ? "NULL" : $name) . "|" . (($email == null) ? "NULL" : $email) . "|" . (($password == null) ? "NULL" : $password) . "|}";
 
         //check which one of the three values we are changing
-        if($name != null){
-            $passedThing = $passedThing . "name";
+        if($actionName == "name"){
             //check for errors
-            if(empty($name) == false) $user->setName($name); //update success on server
+            if(empty($actionData) == false) $user->setName($actionData); //update success on server
             else $message = "Your name must not be blank"; //update error on client
             //update on client
             $newValue = $user->getName();
         }
-        else if($name != null){
-            $passedThing = $passedThing . "email";
+        else if($actionName == "email"){
             //check for errors
-            if(empty($email) == false){
-                if(filter_var($email, FILTER_VALIDATE_EMAIL)) $user->setEmail($email); //update on server
+            if(empty($actionData) == false){
+                if(filter_var($actionData, FILTER_VALIDATE_EMAIL)) $user->setEmail($actionData); //update on server
                 else $message = "Your must plug in a valid email"; //update error on client
             }
             else $message = "Your email must not be blank"; //update error on client
             //update on client
             $newValue = $user->getEmail(); 
         }
-        else if($name != null){
-            $passedThing = $passedThing . "password";
+        else if($actionName == "password"){
             //check for errors
-            if(empty($password) == false) $user->setPassword($password); //update on server
+            if(empty($actionData) == false) $user->setPassword($actionData); //update on server
             else $message = "Your password must not be blank"; //update error on client
             //update on client
-            $newValue = $user->getEncryptedpassword(); 
+            $newValue = ""; //we don't show passwords on the client 
         }
 
         //update on server
         $user->save();
 
         //send results to client
-        return json_encode(array('newValue' => $newValue, 'message' => $message, 'passedThing' => $passedThing));
+        return json_encode(array('newValue' => $newValue, 'message' => $message));
     }
 });
 
