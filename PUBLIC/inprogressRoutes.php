@@ -26,31 +26,24 @@ $app->get('/settings', function ($request, $response, $args) {
 });
 
 $app->get('/settings/verify', function ($request, $response, $args) {
-	if(empty($_GET['name']) || empty($_GET['email'])){
-		if($_GET['name']==current_user()->getName()){
-			//echo "Same Name!<br>";
-		}
-		else{
-			current_user()->setName($_GET['name']);
-		}
-		if($_GET['email']==current_user()->getEmail()){
-			//echo "Same Email!<br>";
-		}
-		else{
-			current_user()->setEmail($_GET['email']);
-		}
+	if(empty($_GET['currentPassword']) || !(current_user()->login($_GET['currentPassword']))){
+		return json_encode(['INV_PASS'=>'true']);
 	}
-	else if(empty($_GET['newPassword']) && empty($_GET['confirmPassword'])){
-		if($_GET['newPassword'] == $_GET['confirmPassword']){
-
-		}
-		else{
-
-		}
+	else if(empty($_GET['name']) || empty($_GET['email'])){
+		return json_encode(['invalid'=>'true']);
 	}
-	else{
-		
+	else if($_GET['newPassword'] != $_GET['confirmPassword']){
+		return json_encode(['mismatch'=>'true']);
 	}
+	current_user()->setName($_GET['name']);
+	current_user()->setEmail($_GET['email']);
+	if(!(empty($_GET['newPassword']) && empty($_GET['confirmPassword']))){
+		current_user()->setPassword($_GET['newPassword']);
+	}
+	current_user()->save();
+	return json_encode(['valid'=>'true']);
+	exit();
+	
 });
 
 

@@ -3,6 +3,7 @@ var formName = "#editName"
 var formEmail = "#editEmail"
 var formNewPassword = "#newPassword"
 var formConfirmPassword = "#confirmPassword"
+var formCurrentPassword = "#currentPassword"
 var formEditSubmit = "#editSubmit"
 //This value was set in TEMPLATES/layout/html where the greeting portion is.
 var userID = $("h3").attr("userid")
@@ -18,12 +19,14 @@ $(formEditSubmit).click((e)=>{
             email : $(formEmail).val(),
             newPassword : $(formNewPassword).val(),
             confirmPassword : $(formConfirmPassword).val(),
+            currentPassword : $(formCurrentPassword).val(),
         },
         dataType: "json",
         success: function (response) {
-            if(response['invalid']=='true'){
-                $("#editError").text("Default fields cannot be empty!")
-                $("#editError").addClass("alert-danger")
+            console.log(response)
+            if(response['valid']=='true'){
+                $("#editError").text("Successfuly Updated User!")
+                $("#editError").addClass("alert-success")
                 $("#editError").removeClass("d-none")
             }
             else if(response['mismatch']=='true'){
@@ -31,9 +34,14 @@ $(formEditSubmit).click((e)=>{
                 $("#editError").addClass("alert-danger")
                 $("#editError").removeClass("d-none")
             }
-            else{
-                $("#editError").text("Successfuly Updated User!")
-                $("#editError").addClass("alert-success")
+            else if(response['INV_PASS']=='true'){
+                $("#editError").text("Invalid Current Password!")
+                $("#editError").addClass("alert-danger")
+                $("#editError").removeClass("d-none")
+            }
+            else if(response['invalid']=='true'){
+                $("#editError").text("Default fields cannot be empty!")
+                $("#editError").addClass("alert-danger")
                 $("#editError").removeClass("d-none")
             }
         }

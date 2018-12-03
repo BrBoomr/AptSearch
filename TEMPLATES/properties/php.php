@@ -6,7 +6,7 @@
 //(2) We are able to go back to this page
 //(3) All parameters are optional
 $app->get('/', function ($request, $response, $args) {
-
+	
     //-------------------------read in optional parameters
 
 	//Variables from property
