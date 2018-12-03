@@ -64,6 +64,8 @@ $( document ).ready(function() {
 });
 
 $(".btn").click(function(){
-    $row = $(this).attr('rowid')
+    var rowID = "#" + $(this).attr("rowid")
+    //console.log($(this).attr('rowid'))
+    $(rowID).toggleClass("d-none")
 })
 //-------------------------Objects-------------------------
