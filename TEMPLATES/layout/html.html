@@ -67,10 +67,10 @@
                 </li>
             {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" id="logout" href="#">Log Out</a>
+                    <a class="nav-link disabled" id="logout" href="#">Log Out</a>
                 </li>
                 <li class="nav-item">
-                    <h3 class="nav-link disabled" userID="{{user.getId()}}">Welcome, {{user.getName()}}</h3>
+                    <a class="nav-link disabled" userID="{{user.getId()}}">Welcome, {{user.getName()}}</a>
                 </li>
             {% endif %}
           </ul>

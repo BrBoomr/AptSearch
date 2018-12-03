@@ -98,6 +98,14 @@ center align the mainDiv in the body within the body*/
     font-size: 1.5em;
 }
 
+.nav-link {
+    padding: 0px;
+}
+
+.nav-link {
+    font-size: 16px;
+}
+
 /*-------------------------footer styling-------------------------*/
 
 #footer {
