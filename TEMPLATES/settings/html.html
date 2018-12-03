@@ -32,15 +32,43 @@
                         <input id="currentPassword" type="password" class="form-control" placeholder="Current Password" value=""/>
                     </div>
                     <div class="form-group">
-                        <button id = "editSubmit" type="button" class="btn btn-success btnSubmit">Submit Changes</button>
+                        <button id = "editUserSubmit" type="button" class="btn btn-success btnSubmit">Submit User Changes</button>
                     </div>
                     <div class="form-group">
-                        <div id="editError" class="alert alert-dismissible d-none">
+                        <div id="editUserError" class="alert alert-dismissible d-none">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                             <strong>DEFAULT ERROR MESSAGE</strong>
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container editPhone-container">
+        <div class="row">
+            <div class="col-md-8">
+                <ul class="phoneList">
+                    {% for phone in phoneQuery %}
+                        <li class="phoneItem" id="{{phone.getId()}}">
+                            <select class="descriptionList" id="phoneType">
+                                <option value= "DEFAULT">{{phone.getDescription()}}</option>
+                                <option disabled value="NULL">Select One</option>
+                                <option value = "Work">Work</option>
+                                <option value = "Mobile">Mobile</option>
+                                <option value = "Home">Home</option>
+                            </select>
+                            <!--<input type = "text" class ="description" value ="{{ phone.getDescription() }}"></input>-->
+                            <input type = "text" class ="areaCode" value = "{{phone.getAreacode()}}"></input>
+                            <input type = "text" class ="number" value = "{{phone.getNumber()}}"></input>
+                            <input type = "text" class ="extension" placeholder = "Extension" value = "{{phone.getExtension}}"></input>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div id="editPhoneError" class="alert alert-dismissible d-none">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>DEFAULT ERROR MESSAGE</strong>
+                </div>
             </div>
         </div>
     </div>

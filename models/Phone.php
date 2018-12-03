@@ -14,5 +14,7 @@ use Base\Phone as BasePhone;
  */
 class Phone extends BasePhone
 {
-
+    public function getId(){
+        return $this->getPhonenumberid();
+    }
 }

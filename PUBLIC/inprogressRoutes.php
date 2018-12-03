@@ -25,7 +25,7 @@ $app->get('/settings', function ($request, $response, $args) {
 	}
 });
 
-$app->get('/settings/verify', function ($request, $response, $args) {
+$app->post('/settings/verify', function ($request, $response, $args) {
 	if(empty($_GET['currentPassword']) || !(current_user()->login($_GET['currentPassword']))){
 		return json_encode(['INV_PASS'=>'true']);
 	}
@@ -44,6 +44,35 @@ $app->get('/settings/verify', function ($request, $response, $args) {
 	return json_encode(['valid'=>'true']);
 	exit();
 	
+});
+
+$app->post('/settings/editPhone', function ($request, $response, $args) {
+	$fields = $_POST;
+	foreach ($fields as $key => $value) {
+		//echo $key."=>".$value."<br>";
+		if($key=='extension'){
+			continue;
+		}
+		if(empty($value)){
+			return json_encode(['valid'=>'false']);
+		}
+	}
+	
+	
+	$editPhone = PhoneQuery::create()->findPk($_POST['phoneID']);
+	if(current_user()->getId() != $editPhone->getUserid()){
+		return json_encode(['valid'=>'false']);
+		exit();
+	}
+	if($_POST['description']!='DEFAULT'){
+		$editPhone->setDescription($_POST['description']);
+	}
+	$editPhone->setAreacode($_POST['areaCode']);
+	$editPhone->setNumber($_POST['number']);
+	$editPhone->setExtension($_POST['extension']);
+	$editPhone->save();
+	return json_encode(['valid'=>'true']);
+
 });
 
 
