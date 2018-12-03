@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.2
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2018 at 07:11 AM
--- Server version: 10.1.34-MariaDB
--- PHP Version: 7.2.8
+-- Generation Time: Dec 03, 2018 at 06:20 PM
+-- Server version: 10.1.35-MariaDB
+-- PHP Version: 7.2.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -131,6 +131,14 @@ CREATE TABLE `appliance` (
   `details` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `appliance`
+--
+
+INSERT INTO `appliance` (`applianceNumberID`, `propertyID`, `applianceTypeID`, `details`) VALUES
+(1, 1, 1, 'It be cold as fuck boi'),
+(2, 1, 2, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -143,6 +151,14 @@ CREATE TABLE `appliancetype` (
   `name` text NOT NULL,
   `useCount` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `appliancetype`
+--
+
+INSERT INTO `appliancetype` (`ID`, `addDate`, `name`, `useCount`) VALUES
+(1, '2018-12-03 17:18:20', 'Refrigerator', 0),
+(2, '2018-12-03 17:18:29', 'Oven', 0);
 
 -- --------------------------------------------------------
 
@@ -779,13 +795,13 @@ ALTER TABLE `amenitytype`
 -- AUTO_INCREMENT for table `appliance`
 --
 ALTER TABLE `appliance`
-  MODIFY `applianceNumberID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `applianceNumberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `appliancetype`
 --
 ALTER TABLE `appliancetype`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `continenttype`
