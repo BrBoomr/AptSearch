@@ -175,13 +175,18 @@
                 <div class="sectionTitle"><h3>Utilities</h3></div>
                 {% for utility in utilities %}
                     <div class="chip">
-                        {{ appliance.getUtility() }}
+                        {{ utility.getUtility() }}
                     </div>
                 {% endfor %}
             </div>
             <hr class="style1">
             <div class="row">
-                    <div class="sectionTitle"><h3>Perks</h3></div>
+                <div class="sectionTitle"><h3>Perks</h3></div>
+                {% for perk in perks %}
+                    <div class="chip">
+                        {{ perk.getUtility() }}
+                    </div>
+                {% endfor %}
             </div>
             <hr class="style1">
             <div class="row">
