@@ -1,22 +1,12 @@
-nameInputButton = $("#nameInputButton")
-nameInput = $("#nameInput")
-nameError = $("#nameError")
+function generateUserListeners(button){
 
-emailInputButton = $("#emailInputButton")
-emailInput = $("#emailInput")
-emailError = $("#emailError")
-
-passwordInputButton = $("#passwordInputButton")
-passwordInput = $("#passwordInput")
-passwordError = $("#passwordError")
-
-function generateUserListener(name, button, input, error){
+    var name = $(button).parent().parent().parent().find("label").text().toLowerCase()
+    var input = $(button).parent().parent().find("input")
+    var error = $(button).parent().parent().parent().find(".error")
 
     //listener that enables the button for editing once you click the edit button
     $(button).on("click", function(){
         event.preventDefault(); //prevent reload on click
-
-        console.log("pressed " + name + " button")
 
         $(input).prop('disabled', false); //enable the input tag
         $(input).select(); //select all the text in the input tag
@@ -69,9 +59,8 @@ function generateUserListener(name, button, input, error){
 
 }
 
-generateUserListener("name", nameInputButton, nameInput, nameError)
-generateUserListener("email", emailInputButton, emailInput, emailError)
-generateUserListener("password", passwordInputButton, passwordInput, passwordError)
+var buttons = $(".form-group > .input-group > .input-group-append > button")
+$(buttons).each(function(i) { generateUserListeners("", this, "", "")});
 
 /*-----delete phone-----*/
 
