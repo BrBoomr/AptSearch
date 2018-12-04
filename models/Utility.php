@@ -15,8 +15,8 @@ use Base\Utility as BaseUtility;
 class Utility extends BaseUtility
 {
     public function getUtility(){
-        $appliances = AppliancetypeQuery::create()->findPK($this->getUtilitytypeid());
-        $name = $appliances->getName();
+        $utility = AppliancetypeQuery::create()->findPK($this->getUtilitytypeid());
+        $name = $utility->getName();
         $details = $this->getDetails();
         // sets the outputed format to {utility} | {details}
         if ($details){
