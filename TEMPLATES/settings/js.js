@@ -73,12 +73,28 @@ generateUserListener("name", nameInputButton, nameInput, nameError)
 generateUserListener("email", emailInputButton, emailInput, emailError)
 generateUserListener("password", passwordInputButton, passwordInput, passwordError)
 
-/*show hide password*/
+/*-----delete phone-----*/
 
-/*
-.passwordShowHide > .input-group > input (change to type text)
-.passwordShowHide > .input-group > .input-group-append > .showHide (.hide hide, .show hide)
-*/
+phoneButton = ".phoneRow > .col-auto > button"
+
+$(phoneButton).on("click", function(){
+    //grab the phone id
+    phone = $(this).parent().parent()
+    phoneID = $(phone).attr('id')
+
+    //sent it process by ajax
+    $.ajax({
+        method :"post",
+        url: baseurl + "/settings/deletePhone",
+        data: {
+            "phoneID" : phoneID
+        },
+        success: function (response) {
+            //delete the UI when done
+            $(phone).remove()
+        }
+    });
+})
 
 
 

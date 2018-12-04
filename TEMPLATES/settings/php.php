@@ -15,6 +15,8 @@ $app->get('/settings', function ($request, $response, $args) {
 	}
 });
 
+/*-------------------------User Post Requests (in one)-------------------------*/
+
 //NOTE: this route is used for to edit name, email, and password individually
 //so whatever variable is set is implied to be the one we are trying to edit
 $app->post('/settings/verify', function($request, $response, $args) {
@@ -65,7 +67,23 @@ $app->post('/settings/verify', function($request, $response, $args) {
     }
 });
 
-/*alsdkjf;alsdjfa;lsdjf;lasdkfj;laksdjf;lasdkjf;lkj*/
+/*-------------------------Phone Post Requests-------------------------*/
+
+$app->post('/settings/deletePhone', function ($request, $response, $args) {
+    $user = current_user();
+
+    //make sure our user exits
+    if($user != null){
+        $phoneID = isset($_POST['phoneID']) ? $_POST['phoneID'] : null;
+        $phone = PhoneQuery::create()->findPk($phoneID);
+        if($phone){ //the phone exists
+            if($user->getId() ==  $phone->getUserid()){ //the phone belongs to the user
+                $phone->delete();
+            }
+        }
+    }
+});
+
 
 $app->post('/settings/editPhone', function ($request, $response, $args) {
 	$fields = $_POST;

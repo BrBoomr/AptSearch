@@ -44,7 +44,7 @@
     <div class="form-group">
         <label>Phones</label>
         {% for phone in phones %}
-            <div class="row phoneRow">
+            <div class="row phoneRow" id="{{ phone.getId() }}">
                 <div>
                     <div class="input-group">
                         <select class="form-control">
@@ -88,10 +88,9 @@
                     </div>
                 </div>
                 <div class="col-auto">
-                    <button type="button" class="btn btn-secondary"><i class="fas fa-times"></i></button>
+                    <button type="button" class="btn btn-secondary" class="{{ phone.getId() }} phoneDelete"><i class="fas fa-times"></i></button>
                 </div>
             </div>
-    
             <hr class="style1">
         {% endfor %}
         <div class="row phoneRow">
@@ -112,6 +111,6 @@
 
 {% block scripts %}
     <!--javascript-->
-    <script type="module" src="{{ base_url() }}/../../PUBLIC/shared.js"></script>
+    <script type="module" src="{{ base_url() }}/../../PUBLIC/shared/js.js"></script>
     <script src="{{ base_url() }}/../../TEMPLATES/settings/js.js"></script>
 {% endblock %}
