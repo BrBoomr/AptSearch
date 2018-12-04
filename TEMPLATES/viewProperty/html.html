@@ -161,37 +161,23 @@
             <hr class="style1">
             <!--chip section start-->
             <div class="row">
-                    <div class="sectionTitle"><h3>Appliances</h3></div>
-                        {% for appliance in appliances %}
-                            <div class="chip">
-                                {{ appliance.getAppliance() }}
-                            </div>
-                        {% endfor %}
+                <!-- Get all appliances for propertyID -->
+                <div class="sectionTitle"><h3>Appliances</h3></div>
+                {% for appliance in appliances %}
+                    <div class="chip">
+                        {{ appliance.getAppliance() }}
+                    </div>
+                {% endfor %}
             </div>
             <hr class="style1">
             <div class="row">
-                    <div class="sectionTitle"><h3>Utilities</h3></div>
+                <!-- Ger all the utilities from propertyID -->
+                <div class="sectionTitle"><h3>Utilities</h3></div>
+                {% for utility in utilities %}
                     <div class="chip">
-                        Electricity
+                        {{ appliance.getUtility() }}
                     </div>
-                    <div class="chip">
-                        Water
-                    </div>
-                    <div class="chip">
-                        High Speed Internet | from time warner cable
-                    </div>
-                    <div class="chip">
-                        Recycling Pick Up | every monday and wednesday
-                    </div>
-                    <div class="chip">
-                        Trash Pick Up | every tuesday and thursday
-                    </div>
-                    <div class="chip">
-                        Dish Cable
-                    </div>
-                    <div class="chip">
-                        Water Heating
-                    </div>
+                {% endfor %}
             </div>
             <hr class="style1">
             <div class="row">
