@@ -6,7 +6,7 @@ $app->get('/settings', function ($request, $response, $args) {
 	$user = current_user();
 	if($user != null){
 		$this->view->render($response, "settings/html.html",
-			['user'=>$user, 'phoneQuery'=>$user->getAllPhones()]);
+			['user'=>$user, 'phones'=>$user->getAllPhones()]);
 		return $response;
 	}
 	else{

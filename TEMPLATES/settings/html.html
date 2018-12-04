@@ -2,76 +2,6 @@
 
 {% block content %}
 
-<div class="container editUser-container">
-        <div class="row">
-            <div class="col-md-6 newProperty-form-1">
-                <form>
-                    <h1>User Settings</h1>
-                    <div class="form-group">
-                        <input id="editName" type="text" class="form-control" value="{{user.getName()}}"></input>
-                    </div>
-                    <div class="form-group">
-                        <input id="editEmail" type="text" class="form-control" value="{{user.getEmail()}}"></input>
-                    </div>
-                    <div class="form-group">
-                        <input id="newPassword" type="password" class="form-control" placeholder="New Password" value=""/>
-                    </div>
-                    <div class="form-group">
-                        <input id="confirmPassword" type="password" class="form-control" placeholder="Confirm New Password" value=""/>
-                    </div>
-                    <div class="form-group">
-                        <input id="currentPassword" type="password" class="form-control" placeholder="Current Password" value=""/>
-                    </div>
-                    <div class="form-group">
-                        <button id = "editUserSubmit" type="button" class="btn btn-success btnSubmit">Submit User Changes</button>
-                    </div>
-                    <div class="form-group">
-                        <div id="editUserError" class="alert alert-dismissible d-none">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            <strong>DEFAULT ERROR MESSAGE</strong>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="container editPhone-container">
-        <div class="row">
-            <div class="col-md-8">
-                <ul class="phoneList">
-                    {% for phone in phoneQuery %}
-                        <li class="phoneItem" id="{{phone.getId()}}">
-                            <select class="descriptionList" id="phoneType">
-                                <option value= "DEFAULT">{{phone.getDescription()}}</option>
-                                <option disabled value="NULL">Select One</option>
-                                <option value = "Work">Work</option>
-                                <option value = "Mobile">Mobile</option>
-                                <option value = "Home">Home</option>
-                            </select>
-                            <!--<input type = "text" class ="description" value ="{{ phone.getDescription() }}"></input>-->
-                            <input type = "text" class ="areaCode" value = "{{phone.getAreacode()}}"></input>
-                            <input type = "text" class ="number" value = "{{phone.getNumber()}}"></input>
-                            <input type = "text" class ="extension" placeholder = "Extension" value = "{{phone.getExtension}}"></input>
-                        </li>
-                    {% endfor %}
-                </ul>
-                <div id="editPhoneError" class="alert alert-dismissible d-none">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>DEFAULT ERROR MESSAGE</strong>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <br>
-    <br>
-    <br>
-    <h1> UI MOCK UP BELOW</h1>
-    <br>
-    <br>
-    <br>
-
     <h1>User Settings</h1>
     <hr class="style1">
     <!--name-->
@@ -113,129 +43,57 @@
     <!--phones-->
     <div class="form-group">
         <label>Phones</label>
-        <div class="row phoneRow">
-            <div>
-                <div class="input-group">
-                    <select class="form-control">
-                        <option disabled value="">Select One</option>
-                        <option value="work" >Work</option>
-                        <option value="mobile">Mobile</option>
-                        <option value="home">Home</option>
-                    </select>
-                </div>
-            </div>
-            <div>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="area code" disabled>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
+        {% for phone in phones %}
+            <div class="row phoneRow">
+                <div>
+                    <div class="input-group">
+                        <select class="form-control">
+                            <option value=""
+                                {% if phone.getDescription() == null %} selected="selected" {% endif %}
+                            ></option>
+                            <option value="Work"
+                                {% if phone.getDescription() == "Work" %} selected="selected" {% endif %}
+                            >Work</option>
+                            <option value="Mobile"
+                                {% if phone.getDescription() == "Mobile" %} selected="selected" {% endif %}
+                            >Mobile</option>
+                            <option value="Home"
+                                {% if phone.getDescription() == "Home" %} selected="selected" {% endif %}
+                            >Home</option>
+                        </select>
                     </div>
                 </div>
-            </div>  
-            <div>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="number" disabled>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
+                <div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="area code" value="{{ phone.getAreacode() }}" disabled>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
+                        </div>
+                    </div>
+                </div>  
+                <div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="number" value="{{ phone.getNumber() }}" disabled>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="extension" disabled>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
+                <div>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="extension" value="{{ phone.getExtension() }}" disabled>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div>
-                <button type="button" class="btn btn-secondary"><i class="fas fa-times"></i></button>
-            </div>
-        </div>
-
-        <hr class="style1">
-
-        <div class="row phoneRow">
-            <div>
-                <div class="input-group">
-                    <select class="form-control">
-                        <option disabled value="">Select One</option>
-                        <option value="work" >Work</option>
-                        <option value="mobile">Mobile</option>
-                        <option value="home">Home</option>
-                    </select>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-secondary"><i class="fas fa-times"></i></button>
                 </div>
             </div>
-            <div>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="area code" disabled>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
-                    </div>
-                </div>
-            </div>  
-            <div>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="number" disabled>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="extension" disabled>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <button type="button" class="btn btn-secondary"><i class="fas fa-times"></i></button>
-            </div>
-        </div>
-
-        <hr class="style1">
-
-        <div class="row phoneRow">
-            <div>
-                <div class="input-group">
-                    <select class="form-control">
-                        <option disabled value="">Select One</option>
-                        <option value="work" >Work</option>
-                        <option value="mobile">Mobile</option>
-                        <option value="home">Home</option>
-                    </select>
-                </div>
-            </div>
-            <div>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="area code" disabled>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
-                    </div>
-                </div>
-            </div>  
-            <div>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="number" disabled>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="extension" disabled>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button"><i class="fas fa-pen"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <button type="button" class="btn btn-secondary"><i class="fas fa-times"></i></button>
-            </div>
-        </div>
+    
+            <hr class="style1">
+        {% endfor %}
         <div class="row phoneRow">
             <div class="col"></div>
             <div class="col-auto">
