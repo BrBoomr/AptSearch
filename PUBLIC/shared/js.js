@@ -1,9 +1,9 @@
 /*-------------------------show hide password-------------------------*/
 
 $(".passwordShowHide > .input-group > .input-group-append > .showHide").on("click", function(){
-    var showEye = $(".passwordShowHide > .input-group > .input-group-append > .showHide > .show")
-    var hideEye = $(".passwordShowHide > .input-group > .input-group-append > .showHide > .hide")
-    var password = $(".passwordShowHide > .input-group > input")
+    var showEye = $(this).find(".show") 
+    var hideEye = $(this).find(".hide") 
+    var password = $(this).parent().parent().find("input") 
 
     console.log("show " + $(showEye).css("display"))
     console.log("hide " + $(hideEye).css("display"))
