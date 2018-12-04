@@ -3,17 +3,13 @@
 }
 
 #formCard {
-    margin: 15px;
     width: 100%;
     max-width: 500px;
+    display: block !important;
 }
 
 #formState, #error {
     display: none;
-}
-
-#submitButton {
-    float: right;
 }
 
 #switcher {

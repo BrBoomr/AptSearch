@@ -28,6 +28,7 @@ $app->post('/settings/verify', function($request, $response, $args) {
         //make the variables we will be passing back to our javascript
         $newValue = ""; //store the new value the input field will have after the setting
         $message = ""; //store the error message here
+        $isName = false;
 
         //check which one of the three values we are changing
         if($actionName == "name"){
@@ -36,6 +37,7 @@ $app->post('/settings/verify', function($request, $response, $args) {
             else $message = "Your name must not be blank"; //update error on client
             //update on client
             $newValue = $user->getName();
+            $isName = true;
         }
         else if($actionName == "email"){
             //check for errors
@@ -52,14 +54,14 @@ $app->post('/settings/verify', function($request, $response, $args) {
             if(empty($actionData) == false) $user->setPassword($actionData); //update on server
             else $message = "Your password must not be blank"; //update error on client
             //update on client
-            $newValue = ""; //we don't show passwords on the client 
+            $newValue = $actionData; //we don't show passwords on the client 
         }
 
         //update on server
         $user->save();
 
         //send results to client
-        return json_encode(array('newValue' => $newValue, 'message' => $message));
+        return json_encode(array('newValue' => $newValue, 'message' => $message, 'isName' => $isName));
     }
 });
 

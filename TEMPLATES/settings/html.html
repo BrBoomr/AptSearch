@@ -97,11 +97,14 @@
         <div id="emailError" class="alert-danger p-2 mb-2 error" style="display: none;"></div>
     </div>
     <!--password-->
-    <div class="form-group">
+    <div class="form-group passwordShowHide">
         <label for="passwordInput">Password</label>
         <div class="input-group">
             <input type="password" class="form-control" placeholder="New Password" id="passwordInput" disabled>
             <div class="input-group-append">
+                <button class="btn btn-outline-secondary showHide" type="button">
+                    <i class="hide far fa-eye-slash" style="display:none;"></i><i class="show far fa-eye"></i>
+                </button>
                 <button class="btn btn-outline-secondary" type="button" id="passwordInputButton"><i class="fas fa-pen"></i></button>
             </div>
         </div>
@@ -250,5 +253,6 @@
 
 {% block scripts %}
     <!--javascript-->
+    <script type="module" src="{{ base_url() }}/../../PUBLIC/shared.js"></script>
     <script src="{{ base_url() }}/../../TEMPLATES/settings/js.js"></script>
 {% endblock %}

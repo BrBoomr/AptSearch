@@ -34,8 +34,6 @@ function generateUserListener(name, button, input, error){
         //disable the input tag again
         $(this).prop('disabled', true); 
 
-        console.log("pressed " + name + " with value " + $(input).val())
-
         //try to upate the item on the server
         $.ajax({
             method: "POST",
@@ -45,27 +43,26 @@ function generateUserListener(name, button, input, error){
                 "actionData" : $(input).val()
             },
             success: function (response) {
-                console.log("response: " + response)
-                /*
                 //grab data
                 response = JSON.parse(response)
                 var newValue = response["newValue"]
                 var message = response["message"]
-                var passedThing = response["passedThing"]
-                
-                console.log("the server understood that we passed it " + passedThing)
+                var isName = response["isName"]
                 
                 //display value
                 $(input).val(newValue)
                 
                 //display message
-                if(message == "") $(error).hide()
+                if(message == ""){
+                    $(error).hide()
+                    if(isName){
+                        $("#greeting").text(newValue)
+                    }
+                }
                 else{
                     $(error).text(message)
                     $(error).show()
                 }
-                */
-                
             }
         });
     })
@@ -75,6 +72,32 @@ function generateUserListener(name, button, input, error){
 generateUserListener("name", nameInputButton, nameInput, nameError)
 generateUserListener("email", emailInputButton, emailInput, emailError)
 generateUserListener("password", passwordInputButton, passwordInput, passwordError)
+
+/*show hide password*/
+
+/*
+.passwordShowHide > .input-group > input (change to type text)
+.passwordShowHide > .input-group > .input-group-append > .showHide (.hide hide, .show hide)
+*/
+
+$(".passwordShowHide > .input-group > .input-group-append > .showHide").on("click", function(){
+    var showEye = $(".passwordShowHide > .input-group > .input-group-append > .showHide > .show")
+    var hideEye = $(".passwordShowHide > .input-group > .input-group-append > .showHide > .hide")
+    var password = $(".passwordShowHide > .input-group > input")
+
+    console.log("show " + $(showEye).css("display"))
+    console.log("hide " + $(hideEye).css("display"))
+    if($(showEye).css("display") == "none"){ //user wants to hide
+        $(password).attr('type', 'password')
+        $(hideEye).css("display","none")
+        $(showEye).css("display", "inline-block")
+    }
+    else { //user wants to show
+        $(password).attr('type', 'text')
+        $(showEye).css("display","none")
+        $(hideEye).css("display", "inline-block")
+    }
+})
 
 /*
 //Connections
