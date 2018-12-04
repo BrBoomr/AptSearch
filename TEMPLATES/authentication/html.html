@@ -88,11 +88,12 @@
 
 {% block styles %}
     <!--style sheet-->
+    <link rel="stylesheet" href="{{ base_url() }}/../../PUBLIC/shared/css.css">
     <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/authentication/css.css">
 {% endblock %}
 
 {% block scripts %}
     <!--javascript-->
-    <script type="module" src="{{ base_url() }}/../../PUBLIC/shared.js"></script>
+    <script type="module" src="{{ base_url() }}/../../PUBLIC/shared/js.js"></script>
     <script type="module" src="{{ base_url() }}/../../TEMPLATES/authentication/js.js"></script>
 {% endblock %}

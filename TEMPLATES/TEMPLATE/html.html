@@ -10,10 +10,12 @@
 
 {% block styles %}
     <!--style sheet-->
+    <link rel="stylesheet" href="{{ base_url() }}/../../PUBLIC/shared/css.css">
     <link rel="stylesheet" href="{{ base_url() }}/../../TEMPLATES/TEMPLATE/css.css">
 {% endblock %}
 
 {% block scripts %}
     <!--javascript-->
+    <script type="module" src="{{ base_url() }}/../../PUBLIC/shared.js"></script>
     <script src="{{ base_url() }}/../../TEMPLATES/TEMPLATE/js.js"></script>
 {% endblock %}
