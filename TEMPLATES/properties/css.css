@@ -15,16 +15,6 @@
 
 /*-----other stuff-----*/
 
-.propertyMinMaxSection > .col > div, .propertyMinMaxSection > .col > h4{ 
-    display: inline-block !important;
-}
-
-#to {
-    margin: auto;
-    margin-left: 15px;
-    margin-right: 15px;
-}
-
 #addPropertySection {
     overflow: auto;
     margin-bottom: 15px;

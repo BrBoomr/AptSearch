@@ -1,11 +1,12 @@
 //-------------------------Connections-------------------------
 
-var rentSlider = "#rentSlider > div > .theSlider"
-var sqrft = "#sqrftSlider > div > .theSlider"
-var bedSlider = "#bedSlider > div > .theSlider"
-var bathSlider = "#bathSlider > div > .theSlider"
+var rentSlider = "#rentSection > div > .theSlider"
+var sqrft = "#sqrftSection > div > .theSlider"
+var bedSlider = "#bedSection > div > .theSlider"
+var bathSlider = "#bathSection > div > .theSlider"
 
 //-------------------------Logic-------------------------
+
 
 $( document ).ready(function() {
 
@@ -62,6 +63,7 @@ $( document ).ready(function() {
     });
 
 });
+
 
 //FOR DEBUGGING
 /*
