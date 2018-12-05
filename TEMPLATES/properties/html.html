@@ -7,174 +7,193 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    <div class="card">
-        <div class="card-header">
-            <h1>Filter By...</h1>
-            <hr class="style1">
-            <!--!!!!!!!!!!!!!!!!!!!!!!!!!Sliders!!!!!!!!!!!!!!!!!!!!!!!!!-->
-            <!--******************************Rent Slider*************************-->
-            <div class="row sliderContainer d-none" id="rentSlider">
-                <div class="col-auto sliderTitle">
-                    <h4>Rent</h4>
-                </div>
-                <div class="col-auto">
-                    <div class="input-group input-group-sm rentTag">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">$</span>
-                        </div>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{minRentSlide}}" value="{{rentMin}}">
+    {% if search %}
+
+        <div class="card">
+            <div class="card-header">
+                <h1>Filter By...</h1>
+                <hr class="style1">
+                <!--!!!!!!!!!!!!!!!!!!!!!!!!!Sliders!!!!!!!!!!!!!!!!!!!!!!!!!-->
+                <!--******************************Rent Slider*************************-->
+                <div class="row sliderContainer" id="rentSection" style="display: none;">
+                    <div class="col-auto sliderTitle">
+                        <h4>Rent</h4>
                     </div>
-                </div>
-                <div class="col" class="sliderClass">
-                    <div class="theSlider" style="margin-top: calc((1.8125rem + 2px)/3);"></div>
-                </div>
-                <div class="col-auto">
-                    <div class="input-group input-group-sm rentTag">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">$</span>
-                        </div>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{maxRentSlide}}" value="{{rentMax}}">
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <button type="button" class="btn btn-secondary removeSliderButton">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <!--******************************Sqft Slider*************************-->
-            <div class="row sliderContainer d-none" id="sqrftSlider">
-                <div class="col-auto sliderTitle">
-                    <h4>Square Footage</h4>
-                </div>
-                <div class="col-auto">
-                    <div class="input-group input-group-sm sqftTag">
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{minFootSlide}}" value = "{{squareFootageMin}}">
-                        <div class="input-group-append">
-                            <span class="input-group-text" id="basic-addon2">sqft</span>
+                    <div class="col-auto">
+                        <div class="input-group input-group-sm rentTag">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{minRentSlide}}" value="{{rentMin}}">
                         </div>
                     </div>
-                </div>
-                <div class="col" class="sliderClass">
-                    <div class="theSlider" style="margin-top: calc((1.8125rem + 2px)/3);"></div>
-                </div>
-                <div class="col-auto">
-                    <div class="input-group input-group-sm sqftTag">
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{maxFootSlide}}" value ="{{squareFootageMax}}">
-                        <div class="input-group-append">
-                            <span class="input-group-text" id="basic-addon2">sqft</span>
+                    <div class="col" class="sliderClass">
+                        <div class="theSlider" style="margin-top: calc((1.8125rem + 2px)/3);"></div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="input-group input-group-sm rentTag">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{maxRentSlide}}" value="{{rentMax}}">
                         </div>
                     </div>
-                </div>
-                <div class="col-auto">
-                    <button type="button" class="btn btn-secondar removeSliderButton">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <!--******************************Bedrooms Slider*************************-->
-            <div class="row sliderContainer d-none" id="bedSlider">
-                <div class="col-auto sliderTitle">
-                    <h4>Bedrooms</h4>
-                </div>
-                <div class="col-auto">
-                    <div class="input-group input-group-sm textTag">
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{minBedroomSlide}}" value="{{bedMin}}">
-                    </div>
-                </div>
-                <div class="col" class="sliderClass">
-                    <div class="theSlider" style="margin-top: calc((1.8125rem + 2px)/3);"></div>
-                </div>
-                <div class="col-auto">
-                    <div class="input-group input-group-sm textTag">
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{maxBedroomSlide}}" value="{{bedMax}}">
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <button type="button" class="btn btn-secondary removeSliderButton">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <!--******************************Bathrooms Slider*************************-->
-            <div class="row sliderContainer d-none" id="bathSlider">
-                <div class="col-auto sliderTitle">
-                    <h4>Bathrooms</h4>
-                </div>
-                <div class="col-auto">
-                    <div class="input-group input-group-sm textTag">
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{minBathroomSlide}}" value="{{bathMin}}">
-                    </div>
-                </div>
-                <div class="col" class="sliderClass">
-                    <div class="theSlider" style="margin-top: calc((1.8125rem + 2px)/3);"></div>
-                </div>
-                <div class="col-auto">
-                    <div class="input-group input-group-sm textTag">
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{maxBathroomSlide}}" value="{{bathMax}}">
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <button type="button" class="btn btn-secondary btn-circle">
-                        <i class="fa fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <!--******************************+++++*************************-->
-            <hr class="style1">
-            <!--!!!!!!!!!!!!!!!!!!!!!!!!!Location Search Section!!!!!!!!!!!!!!!!!!!!!!!!!-->
-            <div class="row d-none" id="locationSection">
-                <div class="row">
-                    <span class="col-auto"><h3>Continent</h3></span>
                     <div class="col-auto">
-                        <select class="form-control">
-                            <option>Africa</option>
-                            <option>North America</option>
-                            <option>South America</option>
-                            <option>Europa</option>
-                            <option>Asia</option>
-                            <option>Australia</option>
-                            <option>Antartica</option>
-                        </select>
+                        <button type="button" class="btn btn-secondary sectionRemoveButton">
+                            <i class="fa fa-times"></i>
+                        </button>
                     </div>
                 </div>
-                <div class="row">
-                    <span class="col-auto"><h3>Country</h3></span>
+                <!--******************************Sqft Slider*************************-->
+                <div class="row sliderContainer" id="sqrftSection" style="display: none;">
+                    <div class="col-auto sliderTitle">
+                        <h4>Square Footage</h4>
+                    </div>
                     <div class="col-auto">
-                        <select class="form-control">
-                            <option>Country 1</option>
-                            <option>Country 2</option>
-                            <option>Country 3</option>
-                            <option>Country 4</option>
-                            <option>Country 5</option>
-                            <option>Country 6</option>
-                            <option>Country 7</option>
-                        </select>
+                        <div class="input-group input-group-sm sqftTag">
+                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{minFootSlide}}" value = "{{squareFootageMin}}">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">sqft</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <span class="col-auto"><h3>State</h3></span>
+                    <div class="col" class="sliderClass">
+                        <div class="theSlider" style="margin-top: calc((1.8125rem + 2px)/3);"></div>
+                    </div>
                     <div class="col-auto">
-                        <input type="text" class="form-control" placeholder="State">
+                        <div class="input-group input-group-sm sqftTag">
+                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{maxFootSlide}}" value ="{{squareFootageMax}}">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">sqft</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <span class="col-auto"><h3>Locality</h3></span>
                     <div class="col-auto">
-                        <input type="text" class="form-control" placeholder="City">
+                        <button type="button" class="btn btn-secondary sectionRemoveButton">
+                            <i class="fa fa-times"></i>
+                        </button>
                     </div>
                 </div>
-                <div class="row">
-                    <span class="col-auto"><h3>Zip Code</h3></span>
+                <!--******************************Bedrooms Slider*************************-->
+                <div class="row sliderContainer" id="bedSection" style="display: none;">
+                    <div class="col-auto sliderTitle">
+                        <h4>Bedrooms</h4>
+                    </div>
                     <div class="col-auto">
-                        <input type="text" class="form-control" placeholder="Zip">
+                        <div class="input-group input-group-sm textTag">
+                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{minBedroomSlide}}" value="{{bedMin}}">
+                        </div>
+                    </div>
+                    <div class="col" class="sliderClass">
+                        <div class="theSlider" style="margin-top: calc((1.8125rem + 2px)/3);"></div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="input-group input-group-sm textTag">
+                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{maxBedroomSlide}}" value="{{bedMax}}">
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-secondary sectionRemoveButton">
+                            <i class="fa fa-times"></i>
+                        </button>
                     </div>
                 </div>
-            </div>
-            <hr class="style1">
-            <!--!!!!!!!!!!!!!!!!!!!!!!!!!Chip Based Search Sections!!!!!!!!!!!!!!!!!!!!!!!!!-->
-            <div class="row d-none" id = "appliances" >
+                <!--******************************Bathrooms Slider*************************-->
+                <div class="row sliderContainer" id="bathSection" style="display: none;">
+                    <div class="col-auto sliderTitle">
+                        <h4>Bathrooms</h4>
+                    </div>
+                    <div class="col-auto">
+                        <div class="input-group input-group-sm textTag">
+                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{minBathroomSlide}}" value="{{bathMin}}">
+                        </div>
+                    </div>
+                    <div class="col" class="sliderClass">
+                        <div class="theSlider" style="margin-top: calc((1.8125rem + 2px)/3);"></div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="input-group input-group-sm textTag">
+                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="{{maxBathroomSlide}}" value="{{bathMax}}">
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-secondary sectionRemoveButton">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <!--******************************+++++*************************-->
+                <!--!!!!!!!!!!!!!!!!!!!!!!!!!Location Search Section!!!!!!!!!!!!!!!!!!!!!!!!!-->
+                <div class="row">
+                    <div class="row" id="continentSection" style="display: none;">
+                        <span class="col-auto"><h3>Continent</h3></span>
+                        <div class="col-auto">
+                            <select class="form-control">
+                                <option>Africa</option>
+                                <option>North America</option>
+                                <option>South America</option>
+                                <option>Europa</option>
+                                <option>Asia</option>
+                                <option>Australia</option>
+                                <option>Antartica</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromLocation">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="row" id="countrySection" style="display: none;">
+                        <span class="col-auto"><h3>Country</h3></span>
+                        <div class="col-auto">
+                            <select class="form-control">
+                                <option>Country 1</option>
+                                <option>Country 2</option>
+                                <option>Country 3</option>
+                                <option>Country 4</option>
+                                <option>Country 5</option>
+                                <option>Country 6</option>
+                                <option>Country 7</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromLocation">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="row" id="stateSection" style="display: none;">
+                        <span class="col-auto"><h3>State</h3></span>
+                        <div class="col-auto">
+                            <input type="text" class="form-control" placeholder="State">
+                        </div>
+                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromLocation">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="row" id="localitySection" style="display: none;">
+                        <span class="col-auto"><h3>Locality</h3></span>
+                        <div class="col-auto">
+                            <input type="text" class="form-control" placeholder="City">
+                        </div>
+                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromLocation">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="row" id="zipcodeSection" style="display: none;">
+                        <span class="col-auto"><h3>Zip Code</h3></span>
+                        <div class="col-auto">
+                            <input type="text" class="form-control" placeholder="Zip">
+                        </div>
+                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromLocation">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <!--!!!!!!!!!!!!!!!!!!!!!!!!!Chip Based Search Sections!!!!!!!!!!!!!!!!!!!!!!!!!-->
+                <!--******************************Appliances*************************-->
+                <div class="row" id = "appliancesSection" style="display: none;">
                     <div class="sectionTitle"><h3>Appliances</h3></div>
+                    <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
+                        <i class="fa fa-times"></i>
+                    </button>
                     <div class="chip">
                         Refridgerator
                         <button type="button" class="btn btn-light removeChipButton">
@@ -202,10 +221,13 @@
                     <button type="button" class="btn btn-primary addChipButton">
                         <i class="fa fa-plus"></i>
                     </button>
-            </div>
-            <hr class="style1">
-            <div class="row d-none" id = "utilities">
+                </div>
+                <!--******************************Utilities*************************-->
+                <div class="row" id = "utilitiesSection" style="display: none;">
                     <div class="sectionTitle"><h3>Utilities</h3></div>
+                    <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
+                        <i class="fa fa-times"></i>
+                    </button>
                     <div class="chip">
                         Electricity
                         <button type="button" class="btn btn-light removeChipButton">
@@ -251,17 +273,23 @@
                     <button type="button" class="btn btn-primary addChipButton">
                         <i class="fa fa-plus"></i>
                     </button>
-            </div>
-            <hr class="style1">
-            <div class="row d-none" id = "perks">
+                </div>
+                <!--******************************Perk*************************-->
+                <div class="row" id = "perksSection" style="display: none;">
                     <div class="sectionTitle"><h3>Perk</h3></div>
+                    <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
+                        <i class="fa fa-times"></i>
+                    </button>
                     <button type="button" class="btn btn-primary addChipButton">
                         <i class="fa fa-plus"></i>
                     </button>
-            </div>
-            <hr class="style1">
-            <div class="row d-none" id = "amenities">
+                </div>
+                <!--******************************Amenities*************************-->
+                <div class="row" id = "amenitiesSection" style="display: none;">
                     <div class="sectionTitle"><h3>Amenities</h3></div>
+                    <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
+                        <i class="fa fa-times"></i>
+                    </button>
                     <div class="chip">
                         Pool
                         <button type="button" class="btn btn-light removeChipButton">
@@ -307,35 +335,39 @@
                     <button type="button" class="btn btn-primary addChipButton">
                         <i class="fa fa-plus"></i>
                     </button>
-            </div>
-            <hr class="style1">
-            <!--!!!!!!!!!!!!!!!!!!!!!!!!!Apply Filter Buttons!!!!!!!!!!!!!!!!!!!!!!!!!-->
-            <div class="row btn-row">
-                <button type="button" rowid = "rentSlider"class="btn btn-primary fitlerAddButton">Rent</button>
-                <button type="button" rowid = "sqrftSlider" class="btn btn-secondary fitlerAddButton">Square Footage</button>
-                <button type="button" rowid = "bedSlider" class="btn btn-success fitlerAddButton">Bedrooms</button>
-                <button type="button" rowid = "bathSlider" class="btn btn-danger fitlerAddButton">Bathrooms</button>
-                <button type="button" rowid = "locationSection" class="btn btn-warning fitlerAddButton">Location</button>
-                <button type="button" rowid = "appliances" class="btn btn-info fitlerAddButton">Appliances</button>
-                <button type="button" rowid = "utilities" class="btn btn-primary fitlerAddButton">Utilities</button>
-                <button type="button" rowid = "perks" class="btn btn-secondary fitlerAddButton">Perks</button>
-                <button type="button" rowid = "amenities" class="btn btn-success fitlerAddButton">Amenities</button>
+                </div>
+                <!--!!!!!!!!!!!!!!!!!!!!!!!!!Apply Filter Buttons!!!!!!!!!!!!!!!!!!!!!!!!!-->
+                <div class="row btn-row">
+                    <button type="button" openSectionID = "rentSection" class="sectionOpenButton btn btn-primary sectionAddButton">Rent</button>
+                    <button type="button" openSectionID = "sqrftSection" class="sectionOpenButton btn btn-secondary sectionAddButton">Square Footage</button>
+                    <button type="button" openSectionID = "bedSection" class="sectionOpenButton btn btn-success sectionAddButton">Bedrooms</button>
+                    <button type="button" openSectionID = "bathSection" class="sectionOpenButton btn btn-danger sectionAddButton">Bathrooms</button>
+                    <button type="button" openSectionID = "continentSection" class="sectionOpenButton btn btn-warning sectionAddButton">Continent</button>
+                    <button type="button" openSectionID = "countrySection" class="sectionOpenButton btn btn-info sectionAddButton">Country</button>
+                    <button type="button" openSectionID = "stateSection" class="sectionOpenButton btn btn-light sectionAddButton">State</button>
+                    <button type="button" openSectionID = "localitySection" class="sectionOpenButton btn btn-dark sectionAddButton">Locality</button>
+                    <button type="button" openSectionID = "zipcodeSection" class="sectionOpenButton btn btn-primary sectionAddButton">Zip Code</button>
+                    <button type="button" openSectionID = "appliancesSection" class="sectionOpenButton btn btn-secondary sectionAddButton">Appliances</button>
+                    <button type="button" openSectionID = "utilitiesSection" class="sectionOpenButton btn btn-success sectionAddButton">Utilities</button>
+                    <button type="button" openSectionID = "perksSection" class="sectionOpenButton btn btn-danger sectionAddButton">Perks</button>
+                    <button type="button" openSectionID = "amenitiesSection" class="sectionOpenButton btn btn-warning sectionAddButton">Amenities</button>
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 
     <!--Loop through all the properties to display all of them-->
     {% for property in properties %}
         <!--If you are searching then hide all the properties that dont current meet your conditions-->
         <!--If you params you can simply unhide them with ajax-->
-        <div class="card propertyCard" id="property{{ property.getId() }}"
+        <div class="card" id="property{{ property.getId() }}"
             {% if search %}
                 {% if property.getId() not in desiredPropertyIDs %}
                     style="display:none";
                 {% endif %}
             {% endif %}
         >
-            <div class="card-header topSection">
+            <div class="card-header">
                 <div class="row mainRow">
                     <!--Find these properties pictures-->
                     {% set propertyPictures = [] %}

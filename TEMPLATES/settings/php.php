@@ -84,8 +84,9 @@ $app->post('/settings/deletePhone', function ($request, $response, $args) {
     }
 });
 
+$app->post('/settings/addEditPhone', function ($request, $response, $args) {
 
-$app->post('/settings/editPhone', function ($request, $response, $args) {
+    /*
 	$fields = $_POST;
 	foreach ($fields as $key => $value) {
 		//echo $key."=>".$value."<br>";
@@ -111,7 +112,7 @@ $app->post('/settings/editPhone', function ($request, $response, $args) {
 	$editPhone->setExtension($_POST['extension']);
 	$editPhone->save();
 	return json_encode(['valid'=>'true']);
-
+    */
 });
 
 ?>

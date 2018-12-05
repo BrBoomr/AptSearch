@@ -1,3 +1,5 @@
+/*-------------------------generate user listener functions-------------------------*/
+
 function generateUserListeners(button){
 
     var name = $(button).parent().parent().parent().find("label").text().toLowerCase()
@@ -60,9 +62,9 @@ function generateUserListeners(button){
 }
 
 var buttons = $(".form-group > .input-group > .input-group-append > button")
-$(buttons).each(function(i) { generateUserListeners("", this, "", "")});
+$(buttons).each(function(i) { generateUserListeners(this)});
 
-/*-----delete phone-----*/
+/*-------------------------delete phone-------------------------*/
 
 phoneButton = ".phoneRow > .col-auto > button"
 
@@ -85,7 +87,12 @@ $(phoneButton).on("click", function(){
     });
 })
 
+/*-------------------------generate phone listener functions-------------------------*/
 
+/*
+var buttons = $(".input-group > .input-group-append > button")
+$(buttons).each(function(i) { generateUserListeners("", this, "", "")});
+*/
 
 /*
 //Connections

@@ -1,3 +1,7 @@
+.card {
+    margin-bottom: 15px;
+}
+
 #locationSection > div{
     margin: 5px;
 }
@@ -28,14 +32,6 @@
 
 #addPropertyButton {
     float: right;
-}
-
-.propertyCard {
-    margin: 15px;
-}
-
-.mainRow > div {
-    margin: 15px;
 }
 
 .carousel {
@@ -89,4 +85,31 @@
 .ui-state-active {
     border: 1px solid #c5c5c5 !important;
     background-color: #f6f6f6 !important;
+}
+
+/*-----filter remove button-----*/
+
+.sectionRemoveButton {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    text-align: center;
+    padding: 0px;
+    line-height: 100%;
+    font-size: 12px;
+}
+
+.buttonFromLocation, .buttonFromList, .sectionTitle {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.buttonFromList {
+    margin-right: 15px;
+}
+
+/*-----filter add button-----*/
+
+.sectionAddButton {
+    margin: 5px;
 }

@@ -35,24 +35,6 @@
     margin-right: 5px;
 }
 
-/*-----filter remove button-----*/
-
-.removeSliderButton {
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    text-align: center;
-    padding: 0px;
-    line-height: 100%;
-    font-size: 12px;
-}
-
-/*-----filter add button-----*/
-
-.fitlerAddButton {
-    margin: 5px;
-}
-
 /*-----carousel settings-----*/
 
 .carousel {
