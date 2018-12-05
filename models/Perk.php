@@ -14,5 +14,15 @@ use Base\Perk as BasePerk;
  */
 class Perk extends BasePerk
 {
-
+    public function getPerk(){
+        $perk = AppliancetypeQuery::create()->findPK($this->getPerktypeid());
+        $name = $perk->getName();
+        $details = $this->getDetails();
+        // sets the outputed format to {applianceName} | {details}
+        if ($details){
+            return $name . ' | ' . $details;
+        }
+        // if there is no details, then the outputed format is just {applianceName}
+        return $name;
+    }
 }
