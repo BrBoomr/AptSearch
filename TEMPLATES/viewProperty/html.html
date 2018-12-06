@@ -202,9 +202,9 @@
             <hr class="style1">
             <div class="row">
                 <div class="sectionTitle"><h3>Issues</h3></div>
-                <div class="chip">
-                    No Wheel Chair Access | if you can walk dont even fret dawg
-                </div>
+                {% for issue in issues %}
+                    <div class="chip"> {{ issue.getIssue() }} </div>
+                {% endfor %}
             </div>
             <!--chip section end-->
         </p>

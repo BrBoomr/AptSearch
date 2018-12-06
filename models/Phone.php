@@ -14,6 +14,8 @@ use Base\Phone as BasePhone;
  */
 class Phone extends BasePhone
 {
+    // function that displays the full phone number in the following format:
+    // {description} | {(areaCode)} {number} ext {extension}
     public function getFullPhone(){
         $description = $this->getDescription();
         $areaCode = $this->getAreacode();
@@ -21,6 +23,7 @@ class Phone extends BasePhone
         $extension = $this->getExtension();
 
         $fullNumber = $description . " | " . "(" . $areaCode . ") " . $number;
+        // If exension exists then add it to the string
         if ($extension){
             $fullNumber = $fullNumber . "ext " . $extension;
         }
