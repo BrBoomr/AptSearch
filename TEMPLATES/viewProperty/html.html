@@ -193,9 +193,9 @@
             <div class="row">
                 <!-- Get all the amenities from this property -->
                 <div class="sectionTitle"><h3>Amenities</h3></div>
-                {% for perk in perks %}
+                {% for amenity in amenities %}
                     <div class="chip">
-                        {{ perk.getAmenity() }}
+                        {{ amenity.getAmenity() }}
                     </div>
                 {% endfor %}
             </div>
