@@ -110,11 +110,12 @@ $( document ).ready(function() {
 
 //FOR DEBUGGING
 
+/*
 var openButtons = $(".sectionOpenButton")
 $.each(openButtons, function(index, openButton){
     $("#" + $(openButton).attr("openSectionID")).show()
 })
-
+*/
 
 //-------------------------Open/Close Buttons
 

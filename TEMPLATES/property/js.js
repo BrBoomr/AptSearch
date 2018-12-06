@@ -16,6 +16,32 @@ var formSqrFootage="#registerSqrFootage"
 var formBedrooms = "#registerBedrooms"
 var formBathrooms = "#registerBathrooms"
 var formSubmit = "#registerSubmit"
+//--Feature Fields
+//---Appliances
+var formRefrigerator = "#RefrigeratorLabel"
+var formOven = "#OvenLabel"
+var formStove = "#StoveLabel"
+var formDishwasher = "#DishwasherLabel"
+//---Utilities
+var formElectricity = "#ElectricityLabel"
+var formWater = "#WaterLabel"
+var formHighSpeedInternet = "#High\\ Speed\\ InternetLabel"
+var formRecycle = "#Recycling\\ Pick\\ UpLabel"
+var formTrash = "#Trash\\ Pick\\ UpLabel"
+var formDish = "#Dish\\ CableLabel"
+var formWaterHeating = "#Water\\ HeatinLabel"
+//---Perks
+var formPetFriendly = "#Pet\\ FriendlyLabel"
+var formNonSmoking = "#Non\\ SmokingLabel"
+var formOutdoorSpace = "#Outdoor\\ SpaceLabel"
+var formNetflix = "#Netflix\\ SubscriptionLabel"
+var formBalcony = "#BalconyLabel"
+//---Amenities
+var formPool = "#PoolLabel"
+var formGym = "#GymLabel"
+var formLaundromat = "#Game\\ RoomLabel"
+var formPlayground = "#PlaygroundLabel"
+var formJoggingTrailer = "#Jogging\\ TrailLabel"
 //--Response Card (Success/Error)
 var formResponse = "#registerError"
 
