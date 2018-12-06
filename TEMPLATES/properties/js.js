@@ -10,6 +10,13 @@ $( document ).ready(function() {
     sliderContainers = $(".sliderContainer")
     $(sliderContainers).each(function(index){
 
+        //TODO... replace this for whatever method we use to search
+        function setNewValue(value, isMin, isFromSlider){
+            if(isFromSlider) console.log("output from slider ")
+            else console.log("output from text box")
+            console.log("----NEW " + ((isMin) ? "min" : "MAX") + "value " + value)
+        }
+
         //conntect to all the require dom elements
         sliderContainer = $(sliderContainers).eq(index)
         minText = $(sliderContainer).find("div > div > .minText")
@@ -42,8 +49,8 @@ $( document ).ready(function() {
             },
             //output the new values when you let go of the slider [OUTPUT]
             stop: function(event, ui){
-                if(ui.handleIndex == 0) console.log("-----NEW min: " + ui.values[ 0 ]);
-                else console.log("-----NEW max: " + ui.values[1]);
+                if(ui.handleIndex == 0) setNewValue(ui.values[0], true, true)
+                else setNewValue(ui.values[1], false, true)
             }
         });
         
@@ -56,7 +63,7 @@ $( document ).ready(function() {
                 high = (isMin) ? $(theSlider).slider("values", 1) : high = $(theSlider).slider("option", "max")
                 
                 //if we are not within range make ourselves within range
-                if(newVal < low && high < newVal){
+                if(newVal < low || high < newVal){
                     if(newVal < low) newVal = low
                     else newVal = high
                 }
@@ -87,7 +94,7 @@ $( document ).ready(function() {
                 //if they instead erased the value dont fill in the value
                 //allow the placeholder to be shown instead
                 if($(this).val()) $(this).val(newVal) 
-                console.log("-----NEW " + (isMin) ? "min" : "max" + " " + newVal)
+                setNewValue(newVal, isMin, false)
             })
         }
 
