@@ -14,5 +14,15 @@ use Base\Issue as BaseIssue;
  */
 class Issue extends BaseIssue
 {
+    public function getIssue(){
+        $name = $this->getName();
+        $description = $this->getDetails();
 
+        $fullIssue = $name;
+        if($description){
+            $fullIssue = $fullIssue . " | " . $description;
+        }
+
+        return $fullIssue;
+    }
 }
