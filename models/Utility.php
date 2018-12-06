@@ -15,7 +15,7 @@ use Base\Utility as BaseUtility;
 class Utility extends BaseUtility
 {
     public function getUtility(){
-        $utility = AppliancetypeQuery::create()->findPK($this->getUtilitytypeid());
+        $utility = UtilitytypeQuery::create()->findPK($this->getUtilitytypeid());
         $name = $utility->getName();
         $details = $this->getDetails();
         // sets the outputed format to {utility} | {details}
@@ -24,5 +24,10 @@ class Utility extends BaseUtility
         }
         // if there is no details, then the outputed format is just {utility}
         return $name;
+    }
+
+    public function setTypeIDByName($name){
+        $utilityType = UtilitytypeQuery::create()->findOneByName($name);
+        $this->setUtilitytypeid($utilityType->getId());
     }
 }

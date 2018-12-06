@@ -25,4 +25,9 @@ class Appliance extends BaseAppliance
         // if there is no details, then the outputed format is just {applianceName}
         return $name;
     }
+
+    public function setTypeIDByName($name){
+        $applianceType = AppliancetypeQuery::create()->findOneByName($name);
+        $this->setAppliancetypeid($applianceType->getId());
+    }
 }

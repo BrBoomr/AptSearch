@@ -185,7 +185,7 @@
                 <div class="sectionTitle"><h3>Perks</h3></div>
                 {% for perk in perks %}
                     <div class="chip">
-                        {{ perk.getUtility() }}
+                        {{ perk.getPerk() }}
                     </div>
                 {% endfor %}
             </div>
@@ -193,34 +193,35 @@
             <div class="row">
                 <!-- Get all the amenities from this property -->
                 <div class="sectionTitle"><h3>Amenities</h3></div>
-                {% for perk in perks %}
+                {% for amenity in amenities %}
                     <div class="chip">
-                        {{ perk.getUtility() }}
+                        {{ amenity.getAmenity() }}
                     </div>
                 {% endfor %}
             </div>
             <hr class="style1">
             <div class="row">
                 <div class="sectionTitle"><h3>Issues</h3></div>
-                <div class="chip">
-                    No Wheel Chair Access | if you can walk dont even fret dawg
-                </div>
+                {% for issue in issues %}
+                    <div class="chip"> {{ issue.getIssue() }} </div>
+                {% endfor %}
             </div>
             <!--chip section end-->
         </p>
         <hr class="style1">
         <div class="row">
             <div class="col-lg m-3" id="ownerName">
-                <span class="fas fa-user"></span> Jefferson Lint
+                <span class="fas fa-user"></span> {{ owner.getName() }}
             </div>
             <div class="col-lg m-3" id="ownerEmail">
-                <span class="fas fa-envelope"></span> jeffIsLinty@weirdo.com
+                <span class="fas fa-envelope"></span> {{ owner.getEmail() }}
             </div>
             <div class="col-lg m-3" id="ownerPhones">
                 <ul class="list-group">
                     <li class="list-group-item list-group-item-dark"><span class="fas fa-phone"></span> Phone Numbers</li>
-                    <li class="list-group-item">Work | (956) 789-2342 ext 345</li>
-                    <li class="list-group-item">Home | (956) 789-2342</li>
+                    {% for phone in phones %}
+                        <li class="list-group-item">{{ phone.getFullPhone() }}</li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
