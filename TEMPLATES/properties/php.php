@@ -1,5 +1,34 @@
 <?php
 
+//--------------------------------------------------Functions--------------------------------------------------
+
+function getValue($name){
+	return (isset($_GET[$name])) ? $_GET[$name] : null;
+}
+
+function postValue($name){
+	return (isset($_POST[$name])) ? $_POST[$name] : null;
+}
+
+function getMinMax($properties, $field){
+	$min = 32766; //16 bit signed int max (-1 for good measure)
+	$max = -32767; //16 bit signed int min (+1 for good measure)
+	foreach($properties as $property){
+		$value = null;
+		
+		//grab the correct value
+		if($field == "rent") $value = $property->getExpectedrentpermonth();
+		else if($field == "bed") $value = $property->getBedroomcount();
+		else if($field == "bath") $value = $property->getBathroomcount();
+		else $value = $property->getSquarefootage();
+
+		//check if we have a new min or max
+		$min = ($min < $value) ? $min : $value;
+		$max = ($value < $max) ? $max : $value;
+	}
+	return [$min, $max];
+}
+
 //--------------------------------------------------Search Page--------------------------------------------------
 
 //(1) Page is bookmarkable
@@ -9,101 +38,38 @@ $app->get('/', function ($request, $response, $args) {
 	
     //-------------------------read in optional parameters
 	//Variables from property
-	$rentMin = (isset($_GET['rentMin'])) ? $_GET['rentMin'] : null;
-	$rentMax = (isset($_GET['rentMax'])) ? $_GET['rentMax'] : null;
-	$squareFootageMin = (isset($_GET['squareFootageMin'])) ? $_GET['squareFootageMin'] : null;
-	$squareFootageMax = (isset($_GET['squareFootageMax'])) ? $_GET['squareFootageMax'] : null;
-	$bedMin = (isset($_GET['bedMin'])) ? $_GET['bedMin'] : null;
-	$bedMax = (isset($_GET['bedMax'])) ? $_GET['bedMax'] : null;
-	$bathMin = (isset($_GET['bathMin'])) ? $_GET['bathMin'] : null;
-	$bathMax = (isset($_GET['bathMax'])) ? $_GET['bathMax'] : null;
+	$rentMin = getValue('rentMin');
+	$rentMax = getValue('rentMax');
+	$squareFootageMin = getValue('squareFootageMin');
+	$squareFootageMax = getValue('squareFootageMax');
+	$bedMin = getValue('bedMin');
+	$bedMax = getValue('bedMax');
+	$bathMin = getValue('bathMin');
+	$bathMax = getValue('bathMax');
 	//Variables from address
-	$continentTypeID = (isset($_GET['continentTypeID'])) ? $_GET['continentTypeID'] : null;
-	$countryTypeID = (isset($_GET['countryTypeID'])) ? $_GET['countryTypeID'] : null;
-	$state = (isset($_GET['state'])) ? $_GET['state'] : null;
-	$locality = (isset($_GET['locality'])) ? $_GET['locality'] : null;
-	$zipCode = (isset($_GET['zipCode'])) ? $_GET['zipCode'] : null;
+	$continentTypeID = getValue('continentTypeID');
+	$countryTypeID = getValue('countryTypeID');
+	$state = getValue('state');
+	$locality = getValue('locality');
+	$zipCode = getValue('locality');
 	//Grab all list type variables (TODO figure out how to extract this data since it should be in json format)
-	$applianceTypeIDs = (isset($_GET['applianceTypeIDs'])) ? json_decode($_GET['applianceTypeIDs']) : null;
-	$utilityTypeIDs = (isset($_GET['utilityTypeIDs'])) ? json_decode($_GET['utilityTypeIDs']) : null;
-	$perkTypeIDs = (isset($_GET['perkTypeIDs'])) ? json_decode($_GET['perkTypeIDs']) : null;
-    $amenityTypeIDs = (isset($_GET['amenityTypeIDs'])) ? json_decode($_GET['amenityTypeIDs']) : null;
+	$applianceTypeIDs = getValue('applianceTypeIDs');
+	$utilityTypeIDs = getValue('utilityTypeIDs');
+	$perkTypeIDs = getValue('perkTypeIDs');
+    $amenityTypeIDs = getValue('amenityTypeIDs');
     
     //-------------------------filter properties
 
 	//Filter out properties that are not available
 	$properties = PropertyQuery::create()->filterByAvailable(true)->find(); //only show properties that are currently available
-	//=========================Min/Max Calculations
-	//Min and Max Slide values for Rent Slider
-	$minRentSlide = 0;
-	$maxRentSlide = 0;
-	foreach ($properties as $property) {
-		$rent = $property->getExpectedrentpermonth();
-		if($minRentSlide == 0 && $maxRentSlide == 0){
-			$minRentSlide=$rent;
-			$maxRentSlide=$rent;
-			continue;
-		}
-		if($rent > $maxRentSlide){
-			$maxRentSlide = $rent;
-		}
-		if($rent < $minRentSlide){
-			$minRentSlide = $rent;
-		}
-	}
-	//Min and Max Slide values for SqrFootage Slider
-	$minFootSlide = 0;
-	$maxFootSlide = 0;
-	foreach ($properties as $property) {
-		$sqrFoot = $property->getSquarefootage();
-		if($minFootSlide == 0 && $maxFootSlide == 0){
-			$minFootSlide=$sqrFoot;
-			$maxFootSlide=$sqrFoot;
-			continue;
-		}
-		if($sqrFoot > $maxFootSlide){
-			$maxFootSlide = $sqrFoot;
-		}
-		if($sqrFoot < $minFootSlide){
-			$minFootSlide = $sqrFoot;
-		}
-	}
-	//Min and Max Slide values for Bedroom Slider
-	$minBedroomSlide = 0;
-	$maxBedroomSlide = 0;
-	foreach ($properties as $property) {
-		$bedrooms = $property->getBedroomcount();
-		if($minBedroomSlide == 0 && $maxBedroomSlide == 0){
-			$minBedroomSlide=$bedrooms;
-			$maxBedroomSlide=$bedrooms;
-			continue;
-		}
-		if($bedrooms > $maxBedroomSlide){
-			$maxBedroomSlide = $bedrooms;
-		}
-		if($bedrooms < $minBedroomSlide){
-			$minBedroomSlide = $bedrooms;
-		}
-	}
-	//Min and Max Slide values for Bathroom Slider
-	$minBathroomSlide = 0;
-	$maxBathroomSlide = 0;
-	foreach ($properties as $property) {
-		$bathrooms = $property->getBedroomcount();
-		if($minBathroomSlide == 0 && $maxBathroomSlide == 0){
-			$minBathroomSlide=$bathrooms;
-			$maxBathroomSlide=$bathrooms;
-			continue;
-		}
-		if($bathrooms > $maxBathroomSlide){
-			$maxBathroomSlide = $bathrooms;
-		}
-		if($bathrooms < $minBathroomSlide){
-			$minBathroomSlide = $bathrooms;
-		}
-	}
-	//===================================================
-	//Gather properties that meet our search requirements
+
+	$rentMinMax = getMinMax($properties, "rent");
+	$sqrftMinMax = getMinMax($properties, "sqrft");
+	$bedMinMax = getMinMax($properties, "bed");
+	$bathMinMax = getMinMax($properties, "bath");
+
+	//-------------------------Gather properties that meet our search requirements(for initial display)
+
 	$desiredPropertyIDs = [];
 	foreach($properties as &$property){
 		//-----Variables from property
@@ -131,6 +97,12 @@ $app->get('/', function ($request, $response, $args) {
 		if($state && $state != $propertyAddress->getState()) continue;
 		if($locality && $locality != $propertyAddress->getLocality()) continue;
 		if($zipCode && $zipCode != $propertyAddress->getZipcode()) continue;
+
+		/*
+		function hasAll($param, $property){
+
+		}
+		*/
 		
 		//-----Grab all list type variables
         //appliances
@@ -186,11 +158,14 @@ $app->get('/', function ($request, $response, $args) {
 
 	//pass the entirety of the database because 
 	//(1) we have yet to find a way to do queries inside of the html file with twig
-	//(2) filter here is possible but would take quite a while
+	//(2) if we don't do the above we will be force to reload the page or make significant additions to it to display new properties
 	$pictures = PictureQuery::create()->find();
 	$addresses = AddressQuery::create()->find();
+
+	//pass all the things we search on
 	$continentTypes = ContinenttypeQuery::create()->find(); 
 	$countryTypes = CountrytypeQuery::create()->find(); 
+	$applianceTypes = 
 
 	//pass all the parameters and generate the page
 	$this->view->render($response, "/properties/html.html", 
@@ -207,23 +182,23 @@ $app->get('/', function ($request, $response, $args) {
 		//--Rent
 		'rentMin'=>$rentMin,
 		'rentMax'=>$rentMax,
-		'minRentSlide'=>$minRentSlide,
-		'maxRentSlide'=>$maxRentSlide,
+		'minRentSlide'=>$rentMinMax[0],
+		'maxRentSlide'=>$rentMinMax[1],
 		//--Square Footage
 		'squareFootageMin'=>$squareFootageMin,
 		'squareFootageMax'=>$squareFootageMax,
-		'minFootSlide'=>$minFootSlide,
-		'maxFootSlide'=>$maxFootSlide,
+		'minFootSlide'=>$sqrftMinMax[0],
+		'maxFootSlide'=>$sqrftMinMax[1],
 		//--Bedroom
 		'bedMin'=>$bedMin,
 		'bedMax'=>$bedMax,
-		'minBedroomSlide'=>$minBedroomSlide,
-		'maxBedroomSlide'=>$maxBedroomSlide,
+		'minBedroomSlide'=>$bedMinMax[0],
+		'maxBedroomSlide'=>$bedMinMax[1],
 		//--Bathroom
 		'bathMin'=>$bathMin,
 		'bathMax'=>$bathMax,
-		'minBathroomSlide'=>$minBathroomSlide,
-		'maxBathroomSlide'=>$maxBathroomSlide,
+		'minBathroomSlide'=>$bathMinMax[0],
+		'maxBathroomSlide'=>$bathMinMax[1],
 		//passing entire tables that will be filtered later
 		'pictures'=>$pictures,
 		'addresses'=>$addresses,

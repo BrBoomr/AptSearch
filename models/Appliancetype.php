@@ -14,5 +14,15 @@ use Base\Appliancetype as BaseAppliancetype;
  */
 class Appliancetype extends BaseAppliancetype
 {
+    /**
+     * Function to retrieve a singular rows from Appliance table that has a specific property ID and applianceTypeId
+     */
+    
+    public function getApplianceRow($propertyID){
+        $applianceType = $this->getId();
+        $appliance = ApplianceQuery::create()->filterByPropertyid($propertyID)->findOneByAppliancetypeid($applianceType);
+        return $appliance;
+    }
+    
 
 }
