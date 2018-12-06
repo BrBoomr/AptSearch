@@ -17,7 +17,7 @@ class Appliance extends BaseAppliance
     public function getId(){
         return $this->getAppliancenumberid();
     }
-    
+
     public function getAppliance(){
         $appliances = AppliancetypeQuery::create()->findPK($this->getAppliancetypeid());
         $name = $appliances->getName();
@@ -35,7 +35,4 @@ class Appliance extends BaseAppliance
         $this->setAppliancetypeid($applianceType->getId());
     }
 
-    public function getId(){
-        return $this->getAppliancenumberid();
-    }
 }
