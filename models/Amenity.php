@@ -25,4 +25,9 @@ class Amenity extends BaseAmenity
         // if there is no details, then the outputed format is just {applianceName}
         return $name;
     }
+
+    public function setTypeIDByName($name){
+        $amenityType = AmenitytypeQuery::create()->findOneByName($name);
+        $this->setAmenitytypeid($amenityType->getId());
+    }
 }

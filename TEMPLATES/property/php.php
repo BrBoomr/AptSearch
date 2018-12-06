@@ -53,15 +53,22 @@ $app->get('/editProperty', function ($request, $response, $args) {
 });
 
 $app->post('/verifyProperty', function ($request, $response, $args) {
-    $fields = $_POST;
-	foreach($fields as $field){
-		if(empty($field)){
+	$fields = $this->request->getParam("field");
+	$appliance = $this->request->getParam("appliance");
+	$utility = $this->request->getParam("utility");
+	$perk = $this->request->getParam("perk");
+	$amenity = $this->request->getParam("amenity");
+	foreach($fields as $key=>$value){
+		if(empty($value)){
 			return json_encode(['valid'=>'false']);
+			exit();
 		}
 	}
-	createProperty($fields);
+	createProperty($fields,$appliance,$utility,$perk,$amenity);
 	return json_encode(['valid'=>'true']);
 });
+
+
 $app->post('/verifyProperty/edit', function ($request, $response, $args) {
     $fields = $_POST;
 	foreach($fields as $field){
@@ -73,7 +80,8 @@ $app->post('/verifyProperty/edit', function ($request, $response, $args) {
 	return json_encode(['valid'=>'true']);
 });
 
-function createProperty($fields){
+function createProperty($fields,$appliance,$utility,$perk,$amenity){
+	//Address Values
 	$newAddr = new Address();
 	$newAddr->setContinenttypeid(1); //DEFAULT US
 	$newAddr->setCountrytypeid(321); //DEFAULT US
@@ -84,7 +92,7 @@ function createProperty($fields){
 	$newAddr->setBuildingindentifier($fields['buildNum']);
 	$newAddr->setApartmentidentifier($fields['aptNum']);
 	$newAddr->save();
-
+	//Property Values
 	$newProperty = new Property();
 	$newProperty->setAddressid($newAddr->getId());
 	$newProperty->setUserid(current_user()->getId());
@@ -95,6 +103,39 @@ function createProperty($fields){
 	$newProperty->setBedroomcount($fields['bedrooms']);
 	$newProperty->setBathroomcount($fields['bathrooms']);
 	$newProperty->save();
+	//Optional Feature Values
+	foreach ($appliance as $key => $value) {
+		if($value=="true"){
+			$newAppliance = new Appliance();
+			$newAppliance->setPropertyid($newProperty->getId());
+			$newAppliance->setTypeIDByName($key);
+			$newAppliance->save();
+		}
+	}
+	foreach ($utility as $key => $value) {
+		if($value=="true"){
+			$newUtility = new Utility();
+			$newUtility->setPropertyid($newProperty->getId());
+			$newUtility->setTypeIDByName($key);
+			$newUtility->save();
+		}
+	}
+	foreach ($perk as $key => $value) {
+		if($value=="true"){
+			$newPerk = new Perk();
+			$newPerk->setPropertyid($newProperty->getId());
+			$newPerk->setTypeIDByName($key);
+			$newPerk->save();
+		}
+	}
+	foreach ($amenity as $key => $value) {
+		if($value=="true"){
+			$newAmenity = new Amenity();
+			$newAmenity->setPropertyid($newProperty->getId());
+			$newAmenity->setTypeIDByName($key);
+			$newAmenity->save();
+		}
+	}	
 }
 
 function updateProperty($fields, $propertyID){
@@ -117,4 +158,39 @@ function updateProperty($fields, $propertyID){
 	$editAddr->setApartmentidentifier($fields['aptNum']);
 	$editAddr->save();
 }
+
+
+//FOR DEBUGGIN PURPOSES
+$app->get('/printArrays', function ($request, $response, $args) {
+	$field = $this->request->getParam("field");
+	$appliance = $this->request->getParam("appliance");
+	$utility = $this->request->getParam("utility");
+	$perk = $this->request->getParam("perk");
+	$amenity = $this->request->getParam("amenity");
+	foreach ($field as $key => $value) {
+		echo $key."=>".$value."<br>";
+	}
+	echo "<br>";
+	foreach ($appliance as $key => $value) {
+		echo $key."=>".$value."<br>";
+	}
+	echo "<br>";
+	foreach ($utility as $key => $value) {
+		echo $key."=>".$value."<br>";
+	}
+	echo "<br>";
+	foreach ($perk as $key => $value) {
+		echo $key."=>".$value."<br>";
+	}
+	echo "<br>";
+	foreach ($amenity as $key => $value) {
+		echo $key."=>".$value."<br>";
+	}
+	echo "<br>";
+	echo "=============================<br>";
+	foreach ($appliance as $key => $value) {
+		echo gettype($value);
+	}
+	
+});
 ?>

@@ -1,7 +1,7 @@
 //console.log("logic js file loaded (hopefully after connection js file)")
 //CONNECTIONS
 
-//-Register Form
+//REGISTER FORM
 //--Address Fields
 var formState = "#registerState"
 var formLocality = "#registerLocality"
@@ -29,7 +29,7 @@ var formHighSpeedInternet = "#High\\ Speed\\ InternetLabel"
 var formRecycle = "#Recycling\\ Pick\\ UpLabel"
 var formTrash = "#Trash\\ Pick\\ UpLabel"
 var formDish = "#Dish\\ CableLabel"
-var formWaterHeating = "#Water\\ HeatinLabel"
+var formWaterHeating = "#Water\\ HeatingLabel"
 //---Perks
 var formPetFriendly = "#Pet\\ FriendlyLabel"
 var formNonSmoking = "#Non\\ SmokingLabel"
@@ -39,13 +39,14 @@ var formBalcony = "#BalconyLabel"
 //---Amenities
 var formPool = "#PoolLabel"
 var formGym = "#GymLabel"
-var formLaundromat = "#Game\\ RoomLabel"
+var formLaundromat = "#LaundromatLabel"
+var formGameRoom = "#Game\\ RoomLabel"
 var formPlayground = "#PlaygroundLabel"
-var formJoggingTrailer = "#Jogging\\ TrailLabel"
+var formJoggingTrail = "#Jogging\\ TrailLabel"
 //--Response Card (Success/Error)
 var formResponse = "#registerError"
 
-//-Edit Form
+//EDIT FORM
 //--Address Fields
 var E_formState = "#editState"
 var E_formLocality = "#editLocality"
@@ -67,26 +68,62 @@ var E_formResponse = "#editError"
 
 $(formSubmit).click((e)=>{
     e.preventDefault()
+    //Main Associative Array
     fields = {
+        //Address
         state : $(formState).val(),
         locality : $(formLocality).val(),
         zip : $(formZip).val(),
         street : $(formStreet).val(),
         buildNum : $(formBuildNum).val(),
         aptNum : $(formAptNum).val(),
+        //Property
         postName : $(formPostName).val(),
         rent : $(formRent).val(),
         sqrFootage : $(formSqrFootage).val(),
         bedrooms : $(formBedrooms).val(),
         bathrooms : $(formBathrooms).val(),
     }
+    var appliances={}
+    appliances[$(formRefrigerator).val()] = $(formRefrigerator).prop("checked")
+    appliances[$(formOven).val()] = $(formOven).prop("checked")
+    appliances[$(formStove).val()] = $(formStove).prop("checked")
+    appliances[$(formDishwasher).val()] = $(formDishwasher).prop("checked")
+    var utilities={}
+    utilities[$(formElectricity).val()] = $(formElectricity).prop("checked")
+    utilities[$(formWater).val()] = $(formWater).prop("checked")
+    utilities[$(formHighSpeedInternet).val()] = $(formHighSpeedInternet).prop("checked")
+    utilities[$(formRecycle).val()] = $(formRecycle).prop("checked")
+    utilities[$(formTrash).val()] = $(formTrash).prop("checked")
+    utilities[$(formDish).val()] = $(formDish).prop("checked")
+    utilities[$(formWaterHeating).val()] = $(formWaterHeating).prop("checked")
+    var perks={}
+    perks[$(formPetFriendly).val()] = $(formPetFriendly).prop("checked")
+    perks[$(formNonSmoking).val()] = $(formNonSmoking).prop("checked")
+    perks[$(formOutdoorSpace).val()] = $(formOutdoorSpace).prop("checked")
+    perks[$(formNetflix).val()] = $(formNetflix).prop("checked")
+    perks[$(formBalcony).val()] = $(formBalcony).prop("checked")
+    var amenities = {}
+    amenities[$(formPool).val()] = $(formPool).prop("checked")
+    amenities[$(formGym).val()] = $(formGym).prop("checked")
+    amenities[$(formLaundromat).val()] = $(formLaundromat).prop("checked")
+    amenities[$(formGameRoom).val()] = $(formGameRoom).prop("checked")
+    amenities[$(formPlayground).val()] = $(formPlayground).prop("checked")
+    amenities[$(formJoggingTrail).val()] = $(formJoggingTrail).prop("checked")
     
     //fields = JSON.stringify(fields)
     //console.log(fields)
     $.ajax({
         method: "post",
         url: baseurl + "/verifyProperty",
-        data: fields,
+        data: 
+        {
+        field : fields,
+        appliance : appliances,
+        utility : utilities,
+        perk : perks,
+        amenity : amenities,
+        },
         dataType: "json",
         success: function (response) {
             //console.log(response['valid'])

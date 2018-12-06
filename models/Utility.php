@@ -25,4 +25,9 @@ class Utility extends BaseUtility
         // if there is no details, then the outputed format is just {utility}
         return $name;
     }
+
+    public function setTypeIDByName($name){
+        $utilityType = UtilitytypeQuery::create()->findOneByName($name);
+        $this->setUtilitytypeid($utilityType->getId());
+    }
 }
