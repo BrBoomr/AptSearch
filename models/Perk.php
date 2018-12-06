@@ -25,4 +25,9 @@ class Perk extends BasePerk
         // if there is no details, then the outputed format is just {applianceName}
         return $name;
     }
+
+    public function setTypeIDByName($name){
+        $perkType = PerktypeQuery::create()->findOneByName($name);
+        $this->setPerktypeid($perkType->getId());
+    }
 }
