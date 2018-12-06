@@ -384,7 +384,7 @@
         <!--If you params you can simply unhide them with ajax-->
         <div class="card" id="property{{ property.getId() }}"
             {% if search %}
-                {% if property.getId() not in desiredPropertyIDs %}
+                {% if property.getId() not in filteredPropertyIDs %}
                     style="display:none";
                 {% endif %}
             {% endif %}

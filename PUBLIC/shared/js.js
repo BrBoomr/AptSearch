@@ -36,14 +36,15 @@ function getSuggestions(word, allWords){
         if(thisWord.includes(word)) suggestionIndices.push(wordIndex)
     }
     
-    //test print matching words
-    var i;
-    for(i=0; i < suggestionIndices.length; i++){
-        console.log(dbTable[suggestionIndices[i]])
-    }
+    //return all exact matches
+    return suggestionIndices
 }
 
 $(".editor > .editorSearchBar > div > input").on("change keyup paste", function(){
     console.log("new value is " + $(this).val())
+
+    //return all indices of matches
     getSuggestions($(this).val(), dbTable)
+
+    //<div class="dropdown-item">text1</div>
 })
