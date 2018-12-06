@@ -185,7 +185,7 @@
                 <div class="sectionTitle"><h3>Perks</h3></div>
                 {% for perk in perks %}
                     <div class="chip">
-                        {{ perk.getUtility() }}
+                        {{ perk.getPerk() }}
                     </div>
                 {% endfor %}
             </div>
@@ -195,7 +195,7 @@
                 <div class="sectionTitle"><h3>Amenities</h3></div>
                 {% for perk in perks %}
                     <div class="chip">
-                        {{ perk.getUtility() }}
+                        {{ perk.getAmenity() }}
                     </div>
                 {% endfor %}
             </div>

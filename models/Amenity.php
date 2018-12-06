@@ -15,7 +15,7 @@ use Base\Amenity as BaseAmenity;
 class Amenity extends BaseAmenity
 {
     public function getAmenity(){
-        $amenity = AppliancetypeQuery::create()->findPK($this->getAmenitytypeid());
+        $amenity = AmenitytypeQuery::create()->findPK($this->getAmenitytypeid());
         $name = $amenity->getName();
         $details = $this->getDetails();
         // sets the outputed format to {applianceName} | {details}
