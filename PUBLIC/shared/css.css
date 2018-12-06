@@ -1,3 +1,67 @@
+/*-----edit chip-----*/
+
+.editor {
+    width: auto !important;
+    height: auto !important;
+    border-radius: 0px !important;
+    text-align: left !important;
+    padding: auto !important;
+    position: relative;
+    display: block;
+}
+
+.editor > .editorSearchBar {
+    position: relative;
+    display: block;
+    height: auto;
+    padding: 0px;
+
+    
+    border-radius: 30px !important;
+    
+    padding-left: 10px; /*must match other LEFT*/
+    padding-right: 10px; /*must match other RIGHT*/
+}
+
+.editor > .editorSearchBar > div {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0px;
+}
+
+.editor > .editorDropdownOuter {
+    position: absolute !important;
+    width: 100% !important;
+    padding-left: 10px; /*must match other LEFT*/
+    padding-right: 50px; /*must match other RIGHT + BUTTON SIZE + PADDING*/
+}
+
+.editor > .editorDropdownOuter > .editorDropdownInner {
+    display: block !important;
+    padding: 0px !important;
+    float: none;
+    position: relative;
+}
+
+
+.editor > .editorDropdownOuter > .editorDropdownInner > div {
+    padding: 10px;
+}
+
+.editor > .editorSearchBar > div > input {
+    background-color: transparent;
+    border: 0px solid transparent;
+    color: white;
+    display: block;
+    width: 100%;
+    height: calc(2.25rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    background-clip: padding-box;
+    border-radius: .25rem;
+}
+
 /*-----chip styling----*/
 
 .chip {

@@ -209,12 +209,6 @@
                         </button>
                     </div>
                     <div class="chip">
-                        Oven
-                        <button type="button" class="btn btn-light removeChipButton">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="chip">
                         Dishwasher
                         <button type="button" class="btn btn-light removeChipButton">
                             <i class="fa fa-times"></i>
@@ -223,6 +217,33 @@
                     <button type="button" class="btn btn-primary addChipButton">
                         <i class="fa fa-plus"></i>
                     </button>
+
+                    <!---->
+
+                    <div class="addChipButton editor">
+                        <div class="editorSearchBar row chip">
+                            <div class="col-auto">
+                                <input type="text">
+                            </div>
+                            <!--HIDDEN because we might just close onEnter, and onUnFocuse-->
+                            <div class="col-auto"> 
+                                <button type="button" class="btn btn-light sectionRemoveButton buttonFromLocation">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="editorDropdownOuter">
+                            <div class="editorDropdownInner dropdown-menu">
+                                <div class="dropdown-item">text1</div>
+                                <div class="dropdown-item">text2</div>
+                                <div class="dropdown-item">text3</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!---->
+
                 </div>
                 <hr class="style1">
                 <!--******************************Utilities*************************-->
