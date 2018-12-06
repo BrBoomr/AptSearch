@@ -14,7 +14,12 @@ $app->post('/addProperty', function ($request, $response, $args) {
 	$user = current_user();
 	if($user != null){
 		$this->view->render($response, "property/html.html",
-			['user'=>$user, 'add'=>true]);
+			['user'=>$user, 
+			'add'=>true,
+			'applianceQuery'=>AppliancetypeQuery::create()->find(),
+			'utilityQuery'=>UtilitytypeQuery::create()->find(),
+			'perkQuery'=>PerktypeQuery::create()->find(),
+			'amenityQuery'=>AmenitytypeQuery::create()->find()]);
 		return $response;
 	}
 	else{
@@ -91,6 +96,7 @@ function createProperty($fields){
 	$newProperty->setBathroomcount($fields['bathrooms']);
 	$newProperty->save();
 }
+
 function updateProperty($fields, $propertyID){
 	
 	$editProperty = PropertyQuery::create()->findPk($propertyID);

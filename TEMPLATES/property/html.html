@@ -59,8 +59,44 @@
                         <div class="form-group">
                             <input id="registerSubmit" type="submit" class="btnSubmit" value="Register Property"/>
                         </div>
+                        <hr>
+                        <h3>Feature Fields</h3>
                         <div class="form-group">
-    
+                            <h4>Appliances</h4>
+                            {% for appliance in applianceQuery %}
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" applianceid = "{{appliance.getId()}}" id="{{appliance.getName()}}Label" value="{{appliance.getName()}}">
+                                <label class="form-check-label" for="{{appliance.getName()}}Label">{{appliance.getName()}}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <h4>Utilities</h4>
+                            {% for utility in utilityQuery %}
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" utilityid = "{{utility.getId()}}" id="{{utility.getName()}}Label" value="{{utility.getName()}}">
+                                <label class="form-check-label" for="{{utility.getName()}}Label">{{utility.getName()}}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            {% for perk in perkQuery %}
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" perkid="{{perk.getId()}}" id="{{perk.getName()}}Label" value="{{perk.getName()}}">
+                                <label class="form-check-label" for="{{perk.getName()}}Label">{{perk.getName()}}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <h4>Amenities</h4>
+                            {% for amenity in amenityQuery %}
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" amenityid = "{{amenity.getId()}}" id="{{amenity.getName()}}Label" value="{{amenity.getName()}}">
+                                <label class="form-check-label" for="{{amenity.getName()}}Label">{{amenity.getName()}}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
                             <div id="registerError" class="alert alert-dismissible d-none">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                 <strong>DEFAULT ERROR MESSAGE</strong>
@@ -119,7 +155,7 @@
                             <input id="editSubmit" type="submit" class="btnSubmit" value="Edit Property"/>
                         </div>
                         <div class="form-group">
-    
+                        <!--  -->
                             <div id="editError" class="alert alert-dismissible d-none">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                 <strong>DEFAULT ERROR MESSAGE</strong>

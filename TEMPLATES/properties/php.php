@@ -248,7 +248,6 @@ $app->get('/manage', function ($request, $response, $args) {
 			['user'=>current_user(), 
 			'search'=>false, 
 			'properties'=>$properties, 
-
 			'pictures'=>$pictures,
 			'addresses'=>$addresses,
 			'continentTypes'=>$continentTypes,

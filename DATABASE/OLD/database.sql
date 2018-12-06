@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.2
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2018 at 10:49 PM
--- Server version: 10.1.34-MariaDB
--- PHP Version: 7.2.8
+-- Generation Time: Dec 03, 2018 at 06:20 PM
+-- Server version: 10.1.35-MariaDB
+-- PHP Version: 7.2.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -89,7 +89,8 @@ INSERT INTO `address` (`ID`, `continentTypeID`, `countryTypeID`, `state`, `local
 (42, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '2', '3'),
 (43, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '3', '1'),
 (44, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '3', '2'),
-(45, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '3', '3');
+(45, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '3', '3'),
+(62, 1, 321, 'New State', 'New City', '54321', 'New Street', '2', '2');
 
 -- --------------------------------------------------------
 
@@ -130,6 +131,14 @@ CREATE TABLE `appliance` (
   `details` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `appliance`
+--
+
+INSERT INTO `appliance` (`applianceNumberID`, `propertyID`, `applianceTypeID`, `details`) VALUES
+(1, 1, 1, 'It be cold as fuck boi'),
+(2, 1, 2, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -142,6 +151,14 @@ CREATE TABLE `appliancetype` (
   `name` text NOT NULL,
   `useCount` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `appliancetype`
+--
+
+INSERT INTO `appliancetype` (`ID`, `addDate`, `name`, `useCount`) VALUES
+(1, '2018-12-03 17:18:20', 'Refrigerator', 0),
+(2, '2018-12-03 17:18:29', 'Oven', 0);
 
 -- --------------------------------------------------------
 
@@ -430,6 +447,14 @@ CREATE TABLE `issue` (
   `repairDate` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `issue`
+--
+
+INSERT INTO `issue` (`issueNumberID`, `propertyID`, `name`, `details`, `foundDate`, `repairDate`) VALUES
+(1, 62, 'Issue #Test1', 'Leaky faucter', '2018-12-02 23:48:11', NULL),
+(2, 62, 'Issue #Test2', 'Wet plaster', '2018-12-02 23:48:11', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -471,6 +496,22 @@ CREATE TABLE `phone` (
   `extension` text,
   `description` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `phone`
+--
+
+INSERT INTO `phone` (`phoneNumberID`, `userID`, `addDate`, `areaCode`, `number`, `extension`, `description`) VALUES
+(1, 1, '2018-12-03 01:07:46', '956', '123-4567', NULL, 'Work'),
+(2, 1, '2018-12-03 01:07:46', '956', '321-7654', NULL, 'Mobile'),
+(3, 2, '2018-12-03 06:00:31', '956', '456-7890', '', 'Mobile'),
+(4, 2, '2018-12-03 01:08:43', '956', '654-0987', NULL, 'Work'),
+(5, 3, '2018-12-03 01:15:59', '956', '987-6543', NULL, 'Mobile'),
+(6, 3, '2018-12-03 01:15:59', '956', '789-3456', NULL, 'Work'),
+(9, 4, '2018-12-03 01:17:04', '956', '753-9510', NULL, 'Work'),
+(10, 4, '2018-12-03 01:17:04', '956', '357-7913', NULL, 'Mobile'),
+(11, 5, '2018-12-03 01:18:27', '956', '951-4682', NULL, 'Work'),
+(12, 5, '2018-12-03 01:18:27', '956', '159-6428', NULL, 'Mobile');
 
 -- --------------------------------------------------------
 
@@ -556,7 +597,8 @@ INSERT INTO `property` (`ID`, `addressID`, `userID`, `addDate`, `lastUpdated`, `
 (42, 42, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B2.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
 (43, 43, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B3.A1', 1, 900, 750, 1, 1, 'Single Bedroom'),
 (44, 44, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B3.A2', 1, 900, 750, 1, 1, 'Single Bedroom'),
-(45, 45, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B3.A3', 1, 900, 750, 1, 1, 'Single Bedroom');
+(45, 45, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B3.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
+(62, 62, 2, '2018-11-30 02:14:14', '2018-11-30 02:14:14', 'Property Used for Debugging Purposes', 1, 1500, 900, 2, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -578,7 +620,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`ID`, `addDate`, `email`, `encryptedPassword`, `name`) VALUES
 (1, '2018-11-28 21:22:39', 'z@Chen.com', '$2y$10$6Tcc4Jw1.iN0zEU9QXhnZ.3WIy7qTlvjyKZGJzi1S0RMU27lCcQJm', 'Zhixiang Chen'),
-(2, '2018-11-28 21:22:42', 'j@Reyes.com', '$2y$10$74Y4HMLcJPfQj/Ho5ijKsuBqNZ2WHxfFvKxaaPJo.SFvybIxkf3yW', 'Jafet Reyes'),
+(2, '2018-12-03 02:18:02', 'jafet@reyes.com', '$2y$10$L3/ttidBRuLBTbDVPLJCSehaNBSN0qCurRKP/o86FwQPosh1PYivi', 'Jafet Reyes'),
 (3, '2018-11-28 21:22:45', 'b@Cancel.com', '$2y$10$Abcn5liCO35zfDuKGgzEaOOmO37k1hqMDMMrJuiAsfP0Z9w1EWeUq', 'Bryan Cancel'),
 (4, '2018-11-28 21:22:47', 'j@Guerrero.com', '$2y$10$53WshITNu79fB403gmIbgOEBmewACdZIdIeEl4FDoYkmTz.tAZ2Pi', 'Jerry Guerrero'),
 (5, '2018-11-28 21:42:22', 'e@Musk.com', '$2y$10$hiPo0TVwEL5JRmy90YHZ2uQDPzXczjfVLWxmqYemPr1IdxrA.RDMy', 'Elon Musk');
@@ -735,7 +777,7 @@ ALTER TABLE `utilitytype`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `amenity`
@@ -753,13 +795,13 @@ ALTER TABLE `amenitytype`
 -- AUTO_INCREMENT for table `appliance`
 --
 ALTER TABLE `appliance`
-  MODIFY `applianceNumberID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `applianceNumberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `appliancetype`
 --
 ALTER TABLE `appliancetype`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `continenttype`
@@ -777,7 +819,7 @@ ALTER TABLE `countrytype`
 -- AUTO_INCREMENT for table `issue`
 --
 ALTER TABLE `issue`
-  MODIFY `issueNumberID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `issueNumberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `perk`
@@ -795,7 +837,7 @@ ALTER TABLE `perktype`
 -- AUTO_INCREMENT for table `phone`
 --
 ALTER TABLE `phone`
-  MODIFY `phoneNumberID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `phoneNumberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `picture`
@@ -807,7 +849,7 @@ ALTER TABLE `picture`
 -- AUTO_INCREMENT for table `property`
 --
 ALTER TABLE `property`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `user`
