@@ -27,31 +27,6 @@ $app->post('/addProperty', function ($request, $response, $args) {
 		exit();
 	}
 });
-//-------------------------EDIT PROPERTY PAGE-------------------------
-
-//TODO... 
-//(1) needs to use post (params passed not in url) => so that the page is not bookmarkable
-//(2) plan for going to the page without parameters
-//(3) this page should also be replaced after changes SAVED or DISCARDED
-//		[a] replace it with new page (IF previous page != next page)
-//		[b] replace it with the previous page (IF previous page == next page)
-//		[*] replacement occurs so you cant go back to the same page
-//TODO switch to fully client side checks
-$app->get('/editProperty', function ($request, $response, $args) {
-	$user = current_user();
-	//TODO implement isset() check
-	$property = PropertyQuery::create()->findPk($_GET['propertyID']);
-	if($user != null){
-		$this->view->render($response, "property/html.html",
-			['user'=>$user, 'property'=>$property, 'add'=>false]);
-		return $response;
-	}
-	else{
-		Header("Location: ./authentication");
-		exit();
-	}
-});
-
 $app->post('/verifyProperty', function ($request, $response, $args) {
 	$fields = $this->request->getParam("field");
 	$appliance = $this->request->getParam("appliance");
@@ -137,29 +112,6 @@ function createProperty($fields,$appliance,$utility,$perk,$amenity){
 		}
 	}	
 }
-
-function updateProperty($fields, $propertyID){
-	
-	$editProperty = PropertyQuery::create()->findPk($propertyID);
-	$editProperty->setPostname($fields['postName']);
-	$editProperty->setAvailable(true);
-	$editProperty->setExpectedrentpermonth($fields['rent']);
-	$editProperty->setSquarefootage($fields['sqrFootage']);
-	$editProperty->setBedroomcount($fields['bedrooms']);
-	$editProperty->setBathroomcount($fields['bathrooms']);
-	$editProperty->save();
-
-	$editAddr = AddressQuery::create()->findPk($editProperty->getAddressid());
-	$editAddr->setState($fields['state']);
-	$editAddr->setLocality($fields['locality']);
-	$editAddr->setZipcode($fields['zip']);
-	$editAddr->setStreetname($fields['street']);
-	$editAddr->setBuildingindentifier($fields['buildNum']);
-	$editAddr->setApartmentidentifier($fields['aptNum']);
-	$editAddr->save();
-}
-
-
 //FOR DEBUGGIN PURPOSES
 $app->get('/printArrays', function ($request, $response, $args) {
 	$field = $this->request->getParam("field");
@@ -193,4 +145,69 @@ $app->get('/printArrays', function ($request, $response, $args) {
 	}
 	
 });
+//-------------------------EDIT PROPERTY PAGE-------------------------
+
+//TODO... 
+//(1) needs to use post (params passed not in url) => so that the page is not bookmarkable
+//(2) plan for going to the page without parameters
+//(3) this page should also be replaced after changes SAVED or DISCARDED
+//		[a] replace it with new page (IF previous page != next page)
+//		[b] replace it with the previous page (IF previous page == next page)
+//		[*] replacement occurs so you cant go back to the same page
+//TODO switch to fully client side checks
+$app->get('/editProperty', function ($request, $response, $args) {
+	$user = current_user();
+	//TODO implement isset() check
+	$property = PropertyQuery::create()->findPk($_GET['propertyID']);
+	$selectedAppliances;
+	
+	if($user != null){
+		$this->view->render($response, "property/html.html",
+			['user'=>$user, 
+			'property'=>$property,
+			'applianceQuery'=>AppliancetypeQuery::create()->find(),
+			'utilityQuery'=>UtilitytypeQuery::create()->find(),
+			'perkQuery'=>PerktypeQuery::create()->find(),
+			'amenityQuery'=>AmenitytypeQuery::create()->find(), 
+			'add'=>false]);
+		return $response;
+	}
+	else{
+		Header("Location: ./authentication");
+		exit();
+	}
+});
+
+
+
+function updateProperty($fields, $propertyID){
+	
+	$editProperty = PropertyQuery::create()->findPk($propertyID);
+	$editProperty->setPostname($fields['postName']);
+	$editProperty->setAvailable(true);
+	$editProperty->setExpectedrentpermonth($fields['rent']);
+	$editProperty->setSquarefootage($fields['sqrFootage']);
+	$editProperty->setBedroomcount($fields['bedrooms']);
+	$editProperty->setBathroomcount($fields['bathrooms']);
+	$editProperty->save();
+
+	$editAddr = AddressQuery::create()->findPk($editProperty->getAddressid());
+	$editAddr->setState($fields['state']);
+	$editAddr->setLocality($fields['locality']);
+	$editAddr->setZipcode($fields['zip']);
+	$editAddr->setStreetname($fields['street']);
+	$editAddr->setBuildingindentifier($fields['buildNum']);
+	$editAddr->setApartmentidentifier($fields['aptNum']);
+	$editAddr->save();
+}
+
+
+//FOR DEBUGGIN PURPOSES
+$app->get('/editArrays', function ($request, $response, $args) {
+	$appliance = AppliancetypeQuery::create()->findPk(1)->getApplianceRow(69);
+	echo $appliance->getId();
+	
+});
+
+
 ?>
