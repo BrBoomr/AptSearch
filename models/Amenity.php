@@ -14,6 +14,10 @@ use Base\Amenity as BaseAmenity;
  */
 class Amenity extends BaseAmenity
 {
+    public function getId(){
+        return $this->getAmenitynumberid();
+    }
+    
     public function getAmenity(){
         $amenity = AmenitytypeQuery::create()->findPK($this->getAmenitytypeid());
         $name = $amenity->getName();

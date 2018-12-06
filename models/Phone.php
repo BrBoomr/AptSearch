@@ -14,6 +14,7 @@ use Base\Phone as BasePhone;
  */
 class Phone extends BasePhone
 {
+    
     // function that displays the full phone number in the following format:
     // {description} | {(areaCode)} {number} ext {extension}
     public function getFullPhone(){
