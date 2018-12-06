@@ -15,4 +15,7 @@ use Base\Picture as BasePicture;
 class Picture extends BasePicture
 {
 
+    public function getId(){
+        return $this->getPicturenumberid();
+    }
 }

@@ -14,6 +14,10 @@ use Base\Utility as BaseUtility;
  */
 class Utility extends BaseUtility
 {
+    public function getId(){
+        return $this->getUtilitynumberid();
+    }
+
     public function getUtility(){
         $utility = UtilitytypeQuery::create()->findPK($this->getUtilitytypeid());
         $name = $utility->getName();

@@ -14,6 +14,10 @@ use Base\Issue as BaseIssue;
  */
 class Issue extends BaseIssue
 {
+    public function getId(){
+        return $this->getIssuenumberid();
+    }
+
     public function getIssue(){
         $name = $this->getName();
         $description = $this->getDetails();

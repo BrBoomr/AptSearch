@@ -14,6 +14,10 @@ use Base\Perk as BasePerk;
  */
 class Perk extends BasePerk
 {
+    public function getId(){
+        return $this->getIssuenumberid();
+    }
+
     public function getPerk(){
         $perk = PerktypeQuery::create()->findPK($this->getPerktypeid());
         $name = $perk->getName();
