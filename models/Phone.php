@@ -14,6 +14,19 @@ use Base\Phone as BasePhone;
  */
 class Phone extends BasePhone
 {
+    public function getFullPhone(){
+        $description = $this->getDescription();
+        $areaCode = $this->getAreacode();
+        $number = $this->getNumber();
+        $extension = $this->getExtension();
+
+        $fullNumber = $description . " | " . "(" . $areaCode . ") " . $number;
+        if ($extension){
+            $fullNumber = $fullNumber . "ext " . $extension;
+        }
+
+        return $fullNumber;
+    }
     public function getId(){
         return $this->getPhonenumberid();
     }

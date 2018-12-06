@@ -219,8 +219,9 @@
             <div class="col-lg m-3" id="ownerPhones">
                 <ul class="list-group">
                     <li class="list-group-item list-group-item-dark"><span class="fas fa-phone"></span> Phone Numbers</li>
-                    <li class="list-group-item">Work | (956) 789-2342 ext 345</li>
-                    <li class="list-group-item">Home | (956) 789-2342</li>
+                    {% for phone in phones %}
+                        <li class="list-group-item">{{ phone.getFullPhone() }}</li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
