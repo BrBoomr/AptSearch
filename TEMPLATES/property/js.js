@@ -16,6 +16,7 @@ var formSqrFootage="#registerSqrFootage"
 var formBedrooms = "#registerBedrooms"
 var formBathrooms = "#registerBathrooms"
 var formSubmit = "#registerSubmit"
+
 //--Feature Fields
 //---Appliances
 var formRefrigerator = "#RefrigeratorLabel"
@@ -54,6 +55,9 @@ var E_formZip = "#editZipCode"
 var E_formStreet = "#editStreetName"
 var E_formBuildNum = "#editBuildingNum"
 var E_formAptNum = "#editAptNum"
+//--Add Picture
+var E_picURL = "#url"
+var E_picDescription = "#picturDescription"
 //--Property Fields
 var E_formPostName="#editPostName"
 var E_formRent="#editRent"
