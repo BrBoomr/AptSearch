@@ -180,14 +180,14 @@ $app->get('/', function ($request, $response, $args) {
 
 		//pass the ACTUAL min and max
 		//--Rent
-		'actualRentMax' => $actualRentMinMax[0],
-		'actualRentMin' => $actualRentMinMax[1],
+		'actualRentMin' => $actualRentMinMax[0],
+		'actualRentMax' => $actualRentMinMax[1],
 		//--Square Footage
 		'actualSquareFootageMin' => $actualSquareFootageMinMax[0],
 		'actualSquareFootageMax' => $actualSquareFootageMinMax[1],
 		//--Bedroom
 		'actualBedMin' => $actualBedMinMax[0],
-		'actualBedMax' => $actualedMinMax[1],
+		'actualBedMax' => $actualBedMinMax[1],
 		//--Bathroom
 		'actualBathMin' => $actualBathMinMax[0],
 		'actualBathMax' => $actualBathMinMax[1],
