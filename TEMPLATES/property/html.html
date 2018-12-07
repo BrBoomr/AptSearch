@@ -156,7 +156,7 @@
                             <input id="editSubmit" type="submit" class="btnSubmit" value="Edit Property"/>
                         </div>
                         <!-- The popup menu to add pictures, damn this is alot bud -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Picture</button>
                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -167,18 +167,18 @@
                             <div class="modal-body">
                                 <form>
                                 <div class="form-group">
-                                    <label for="recipient-name" class="control-label">Picture URL</label>
-                                    <input type="text" class="form-control" id="recipient-name">
+                                    <label for="url" class="control-label">Picture URL</label>
+                                    <input class="form-control" type="url" name="url" id="url" placeholder="https://pictureURL.com" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="message-text" class="control-label">Description</label>
                                     <textarea class="form-control" id="message-text"></textarea>
                                 </div>
+                                <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button class="btn btn-primary">Send message</button>
+                                    </div>
                                 </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Send message</button>
                             </div>
                             </div>
                         </div>
