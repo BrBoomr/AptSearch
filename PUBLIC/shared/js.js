@@ -62,52 +62,84 @@ function submitSearch(searchBar){
 
 /*-------------------------show/hide search bar-------------------------*/
 
-//add buttons open their own respective search bars
-$(listSections).each(function(index, listSection){
-    var openSectionButton = $(listSection).find(".addChipButton")
-    $(openSectionButton).on("click", function(event){
-        event.preventDefault();
-        openSearchBar(this)
-    })
-})
-
+//very complicated CLICK listener
+//required so that we could still "keep focus" if we clicked the search button
+//we are technically losing focus on the search bar
+//but we want to retreive the value and THEN close the search bar
 $("#allContent").on('click', function(event) {
-    console.log("clicked All contect")
-    //check if any button absorbs the click
-    var absorb = true;
+
+    //-------------------------plus button clicked ?
+
+    var plusButtonClicked = null;
     $(listSections).each(function(index, listSection){
-        var searchButton = $(listSection).find(".editor > .editorSearchBar > div > button")
-
-
-        console.log($(event.target).closest(searchButton).text())
-
-        if (!$(event.target).find(searchButton).length) {
-            absorb = false;
+        var plusButton = $(listSection).find(".addChipButton")
+        var thisSection = $(event.target).closest(plusButton).parent()
+        var sectionID = $(thisSection).attr('id')
+        //if we clicked on a button
+        //(we know because we can access the seciton it belongs to)
+        //AND its not hidden then we don't want to absorb the click
+        if (sectionID != null && $(plusButton).css('display') != 'none'){
+            plusButtonClicked = plusButton;
         }
     })
-    
-    console.log("absorbed? " + absorb)
-    //absorb if we didnt click a submit search button
-    if(absorb){
-        //we absorb by closing all search bars
-        //because we dont know if any are open
-        //or if one is open, which one is open
+
+    //-------------------------handle plus button => open search bar
+
+    if(plusButtonClicked != null) openSearchBar(plusButtonClicked)
+    else {
+        //-------------------------search bar open ?
+
+        var aSearchBarOpen = false;
         $(listSections).each(function(index, listSection){
-            var searchBar = $(listSection).find(".editor > .editorSearchBar > div > input")
-            closeSearchBar(searchBar)
+            var searchBar = $(listSection).find(".editor")
+            if($(searchBar).css('display') != 'none'){
+                aSearchBarOpen = true
+            } 
         })
+
+        //-------------------------handle click that interact with said open search bar
+
+        if(aSearchBarOpen != null){
+
+            //-------------------------search button clicked ?
+
+            //check if any button absorbs the click
+            var searchButtonClicked = null;
+            $(listSections).each(function(index, listSection){
+                var searchButton = $(listSection).find(".editor > .editorSearchBar > div > button")
+                var thisSection = $(event.target).closest(searchButton).parent().parent().parent().parent()
+                var sectionID = $(thisSection).attr('id')
+                //if we clicked on a button
+                //(we know because we can access the seciton it belongs to)
+                //the we dont absorb the click
+                if (sectionID != null) searchButtonClicked = searchButton;
+            })
+
+            //-------------------------handle search button not clicked => close search bar
+
+            //absorb if we didnt click a submit search button
+            if(searchButtonClicked == null){  
+                //since I don't know what wasn't click
+                //close all search bars
+                $(listSections).each(function(index, listSection){
+                    var searchBar = $(listSection).find(".editor > .editorSearchBar > div > input")
+                    closeSearchBar(searchBar)
+                })
+            }
+        }
     }
 });
 
-/*
-//search bars will close after you unfocus them
+//close the search bar if the escape key is press
+//TODO... ONLY do this when this list item is the same one the search bar originally had
 $(listSections).each(function(index, listSection){
-    var searchBar = $(listSection).find(".editorSearchBar > div > input")
-    $(searchBar).focusout(function(){
-        closeSearchBar(this)
-    })
+    var searchBar = $(listSection).find(".editor > .editorSearchBar > div > input")
+    $(searchBar).keypress(function(key) {
+        if (event.which == 27 ) { //Esc key
+            closeSearchBar(searchBar)
+        }
+    });
 })
-*/
 
 /*-------------------------search submission-------------------------*/
 
@@ -117,7 +149,6 @@ $(listSections).each(function(index, listSection){
     var searchButton = $(listSection).find(".editor > .editorSearchBar > div > button")
     $(searchButton).on("click", function(event){
         event.preventDefault()
-        console.log("button pressed nigga")
         searchBar = $(this).parent().parent().find("div > input")
         submitSearch(searchBar)
         closeSearchBar(searchBar)

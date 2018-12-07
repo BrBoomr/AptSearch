@@ -1,7 +1,5 @@
 <?php
-//eliminates strange CORS error (idk why)
-header('Access-Control-Allow-Origin: *');
-header('Content-type: application/json');
+header("Access-Control-Allow-Origin: *");
 
 //--------------------------------------------------Functions--------------------------------------------------
 
