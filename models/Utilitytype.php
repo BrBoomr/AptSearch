@@ -14,5 +14,9 @@ use Base\Utilitytype as BaseUtilitytype;
  */
 class Utilitytype extends BaseUtilitytype
 {
-
+    public function getUtilityRow($propertyID){
+        $utilityType = $this->getId();
+        $utility = UtilityQuery::create()->filterByPropertyid($propertyID)->findOneByUtilitytypeid($utilityType);
+        return $utility;
+    }
 }

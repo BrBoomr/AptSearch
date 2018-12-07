@@ -160,7 +160,7 @@
                             <h4>Appliances</h4>
                             {% for appliance in applianceQuery %}
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" appliancetypeid = "{{appliance.getId()}}" id="{{appliance.getName()}}Label" value="{{appliance.getName()}}">
+                                    <input class="form-check-input" type="checkbox" appliancetypeid = "{{appliance.getId()}}" id="{{appliance.getName()}}Label" value="{{appliance.getName()}}" {% if appliance.getApplianceRow(property.getId())%} checked {% endif %}>
                                 <label class="form-check-label" for="{{appliance.getName()}}Label">{{appliance.getName()}}</label>
                             </div>
                             {% endfor %}
@@ -169,7 +169,7 @@
                             <h4>Utilities</h4>
                             {% for utility in utilityQuery %}
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" utilitytypeid = "{{utility.getId()}}" id="{{utility.getName()}}Label" value="{{utility.getName()}}">
+                                    <input class="form-check-input" type="checkbox" utilitytypeid = "{{utility.getId()}}" id="{{utility.getName()}}Label" value="{{utility.getName()}}" {% if utility.getUtilityRow(property.getId())%} checked {% endif %}>
                                 <label class="form-check-label" for="{{utility.getName()}}Label">{{utility.getName()}}</label>
                             </div>
                             {% endfor %}
@@ -178,7 +178,7 @@
                             <h4>Perks</h4>
                             {% for perk in perkQuery %}
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" perktypeid="{{perk.getId()}}" id="{{perk.getName()}}Label" value="{{perk.getName()}}">
+                                    <input class="form-check-input" type="checkbox" perktypeid="{{perk.getId()}}" id="{{perk.getName()}}Label" value="{{perk.getName()}}" {% if perk.getPerkRow(property.getId())%} checked {% endif %}>
                                 <label class="form-check-label" for="{{perk.getName()}}Label">{{perk.getName()}}</label>
                             </div>
                             {% endfor %}
@@ -187,7 +187,7 @@
                             <h4>Amenities</h4>
                             {% for amenity in amenityQuery %}
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" amenitytypeid = "{{amenity.getId()}}" id="{{amenity.getName()}}Label" value="{{amenity.getName()}}">
+                                    <input class="form-check-input" type="checkbox" amenitytypeid = "{{amenity.getId()}}" id="{{amenity.getName()}}Label" value="{{amenity.getName()}}" {% if amenity.getAmenityRow(property.getId())%} checked {% endif %}>
                                 <label class="form-check-label" for="{{amenity.getName()}}Label">{{amenity.getName()}}</label>
                             </div>
                             {% endfor %}

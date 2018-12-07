@@ -159,8 +159,7 @@ $app->get('/editProperty', function ($request, $response, $args) {
 	$user = current_user();
 	//TODO implement isset() check
 	$property = PropertyQuery::create()->findPk($_GET['propertyID']);
-	$selectedAppliances;
-	
+		
 	if($user != null){
 		$this->view->render($response, "property/html.html",
 			['user'=>$user, 
@@ -204,9 +203,13 @@ function updateProperty($fields, $propertyID){
 
 //FOR DEBUGGIN PURPOSES
 $app->get('/editArrays', function ($request, $response, $args) {
+	/*
 	$appliance = AppliancetypeQuery::create()->findPk(1)->getApplianceRow(69);
-	echo $appliance->getId();
-	
+	echo $appliance->getId();'
+	*/
+	$user = current_user();
+	//TODO implement isset() check
+	$property = PropertyQuery::create()->findPk($_GET['propertyID']);
 });
 
 
