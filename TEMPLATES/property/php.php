@@ -43,18 +43,6 @@ $app->post('/verifyProperty', function ($request, $response, $args) {
 	return json_encode(['valid'=>'true']);
 });
 
-
-$app->post('/verifyProperty/edit', function ($request, $response, $args) {
-    $fields = $_POST;
-	foreach($fields as $field){
-		if(empty($field)){
-			return json_encode(['valid'=>'false']);
-		}
-	}
-	updateProperty($fields, $fields['propertyID']);
-	return json_encode(['valid'=>'true']);
-});
-
 function createProperty($fields,$appliance,$utility,$perk,$amenity){
 	//Address Values
 	$newAddr = new Address();
@@ -119,6 +107,7 @@ $app->get('/printArrays', function ($request, $response, $args) {
 	$utility = $this->request->getParam("utility");
 	$perk = $this->request->getParam("perk");
 	$amenity = $this->request->getParam("amenity");
+
 	foreach ($field as $key => $value) {
 		echo $key."=>".$value."<br>";
 	}
@@ -159,8 +148,6 @@ $app->get('/editProperty', function ($request, $response, $args) {
 	$user = current_user();
 	//TODO implement isset() check
 	$property = PropertyQuery::create()->findPk($_GET['propertyID']);
-	$selectedAppliances;
-	
 	if($user != null){
 		$this->view->render($response, "property/html.html",
 			['user'=>$user, 
@@ -178,11 +165,27 @@ $app->get('/editProperty', function ($request, $response, $args) {
 	}
 });
 
+$app->post('/verifyProperty/edit', function ($request, $response, $args) {
+    $fields = $this->request->getParam("field");
+	$selectAppliance = $this->request->getParam("appliance");
+	$selectUtility = $this->request->getParam("utility");
+	$selectPerk = $this->request->getParam("perk");
+	$selectAmenity = $this->request->getParam("amenity");
+
+	foreach($fields as $field){
+		if(empty($field)){
+			return json_encode(['valid'=>'false']);
+		}
+	}
+	updateProperty($fields, $selectAppliance,$selectUtility,$selectPerk,$selectAmenity);
+	return json_encode(['valid'=>'true']);
+});
 
 
-function updateProperty($fields, $propertyID){
+
+function updateProperty($fields, $selectAppliance,$selectUtility,$selectPerk,$selectAmenity){
 	
-	$editProperty = PropertyQuery::create()->findPk($propertyID);
+	$editProperty = PropertyQuery::create()->findPk($fields['propertyID']);
 	$editProperty->setPostname($fields['postName']);
 	$editProperty->setAvailable(true);
 	$editProperty->setExpectedrentpermonth($fields['rent']);
@@ -199,13 +202,235 @@ function updateProperty($fields, $propertyID){
 	$editAddr->setBuildingindentifier($fields['buildNum']);
 	$editAddr->setApartmentidentifier($fields['aptNum']);
 	$editAddr->save();
+
+	foreach ($selectAppliance as $key => $value) {
+		//echo $key."=>".$value."<br>";
+		$appliance = AppliancetypeQuery::create()->findOneByName($key)->getApplianceRow($editProperty->getId());
+		if ($value=="true"){
+			//Find it in Appliance. If already True, don't add.
+			if($appliance){
+				//echo $key." Found!<br>";
+			}
+			else{
+				//echo $key." Not Found!<br>";
+				$newAppliance = new Appliance();
+				$newAppliance->setPropertyid($editProperty->getId());
+				$newAppliance->setTypeIDByName($key);
+				$newAppliance->save();
+				//echo $key." added !<br>";
+			}
+		}
+		else{
+			//Find it in Appliance. If true in the table, delete the row.
+			//$appliance = AppliancetypeQuery::create()->findOneByName($key)->getApplianceRow($property->getId());
+			if($appliance){
+				//echo $key." Deleted!<br>";
+				$appliance->delete();
+			}
+		}
+	}
+	//echo "<hr>";
+	foreach ($selectUtility as $key => $value) {
+		//echo $key."=>".$value."<br>";
+		$utility = UtilitytypeQuery::create()->findOneByName($key)->getUtilityRow($editProperty->getId());
+		if ($value=="true"){
+			//Find it in Table. If already True, don't add.
+			
+			if($utility){
+				//echo $key." Found!<br>";
+			}
+			else{
+				//echo $key." Not Found!<br>";
+				$newUtility = new Utility();
+				$newUtility->setPropertyid($editProperty->getId());
+				$newUtility->setTypeIDByName($key);
+				$newUtility->save();
+				//echo $key." added !<br>";
+			}
+		}
+		else{
+			//Find it in Table. If true in the table, delete the row.
+			//$utility = UtilitytypeQuery::create()->findOneByName($key)->getUtilityRow($property->getId());
+			if($utility){
+				//echo $key." Deleted!<br>";
+				$utility->delete();
+			}
+		}
+	}
+	//echo "<hr>";
+	foreach ($selectPerk as $key => $value) {
+		//echo $key."=>".$value."<br>";
+		$perk = PerktypeQuery::create()->findOneByName($key)->getPerkRow($editProperty->getId());
+		if ($value=="true"){
+			//Find it in Table. If already True, don't add.
+			
+			if($perk){
+				//echo $key." Found!<br>";
+			}
+			else{
+				//echo $key." Not Found!<br>";
+				$newPerk = new Perk();
+				$newPerk->setPropertyid($editProperty->getId());
+				$newPerk->setTypeIDByName($key);
+				$newPerk->save();
+				//echo $key." added !<br>";
+			}
+		}
+		else{
+			//Find it in Table. If true in the table, delete the row.
+			//$perk = PerktypeQuery::create()->findOneByName($key)->getPerkRow($property->getId());
+			if($perk){
+				//echo $key." Deleted!<br>";
+				$perk->delete();
+			}
+		}
+	}
+	//echo "<hr>";
+	foreach ($selectAmenity as $key => $value) {
+		//echo $key."=>".$value."<br>";
+		$amenity = AmenitytypeQuery::create()->findOneByName($key)->getAmenityRow($editProperty->getId());
+		if ($value=="true"){
+			//Find it in Table. If already True, don't add.
+			if($amenity){
+				//echo $key." Found!<br>";
+			}
+			else{
+				//echo $key." Not Found!<br>";
+				$newAmenity = new Amenity();
+				$newAmenity->setPropertyid($editProperty->getId());
+				$newAmenity->setTypeIDByName($key);
+				$newAmenity->save();
+				//echo $key." added !<br>";
+			}
+		}
+		else{
+			//Find it in Table. If true in the table, delete the row.
+			//$amenity = AmenitytypeQuery::create()->findOneByName($key)->getAmenityRow($property->getId());
+			if($amenity){
+				//echo $key." Deleted!<br>";
+				$amenity->delete();
+			}
+		}
+	}
 }
-
-
 //FOR DEBUGGIN PURPOSES
 $app->get('/editArrays', function ($request, $response, $args) {
+	/*
 	$appliance = AppliancetypeQuery::create()->findPk(1)->getApplianceRow(69);
-	echo $appliance->getId();
+	echo $appliance->getId();'
+	*/
+	$user = current_user();
+	//TODO implement isset() check
+	$field = $this->request->getParam("field");
+
+	$property = PropertyQuery::create()->findPk($field['propertyID']);
+
+	$selectAppliance = $this->request->getParam("appliance");
+	$selectUtility = $this->request->getParam("utility");
+	$selectPerk = $this->request->getParam("perk");
+	$selectAmenity = $this->request->getParam("amenity");
+	//If the checkbox is turned off BUT the row is found for said item, delete it from the table.
+	foreach ($selectAppliance as $key => $value) {
+		//echo $key."=>".$value."<br>";
+		$appliance = AppliancetypeQuery::create()->findOneByName($key)->getApplianceRow($property->getId());
+		if ($value=="true"){
+			//Find it in Appliance. If already True, don't add.
+			if($appliance){
+				echo $key." Found!<br>";
+			}
+			else{
+				//echo $key." Not Found!<br>";
+				$newAppliance = new Appliance();
+				$newAppliance->setPropertyid($property->getId());
+				$newAppliance->setTypeIDByName($key);
+				echo $key." added !<br>";
+			}
+		}
+		else{
+			//Find it in Appliance. If true in the table, delete the row.
+			//$appliance = AppliancetypeQuery::create()->findOneByName($key)->getApplianceRow($property->getId());
+			if($appliance){
+				echo $key." Deleted!<br>";
+			}
+		}
+	}
+	echo "<hr>";
+	foreach ($selectUtility as $key => $value) {
+		//echo $key."=>".$value."<br>";
+		$utility = UtilitytypeQuery::create()->findOneByName($key)->getUtilityRow($property->getId());
+		if ($value=="true"){
+			//Find it in Table. If already True, don't add.
+			
+			if($utility){
+				echo $key." Found!<br>";
+			}
+			else{
+				//echo $key." Not Found!<br>";
+				$newUtility = new Utility();
+				$newUtility->setPropertyid($property->getId());
+				$newUtility->setTypeIDByName($key);
+				echo $key." added !<br>";
+			}
+		}
+		else{
+			//Find it in Table. If true in the table, delete the row.
+			//$utility = UtilitytypeQuery::create()->findOneByName($key)->getUtilityRow($property->getId());
+			if($utility){
+				echo $key." Deleted!<br>";
+			}
+		}
+	}
+	echo "<hr>";
+	foreach ($selectPerk as $key => $value) {
+		//echo $key."=>".$value."<br>";
+		$perk = PerktypeQuery::create()->findOneByName($key)->getPerkRow($property->getId());
+		if ($value=="true"){
+			//Find it in Table. If already True, don't add.
+			
+			if($perk){
+				echo $key." Found!<br>";
+			}
+			else{
+				//echo $key." Not Found!<br>";
+				$newPerk = new Perk();
+				$newPerk->setPropertyid($property->getId());
+				$newPerk->setTypeIDByName($key);
+				echo $key." added !<br>";
+			}
+		}
+		else{
+			//Find it in Table. If true in the table, delete the row.
+			//$perk = PerktypeQuery::create()->findOneByName($key)->getPerkRow($property->getId());
+			if($perk){
+				echo $key." Deleted!<br>";
+			}
+		}
+	}
+	echo "<hr>";
+	foreach ($selectAmenity as $key => $value) {
+		//echo $key."=>".$value."<br>";
+		$amenity = AmenitytypeQuery::create()->findOneByName($key)->getAmenityRow($property->getId());
+		if ($value=="true"){
+			//Find it in Table. If already True, don't add.
+			if($amenity){
+				echo $key." Found!<br>";
+			}
+			else{
+				//echo $key." Not Found!<br>";
+				$newAmenity = new Amenity();
+				$newAmenity->setPropertyid($property->getId());
+				$newAmenity->setTypeIDByName($key);
+				echo $key." added !<br>";
+			}
+		}
+		else{
+			//Find it in Table. If true in the table, delete the row.
+			//$amenity = AmenitytypeQuery::create()->findOneByName($key)->getAmenityRow($property->getId());
+			if($amenity){
+				echo $key." Deleted!<br>";
+			}
+		}
+	}
 	
 });
 

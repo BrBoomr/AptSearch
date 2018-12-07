@@ -155,12 +155,41 @@
                         <div class="form-group">
                             <input id="editSubmit" type="submit" class="btnSubmit" value="Edit Property"/>
                         </div>
+                        <!-- The popup menu to add pictures, damn this is alot bud -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Picture</button>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">Add Picture
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="exampleModalLabel"></h4>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                <div class="form-group">
+                                    <label for="url" class="control-label">Picture URL</label>
+                                    <input class="form-control" type="url" name="url" id="url" placeholder="https://pictureURL.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="message-text" class="control-label">Description</label>
+                                    <textarea class="form-control" id="message-text"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button class="btn btn-primary">Send message</button>
+                                    </div>
+                                </form>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
                         <h3>Feature Fields</h3>
                         <div class="form-group">
                             <h4>Appliances</h4>
                             {% for appliance in applianceQuery %}
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" appliancetypeid = "{{appliance.getId()}}" id="{{appliance.getName()}}Label" value="{{appliance.getName()}}">
+                                    <input class="form-check-input" type="checkbox" appliancetypeid = "{{appliance.getId()}}" id="{{appliance.getName()}}Label" value="{{appliance.getName()}}" {% if appliance.getApplianceRow(property.getId())%} checked {% endif %}>
                                 <label class="form-check-label" for="{{appliance.getName()}}Label">{{appliance.getName()}}</label>
                             </div>
                             {% endfor %}
@@ -169,7 +198,7 @@
                             <h4>Utilities</h4>
                             {% for utility in utilityQuery %}
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" utilitytypeid = "{{utility.getId()}}" id="{{utility.getName()}}Label" value="{{utility.getName()}}">
+                                    <input class="form-check-input" type="checkbox" utilitytypeid = "{{utility.getId()}}" id="{{utility.getName()}}Label" value="{{utility.getName()}}" {% if utility.getUtilityRow(property.getId())%} checked {% endif %}>
                                 <label class="form-check-label" for="{{utility.getName()}}Label">{{utility.getName()}}</label>
                             </div>
                             {% endfor %}
@@ -178,7 +207,7 @@
                             <h4>Perks</h4>
                             {% for perk in perkQuery %}
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" perktypeid="{{perk.getId()}}" id="{{perk.getName()}}Label" value="{{perk.getName()}}">
+                                    <input class="form-check-input" type="checkbox" perktypeid="{{perk.getId()}}" id="{{perk.getName()}}Label" value="{{perk.getName()}}" {% if perk.getPerkRow(property.getId())%} checked {% endif %}>
                                 <label class="form-check-label" for="{{perk.getName()}}Label">{{perk.getName()}}</label>
                             </div>
                             {% endfor %}
@@ -187,7 +216,7 @@
                             <h4>Amenities</h4>
                             {% for amenity in amenityQuery %}
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" amenitytypeid = "{{amenity.getId()}}" id="{{amenity.getName()}}Label" value="{{amenity.getName()}}">
+                                    <input class="form-check-input" type="checkbox" amenitytypeid = "{{amenity.getId()}}" id="{{amenity.getName()}}Label" value="{{amenity.getName()}}" {% if amenity.getAmenityRow(property.getId())%} checked {% endif %}>
                                 <label class="form-check-label" for="{{amenity.getName()}}Label">{{amenity.getName()}}</label>
                             </div>
                             {% endfor %}
