@@ -191,8 +191,8 @@ $(E_formSubmit).click((e)=>{
     //fields = JSON.stringify(fields)
     //console.log(fields)
     $.ajax({
-        method: "get",
-        url: baseurl + "/editArrays",
+        method: "post",
+        url: baseurl + "/verifyProperty/edit",
         data: {
             field : fields,
             appliance : appliances,
