@@ -77,7 +77,7 @@ function filter($properties, $returnParams = false){
 	$countryTypeID = getValue('countryTypeID');
 	$state = getValue('state');
 	$locality = getValue('locality');
-	$zipCode = getValue('locality');
+	$zipCode = getValue('zipCode');
 	//variables form type lists
 	$applianceTypeIDs = json_decode(getValue('applianceTypeIDs'));
 	$utilityTypeIDs = json_decode(getValue('utilityTypeIDs'));
