@@ -36,8 +36,8 @@ function isNotInMinMax($value, $min, $max){
 }
 
 function doesNotPassFilter($filter, $value){
-	if($filter && $filter != $value) return false;
-	else return true;
+	if($filter && $filter != $value) return true;
+	else return false;
 }
 
 function failsFilter($filters, $property, $field){
@@ -121,6 +121,7 @@ $app->get('/', function ($request, $response, $args) {
 		if(failsFilter($utilityTypeIDs, $property, "utility")) continue;
 		if(failsFilter($perkTypeIDs, $property, "perk")) continue;
 		if(failsFilter($amenityTypeIDs, $property, "amenity")) continue;
+		
 
 		//since we have meet all the condition because php has not continued to the next iteration
 		array_push($filteredPropertyIDs, $property->getId());

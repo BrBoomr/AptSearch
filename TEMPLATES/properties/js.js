@@ -34,9 +34,6 @@ $( document ).ready(function() {
         userMin = (userMin) ? userMin : actualMin
         userMax = (userMax) ? userMax : actualMax
 
-        console.log("Actual " + actualMin + " -> " + actualMax)
-        console.log("user " + userMin + " -> " + userMax)
-
         //create a slider with the proper min, max, start min, and start max
         $(slider).slider({
             range: true,
