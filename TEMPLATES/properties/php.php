@@ -1,4 +1,7 @@
 <?php
+//eliminates strange CORS error (idk why)
+header('Access-Control-Allow-Origin: *');
+header('Content-type: application/json');
 
 //--------------------------------------------------Functions--------------------------------------------------
 
@@ -121,7 +124,6 @@ $app->get('/', function ($request, $response, $args) {
 		if(failsFilter($utilityTypeIDs, $property, "utility")) continue;
 		if(failsFilter($perkTypeIDs, $property, "perk")) continue;
 		if(failsFilter($amenityTypeIDs, $property, "amenity")) continue;
-		
 
 		//since we have meet all the condition because php has not continued to the next iteration
 		array_push($filteredPropertyIDs, $property->getId());

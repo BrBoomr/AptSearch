@@ -71,6 +71,35 @@ $(listSections).each(function(index, listSection){
     })
 })
 
+$("#allContent").on('click', function(event) {
+    console.log("clicked All contect")
+    //check if any button absorbs the click
+    var absorb = true;
+    $(listSections).each(function(index, listSection){
+        var searchButton = $(listSection).find(".editor > .editorSearchBar > div > button")
+
+
+        console.log($(event.target).closest(searchButton).text())
+
+        if (!$(event.target).find(searchButton).length) {
+            absorb = false;
+        }
+    })
+    
+    console.log("absorbed? " + absorb)
+    //absorb if we didnt click a submit search button
+    if(absorb){
+        //we absorb by closing all search bars
+        //because we dont know if any are open
+        //or if one is open, which one is open
+        $(listSections).each(function(index, listSection){
+            var searchBar = $(listSection).find(".editor > .editorSearchBar > div > input")
+            closeSearchBar(searchBar)
+        })
+    }
+});
+
+/*
 //search bars will close after you unfocus them
 $(listSections).each(function(index, listSection){
     var searchBar = $(listSection).find(".editorSearchBar > div > input")
@@ -78,6 +107,7 @@ $(listSections).each(function(index, listSection){
         closeSearchBar(this)
     })
 })
+*/
 
 /*-------------------------search submission-------------------------*/
 
@@ -85,7 +115,6 @@ $(listSections).each(function(index, listSection){
     //if you press the search icon 
     //the search will execute and the search bar will close
     var searchButton = $(listSection).find(".editor > .editorSearchBar > div > button")
-    console.log("run")
     $(searchButton).on("click", function(event){
         event.preventDefault()
         console.log("button pressed nigga")
