@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 06, 2018 at 03:33 AM
+-- Generation Time: Dec 07, 2018 at 07:19 AM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.8
 
@@ -90,7 +90,7 @@ INSERT INTO `address` (`ID`, `continentTypeID`, `countryTypeID`, `state`, `local
 (43, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '3', '1'),
 (44, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '3', '2'),
 (45, 1, 321, 'Texas', 'Mission', '78572', 'West Street', '3', '3'),
-(62, 1, 321, 'New State', 'New City', '54321', 'New Street', '2', '2');
+(69, 1, 321, 'Test State', 'Test City', '12345', 'Test Street', '1', '1');
 
 -- --------------------------------------------------------
 
@@ -104,6 +104,44 @@ CREATE TABLE `amenity` (
   `amenityTypeID` int(11) NOT NULL,
   `details` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `amenity`
+--
+
+INSERT INTO `amenity` (`amenityNumberID`, `propertyID`, `amenityTypeID`, `details`) VALUES
+(9, 69, 1, NULL),
+(10, 69, 2, NULL),
+(11, 69, 5, NULL),
+(12, 69, 6, NULL),
+(13, 10, 1, NULL),
+(14, 10, 2, NULL),
+(15, 10, 5, NULL),
+(16, 10, 6, NULL),
+(17, 11, 1, NULL),
+(18, 11, 2, NULL),
+(19, 12, 1, NULL),
+(20, 12, 3, NULL),
+(21, 12, 6, NULL),
+(22, 13, 1, NULL),
+(23, 13, 2, NULL),
+(24, 14, 1, NULL),
+(25, 14, 2, NULL),
+(26, 15, 1, NULL),
+(27, 15, 2, NULL),
+(28, 15, 5, NULL),
+(29, 15, 6, NULL),
+(30, 16, 1, NULL),
+(31, 16, 2, NULL),
+(32, 16, 5, NULL),
+(33, 16, 6, NULL),
+(34, 17, 1, NULL),
+(35, 17, 2, NULL),
+(36, 17, 3, NULL),
+(37, 18, 1, NULL),
+(38, 18, 2, NULL),
+(39, 18, 5, NULL),
+(40, 18, 6, NULL);
 
 -- --------------------------------------------------------
 
@@ -148,8 +186,34 @@ CREATE TABLE `appliance` (
 --
 
 INSERT INTO `appliance` (`applianceNumberID`, `propertyID`, `applianceTypeID`, `details`) VALUES
-(1, 1, 1, 'It be cold as fuck boi'),
-(2, 1, 2, NULL);
+(11, 69, 1, NULL),
+(12, 69, 2, NULL),
+(15, 69, 3, NULL),
+(16, 10, 1, NULL),
+(17, 10, 2, NULL),
+(18, 10, 3, NULL),
+(19, 10, 4, NULL),
+(20, 11, 1, NULL),
+(21, 11, 2, NULL),
+(22, 12, 1, NULL),
+(23, 12, 2, NULL),
+(24, 12, 4, NULL),
+(25, 13, 1, NULL),
+(26, 13, 2, NULL),
+(27, 13, 3, NULL),
+(28, 14, 1, NULL),
+(29, 14, 2, NULL),
+(30, 15, 1, NULL),
+(31, 15, 2, NULL),
+(32, 15, 3, NULL),
+(33, 16, 1, NULL),
+(34, 16, 2, NULL),
+(35, 17, 1, NULL),
+(36, 17, 2, NULL),
+(37, 17, 3, NULL),
+(38, 18, 1, NULL),
+(39, 18, 2, NULL),
+(40, 18, 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -461,14 +525,6 @@ CREATE TABLE `issue` (
   `repairDate` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `issue`
---
-
-INSERT INTO `issue` (`issueNumberID`, `propertyID`, `name`, `details`, `foundDate`, `repairDate`) VALUES
-(1, 62, 'Issue #Test1', 'Leaky faucter', '2018-12-02 23:48:11', NULL),
-(2, 62, 'Issue #Test2', 'Wet plaster', '2018-12-02 23:48:11', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -481,6 +537,36 @@ CREATE TABLE `perk` (
   `perkTypeID` int(11) NOT NULL,
   `details` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `perk`
+--
+
+INSERT INTO `perk` (`perkNumberID`, `propertyID`, `perkTypeID`, `details`) VALUES
+(8, 69, 1, NULL),
+(10, 69, 5, NULL),
+(11, 69, 4, NULL),
+(12, 10, 1, NULL),
+(13, 10, 2, NULL),
+(14, 10, 3, NULL),
+(15, 10, 5, NULL),
+(16, 11, 1, NULL),
+(17, 11, 3, NULL),
+(18, 12, 1, NULL),
+(19, 12, 3, NULL),
+(20, 12, 5, NULL),
+(21, 13, 2, NULL),
+(22, 14, 1, NULL),
+(23, 15, 1, NULL),
+(24, 15, 2, NULL),
+(25, 15, 4, NULL),
+(26, 16, 1, NULL),
+(27, 16, 2, NULL),
+(28, 17, 1, NULL),
+(29, 17, 2, NULL),
+(30, 18, 1, NULL),
+(31, 18, 2, NULL),
+(32, 18, 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -623,7 +709,7 @@ INSERT INTO `property` (`ID`, `addressID`, `userID`, `addDate`, `lastUpdated`, `
 (43, 43, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B3.A1', 1, 900, 750, 1, 1, 'Single Bedroom'),
 (44, 44, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B3.A2', 1, 900, 750, 1, 1, 'Single Bedroom'),
 (45, 45, 5, '2018-11-28 21:42:42', '2018-11-28 21:42:42', 'W.B3.A3', 1, 900, 750, 1, 1, 'Single Bedroom'),
-(62, 62, 2, '2018-11-30 02:14:14', '2018-11-30 02:14:14', 'Property Used for Debugging Purposes', 1, 1500, 900, 2, 2, NULL);
+(69, 69, 2, '2018-12-06 19:25:22', '2018-12-06 19:25:22', 'Debugging Property', 1, 1000, 900, 1, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -661,10 +747,59 @@ CREATE TABLE `utility` (
   `propertyID` int(11) NOT NULL,
   `utilityTypeID` int(11) NOT NULL,
   `details` text,
-  `available` tinyint(1) NOT NULL DEFAULT '1',
-  `includedInRent` tinyint(1) NOT NULL DEFAULT '1',
-  `expectedCostPerMonth` double NOT NULL DEFAULT '0'
+  `available` tinyint(1) DEFAULT '1',
+  `includedInRent` tinyint(1) DEFAULT '1',
+  `expectedCostPerMonth` double DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `utility`
+--
+
+INSERT INTO `utility` (`utilityNumberID`, `propertyID`, `utilityTypeID`, `details`, `available`, `includedInRent`, `expectedCostPerMonth`) VALUES
+(9, 69, 1, NULL, 1, 1, 0),
+(10, 69, 2, NULL, 1, 1, 0),
+(12, 69, 3, NULL, 1, 1, 0),
+(13, 69, 4, NULL, 1, 1, 0),
+(14, 10, 1, NULL, 1, 1, 0),
+(15, 10, 2, NULL, 1, 1, 0),
+(16, 10, 3, NULL, 1, 1, 0),
+(17, 10, 4, NULL, 1, 1, 0),
+(18, 10, 5, NULL, 1, 1, 0),
+(19, 10, 7, NULL, 1, 1, 0),
+(20, 11, 1, NULL, 1, 1, 0),
+(21, 11, 2, NULL, 1, 1, 0),
+(22, 11, 5, NULL, 1, 1, 0),
+(23, 12, 1, NULL, 1, 1, 0),
+(24, 12, 4, NULL, 1, 1, 0),
+(25, 12, 5, NULL, 1, 1, 0),
+(26, 13, 1, NULL, 1, 1, 0),
+(27, 13, 2, NULL, 1, 1, 0),
+(28, 13, 4, NULL, 1, 1, 0),
+(29, 13, 5, NULL, 1, 1, 0),
+(30, 14, 1, NULL, 1, 1, 0),
+(31, 14, 2, NULL, 1, 1, 0),
+(32, 14, 3, NULL, 1, 1, 0),
+(33, 14, 4, NULL, 1, 1, 0),
+(34, 14, 5, NULL, 1, 1, 0),
+(35, 15, 1, NULL, 1, 1, 0),
+(36, 15, 3, NULL, 1, 1, 0),
+(37, 15, 4, NULL, 1, 1, 0),
+(38, 15, 5, NULL, 1, 1, 0),
+(39, 16, 1, NULL, 1, 1, 0),
+(40, 16, 2, NULL, 1, 1, 0),
+(41, 16, 3, NULL, 1, 1, 0),
+(42, 16, 5, NULL, 1, 1, 0),
+(43, 16, 6, NULL, 1, 1, 0),
+(44, 17, 1, NULL, 1, 1, 0),
+(45, 17, 2, NULL, 1, 1, 0),
+(46, 17, 3, NULL, 1, 1, 0),
+(47, 17, 4, NULL, 1, 1, 0),
+(48, 18, 1, NULL, 1, 1, 0),
+(49, 18, 2, NULL, 1, 1, 0),
+(50, 18, 3, NULL, 1, 1, 0),
+(51, 18, 4, NULL, 1, 1, 0),
+(52, 18, 7, NULL, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -815,13 +950,13 @@ ALTER TABLE `utilitytype`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `amenity`
 --
 ALTER TABLE `amenity`
-  MODIFY `amenityNumberID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `amenityNumberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `amenitytype`
@@ -833,7 +968,7 @@ ALTER TABLE `amenitytype`
 -- AUTO_INCREMENT for table `appliance`
 --
 ALTER TABLE `appliance`
-  MODIFY `applianceNumberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `applianceNumberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `appliancetype`
@@ -857,13 +992,13 @@ ALTER TABLE `countrytype`
 -- AUTO_INCREMENT for table `issue`
 --
 ALTER TABLE `issue`
-  MODIFY `issueNumberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `issueNumberID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `perk`
 --
 ALTER TABLE `perk`
-  MODIFY `perkNumberID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `perkNumberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `perktype`
@@ -887,7 +1022,7 @@ ALTER TABLE `picture`
 -- AUTO_INCREMENT for table `property`
 --
 ALTER TABLE `property`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -899,7 +1034,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `utility`
 --
 ALTER TABLE `utility`
-  MODIFY `utilityNumberID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `utilityNumberID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `utilitytype`
