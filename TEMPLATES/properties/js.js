@@ -142,45 +142,34 @@ $( document ).ready(function() {
 
 //FOR DEBUGGING
 
-
+/*
 var openButtons = $(".sectionOpenButton")
 $.each(openButtons, function(index, openButton){
     $("#" + $(openButton).attr("openSectionID")).show()
 })
-
+*/
 
 //-------------------------Open/Close Buttons
 
-$(".sectionOpenButton").click(function(){
-    //grab the name of the section we want to OPEN
-    sectionName = $(this).attr("openSectionID") 
-    //create the new name of the OPEN button
-    buttonName = sectionName + "button"
-    //set the id of the OPEN button
-    $(this).attr('id', buttonName)
-    //show the filter
+function openButton(sectionOpenButton){
+    sectionName = $(sectionOpenButton).attr("openSectionID") 
     $("#" + sectionName).show() 
-    //hide the OPEN button
-    $(this).hide()
+    $(sectionOpenButton).hide()
+}
 
-    //if it hasnt been done already
-    sectionCloseButton = $("#" + sectionName).find(".sectionRemoveButton")
-    buttonAttribute = $(sectionCloseButton).attr("*[closeSectionID]")
-    if(buttonAttribute == undefined ){
-        //give close buttons a reference to their section
-        $(sectionCloseButton).attr("closeSectionID", sectionName)
-        //and create a listener so that they can close the filter
-        $(sectionCloseButton).click(function(){
-            //grab the name of the section
-            sectionName = $(this).attr("closeSectionID")
-            buttonName = sectionName + "button"
-            //hide the filter
-            $("#" + sectionName).hide() 
-            $("#" + buttonName).show() //show the button
-        })
-    }
+function closeButton(sectionCloseButton){
+    sectionName = $(sectionCloseButton).attr("closeSectionID")
+    sectionOpenButton = $("#showButtonSection").find("button[openSectionID=\'" + sectionName + "\']")
+    $("#" + sectionName).hide() 
+    $(sectionOpenButton).show()
+}
+
+$(".sectionOpenButton").click(function(){
+    openButton(this)  
 })
 
-
+$(".sectionCloseButton").click(function(){
+    closeButton(this)
+})
 
 //-------------------------Objects-------------------------
