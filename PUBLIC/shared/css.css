@@ -8,6 +8,7 @@
     padding: auto !important;
     position: relative;
     display: block;
+    display: none;
 }
 
 .editor > .editorSearchBar {
@@ -64,24 +65,16 @@
     border-radius: .25rem;
 }
 
-.editor > .editorSearchBar > div > .btn:not(:disabled):not(.disabled) {
-    cursor: auto !important;
-}
-
-.editor > .editorSearchBar > div > button:hover,
-.editor > .editorSearchBar > div > button:active,
-.editor > .editorSearchBar > div > button:focus {
-    color: #212529 !important;
-    background-color: #f8f9fa !important;
-    border-color: #f8f9fa !important;
-}
-
 .noBoxShadow {
     -webkit-box-shadow: none !important;
 	-moz-box-shadow: none !important;
     box-shadow: none !important;
     outline-offset: 0px !important;
     outline: none !important;
+}
+
+.editor > .editorDropdownOuter {
+    display: none;
 }
 
 /*-----chip styling----*/
@@ -108,7 +101,7 @@
     font-size: 10px;
 }
 
-.addChipButton { /*to create more chips */
+.chipLarge { /*to create more chips */
     width: 30px;
     height: 30px;
     border-radius: 15px;

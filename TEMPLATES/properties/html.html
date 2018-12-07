@@ -190,173 +190,203 @@
                 <hr class="style1">
                 <!--!!!!!!!!!!!!!!!!!!!!!!!!!Chip Based Search Sections!!!!!!!!!!!!!!!!!!!!!!!!!-->
                 <!--******************************Appliances*************************-->
-                <div class="row" id = "appliancesSection" style="display: none;">
-                    <div class="sectionTitle"><h3>Appliances</h3></div>
-                    <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
-                        <i class="fa fa-times"></i>
-                    </button>
-                    <div class="chip">
-                        Refridgerator
-                        <button type="button" class="btn btn-light removeChipButton">
+                <div id="listSections">
+                    <div class="row" id = "appliancesSection" style="display: none;">
+                        <div class="sectionTitle"><h3>Appliances</h3></div>
+                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
                             <i class="fa fa-times"></i>
                         </button>
-                    </div>
-                    <div class="chip">
-                        Gas Stove
-                        <button type="button" class="btn btn-light removeChipButton">
-                            <i class="fa fa-times"></i>
+                        <div class="chip">
+                            Refridgerator
+                            <button type="button" class="btn btn-light removeChipButton">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="chip">
+                            Gas Stove
+                            <button type="button" class="btn btn-light removeChipButton">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="chip">
+                            Dishwasher
+                            <button type="button" class="btn btn-light removeChipButton">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-primary chipLarge addChipButton">
+                            <i class="fa fa-plus"></i>
                         </button>
-                    </div>
-                    <div class="chip">
-                        Dishwasher
-                        <button type="button" class="btn btn-light removeChipButton">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <button type="button" class="btn btn-primary addChipButton">
-                        <i class="fa fa-plus"></i>
-                    </button>
-
-                    <!---->
-
-                    <div class="addChipButton editor">
-                        <div class="editorSearchBar row chip">
-                            <div class="col-auto">
-                                <input type="text" class="noBoxShadow">
+                        <!---->
+                        <div class="chipLarge editor">
+                            <div class="editorSearchBar row chip">
+                                <div class="col-auto">
+                                    <input type="text" class="noBoxShadow">
+                                </div>
+                                <!--HIDDEN because we might just close onEnter, and onUnFocuse-->
+                                <div class="col-auto"> 
+                                    <button type="button" class="btn btn-light removeChipButton">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <!--HIDDEN because we might just close onEnter, and onUnFocuse-->
-                            <div class="col-auto"> 
-                                <button class="btn btn-light removeChipButton noBoxShadow">
-                                    <i class="fas fa-search"></i>
-                                </button>
+                            <div class="editorDropdownOuter">
+                                <div class="editorDropdownInner dropdown-menu">
+                                </div>
                             </div>
                         </div>
-                        <div class="editorDropdownOuter">
-                            <div class="editorDropdownInner dropdown-menu">
+                        <!---->
+                    </div>
+                    <hr class="style1">
+                    <!--******************************Utilities*************************-->
+                    <div class="row" id = "utilitiesSection" style="display: none;">
+                        <div class="sectionTitle"><h3>Utilities</h3></div>
+                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
+                            <i class="fa fa-times"></i>
+                        </button>
+                        <div class="chip">
+                            Trash Pick Up
+                            <button type="button" class="btn btn-light removeChipButton">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="chip">
+                            Dish Cable
+                            <button type="button" class="btn btn-light removeChipButton">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="chip">
+                            Water Heating
+                            <button type="button" class="btn btn-light removeChipButton">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-primary chipLarge addChipButton">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <!---->
+                        <div class="chipLarge editor">
+                            <div class="editorSearchBar row chip">
+                                <div class="col-auto">
+                                    <input type="text" class="noBoxShadow">
+                                </div>
+                                <!--HIDDEN because we might just close onEnter, and onUnFocuse-->
+                                <div class="col-auto"> 
+                                    <button class="btn btn-light removeChipButton">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="editorDropdownOuter">
+                                <div class="editorDropdownInner dropdown-menu">
+                                </div>
                             </div>
                         </div>
+                        <!---->
                     </div>
-
-
-                    <!---->
-
-                </div>
-                <hr class="style1">
-                <!--******************************Utilities*************************-->
-                <div class="row" id = "utilitiesSection" style="display: none;">
-                    <div class="sectionTitle"><h3>Utilities</h3></div>
-                    <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
-                        <i class="fa fa-times"></i>
-                    </button>
-                    <div class="chip">
-                        Electricity
-                        <button type="button" class="btn btn-light removeChipButton">
+                    <hr class="style1">
+                    <!--******************************Perk*************************-->
+                    <div class="row" id = "perksSection" style="display: none;">
+                        <div class="sectionTitle"><h3>Perk</h3></div>
+                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
                             <i class="fa fa-times"></i>
                         </button>
+                        <button type="button" class="btn btn-primary chipLarge addChipButton">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <!---->
+                        <div class="chipLarge editor">
+                            <div class="editorSearchBar row chip">
+                                <div class="col-auto">
+                                    <input type="text" class="noBoxShadow">
+                                </div>
+                                <!--HIDDEN because we might just close onEnter, and onUnFocuse-->
+                                <div class="col-auto"> 
+                                    <button class="btn btn-light removeChipButton">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="editorDropdownOuter">
+                                <div class="editorDropdownInner dropdown-menu">
+                                </div>
+                            </div>
+                        </div>
+                        <!---->
                     </div>
-                    <div class="chip">
-                        Water
-                        <button type="button" class="btn btn-light removeChipButton">
+                    <hr class="style1">
+                    <!--******************************Amenities*************************-->
+                    <div class="row" id = "amenitiesSection" style="display: none;">
+                        <div class="sectionTitle"><h3>Amenities</h3></div>
+                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
                             <i class="fa fa-times"></i>
                         </button>
-                    </div>
-                    <div class="chip">
-                        High Speed Internet
-                        <button type="button" class="btn btn-light removeChipButton">
-                            <i class="fa fa-times"></i>
+                        <div class="chip">
+                            Pool
+                            <button type="button" class="btn btn-light removeChipButton">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="chip">
+                            Gym
+                            <button type="button" class="btn btn-light removeChipButton">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="chip">
+                            Laundromat
+                            <button type="button" class="btn btn-light removeChipButton">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="chip">
+                            John Doe
+                            <button type="button" class="btn btn-light removeChipButton">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="chip">
+                            Game Room
+                            <button type="button" class="btn btn-light removeChipButton">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="chip">
+                            Playground
+                            <button type="button" class="btn btn-light removeChipButton">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="chip">
+                            Jogging Trails
+                            <button type="button" class="btn btn-light removeChipButton">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-primary chipLarge addChipButton">
+                            <i class="fa fa-plus"></i>
                         </button>
+                        <!---->
+                        <div class="chipLarge editor">
+                            <div class="editorSearchBar row chip">
+                                <div class="col-auto">
+                                    <input type="text" class="noBoxShadow">
+                                </div>
+                                <!--HIDDEN because we might just close onEnter, and onUnFocuse-->
+                                <div class="col-auto"> 
+                                    <button class="btn btn-light removeChipButton">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="editorDropdownOuter">
+                                <div class="editorDropdownInner dropdown-menu">
+                                </div>
+                            </div>
+                        </div>
+                        <!---->
                     </div>
-                    <div class="chip">
-                        Recycling Pick Up
-                        <button type="button" class="btn btn-light removeChipButton">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="chip">
-                        Trash Pick Up
-                        <button type="button" class="btn btn-light removeChipButton">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="chip">
-                        Dish Cable
-                        <button type="button" class="btn btn-light removeChipButton">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="chip">
-                        Water Heating
-                        <button type="button" class="btn btn-light removeChipButton">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <button type="button" class="btn btn-primary addChipButton">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                </div>
-                <hr class="style1">
-                <!--******************************Perk*************************-->
-                <div class="row" id = "perksSection" style="display: none;">
-                    <div class="sectionTitle"><h3>Perk</h3></div>
-                    <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
-                        <i class="fa fa-times"></i>
-                    </button>
-                    <button type="button" class="btn btn-primary addChipButton">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                </div>
-                <hr class="style1">
-                <!--******************************Amenities*************************-->
-                <div class="row" id = "amenitiesSection" style="display: none;">
-                    <div class="sectionTitle"><h3>Amenities</h3></div>
-                    <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
-                        <i class="fa fa-times"></i>
-                    </button>
-                    <div class="chip">
-                        Pool
-                        <button type="button" class="btn btn-light removeChipButton">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="chip">
-                        Gym
-                        <button type="button" class="btn btn-light removeChipButton">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="chip">
-                        Laundromat
-                        <button type="button" class="btn btn-light removeChipButton">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="chip">
-                        John Doe
-                        <button type="button" class="btn btn-light removeChipButton">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="chip">
-                        Game Room
-                        <button type="button" class="btn btn-light removeChipButton">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="chip">
-                        Playground
-                        <button type="button" class="btn btn-light removeChipButton">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="chip">
-                        Jogging Trails
-                        <button type="button" class="btn btn-light removeChipButton">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                    <button type="button" class="btn btn-primary addChipButton">
-                        <i class="fa fa-plus"></i>
-                    </button>
                 </div>
                 <!--!!!!!!!!!!!!!!!!!!!!!!!!!Apply Filter Buttons!!!!!!!!!!!!!!!!!!!!!!!!!-->
                 <div class="row btn-row">
