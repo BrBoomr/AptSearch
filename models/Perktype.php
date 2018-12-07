@@ -14,5 +14,9 @@ use Base\Perktype as BasePerktype;
  */
 class Perktype extends BasePerktype
 {
-
+    public function getPerkRow($propertyID){
+        $perkType = $this->getId();
+        $perk = PerkQuery::create()->filterByPropertyid($propertyID)->findOneByPerktypeid($perkType);
+        return $perk;
+    }
 }

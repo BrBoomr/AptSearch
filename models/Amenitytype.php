@@ -14,5 +14,9 @@ use Base\Amenitytype as BaseAmenitytype;
  */
 class Amenitytype extends BaseAmenitytype
 {
-
+    public function getAmenityRow($propertyID){
+        $amenityType = $this->getId();
+        $amenity = AmenityQuery::create()->filterByPropertyid($propertyID)->findOneByAmenitytypeid($amenityType);
+        return $amenity;
+    }
 }
