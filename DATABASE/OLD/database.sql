@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2018 at 06:20 PM
--- Server version: 10.1.35-MariaDB
--- PHP Version: 7.2.9
+-- Generation Time: Dec 06, 2018 at 03:33 AM
+-- Server version: 10.1.34-MariaDB
+-- PHP Version: 7.2.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -118,6 +118,18 @@ CREATE TABLE `amenitytype` (
   `useCount` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `amenitytype`
+--
+
+INSERT INTO `amenitytype` (`ID`, `addDate`, `name`, `useCount`) VALUES
+(1, '2018-12-06 01:13:23', 'Pool', 0),
+(2, '2018-12-06 01:13:23', 'Gym', 0),
+(3, '2018-12-06 01:13:48', 'Laundromat', 0),
+(4, '2018-12-06 01:13:48', 'Game Room', 0),
+(5, '2018-12-06 01:14:02', 'Playground', 0),
+(6, '2018-12-06 01:14:02', 'Jogging Trail', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -158,7 +170,9 @@ CREATE TABLE `appliancetype` (
 
 INSERT INTO `appliancetype` (`ID`, `addDate`, `name`, `useCount`) VALUES
 (1, '2018-12-03 17:18:20', 'Refrigerator', 0),
-(2, '2018-12-03 17:18:29', 'Oven', 0);
+(2, '2018-12-03 17:18:29', 'Oven', 0),
+(3, '2018-12-06 01:14:32', 'Stove', 0),
+(4, '2018-12-06 01:14:32', 'Dishwasher', 0);
 
 -- --------------------------------------------------------
 
@@ -481,6 +495,17 @@ CREATE TABLE `perktype` (
   `useCount` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `perktype`
+--
+
+INSERT INTO `perktype` (`ID`, `addDate`, `name`, `useCount`) VALUES
+(1, '2018-12-06 02:11:37', 'Pet Friendly', 0),
+(2, '2018-12-06 02:11:37', 'Non Smoking', 0),
+(3, '2018-12-06 02:11:37', 'Outdoor Space', 0),
+(4, '2018-12-06 02:11:37', 'Netflix Subscription', 0),
+(5, '2018-12-06 02:11:37', 'Balcony', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -655,6 +680,19 @@ CREATE TABLE `utilitytype` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Dumping data for table `utilitytype`
+--
+
+INSERT INTO `utilitytype` (`ID`, `addDate`, `name`, `useCount`) VALUES
+(1, '2018-12-06 01:58:23', 'Electricity', 0),
+(2, '2018-12-06 01:58:23', 'Water', 0),
+(3, '2018-12-06 01:58:23', 'High Speed Internet', 0),
+(4, '2018-12-06 01:58:23', 'Recycling Pick Up', 0),
+(5, '2018-12-06 01:58:23', 'Trash Pick Up', 0),
+(6, '2018-12-06 01:58:23', 'Dish Cable', 0),
+(7, '2018-12-06 01:58:23', 'Water Heating', 0);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -789,7 +827,7 @@ ALTER TABLE `amenity`
 -- AUTO_INCREMENT for table `amenitytype`
 --
 ALTER TABLE `amenitytype`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `appliance`
@@ -801,7 +839,7 @@ ALTER TABLE `appliance`
 -- AUTO_INCREMENT for table `appliancetype`
 --
 ALTER TABLE `appliancetype`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `continenttype`
@@ -831,7 +869,7 @@ ALTER TABLE `perk`
 -- AUTO_INCREMENT for table `perktype`
 --
 ALTER TABLE `perktype`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `phone`
@@ -867,7 +905,7 @@ ALTER TABLE `utility`
 -- AUTO_INCREMENT for table `utilitytype`
 --
 ALTER TABLE `utilitytype`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables

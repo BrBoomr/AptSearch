@@ -148,7 +148,6 @@ $app->get('/editProperty', function ($request, $response, $args) {
 	$user = current_user();
 	//TODO implement isset() check
 	$property = PropertyQuery::create()->findPk($_GET['propertyID']);
-
 	if($user != null){
 		$this->view->render($response, "property/html.html",
 			['user'=>$user, 

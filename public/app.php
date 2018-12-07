@@ -1,4 +1,7 @@
 <?php
+//eliminates strange CORS error (idk why)
+header("Access-Control-Allow-Origin: *");
+
 //-------------------------DEPENDANCIES-------------------------
 // autoload slim, twig, and Propel
 require '../vendor/autoload.php';
@@ -11,7 +14,7 @@ session_start();
 // adding an external config file to show errors
 $settings = ['displayErrorDetails' => true];
 $app = new \Slim\App(['settings' => $settings]);
-// Twig setup
+// Twig setupheader("Access-Control-Allow-Origin: *");
 $container = $app->getContainer();
 // note that this file lives in a subdirectory, so templates is up a level
 $container['view'] = function ($container) {

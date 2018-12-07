@@ -1,6 +1,7 @@
 {% extends 'layout/html.html' %}
 
 {% block content %}
+<span id="allContent">
 
     <!--imports required for slider-->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -273,7 +274,7 @@
                                 </div>
                                 <!--HIDDEN because we might just close onEnter, and onUnFocuse-->
                                 <div class="col-auto"> 
-                                    <button class="btn btn-light removeChipButton">
+                                    <button type="button" class="btn btn-light removeChipButton">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </div>
@@ -303,7 +304,7 @@
                                 </div>
                                 <!--HIDDEN because we might just close onEnter, and onUnFocuse-->
                                 <div class="col-auto"> 
-                                    <button class="btn btn-light removeChipButton">
+                                    <button type="button" class="btn btn-light removeChipButton">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </div>
@@ -375,7 +376,7 @@
                                 </div>
                                 <!--HIDDEN because we might just close onEnter, and onUnFocuse-->
                                 <div class="col-auto"> 
-                                    <button class="btn btn-light removeChipButton">
+                                    <button type="button" class="btn btn-light removeChipButton">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </div>
@@ -610,6 +611,7 @@
         </div>
     {% endif %}
 
+</span>
 {% endblock %}
 
 {% block styles %}
