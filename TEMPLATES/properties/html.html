@@ -125,18 +125,14 @@
                 <hr class="style1">
                 <!--******************************+++++*************************-->
                 <!--!!!!!!!!!!!!!!!!!!!!!!!!!Location Search Section!!!!!!!!!!!!!!!!!!!!!!!!!-->
-                <div class="row">
+                <div class="row" id="locationSection">
                     <div class="row" id="continentSection" style="display: none;">
                         <span class="col-auto"><h3>Continent</h3></span>
                         <div class="col-auto">
                             <select class="form-control">
-                                <option>Africa</option>
-                                <option>North America</option>
-                                <option>South America</option>
-                                <option>Europa</option>
-                                <option>Asia</option>
-                                <option>Australia</option>
-                                <option>Antartica</option>
+                                {% for continent in continentTypes %}
+                                    <option id="{{ continent.getId() }}">{{ continent.getName() }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromLocation">
@@ -147,13 +143,9 @@
                         <span class="col-auto"><h3>Country</h3></span>
                         <div class="col-auto">
                             <select class="form-control">
-                                <option>Country 1</option>
-                                <option>Country 2</option>
-                                <option>Country 3</option>
-                                <option>Country 4</option>
-                                <option>Country 5</option>
-                                <option>Country 6</option>
-                                <option>Country 7</option>
+                                {% for country in countryTypes %}
+                                    <option id="{{ country.getId() }}">{{ country.getName() }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromLocation">

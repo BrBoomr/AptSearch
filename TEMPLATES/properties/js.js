@@ -2,6 +2,31 @@
 
 //-------------------------Logic-------------------------
 
+//-------------------------Database Objects
+/*
+//these object are read in once when the page is saved and then used throughout
+
+//read for search params: RENT | SUARE FOOTAGE | BEDROOMS | BATHROOMS
+var properties
+//read for search params: CONTINENT | COUNTRY | STATE | LOCALITY | ZIP
+var addresses
+//read for search params: APPLIANCE TYPE IDS | UTILITY TYPE IDS | PERK TYPE IDS | AMENITY TYPE IDS
+var appliances
+var utilities
+var perks
+var amenities
+
+//read to help create search params
+var applianceTypes
+var utilityTypes
+var perkTypes
+var amenityTypes
+
+$( document ).ready(function() {
+    
+});
+*/
+
 //-------------------------Slide Connection
 
 //wait for our document to load so that we can read the min and max of our sliders from the dom
@@ -155,5 +180,7 @@ $(".sectionOpenButton").click(function(){
         })
     }
 })
+
+
 
 //-------------------------Objects-------------------------
