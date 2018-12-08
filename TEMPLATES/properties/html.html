@@ -10,7 +10,7 @@
 
     {% if search %}
         <div class="card">
-            <div class="card-header">
+            <div class="card-header" id="allSections">
                 <h1>Filter By...</h1>
                 <hr class="style1">
                 <!--!!!!!!!!!!!!!!!!!!!!!!!!!Sliders!!!!!!!!!!!!!!!!!!!!!!!!!-->
@@ -122,10 +122,9 @@
                         </button>
                     </div>
                 </div>
-                <hr class="style1">
                 <!--******************************+++++*************************-->
                 <!--!!!!!!!!!!!!!!!!!!!!!!!!!Location Search Section!!!!!!!!!!!!!!!!!!!!!!!!!-->
-                <div class="row">
+                <div class="row" id="locationSections">
                     <div class="row" id="continentSection" style="display: none;">
                         <span class="col-auto"><h3>Continent</h3></span>
                         <div class="col-auto">
@@ -190,7 +189,6 @@
                         </button>
                     </div>
                 </div>
-                <hr class="style1">
                 <!--!!!!!!!!!!!!!!!!!!!!!!!!!Chip Based Search Sections!!!!!!!!!!!!!!!!!!!!!!!!!-->
                 <!--******************************Appliances*************************-->
                 <div id="listSections">
@@ -238,7 +236,6 @@
                         </div>
                         <!---->
                     </div>
-                    <hr class="style1">
                     <!--******************************Utilities*************************-->
                     <div class="row" id = "utilitiesSection" style="display: none;">
                         <div class="sectionTitle"><h3>Utilities</h3></div>
@@ -284,7 +281,6 @@
                         </div>
                         <!---->
                     </div>
-                    <hr class="style1">
                     <!--******************************Perk*************************-->
                     <div class="row" id = "perksSection" style="display: none;">
                         <div class="sectionTitle"><h3>Perk</h3></div>
@@ -330,7 +326,6 @@
                         </div>
                         <!---->
                     </div>
-                    <hr class="style1">
                     <!--******************************Amenities*************************-->
                     <div class="row" id = "amenitiesSection" style="display: none;">
                         <div class="sectionTitle"><h3>Amenities</h3></div>
@@ -376,7 +371,6 @@
                         </div>
                         <!---->
                     </div>
-                    <hr class="style1">
                 </div>
                 <!--!!!!!!!!!!!!!!!!!!!!!!!!!Apply Filter Buttons!!!!!!!!!!!!!!!!!!!!!!!!!-->
                 <div class="row btn-row" id="showButtonSection">
