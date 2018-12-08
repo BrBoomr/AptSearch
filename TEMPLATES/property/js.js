@@ -226,12 +226,19 @@ $(E_formSubmit).click((e)=>{
     })
 })
 
+$("#picturePopup").submit(function(event){
+    event.preventDefault();
+    console.log("submit");
+
+})
+
+
 function verifyPictureURL(pictureURL, picturDescription){
     $.ajax({
         method: "post",
         url: baseurl + "/verifyProperty/pic",
         data: {
-            picture
+            pictureURL : {E_pictureURL}
         },
         dataType: "json",
         success: function (response) {

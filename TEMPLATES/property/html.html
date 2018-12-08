@@ -162,34 +162,6 @@
                             <input id="editBathrooms" type="text" class="form-control" placeholder="Bathrooms" value="{{property.getBathroomcount()}}"/>
                         </div>
                         
-                        <!-- The popup menu to add pictures, damn this is alot bud -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Picture</button>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-                        <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                        <div class="modal-header">Add Picture
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="exampleModalLabel"></h4>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                            <div class="form-group">
-                                <label for="url" class="control-label">Picture URL</label>
-                                <input class="form-control" type="url" name="url" id="url" placeholder="https://pictureURL.com" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="message-text" class="control-label">Description</label>
-                                <textarea class="form-control" id="picturDescription"></textarea>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button id="submitPic" class="btn btn-primary">Submit</button>
-                            </div>
-                            </form>
-                        </div>
-                        </div>
-                        </div>
-                        </div>
 
                         <h3>Feature Fields</h3>
                         <div class="form-group">
@@ -248,6 +220,35 @@
                             <input id="editSubmit" type="submit" class="btnSubmit btn btn-success" value="Edit Property"/>
                         </div>
                     </form>
+                    
+                    <!-- The popup menu to add pictures, damn this is alot bud -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Picture</button>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">Add Picture
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="picturePopup">
+                        <div class="form-group">
+                            <label for="url" class="control-label">Picture URL</label>
+                            <input class="form-control" type="url" name="url" id="url" placeholder="https://website.com/picture.jpg" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">Description</label>
+                            <textarea class="form-control" id="picturDescription"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type "submit" id="submitPic" class="btn btn-primary">Submit</button>
+                        </div>
+                        </form>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>
