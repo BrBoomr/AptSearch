@@ -75,7 +75,7 @@
                                 active
                             {% endif %}
                             ">
-                                <img class="d-block imageInSlide" src="{{ picture.getLink() }}" alt="{{ picture.getDetails() }}">
+                                <img id="{{ picture.getPicturenumberid() }}" class="d-block imageInSlide" src="{{ picture.getLink() }}" alt="{{ picture.getDetails() }}">
                                 <div class="carousel-caption d-none d-md-block">
                                     <h5 class="carouselCaptionTitle">{{ picture.getDetails() }}</h5>
                                     <br>

@@ -227,26 +227,29 @@ $(E_formSubmit).click((e)=>{
 })
 
 $("#picturePopup").submit(function(event){
+
+    pictureURL = $(E_pictureURL).val();
+    pictureDescription = $(E_pictureDescription).val();
     event.preventDefault();
-    console.log("submit");
-
-})
-
-
-function verifyPictureURL(pictureURL, picturDescription){
+    // This ajax call verifies if the url leads to a valid picture
     $.ajax({
-        method: "post",
+        method: "POST",
         url: baseurl + "/verifyProperty/pic",
-        data: {
-            pictureURL : {E_pictureURL}
-        },
-        dataType: "json",
-        success: function (response) {
-            
+        data: {"pictureURL":pictureURL, "pictureDescription": pictureDescription, "propertyID": E_propertyID},
+        dataType: "text",
+        success: function (data) {
+            data = $.parseJSON(data);
+            console.log(data)
         },
         fail: function(response){
             console.log("Internal Error")
         },
 
     })
+
+})
+
+
+function verifyPictureURL(pictureURL, picturDescription){
+    
 }

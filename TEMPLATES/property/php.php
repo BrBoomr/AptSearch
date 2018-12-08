@@ -183,7 +183,20 @@ $app->post('/verifyProperty/edit', function ($request, $response, $args) {
 });
 
 $app->post('/verifyProperty/pic', function($request, $response, $args){
-	
+	// It's getParsedBody() when passing the params as TEXT
+	$pictureURL = $request->getParsedBody()['pictureURL'];
+	$pictureDescription = $request->getParsedBody()['pictureDescription'];
+	$propertyID = $request->getParsedBody()['propertyID'];
+
+	$newPicture = new Picture();
+	$newPicture->setPropertyid($propertyID);
+	$newPicture->setLink($pictureURL);
+	$newPicture->setDetails($pictureDescription);
+	$newPicture->save();
+
+	$data = array('success'=>true);
+    $response = $response->withJson($data);
+    return $response;
 });
 
 

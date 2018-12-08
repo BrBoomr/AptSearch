@@ -455,7 +455,7 @@
                                                 active
                                             {% endif %}
                                             ">
-                                                <img class="d-block imageInSlide" src="{{ propertyPicture.getLink() }}" alt="{{ propertyPicture.getDetails() }}">
+                                                <img id="{{ propertyPicture.getPicturenumberid() }}" class="d-block imageInSlide" src="{{ propertyPicture.getLink() }}" alt="{{ propertyPicture.getDetails() }}">
                                                 <div class="carousel-caption d-none d-md-block">
                                                     <h5 class="carouselCaptionTitle">{{ propertyPicture.getDetails() }}</h5>
                                                     <br>
