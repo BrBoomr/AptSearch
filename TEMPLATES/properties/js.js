@@ -4,35 +4,80 @@
 
 //-------------------------Database Objects
 
+//Variables from property
+var rentMin
+var rentMax
+var squareFootageMin
+var squareFootageMax
+var bedMin
+var bedMax
+var bathMin
+var bathMax
+//Variables from address
+var continentTypeID
+var countryTypeID
+var state
+var locality
+var zipCode
+//variables form type lists
+var applianceTypeIDs
+var utilityTypeIDs
+var perkTypeIDs
+var amenityTypeIDs
+
+function getBool(variable){
+    return (variable) ? true : false
+}
+
 $(document).ready(function() {
-    $.ajax({
-        method: "POST",
-        url: baseurl + "/search/sectionsOpen",
-        success: function (response) {
-            v = JSON.parse(response) //grab data from get request
+    //-------------------------Read and process URL
 
-            var sectionStates = [
-                v["rent"], v["squareFootage"], 
-                v["bed"], v["bath"],
-                v["continentTypeID"], v["countryTypeID"], 
-                v["state"], v["locality"], v["zipCode"],
-                v["applianceTypeIDs"], v["utilityTypeIDs"], 
-                v["perkTypeIDs"], v["amenityTypeIDs"]
-            ]
+    var url_string = window.location.href;
+    var url = new URL(url_string);
 
-            var sectionIDs = [
-                "rentSection", "squareFootageSection", "bedSection", "bathSection",
-                "continentSection", "countrySection", "localitySection", "stateSection", "zipCodeSection",
-                "appliancesSection", "utilitiesSection", "perksSection", "amenitiesSection"
-            ]
+    //Variables from property
+    rentMin = url.searchParams.get("rentMin")
+    rentMax = url.searchParams.get("rentMax")
+    squareFootageMin = url.searchParams.get("squareFootageMin")
+    squareFootageMax = url.searchParams.get("squareFootageMax")
+    bedMin = url.searchParams.get("bedMin")
+    bedMax = url.searchParams.get("bedMax")
+    bathMin = url.searchParams.get("bathMin")
+    bathMax = url.searchParams.get("bathMax")
+    //Variables from address
+    continentTypeID = url.searchParams.get("continentTypeID")
+    countryTypeID = url.searchParams.get("countryTypeID")
+    state = url.searchParams.get("state")
+    locality = url.searchParams.get("locality")
+    zipCode = url.searchParams.get("zipCode")
+    //variables form type lists
+    applianceTypeIDs = url.searchParams.get("applianceTypeIDs")
+    utilityTypeIDs = url.searchParams.get("utilityTypeIDs")
+    perkTypeIDs = url.searchParams.get("perkTypeIDs")
+    amenityTypeIDs = url.searchParams.get("amenityTypeIDs")
 
-            var index;
-            for(index = 0; index < sectionIDs.length; index++){
-                console.log(sectionIDs[index] + " is in state " + sectionStates[index])
-                if(sectionStates[index]) openSearch(sectionIDs[index])
-            }
-        }
-    });
+    //-------------------------Open sections with set parameters
+
+    var sectionStates = [
+        (getBool(rentMin) || getBool(rentMax)), 
+        (getBool(squareFootageMin) || getBool(squareFootageMax)), 
+        (getBool(bedMin) || getBool(bedMax)), (getBool(bathMin) || getBool(bathMax)),
+        getBool(continentTypeID), getBool(countryTypeID),
+        getBool(state), getBool(locality), getBool(zipCode), 
+        getBool(applianceTypeIDs), getBool(utilityTypeIDs),
+        getBool(perkTypeIDs), getBool(amenityTypeIDs)
+    ]
+
+    var sectionIDs = [
+        "rentSection", "squareFootageSection", "bedSection", "bathSection",
+        "continentSection", "countrySection", "localitySection", "stateSection", "zipCodeSection",
+        "appliancesSection", "utilitiesSection", "perksSection", "amenitiesSection"
+    ]
+
+    var index;
+    for(index = 0; index < sectionIDs.length; index++){
+        if(sectionStates[index]) openSearchManually(sectionIDs[index])
+    };
 })
 
 //-------------------------Slide Connection
@@ -179,7 +224,7 @@ function closeSearch(sectionCloseButton){
 }
 
 $(".sectionOpenButton").click(function(){
-    openSearch(this)  
+    openSearchFromButton(this)  
 })
 
 $(".sectionCloseButton").click(function(){

@@ -7,10 +7,6 @@ function getValue($name){
 	return (isset($_GET[$name])) ? $_GET[$name] : null;
 }
 
-function getBool($name){
-	return (getValue($name) != null) ? true : false;
-}
-
 function postValue($name){
 	return (isset($_POST[$name])) ? $_POST[$name] : null;
 }
@@ -252,47 +248,6 @@ $app->get('/', function ($request, $response, $args) {
 		'amenityTypes' => AmenitytypeQuery::create()->find()]);
 	return $response;
 });
-
-$app->post('/search/sectionsOpen', function ($request, $response, $args) {
-
-	//NOTE: technically this is a POST route 
-	//that gets information from GET global php variables
-	return json_encode(array(
-		//property
-		'rent'=> (getBool('rentMin') || getBool('rentMax')),
-		'squareFootage'=> (getBool('squareFootageMin') || getBool('squareFootageMax')),
-		'bed'=> (getBool('bedMin') || getBool('bedMax')),
-		'bath'=> (getBool('bathMin') || getBool('bathMax')),
-		//location
-		'continentTypeID' => getBool('continentTypeID'),
-		'countryTypeID' => getBool('countryTypeID'),
-		'state' => getBool('state'),
-		'locality' => getBool('locality'),
-		'zipCode' => getBool('zipCode'),
-		//list
-		'applianceTypeIDs' => getBool('applianceTypeIDs'),
-		'utilityTypeIDs' => getBool('utilityTypeIDs'),
-		'perkTypeIDs' => getBool('perkTypeIDs'),
-		'amenityTypeIDs' => getBool('amenityTypeIDs'),
-	));
-});
-
-/*
-$app->post('/searchData', function ($request, $response, $args) {
-	$getProperties = postValue('getProperties');
-	$getAddresses = postValue('getAddresses');
-	$getApplianceTypes = postValue('getApplianceTypes');
-	$getUtilityTypes = postValue('getUtilityTypes');
-	$getPerkTypes = postValue('getPerkTypes');
-	$getAmenityTypes = postValue('getAmenityTypes');
-
-	
-	//return required data
-	return json_encode(array(
-		'userID' => $userID, 'message' => $message
-	));
-}
-*/
 
 //--------------------------------------------------Manage Page--------------------------------------------------
 
