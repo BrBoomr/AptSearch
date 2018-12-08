@@ -1,3 +1,5 @@
+//console.log("length " + JSON.stringify(properties))
+
 /*-------------------------show hide password-------------------------*/
 
 $(".passwordShowHide > .input-group > .input-group-append > .showHide").on("click", function(){
@@ -21,7 +23,6 @@ $(".passwordShowHide > .input-group > .input-group-append > .showHide").on("clic
 
 /*--------------------------------------------------SEARCH BAR--------------------------------------------------*/
 
-var dbTable = ["pool", "playground", "adult only pool", "gym", "Activity center", "tenis court", "basketball court", "game room"]
 var listSections = $("#listSections > div")
 
 function resetSearchBar(searchBar, searchBarOptions){
@@ -58,6 +59,23 @@ function closeSearchBar(searchBar){
 
 function submitSearch(searchBar){
     console.log("add tag: " + $(searchBar).val())
+}
+
+//NOTE: at the moment this includes only exact matches
+function getSuggestions(word, allWords){
+    //convert word to lower case for simplicity
+    word = word.toLowerCase()
+
+    //We Need to have the ENTIRE word inside of our suggestion for it be a proper suggestion
+    var wordIndex
+    var suggestionIndices = []
+    for(wordIndex = 0; wordIndex < allWords.length; wordIndex++){
+        var thisWord = allWords[wordIndex].toLowerCase()
+        if(thisWord.includes(word)) suggestionIndices.push(wordIndex)
+    }
+    
+    //return all exact matches
+    return suggestionIndices
 }
 
 /*-------------------------show/hide search bar-------------------------*/
@@ -167,33 +185,19 @@ $(listSections).each(function(index, listSection){
 
 /*-------------------------search suggestions-------------------------*/
 
-/*
-//NOTE: at the moment this includes only exact matches
-function getSuggestions(word, allWords){
-    //convert word to lower case for simplicity
-    word = word.toLowerCase()
-
-    //We Need to have the ENTIRE word inside of our suggestion for it be a proper suggestion
-    var wordIndex
-    var suggestionIndices = []
-    for(wordIndex = 0; wordIndex < allWords.length; wordIndex++){
-        var thisWord = allWords[wordIndex].toLowerCase()
-        if(thisWord.includes(word)) suggestionIndices.push(wordIndex)
-    }
-    
-    //return all exact matches
-    return suggestionIndices
-}
-
 $(".editor > .editorSearchBar > div > input").on("change keyup paste", function(){
+
+    console.log("length " + properties.length)
+    /*
     console.log("new value is " + $(this).val())
 
     //return all indices of matches
     getSuggestions($(this).val(), dbTable)
+    */
 
     //<div class="dropdown-item">text1</div>
 })
-*/
+
 
 /*
 $(listSections).each(function(listSection, index){

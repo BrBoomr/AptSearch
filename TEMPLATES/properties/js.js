@@ -2,10 +2,94 @@
 
 //-------------------------Logic-------------------------
 
+//-------------------------Database Objects
+
+var url = new URL(window.location.href);
+
+//Variables from property
+var rentMin
+var rentMax
+var squareFootageMin
+var squareFootageMax
+var bedMin
+var bedMax
+var bathMin
+var bathMax
+//Variables from address
+var continentTypeID
+var countryTypeID
+var state
+var locality
+var zipCode
+//variables form type lists
+var applianceTypeIDs
+var utilityTypeIDs
+var perkTypeIDs
+var amenityTypeIDs
+
+function getBool(variable){
+    return (variable) ? true : false
+}
+
+$(document).ready(function() {
+    //-------------------------Read URL and extract parameters
+
+    //Variables from property
+    rentMin = url.searchParams.get("rentMin")
+    rentMax = url.searchParams.get("rentMax")
+    squareFootageMin = url.searchParams.get("squareFootageMin")
+    squareFootageMax = url.searchParams.get("squareFootageMax")
+    bedMin = url.searchParams.get("bedMin")
+    bedMax = url.searchParams.get("bedMax")
+    bathMin = url.searchParams.get("bathMin")
+    bathMax = url.searchParams.get("bathMax")
+    //Variables from address
+    continentTypeID = url.searchParams.get("continentTypeID")
+    countryTypeID = url.searchParams.get("countryTypeID")
+    state = url.searchParams.get("state")
+    locality = url.searchParams.get("locality")
+    zipCode = url.searchParams.get("zipCode")
+    //variables form type lists
+    applianceTypeIDs = url.searchParams.get("applianceTypeIDs")
+    utilityTypeIDs = url.searchParams.get("utilityTypeIDs")
+    perkTypeIDs = url.searchParams.get("perkTypeIDs")
+    amenityTypeIDs = url.searchParams.get("amenityTypeIDs")
+
+    //-------------------------Make sure parameters meet the spec
+    //NOTE this happens with the html
+
+    //-------------------------Open sections with set parameters
+
+    var sectionStates = [
+        (getBool(rentMin) || getBool(rentMax)), 
+        (getBool(squareFootageMin) || getBool(squareFootageMax)), 
+        (getBool(bedMin) || getBool(bedMax)), (getBool(bathMin) || getBool(bathMax)),
+        getBool(continentTypeID), getBool(countryTypeID),
+        getBool(state), getBool(locality), getBool(zipCode), 
+        getBool(applianceTypeIDs), getBool(utilityTypeIDs),
+        getBool(perkTypeIDs), getBool(amenityTypeIDs)
+    ]
+
+    var sectionIDs = [
+        "rentSection", "squareFootageSection", "bedSection", "bathSection",
+        "continentSection", "countrySection", "localitySection", "stateSection", "zipCodeSection",
+        "appliancesSection", "utilitiesSection", "perksSection", "amenitiesSection"
+    ]
+
+    var index;
+    for(index = 0; index < sectionIDs.length; index++){
+        if(sectionStates[index]) openSearchManually(sectionIDs[index])
+    };
+})
+
 //-------------------------Slide Connection
 
 //wait for our document to load so that we can read the min and max of our sliders from the dom
-$( document ).ready(function() {
+$(document).ready(function() {
+
+    function getInRangeVersion(value, min, max){
+
+    }
 
     sliderContainers = $(".sliderContainer")
     $(sliderContainers).each(function(index){
@@ -30,6 +114,7 @@ $( document ).ready(function() {
         //get our user min/max from our value attributes 
         userMin = parseInt(minText.val())
         userMax = parseInt(maxText.val())
+    
         //since we might not have a user min/max make sure that we have some value to take its place
         userMin = (userMin) ? userMin : actualMin
         userMax = (userMax) ? userMax : actualMax
@@ -39,7 +124,6 @@ $( document ).ready(function() {
             range: true,
             max: actualMax,
             min: actualMin,
-            values: [ userMin , userMax ],
             //when either slider point is moved update the text boxes [UPDATE]
             slide: function( event, ui ) { 
                 minTextBox = $(this).parent().parent().find("div > div > .minText")
@@ -54,7 +138,7 @@ $( document ).ready(function() {
             }
         });
         
-        function getInRangeVersionOfTexBoxValue(textBox, isMin){
+        function passCorrectedValuesToSliderAndGetThem(textBox, isMin){
             newVal = $(textBox).val()
             theSlider = $(textBox).parent().parent().parent().find("div > .theSlider")
             if(newVal){ //make sure the new value exists
@@ -73,7 +157,7 @@ $( document ).ready(function() {
             //set the new value of the slider
             $(theSlider).slider("values", (isMin) ? 0 : 1, newVal)
 
-            //return the newValue
+            //set the value for the textbox
             return newVal
         }
 
@@ -81,7 +165,8 @@ $( document ).ready(function() {
         //DO NOT MESS with what the user is typing
         function textBoxToSlider(textBox, isMin){
             $(textBox).on("change keyup paste", function(){
-                getInRangeVersionOfTexBoxValue(this, isMin)
+                console.log("new values read for isMin " + isMin)
+                passCorrectedValuesToSliderAndGetThem(this, isMin)
             })
         }
 
@@ -90,7 +175,7 @@ $( document ).ready(function() {
 
         function textBoxSubmitOnUnFocus(textBox, isMin) {
             $(textBox).focusout(function() {
-                newVal = getInRangeVersionOfTexBoxValue(this, isMin)
+                newVal = passCorrectedValuesToSliderAndGetThem(this, isMin)
                 //if they instead erased the value dont fill in the value
                 //allow the placeholder to be shown instead
                 if($(this).val()) $(this).val(newVal) 
@@ -111,49 +196,56 @@ $( document ).ready(function() {
 
         textBoxSubmitOnEnter(minText, true)
         textBoxSubmitOnEnter(maxText, false)
+
+        //correct the values in the textBoxes
+        $(minText).val(userMin)
+        $(maxText).val(userMax)
+        userMin = passCorrectedValuesToSliderAndGetThem(minText, true)
+        userMax = passCorrectedValuesToSliderAndGetThem(maxText, false)
+        $(minText).val(userMin)
+        $(maxText).val(userMax)
+
+        //DONT correct the params... they MIGHT be valid in the future
     })
-});
+})
 
 
 //FOR DEBUGGING
 
-
+/*
 var openButtons = $(".sectionOpenButton")
 $.each(openButtons, function(index, openButton){
     $("#" + $(openButton).attr("openSectionID")).show()
 })
-
+*/
 
 //-------------------------Open/Close Buttons
 
-$(".sectionOpenButton").click(function(){
-    //grab the name of the section we want to OPEN
-    sectionName = $(this).attr("openSectionID") 
-    //create the new name of the OPEN button
-    buttonName = sectionName + "button"
-    //set the id of the OPEN button
-    $(this).attr('id', buttonName)
-    //show the filter
+function openSearchManually(sectionName){
     $("#" + sectionName).show() 
-    //hide the OPEN button
-    $(this).hide()
+    sectionOpenButton = $("#showButtonSection").find("button[openSectionID=\'" + sectionName + "\']")
+    $(sectionOpenButton).hide()
+}
 
-    //if it hasnt been done already
-    sectionCloseButton = $("#" + sectionName).find(".sectionRemoveButton")
-    buttonAttribute = $(sectionCloseButton).attr("*[closeSectionID]")
-    if(buttonAttribute == undefined ){
-        //give close buttons a reference to their section
-        $(sectionCloseButton).attr("closeSectionID", sectionName)
-        //and create a listener so that they can close the filter
-        $(sectionCloseButton).click(function(){
-            //grab the name of the section
-            sectionName = $(this).attr("closeSectionID")
-            buttonName = sectionName + "button"
-            //hide the filter
-            $("#" + sectionName).hide() 
-            $("#" + buttonName).show() //show the button
-        })
-    }
+function openSearchFromButton(sectionOpenButton){
+    sectionName = $(sectionOpenButton).attr("openSectionID") 
+    $("#" + sectionName).show() 
+    $(sectionOpenButton).hide()
+}
+
+function closeSearch(sectionCloseButton){
+    sectionName = $(sectionCloseButton).attr("closeSectionID")
+    sectionOpenButton = $("#showButtonSection").find("button[openSectionID=\'" + sectionName + "\']")
+    $("#" + sectionName).hide()
+    $(sectionOpenButton).show()
+}
+
+$(".sectionOpenButton").click(function(){
+    openSearchFromButton(this)  
+})
+
+$(".sectionCloseButton").click(function(){
+    closeSearch(this)
 })
 
 //-------------------------Objects-------------------------

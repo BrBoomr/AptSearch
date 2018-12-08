@@ -39,13 +39,13 @@
                         </div>
                     </div>
                     <div class="col-auto">
-                        <button type="button" class="btn btn-secondary sectionRemoveButton">
+                        <button type="button" closeSectionID = "rentSection" class="btn btn-secondary sectionCloseButton">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
                 </div>
                 <!--******************************Sqft Slider*************************-->
-                <div class="row sliderContainer" id="sqrftSection" style="display: none;">
+                <div class="row sliderContainer" id="squareFootageSection" style="display: none;">
                     <div class="col-auto sliderTitle">
                         <h4>Square Footage</h4>
                     </div>
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <div class="col-auto">
-                        <button type="button" class="btn btn-secondary sectionRemoveButton">
+                        <button type="button" closeSectionID = "squareFootageSection" class="btn btn-secondary sectionCloseButton">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
@@ -93,7 +93,7 @@
                         </div>
                     </div>
                     <div class="col-auto">
-                        <button type="button" class="btn btn-secondary sectionRemoveButton">
+                        <button type="button" closeSectionID = "bedSection" class="btn btn-secondary sectionCloseButton">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
@@ -117,7 +117,7 @@
                         </div>
                     </div>
                     <div class="col-auto">
-                        <button type="button" class="btn btn-secondary sectionRemoveButton">
+                        <button type="button" closeSectionID = "bathSection" class="btn btn-secondary sectionCloseButton">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
@@ -130,16 +130,17 @@
                         <span class="col-auto"><h3>Continent</h3></span>
                         <div class="col-auto">
                             <select class="form-control">
-                                <option>Africa</option>
-                                <option>North America</option>
-                                <option>South America</option>
-                                <option>Europa</option>
-                                <option>Asia</option>
-                                <option>Australia</option>
-                                <option>Antartica</option>
+                                <option id="-1" disabled selected value></option>
+                                {% for continent in continentTypes %}
+                                    <option id="{{ continent.getId() }}"
+                                    {% if continent.getId() == continentTypeID %}
+                                        selected="selected"
+                                    {% endif %}
+                                    >{{ continent.getName() }}</option>
+                                {% endfor %}
                             </select>
                         </div>
-                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromLocation">
+                        <button type="button" closeSectionID = "continentSection" class="btn btn-secondary sectionCloseButton buttonFromLocation">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
@@ -147,43 +148,44 @@
                         <span class="col-auto"><h3>Country</h3></span>
                         <div class="col-auto">
                             <select class="form-control">
-                                <option>Country 1</option>
-                                <option>Country 2</option>
-                                <option>Country 3</option>
-                                <option>Country 4</option>
-                                <option>Country 5</option>
-                                <option>Country 6</option>
-                                <option>Country 7</option>
+                                <option id="-1" disabled selected value></option>
+                                {% for country in countryTypes %}
+                                    <option id="{{ country.getId() }}"
+                                    {% if country.getId() == countryTypeID %}
+                                        selected="selected"
+                                    {% endif %}
+                                    >{{ country.getName() }}</option>
+                                {% endfor %}
                             </select>
                         </div>
-                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromLocation">
+                        <button type="button" closeSectionID = "countrySection" class="btn btn-secondary sectionCloseButton buttonFromLocation">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
                     <div class="row" id="stateSection" style="display: none;">
                         <span class="col-auto"><h3>State</h3></span>
                         <div class="col-auto">
-                            <input type="text" class="form-control" placeholder="State">
+                            <input type="text" class="form-control" placeholder="State" value="{{ state }}">
                         </div>
-                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromLocation">
+                        <button type="button" closeSectionID = "stateSection" class="btn btn-secondary sectionCloseButton buttonFromLocation">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
                     <div class="row" id="localitySection" style="display: none;">
                         <span class="col-auto"><h3>Locality</h3></span>
                         <div class="col-auto">
-                            <input type="text" class="form-control" placeholder="City">
+                            <input type="text" class="form-control" placeholder="City" value="{{ locality }}">
                         </div>
-                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromLocation">
+                        <button type="button" closeSectionID = "localitySection" class="btn btn-secondary sectionCloseButton buttonFromLocation">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
-                    <div class="row" id="zipcodeSection" style="display: none;">
+                    <div class="row" id="zipCodeSection" style="display: none;">
                         <span class="col-auto"><h3>Zip Code</h3></span>
                         <div class="col-auto">
-                            <input type="text" class="form-control" placeholder="Zip">
+                            <input type="text" class="form-control" placeholder="Zip Code" value="{{ zipCode }}">
                         </div>
-                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromLocation">
+                        <button type="button" closeSectionID = "zipCodeSection" class="btn btn-secondary sectionCloseButton buttonFromLocation">
                             <i class="fa fa-times"></i>
                         </button>
                     </div>
@@ -194,27 +196,25 @@
                 <div id="listSections">
                     <div class="row" id = "appliancesSection" style="display: none;">
                         <div class="sectionTitle"><h3>Appliances</h3></div>
-                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
+                        <button type="button" closeSectionID = "appliancesSection" class="btn btn-secondary sectionCloseButton buttonFromList">
                             <i class="fa fa-times"></i>
                         </button>
-                        <div class="chip">
-                            Refridgerator
-                            <button type="button" class="btn btn-light removeChipButton">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="chip">
-                            Gas Stove
-                            <button type="button" class="btn btn-light removeChipButton">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="chip">
-                            Dishwasher
-                            <button type="button" class="btn btn-light removeChipButton">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
+                        {% for applianceTypeID in applianceTypeIDs %}
+                            <!--locate the applianceType with this ID-->
+                            {% set thisApplianceType = null %}
+                            {% for applianceType in applianceTypes %}
+                                {% if applianceType.getId() == applianceTypeID %}
+                                    {% set thisApplianceType = applianceType %}
+                                {% endif %}
+                            {% endfor %}
+                            <!--display this appliance type-->
+                            <div class="chip" id="{{ thisApplianceType.getId() }}">
+                                {{ thisApplianceType.getName() }}
+                                <button type="button" class="btn btn-light removeChipButton">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        {% endfor %}
                         <button type="button" class="btn btn-primary chipLarge addChipButton">
                             <i class="fa fa-plus"></i>
                         </button>
@@ -242,27 +242,25 @@
                     <!--******************************Utilities*************************-->
                     <div class="row" id = "utilitiesSection" style="display: none;">
                         <div class="sectionTitle"><h3>Utilities</h3></div>
-                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
+                        <button type="button" closeSectionID = "utilitiesSection" class="btn btn-secondary sectionCloseButton buttonFromList">
                             <i class="fa fa-times"></i>
                         </button>
-                        <div class="chip">
-                            Trash Pick Up
-                            <button type="button" class="btn btn-light removeChipButton">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="chip">
-                            Dish Cable
-                            <button type="button" class="btn btn-light removeChipButton">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="chip">
-                            Water Heating
-                            <button type="button" class="btn btn-light removeChipButton">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
+                        {% for utilityTypeID in utilityTypeIDs %}
+                            <!--locate the utilityType with this ID-->
+                            {% set thisUtilityType = null %}
+                            {% for utilityType in utilityTypes %}
+                                {% if utilityType.getId() == utilityTypeID %}
+                                    {% set thisUtilityType = utilityType %}
+                                {% endif %}
+                            {% endfor %}
+                            <!--display this utility type-->
+                            <div class="chip" id="{{ thisUtilityType.getId() }}">
+                                {{ thisUtilityType.getName() }}
+                                <button type="button" class="btn btn-light removeChipButton">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        {% endfor %}
                         <button type="button" class="btn btn-primary chipLarge addChipButton">
                             <i class="fa fa-plus"></i>
                         </button>
@@ -290,9 +288,25 @@
                     <!--******************************Perk*************************-->
                     <div class="row" id = "perksSection" style="display: none;">
                         <div class="sectionTitle"><h3>Perk</h3></div>
-                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
+                        <button type="button" closeSectionID = "perksSection" class="btn btn-secondary sectionCloseButton buttonFromList">
                             <i class="fa fa-times"></i>
                         </button>
+                        {% for perkTypeID in perkTypeIDs %}
+                            <!--locate the perkType with this ID-->
+                            {% set thisPerkType = null %}
+                            {% for perkType in perkTypes %}
+                                {% if perkType.getId() == perkTypeID %}
+                                    {% set thisPerkType = perkType %}
+                                {% endif %}
+                            {% endfor %}
+                            <!--display this perk type-->
+                            <div class="chip" id="{{ thisPerkType.getId() }}">
+                                {{ thisPerkType.getName() }}
+                                <button type="button" class="btn btn-light removeChipButton">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        {% endfor %}
                         <button type="button" class="btn btn-primary chipLarge addChipButton">
                             <i class="fa fa-plus"></i>
                         </button>
@@ -320,51 +334,25 @@
                     <!--******************************Amenities*************************-->
                     <div class="row" id = "amenitiesSection" style="display: none;">
                         <div class="sectionTitle"><h3>Amenities</h3></div>
-                        <button type="button" class="btn btn-secondary sectionRemoveButton buttonFromList">
+                        <button type="button" closeSectionID = "amenitiesSection" class="btn btn-secondary sectionCloseButton buttonFromList">
                             <i class="fa fa-times"></i>
                         </button>
-                        <div class="chip">
-                            Pool
-                            <button type="button" class="btn btn-light removeChipButton">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="chip">
-                            Gym
-                            <button type="button" class="btn btn-light removeChipButton">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="chip">
-                            Laundromat
-                            <button type="button" class="btn btn-light removeChipButton">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="chip">
-                            John Doe
-                            <button type="button" class="btn btn-light removeChipButton">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="chip">
-                            Game Room
-                            <button type="button" class="btn btn-light removeChipButton">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="chip">
-                            Playground
-                            <button type="button" class="btn btn-light removeChipButton">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                        <div class="chip">
-                            Jogging Trails
-                            <button type="button" class="btn btn-light removeChipButton">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
+                        {% for amenityTypeID in amenityTypeIDs %}
+                            <!--locate the amenityType with this ID-->
+                            {% set thisAmenityType = null %}
+                            {% for amenityType in amenityTypes %}
+                                {% if amenityType.getId() == amenityTypeID %}
+                                    {% set thisAmenityType = amenityType %}
+                                {% endif %}
+                            {% endfor %}
+                            <!--display this amenity type-->
+                            <div class="chip" id="{{ thisAmenityType.getId() }}">
+                                {{ thisAmenityType.getName() }}
+                                <button type="button" class="btn btn-light removeChipButton">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        {% endfor %}
                         <button type="button" class="btn btn-primary chipLarge addChipButton">
                             <i class="fa fa-plus"></i>
                         </button>
@@ -388,18 +376,19 @@
                         </div>
                         <!---->
                     </div>
+                    <hr class="style1">
                 </div>
                 <!--!!!!!!!!!!!!!!!!!!!!!!!!!Apply Filter Buttons!!!!!!!!!!!!!!!!!!!!!!!!!-->
-                <div class="row btn-row">
+                <div class="row btn-row" id="showButtonSection">
                     <button type="button" openSectionID = "rentSection" class="sectionOpenButton btn btn-primary sectionAddButton">Rent</button>
-                    <button type="button" openSectionID = "sqrftSection" class="sectionOpenButton btn btn-secondary sectionAddButton">Square Footage</button>
+                    <button type="button" openSectionID = "squareFootageSection" class="sectionOpenButton btn btn-secondary sectionAddButton">Square Footage</button>
                     <button type="button" openSectionID = "bedSection" class="sectionOpenButton btn btn-success sectionAddButton">Bedrooms</button>
                     <button type="button" openSectionID = "bathSection" class="sectionOpenButton btn btn-danger sectionAddButton">Bathrooms</button>
                     <button type="button" openSectionID = "continentSection" class="sectionOpenButton btn btn-warning sectionAddButton">Continent</button>
                     <button type="button" openSectionID = "countrySection" class="sectionOpenButton btn btn-info sectionAddButton">Country</button>
                     <button type="button" openSectionID = "stateSection" class="sectionOpenButton btn btn-dark sectionAddButton">State</button>
                     <button type="button" openSectionID = "localitySection" class="sectionOpenButton btn btn-primary sectionAddButton">Locality</button>
-                    <button type="button" openSectionID = "zipcodeSection" class="sectionOpenButton btn btn-secondary sectionAddButton">Zip Code</button>
+                    <button type="button" openSectionID = "zipCodeSection" class="sectionOpenButton btn btn-secondary sectionAddButton">Zip Code</button>
                     <button type="button" openSectionID = "appliancesSection" class="sectionOpenButton btn btn-success sectionAddButton">Appliances</button>
                     <button type="button" openSectionID = "utilitiesSection" class="sectionOpenButton btn btn-danger sectionAddButton">Utilities</button>
                     <button type="button" openSectionID = "perksSection" class="sectionOpenButton btn btn-warning sectionAddButton">Perks</button>

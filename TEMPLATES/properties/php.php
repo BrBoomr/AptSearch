@@ -36,12 +36,12 @@ function isNotInMinMax($value, $min, $max){
 	else return false;
 }
 
-function doesNotPassFilter($filter, $value){
+function failsFilter($filter, $value){
 	if($filter && $filter != $value) return true;
 	else return false;
 }
 
-function failsFilter($filters, $property, $field){
+function failsListFilter($filters, $property, $field){
 	if($filters){
 		foreach($filters as &$filter){
 			$propertyValues = null; //instantiate var
@@ -59,14 +59,15 @@ function failsFilter($filters, $property, $field){
 	else return false;
 }
 
-//--------------------------------------------------Search Page--------------------------------------------------
+function returnBool($object){
+	if($object) return true;
+	else return false;
+}
 
-//(1) Page is bookmarkable
-//(2) We are able to go back to this page
-//(3) All parameters are optional
-$app->get('/', function ($request, $response, $args) {
-	
-    //-------------------------read in optional parameters
+function filter($properties, $returnParams = false){
+
+	//-------------------------read in search parameters
+
 	//Variables from property
 	$rentMin = getValue('rentMin');
 	$rentMax = getValue('rentMax');
@@ -81,24 +82,14 @@ $app->get('/', function ($request, $response, $args) {
 	$countryTypeID = getValue('countryTypeID');
 	$state = getValue('state');
 	$locality = getValue('locality');
-	$zipCode = getValue('locality');
-	//Grab all list type variables (TODO figure out how to extract this data since it should be in json format)
-	$applianceTypeIDs = getValue('applianceTypeIDs');
-	$utilityTypeIDs = getValue('utilityTypeIDs');
-	$perkTypeIDs = getValue('perkTypeIDs');
-    $amenityTypeIDs = getValue('amenityTypeIDs');
-    
-    //-------------------------filter properties
-
-	//Filter out properties that are not available
-	$properties = PropertyQuery::create()->filterByAvailable(true)->find(); //only show properties that are currently available
-
-	$actualRentMinMax = getMinMax($properties, "rent");
-	$actualSquareFootageMinMax = getMinMax($properties, "sqrft");
-	$actualBedMinMax = getMinMax($properties, "bed");
-	$actualBathMinMax = getMinMax($properties, "bath");
-
-	//-------------------------Gather properties that meet our search requirements(for initial display)
+	$zipCode = getValue('zipCode');
+	//variables form type lists
+	$applianceTypeIDs = json_decode(getValue('applianceTypeIDs'));
+	$utilityTypeIDs = json_decode(getValue('utilityTypeIDs'));
+	$perkTypeIDs = json_decode(getValue('perkTypeIDs'));
+	$amenityTypeIDs = json_decode(getValue('amenityTypeIDs'));
+	
+	//-------------------------fitler with search parameters
 
 	$filteredPropertyIDs = [];
 	foreach($properties as &$property){
@@ -111,71 +102,117 @@ $app->get('/', function ($request, $response, $args) {
 		//-----Variables from address
 		$propertyAddress = AddressQuery::create()->findPk($property->getAddressid());
 
-		if(doesNotPassFilter($continentTypeID, $propertyAddress->getContinenttypeid())) continue;
-		if(doesNotPassFilter($countryTypeID, $countryTypeID != $propertyAddress->getCountrytypeid())) continue;
-		if(doesNotPassFilter($state, $propertyAddress->getState())) continue;
-		if(doesNotPassFilter($locality, $propertyAddress->getLocality())) continue;
-		if(doesNotPassFilter($zipCode, $propertyAddress->getZipcode())) continue;
+		if(failsFilter($continentTypeID, $propertyAddress->getContinenttypeid())) continue;
+		if(failsFilter($countryTypeID, $countryTypeID != $propertyAddress->getCountrytypeid())) continue;
+		if(failsFilter($state, $propertyAddress->getState())) continue;
+		if(failsFilter($locality, $propertyAddress->getLocality())) continue;
+		if(failsFilter($zipCode, $propertyAddress->getZipcode())) continue;
 		
 		//-----Variables from Lists (appliances, utilities, perks, amenities)
-		if(failsFilter($applianceTypeIDs, $property, "appliance")) continue;
-		if(failsFilter($utilityTypeIDs, $property, "utility")) continue;
-		if(failsFilter($perkTypeIDs, $property, "perk")) continue;
-		if(failsFilter($amenityTypeIDs, $property, "amenity")) continue;
+		if(failsListFilter($applianceTypeIDs, $property, "appliance")) continue;
+		if(failsListFilter($utilityTypeIDs, $property, "utility")) continue;
+		if(failsListFilter($perkTypeIDs, $property, "perk")) continue;
+		if(failsListFilter($amenityTypeIDs, $property, "amenity")) continue;
 
 		//since we have meet all the condition because php has not continued to the next iteration
 		array_push($filteredPropertyIDs, $property->getId());
-    }
+	}
+
+	//-------------------------return IDs of properties that meet search parameters
+
+	if($returnParams){
+		return array(
+			//variables from property
+			//--Rent
+			'rentMin'=>$rentMin,
+			'rentMax'=>$rentMax,
+			//--Square Footage
+			'squareFootageMin'=>$squareFootageMin,
+			'squareFootageMax'=>$squareFootageMax,
+			//--Bedroom
+			'bedMin'=>$bedMin,
+			'bedMax'=>$bedMax,
+			//--Bathroom
+			'bathMin'=>$bathMin,
+			'bathMax'=>$bathMax,
+
+			//Variables from address
+			'continentTypeID' => $continentTypeID,
+			'countryTypeID' => $countryTypeID,
+			'state' => $state,
+			'locality' => $locality,
+			'zipCode' => $zipCode,
+
+			//variables from list
+			'applianceTypeIDs' => $applianceTypeIDs,
+			'utilityTypeIDs' => $utilityTypeIDs,
+			'perkTypeIDs' => $perkTypeIDs,
+			'amenityTypeIDs' => $amenityTypeIDs,
+
+			//return the property IDs that meet our filters
+			'filteredPropertyIDs' => $filteredPropertyIDs
+		);
+	}
+	else return $filteredPropertyIDs;
+}
+
+//--------------------------------------------------Search Page--------------------------------------------------
+
+//-----INITIAL SEARCH
+//(1) Page is bookmarkable
+//(2) We are able to go back to this page
+//(3) All parameters are optional
+$app->get('/', function ($request, $response, $args) {
+    //-------------------------filter properties
+
+	$properties = PropertyQuery::create()->filterByAvailable(true)->find(); //only show properties that are currently available
+	$result = filter($properties, true);
+
+	//-------------------------calculate min max of sliders
+
+	$actualRentMinMax = getMinMax($properties, "rent");
+	$actualSquareFootageMinMax = getMinMax($properties, "sqrft");
+	$actualBedMinMax = getMinMax($properties, "bed");
+	$actualBathMinMax = getMinMax($properties, "bath");
     
     //-------------------------pass data to twig template
 
-	//pass the entirety of the database because 
-	//(1) we have yet to find a way to do queries inside of the html file with twig
-	//(2) if we don't do the above we will be force to reload the page or make significant additions to it to display new properties
-	$pictures = PictureQuery::create()->find();
-	$addresses = AddressQuery::create()->find();
-
-	//pass all the things we search on
-	$continentTypes = ContinenttypeQuery::create()->find(); 
-	$countryTypes = CountrytypeQuery::create()->find(); 
-	$applianceTypes = 
-
-	//pass all the parameters and generate the page
 	$this->view->render($response, "/properties/html.html", 
 		['user'=>current_user(), 
 		'search'=>true, 
 
 		//-------------------------Pass initial filtered properties
 
-		'filteredPropertyIDs'=>$filteredPropertyIDs,
+		'filteredPropertyIDs'=>$result["filteredPropertyIDs"],
 
-		//-------------------------Pass in all the filters		
+		//-------------------------Pass in all the filters (so we can modify the search bar on initial start up)
 
 		//variables from property
 		//--Rent
-		'rentMin'=>$rentMin,
-		'rentMax'=>$rentMax,
+		'rentMin'=>$result["rentMin"],
+		'rentMax'=>$result["rentMax"],
 		//--Square Footage
-		'squareFootageMin'=>$squareFootageMin,
-		'squareFootageMax'=>$squareFootageMax,
+		'squareFootageMin'=>$result["squareFootageMin"],
+		'squareFootageMax'=>$result["squareFootageMax"],
 		//--Bedroom
-		'bedMin'=>$bedMin,
-		'bedMax'=>$bedMax,
+		'bedMin'=>$result["bedMin"],
+		'bedMax'=>$result["bedMax"],
 		//--Bathroom
-		'bathMin'=>$bathMin,
-		'bathMax'=>$bathMax,
+		'bathMin'=>$result["bathMin"],
+		'bathMax'=>$result["bathMax"],
 
 		//Variables from address
-		'continentTypeID' => $continentTypeID,
-		'countryTypeID' => $countryTypeID,
-		'state' => $state,
-		'locality' => $locality,
-		'zipCode' => $zipCode,
+		'continentTypeID' => $result["continentTypeID"],
+		'countryTypeID' => $result["countryTypeID"],
+		'state' => $result["state"],
+		'locality' => $result["locality"],
+		'zipCode' => $result["zipCode"],
+
 		//variables from list
-		'applianceTypeIDs' => $applianceTypeIDs,
-		'utilityTypeIDs' => $utilityTypeIDs,
-		'perkTypeIDs' => $perkTypeIDs,
-		'amenityTypeIDs' => $amenityTypeIDs,
+		'applianceTypeIDs' => $result["applianceTypeIDs"],
+		'utilityTypeIDs' => $result["utilityTypeIDs"],
+		'perkTypeIDs' => $result["perkTypeIDs"],
+		'amenityTypeIDs' => $result["amenityTypeIDs"],
 
 		//-------------------------Pass extra slider params
 
@@ -193,17 +230,22 @@ $app->get('/', function ($request, $response, $args) {
 		'actualBathMin' => $actualBathMinMax[0],
 		'actualBathMax' => $actualBathMinMax[1],
 
-		//-------------------------Pass all database objects
+		//-------------------------Pass database objects used to fill html
 		
+		//used to fill each property card
 		'properties' => $properties,
-		'pictures' => $pictures, //we will have to filter to find the which tuple(s) belong to which property in the twig template
-		'addresses' => $addresses, //ditto as above
-		'continentTypes' => $continentTypes,
-		'countryTypes' => $countryTypes,
-		'appliances' => ApplianceQuery::create()->find(),
-		'utilities' => UtilityQuery::create()->find(),
-		'perks' => PerkQuery::create()->find(),
-		'amenities' => AmenityQuery::create()->find()]);
+		'pictures' => PictureQuery::create()->find(), //we will have to filter to find the which tuple(s) belong to which property in the twig template
+		'addresses' => AddressQuery::create()->find(), //ditto as above
+
+		//used to populate both drop downs (then the filter selects the correct option)
+		'continentTypes' => ContinenttypeQuery::create()->find(),
+		'countryTypes' => CountrytypeQuery::create()->find(),
+
+		//used to populate all the chips (after the filter gives each of the chips an id)
+		'applianceTypes' => AppliancetypeQuery::create()->find(),
+		'utilityTypes' => UtilitytypeQuery::create()->find(),
+		'perkTypes' => PerktypeQuery::create()->find(),
+		'amenityTypes' => AmenitytypeQuery::create()->find()]);
 	return $response;
 });
 

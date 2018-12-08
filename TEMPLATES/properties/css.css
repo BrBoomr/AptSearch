@@ -2,7 +2,11 @@
     margin-bottom: 15px;
 }
 
-#locationSection > div{
+#continentSection, 
+#countrySection, 
+#stateSection, 
+#localitySection, 
+#zipcodeSection{
     margin: 5px;
 }
 
@@ -78,7 +82,7 @@
 }
 
 /*-----filter remove button-----*/
-.sectionRemoveButton {
+.sectionCloseButton {
     width: 30px;
     height: 30px;
     border-radius: 15px;
