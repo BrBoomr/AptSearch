@@ -56,8 +56,9 @@ var E_formStreet = "#editStreetName"
 var E_formBuildNum = "#editBuildingNum"
 var E_formAptNum = "#editAptNum"
 //--Add Picture
-var E_picURL = "#url"
-var E_picDescription = "#picturDescription"
+var E_pictureURL = "#url"
+var E_pictureDescription = "#picturDescription"
+var E_pictureSubmit = "#submitPic"
 //--Property Fields
 var E_formPostName="#editPostName"
 var E_formRent="#editRent"
@@ -224,3 +225,21 @@ $(E_formSubmit).click((e)=>{
 
     })
 })
+
+function verifyPictureURL(pictureURL, picturDescription){
+    $.ajax({
+        method: "post",
+        url: baseurl + "/verifyProperty/pic",
+        data: {
+            picture
+        },
+        dataType: "json",
+        success: function (response) {
+            
+        },
+        fail: function(response){
+            console.log("Internal Error")
+        },
+
+    })
+}
