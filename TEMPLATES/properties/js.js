@@ -4,6 +4,8 @@
 
 //-------------------------Database Objects
 
+var url = new URL(window.location.href);
+
 //Variables from property
 var rentMin
 var rentMax
@@ -30,10 +32,7 @@ function getBool(variable){
 }
 
 $(document).ready(function() {
-    //-------------------------Read and process URL
-
-    var url_string = window.location.href;
-    var url = new URL(url_string);
+    //-------------------------Read URL and extract parameters
 
     //Variables from property
     rentMin = url.searchParams.get("rentMin")
@@ -55,6 +54,9 @@ $(document).ready(function() {
     utilityTypeIDs = url.searchParams.get("utilityTypeIDs")
     perkTypeIDs = url.searchParams.get("perkTypeIDs")
     amenityTypeIDs = url.searchParams.get("amenityTypeIDs")
+
+    //-------------------------Make sure parameters meet the spec
+    //NOTE this happens with the html
 
     //-------------------------Open sections with set parameters
 
@@ -85,6 +87,10 @@ $(document).ready(function() {
 //wait for our document to load so that we can read the min and max of our sliders from the dom
 $(document).ready(function() {
 
+    function getInRangeVersion(value, min, max){
+
+    }
+
     sliderContainers = $(".sliderContainer")
     $(sliderContainers).each(function(index){
 
@@ -108,6 +114,7 @@ $(document).ready(function() {
         //get our user min/max from our value attributes 
         userMin = parseInt(minText.val())
         userMax = parseInt(maxText.val())
+    
         //since we might not have a user min/max make sure that we have some value to take its place
         userMin = (userMin) ? userMin : actualMin
         userMax = (userMax) ? userMax : actualMax
@@ -117,7 +124,6 @@ $(document).ready(function() {
             range: true,
             max: actualMax,
             min: actualMin,
-            values: [ userMin , userMax ],
             //when either slider point is moved update the text boxes [UPDATE]
             slide: function( event, ui ) { 
                 minTextBox = $(this).parent().parent().find("div > div > .minText")
@@ -132,7 +138,7 @@ $(document).ready(function() {
             }
         });
         
-        function getInRangeVersionOfTexBoxValue(textBox, isMin){
+        function passCorrectedValuesToSliderAndGetThem(textBox, isMin){
             newVal = $(textBox).val()
             theSlider = $(textBox).parent().parent().parent().find("div > .theSlider")
             if(newVal){ //make sure the new value exists
@@ -151,7 +157,7 @@ $(document).ready(function() {
             //set the new value of the slider
             $(theSlider).slider("values", (isMin) ? 0 : 1, newVal)
 
-            //return the newValue
+            //set the value for the textbox
             return newVal
         }
 
@@ -159,7 +165,8 @@ $(document).ready(function() {
         //DO NOT MESS with what the user is typing
         function textBoxToSlider(textBox, isMin){
             $(textBox).on("change keyup paste", function(){
-                getInRangeVersionOfTexBoxValue(this, isMin)
+                console.log("new values read for isMin " + isMin)
+                passCorrectedValuesToSliderAndGetThem(this, isMin)
             })
         }
 
@@ -168,7 +175,7 @@ $(document).ready(function() {
 
         function textBoxSubmitOnUnFocus(textBox, isMin) {
             $(textBox).focusout(function() {
-                newVal = getInRangeVersionOfTexBoxValue(this, isMin)
+                newVal = passCorrectedValuesToSliderAndGetThem(this, isMin)
                 //if they instead erased the value dont fill in the value
                 //allow the placeholder to be shown instead
                 if($(this).val()) $(this).val(newVal) 
@@ -189,6 +196,16 @@ $(document).ready(function() {
 
         textBoxSubmitOnEnter(minText, true)
         textBoxSubmitOnEnter(maxText, false)
+
+        //correct the values in the textBoxes
+        $(minText).val(userMin)
+        $(maxText).val(userMax)
+        userMin = passCorrectedValuesToSliderAndGetThem(minText, true)
+        userMax = passCorrectedValuesToSliderAndGetThem(maxText, false)
+        $(minText).val(userMin)
+        $(maxText).val(userMax)
+
+        //DONT correct the params... they MIGHT be valid in the future
     })
 })
 
