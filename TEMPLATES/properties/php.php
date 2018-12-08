@@ -103,7 +103,7 @@ function filter($properties, $returnParams = false){
 		$propertyAddress = AddressQuery::create()->findPk($property->getAddressid());
 
 		if(failsFilter($continentTypeID, $propertyAddress->getContinenttypeid())) continue;
-		if(failsFilter($countryTypeID, $countryTypeID != $propertyAddress->getCountrytypeid())) continue;
+		if(failsFilter($countryTypeID, $propertyAddress->getCountrytypeid())) continue;
 		if(failsFilter($state, $propertyAddress->getState())) continue;
 		if(failsFilter($locality, $propertyAddress->getLocality())) continue;
 		if(failsFilter($zipCode, $propertyAddress->getZipcode())) continue;

@@ -122,16 +122,16 @@ $(document).ready(function() {
             $(maxText).val("")
 
             //have the slider found out values are reset
-            passCorrectedValuesToSliderAndGetThem(minText, true)
-            passCorrectedValuesToSliderAndGetThem(maxText, false)
+            passCorrectedValuesToSliderAndGetThem(minText, true) //correct without knowing max
+            passCorrectedValuesToSliderAndGetThem(maxText, false) //correct with knowing min
+            passCorrectedValuesToSliderAndGetThem(minText, true) //correct with know max
 
             //-----remove the params from the url
 
             //remove "section" from the name
             sectionName = sectionName.substring(0, (sectionName.length - 7))
             
-            deleteParam(sectionName + "Min")
-            deleteParam(sectionName + "Max")
+            delete2Params(sectionName + "Min", sectionName + "Max")
         }
         else{
             if(sectionName == "continentSection" || sectionName == "countrySection"){
@@ -358,6 +358,19 @@ $(document).ready(function() {
 
         //delete the param
         searchParams.delete(paramName)
+
+        //load up new url
+        var newUrl = "?" + searchParams.toString()
+        window.location.replace(newUrl)
+    }
+
+    //specifically used to delete both params when a slider section is closed
+    function delete2Params(param1, param2) {
+        var searchParams = new URLSearchParams(url.search.slice(1))
+
+        //delete the param
+        searchParams.delete(param1)
+        searchParams.delete(param2)
 
         //load up new url
         var newUrl = "?" + searchParams.toString()
