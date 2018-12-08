@@ -2,6 +2,8 @@
 
 //-------------------------Logic-------------------------
 
+var url = new URL(window.location.href);
+
 //wait for our document to load so that we can read the min and max of our sliders from the dom
 $(document).ready(function() {
 
@@ -14,9 +16,13 @@ $(document).ready(function() {
         "amenitiesSection" :"amenityTypeIDs" 
     };
 
-    //-------------------------Database Objects
+    //make sure the url stay user readable
+    function toNewURL(newURL){
+        newURL = decodeURIComponent(newURL)
+        window.location.replace(newURL)
+    }
 
-    var url = new URL(window.location.href);
+    //-------------------------Database Objects
 
     //Variables from property
     var rentMin
@@ -303,12 +309,32 @@ $(document).ready(function() {
     addOrSetNewTextBoxValue($(locationTextboxes).eq(1))
     addOrSetNewTextBoxValue($(locationTextboxes).eq(2))
 
-    //-------------------------Appliance, Utility, Perk, and Amenity REMOVAL
+    //-------------------------Appliance, Utility, Perk, and Amenity
 
-    var applianceChips = $("appliancesSection > div > button")
-    var utilityChips = $("utilitiesSection > div > button")
-    var perkChips = $("perksSection > div > button")
-    var amenityChips = $("amenitiesSection > div > button")
+    function chipRemove(chipButton){
+        $(chipButton).on("click", function(){
+            sectionName = $(chipButton).parent().parent().attr('id')
+            chipID = $(chipButton).parent().attr('id')
+            paramName = chipSectionID_to_paramName[sectionName]
+
+            console.log("removing id " + chipID + " from param " + paramName)
+        })
+    }
+
+    function createChipRemovers(sectionChips){
+        $(sectionChips).each(function(index, item){
+            chipRemove(item)
+        })
+    }
+
+    var applianceChipButtons = $("#appliancesSection > div > button")
+    var utilityChipButtons = $("#utilitiesSection > div > button")
+    var perkChipButtons = $("#perksSection > div > button")
+    var amenityChipButtons = $("#amenitiesSection > div > button")
+    createChipRemovers(applianceChipButtons)
+    createChipRemovers(utilityChipButtons)
+    createChipRemovers(perkChipButtons)
+    createChipRemovers(amenityChipButtons)
 
     //-------------------------Parameters Setting Or Appending
 
@@ -321,7 +347,7 @@ $(document).ready(function() {
 
         //load up new url
         var newUrl = "?" + searchParams.toString()
-        window.location.replace(newUrl)
+        toNewURL(newUrl)
     }
 
     function addOrSetNewSliderValue(sectionName, value, isMin){
@@ -375,7 +401,7 @@ $(document).ready(function() {
 
         //load up new url
         var newUrl = "?" + searchParams.toString()
-        window.location.replace(newUrl)
+        toNewURL(newUrl)
     }
 
     //specifically used to delete both params when a slider section is closed
@@ -388,8 +414,20 @@ $(document).ready(function() {
 
         //load up new url
         var newUrl = "?" + searchParams.toString()
-        window.location.replace(newUrl)
+        toNewURL(newUrl)
     }
 })
+
+function getEncodedURL(){
+    console.log(encodeURIComponent(url))
+}
+
+function getDecodedURL(){
+    console.log(decodeURIComponent(url))
+}
+
+function getURL(){
+    console.log(url)
+}
 
 //-------------------------Objects-------------------------
