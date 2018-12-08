@@ -7,6 +7,10 @@ function getValue($name){
 	return (isset($_GET[$name])) ? $_GET[$name] : null;
 }
 
+function getBool($name){
+	return (getValue($name) != null) ? true : false;
+}
+
 function postValue($name){
 	return (isset($_POST[$name])) ? $_POST[$name] : null;
 }
@@ -56,6 +60,11 @@ function failsListFilter($filters, $property, $field){
 		}
 		return false; //the loop didn't break so you passed all the filters
 	}
+	else return false;
+}
+
+function returnBool($object){
+	if($object) return true;
 	else return false;
 }
 
@@ -242,6 +251,30 @@ $app->get('/', function ($request, $response, $args) {
 		'perkTypes' => PerktypeQuery::create()->find(),
 		'amenityTypes' => AmenitytypeQuery::create()->find()]);
 	return $response;
+});
+
+$app->post('/search/sectionsOpen', function ($request, $response, $args) {
+
+	//NOTE: technically this is a POST route 
+	//that gets information from GET global php variables
+	return json_encode(array(
+		//property
+		'rent'=> (getBool('rentMin') || getBool('rentMax')),
+		'squareFootage'=> (getBool('squareFootageMin') || getBool('squareFootageMax')),
+		'bed'=> (getBool('bedMin') || getBool('bedMax')),
+		'bath'=> (getBool('bathMin') || getBool('bathMax')),
+		//location
+		'continentTypeID' => getBool('continentTypeID'),
+		'countryTypeID' => getBool('countryTypeID'),
+		'state' => getBool('state'),
+		'locality' => getBool('locality'),
+		'zipCode' => getBool('zipCode'),
+		//list
+		'applianceTypeIDs' => getBool('applianceTypeIDs'),
+		'utilityTypeIDs' => getBool('utilityTypeIDs'),
+		'perkTypeIDs' => getBool('perkTypeIDs'),
+		'amenityTypeIDs' => getBool('amenityTypeIDs'),
+	));
 });
 
 /*

@@ -3,34 +3,42 @@
 //-------------------------Logic-------------------------
 
 //-------------------------Database Objects
-/*
-//these object are read in once when the page is saved and then used throughout
 
-//read for search params: RENT | SUARE FOOTAGE | BEDROOMS | BATHROOMS
-var properties
-//read for search params: CONTINENT | COUNTRY | STATE | LOCALITY | ZIP
-var addresses
-//read for search params: APPLIANCE TYPE IDS | UTILITY TYPE IDS | PERK TYPE IDS | AMENITY TYPE IDS
-var appliances
-var utilities
-var perks
-var amenities
+$(document).ready(function() {
+    $.ajax({
+        method: "POST",
+        url: baseurl + "/search/sectionsOpen",
+        success: function (response) {
+            v = JSON.parse(response) //grab data from get request
 
-//read to help create search params
-var applianceTypes
-var utilityTypes
-var perkTypes
-var amenityTypes
+            var sectionStates = [
+                v["rent"], v["squareFootage"], 
+                v["bed"], v["bath"],
+                v["continentTypeID"], v["countryTypeID"], 
+                v["state"], v["locality"], v["zipCode"],
+                v["applianceTypeIDs"], v["utilityTypeIDs"], 
+                v["perkTypeIDs"], v["amenityTypeIDs"]
+            ]
 
-$( document ).ready(function() {
-    
-});
-*/
+            var sectionIDs = [
+                "rentSection", "squareFootageSection", "bedSection", "bathSection",
+                "continentSection", "countrySection", "localitySection", "stateSection", "zipCodeSection",
+                "appliancesSection", "utilitiesSection", "perksSection", "amenitiesSection"
+            ]
+
+            var index;
+            for(index = 0; index < sectionIDs.length; index++){
+                console.log(sectionIDs[index] + " is in state " + sectionStates[index])
+                if(sectionStates[index]) openSearch(sectionIDs[index])
+            }
+        }
+    });
+})
 
 //-------------------------Slide Connection
 
 //wait for our document to load so that we can read the min and max of our sliders from the dom
-$( document ).ready(function() {
+$(document).ready(function() {
 
     sliderContainers = $(".sliderContainer")
     $(sliderContainers).each(function(index){
@@ -137,7 +145,7 @@ $( document ).ready(function() {
         textBoxSubmitOnEnter(minText, true)
         textBoxSubmitOnEnter(maxText, false)
     })
-});
+})
 
 
 //FOR DEBUGGING
@@ -151,25 +159,31 @@ $.each(openButtons, function(index, openButton){
 
 //-------------------------Open/Close Buttons
 
-function openButton(sectionOpenButton){
+function openSearchManually(sectionName){
+    $("#" + sectionName).show() 
+    sectionOpenButton = $("#showButtonSection").find("button[openSectionID=\'" + sectionName + "\']")
+    $(sectionOpenButton).hide()
+}
+
+function openSearchFromButton(sectionOpenButton){
     sectionName = $(sectionOpenButton).attr("openSectionID") 
     $("#" + sectionName).show() 
     $(sectionOpenButton).hide()
 }
 
-function closeButton(sectionCloseButton){
+function closeSearch(sectionCloseButton){
     sectionName = $(sectionCloseButton).attr("closeSectionID")
     sectionOpenButton = $("#showButtonSection").find("button[openSectionID=\'" + sectionName + "\']")
-    $("#" + sectionName).hide() 
+    $("#" + sectionName).hide()
     $(sectionOpenButton).show()
 }
 
 $(".sectionOpenButton").click(function(){
-    openButton(this)  
+    openSearch(this)  
 })
 
 $(".sectionCloseButton").click(function(){
-    closeButton(this)
+    closeSearch(this)
 })
 
 //-------------------------Objects-------------------------
