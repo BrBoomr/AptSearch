@@ -5,6 +5,15 @@
 //wait for our document to load so that we can read the min and max of our sliders from the dom
 $(document).ready(function() {
 
+    //-------------------------Helper Data Structs
+
+    var chipSectionID_to_paramName = {
+        "appliancesSection" : "applianceTypeIDs", 
+        "utilitiesSection" :"utilityTypeIDs",
+        "perksSection" :"perkTypeIDs",
+        "amenitiesSection" :"amenityTypeIDs" 
+    };
+
     //-------------------------Database Objects
 
     var url = new URL(window.location.href);
@@ -104,6 +113,9 @@ $(document).ready(function() {
         $("#" + sectionName).hide()
         $(sectionOpenButton).show()
 
+        //removing "Section" from the back of our sectionName in most cases gives us the param name
+        sectionName = sectionName.substring(0, (sectionName.length - 7))
+
         /*
         //the non sloppy version that would not work for some reason
         slider = $("#" + sectionName + " > .sliderClass")
@@ -113,6 +125,10 @@ $(document).ready(function() {
         || sectionName == "squareFootageSection"
         || sectionName == "bedSection"
         || sectionName == "bathSection"){
+
+            /*
+            //NOTE: client side code that would have let the search happen without reloading
+
             //find the text boxes that hold the values
             minText = $("#" + sectionName).find("div > div > .minText")
             maxText = $("#" + sectionName).find("div > div > .maxText")
@@ -125,31 +141,22 @@ $(document).ready(function() {
             passCorrectedValuesToSliderAndGetThem(minText, true) //correct without knowing max
             passCorrectedValuesToSliderAndGetThem(maxText, false) //correct with knowing min
             passCorrectedValuesToSliderAndGetThem(minText, true) //correct with know max
-
-            //-----remove the params from the url
-
-            //remove "section" from the name
-            sectionName = sectionName.substring(0, (sectionName.length - 7))
+            */
             
             delete2Params(sectionName + "Min", sectionName + "Max")
         }
         else{
             if(sectionName == "continentSection" || sectionName == "countrySection"){
-                //find the param name by using the sectionName
-                sectionName = sectionName.substring(0, (sectionName.length - 7))
-                
                 deleteParam(sectionName + "TypeID")
             }
             else{
                 if(sectionName == "stateSection"
                 || sectionName == "localitySection"
                 || sectionName == "zipCodeSection"){
-                    paramName = sectionName.substring(0, (sectionName.length - 7))
-
-                    deleteParam(paramName)
+                    deleteParam(sectionName)
                 }
                 else{
-                    console.log("list section closed")
+                    deleteParam(chipSectionID_to_paramName[sectionName+"Section"])
                 }
             }
         }
@@ -295,6 +302,13 @@ $(document).ready(function() {
     addOrSetNewTextBoxValue($(locationTextboxes).eq(0))
     addOrSetNewTextBoxValue($(locationTextboxes).eq(1))
     addOrSetNewTextBoxValue($(locationTextboxes).eq(2))
+
+    //-------------------------Appliance, Utility, Perk, and Amenity REMOVAL
+
+    var applianceChips = $("appliancesSection > div > button")
+    var utilityChips = $("utilitiesSection > div > button")
+    var perkChips = $("perksSection > div > button")
+    var amenityChips = $("amenitiesSection > div > button")
 
     //-------------------------Parameters Setting Or Appending
 
