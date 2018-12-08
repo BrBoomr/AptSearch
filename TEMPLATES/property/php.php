@@ -165,6 +165,7 @@ $app->get('/editProperty', function ($request, $response, $args) {
 	}
 });
 
+// Server Side verification code here
 $app->post('/verifyProperty/edit', function ($request, $response, $args) {
     $fields = $this->request->getParam("field");
 	$selectAppliance = $this->request->getParam("appliance");
@@ -179,6 +180,10 @@ $app->post('/verifyProperty/edit', function ($request, $response, $args) {
 	}
 	updateProperty($fields, $selectAppliance,$selectUtility,$selectPerk,$selectAmenity);
 	return json_encode(['valid'=>'true']);
+});
+
+$app->post('/verifyProperty/pic', function($request, $response, $args){
+	
 });
 
 
