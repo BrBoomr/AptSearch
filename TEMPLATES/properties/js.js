@@ -2,36 +2,38 @@
 
 //-------------------------Logic-------------------------
 
-//-------------------------Database Objects
-
-var url = new URL(window.location.href);
-
-//Variables from property
-var rentMin
-var rentMax
-var squareFootageMin
-var squareFootageMax
-var bedMin
-var bedMax
-var bathMin
-var bathMax
-//Variables from address
-var continentTypeID
-var countryTypeID
-var state
-var locality
-var zipCode
-//variables form type lists
-var applianceTypeIDs
-var utilityTypeIDs
-var perkTypeIDs
-var amenityTypeIDs
-
-function getBool(variable){
-    return (variable) ? true : false
-}
-
+//wait for our document to load so that we can read the min and max of our sliders from the dom
 $(document).ready(function() {
+
+    //-------------------------Database Objects
+
+    var url = new URL(window.location.href);
+
+    //Variables from property
+    var rentMin
+    var rentMax
+    var squareFootageMin
+    var squareFootageMax
+    var bedMin
+    var bedMax
+    var bathMin
+    var bathMax
+    //Variables from address
+    var continentTypeID
+    var countryTypeID
+    var state
+    var locality
+    var zipCode
+    //variables form type lists
+    var applianceTypeIDs
+    var utilityTypeIDs
+    var perkTypeIDs
+    var amenityTypeIDs
+
+    function getBool(variable){
+        return (variable) ? true : false
+    }
+
     //-------------------------Read URL and extract parameters
 
     //Variables from property
@@ -78,27 +80,55 @@ $(document).ready(function() {
 
     var index;
     for(index = 0; index < sectionIDs.length; index++){
-        if(sectionStates[index]) openSearchManually(sectionIDs[index])
+        if(sectionStates[index]) openSectionManually(sectionIDs[index])
     };
-})
 
-//-------------------------Slide Connection
+    //-------------------------Slide Connection
 
-//wait for our document to load so that we can read the min and max of our sliders from the dom
-$(document).ready(function() {
+    //ONLY WORKS TO CORRECT ONE OF TWO SLIDERS PEGS
+    function passCorrectedValuesToSliderAndGetThem(textBox, isMin){
+        newVal = $(textBox).val()
+        theSlider = $(textBox).parent().parent().parent().find("div > .theSlider")
+        if(newVal){ //make sure the new value exists
+            //create the range variables for each of the sliders
+            low = (isMin) ? $(theSlider).slider("option", "min") : $(theSlider).slider("values", 0)
+            high = (isMin) ? $(theSlider).slider("values", 1) : high = $(theSlider).slider("option", "max")
+            
+            //if we are not within range make ourselves within range
+            if(newVal < low || high < newVal){
+                if(newVal < low) newVal = low
+                else newVal = high
+            }
+        } //set the slider value to its default
+        else newVal = $(theSlider).slider("option", (isMin) ? "min" : "max")
 
-    function getInRangeVersion(value, min, max){
+        //set the new value of the slider
+        $(theSlider).slider("values", (isMin) ? 0 : 1, newVal)
 
+        //set the value for the textbox
+        return newVal
     }
 
     sliderContainers = $(".sliderContainer")
     $(sliderContainers).each(function(index){
 
-        //TODO... replace this for whatever method we use to search
-        function setNewValue(value, isMin, isFromSlider){
-            if(isFromSlider) console.log("output from slider ")
-            else console.log("output from text box")
-            console.log("----NEW " + ((isMin) ? "min" : "MAX") + "value " + value)
+        function setNewValue(sectionName, value, isMin){
+            //remove "section" from the name
+            sectionName = sectionName.substring(0, (sectionName.length - 7))
+            var searchParams = new URLSearchParams(url.search.slice(1))
+            var paramName = sectionName + ((isMin) ? "Min" : "Max")
+
+            //set or add the parameter depending on the result
+            if(searchParams.has(paramName)){
+                searchParams.set(paramName, value)
+            }
+            else{
+                searchParams.append(paramName, value)
+            }
+
+            //load up new url
+            var newUrl = "?" + searchParams.toString()
+            window.location.replace(newUrl)
         }
 
         //conntect to all the require dom elements
@@ -133,39 +163,16 @@ $(document).ready(function() {
             },
             //output the new values when you let go of the slider [OUTPUT]
             stop: function(event, ui){
-                if(ui.handleIndex == 0) setNewValue(ui.values[0], true, true)
-                else setNewValue(ui.values[1], false, true)
+                sectionID = $(ui.handle).parent().parent().parent().attr('id')
+                if(ui.handleIndex == 0) setNewValue(sectionID, ui.values[0], true)
+                else setNewValue(sectionID, ui.values[1], false)
             }
         });
-        
-        function passCorrectedValuesToSliderAndGetThem(textBox, isMin){
-            newVal = $(textBox).val()
-            theSlider = $(textBox).parent().parent().parent().find("div > .theSlider")
-            if(newVal){ //make sure the new value exists
-                //create the range variables for each of the sliders
-                low = (isMin) ? $(theSlider).slider("option", "min") : $(theSlider).slider("values", 0)
-                high = (isMin) ? $(theSlider).slider("values", 1) : high = $(theSlider).slider("option", "max")
-                
-                //if we are not within range make ourselves within range
-                if(newVal < low || high < newVal){
-                    if(newVal < low) newVal = low
-                    else newVal = high
-                }
-            } //set the slider value to its default
-            else newVal = $(theSlider).slider("option", (isMin) ? "min" : "max")
-
-            //set the new value of the slider
-            $(theSlider).slider("values", (isMin) ? 0 : 1, newVal)
-
-            //set the value for the textbox
-            return newVal
-        }
 
         //when the text changes update the slider [UPDATE]
         //DO NOT MESS with what the user is typing
         function textBoxToSlider(textBox, isMin){
             $(textBox).on("change keyup paste", function(){
-                console.log("new values read for isMin " + isMin)
                 passCorrectedValuesToSliderAndGetThem(this, isMin)
             })
         }
@@ -179,7 +186,8 @@ $(document).ready(function() {
                 //if they instead erased the value dont fill in the value
                 //allow the placeholder to be shown instead
                 if($(this).val()) $(this).val(newVal) 
-                setNewValue(newVal, isMin, false)
+                sectionID = $(this).parent().parent().parent().attr('id')
+                setNewValue(sectionID, newVal, isMin)
             })
         }
 
@@ -197,55 +205,90 @@ $(document).ready(function() {
         textBoxSubmitOnEnter(minText, true)
         textBoxSubmitOnEnter(maxText, false)
 
-        //correct the values in the textBoxes
+        //place the incorrect values in the text boxes
         $(minText).val(userMin)
         $(maxText).val(userMax)
+        //min is corrected without knowing MAX
+        //so all we know is that its within range actualMin and actualMax
         userMin = passCorrectedValuesToSliderAndGetThem(minText, true)
+        //max is corrrected knowing correct MIN
         userMax = passCorrectedValuesToSliderAndGetThem(maxText, false)
+        //min is corrected knowing correct MAX
+        userMin = passCorrectedValuesToSliderAndGetThem(minText, true)
+        //place the corrected values in the text boxes
         $(minText).val(userMin)
         $(maxText).val(userMax)
 
         //DONT correct the params... they MIGHT be valid in the future
     })
-})
 
+    //-------------------------Open/Close Buttons
 
-//FOR DEBUGGING
+    function openSectionManually(sectionName){
+        $("#" + sectionName).show() 
+        sectionOpenButton = $("#showButtonSection").find("button[openSectionID=\'" + sectionName + "\']")
+        $(sectionOpenButton).hide()
+    }
 
-/*
-var openButtons = $(".sectionOpenButton")
-$.each(openButtons, function(index, openButton){
-    $("#" + $(openButton).attr("openSectionID")).show()
-})
-*/
+    function openSectionFromButton(sectionOpenButton){
+        sectionName = $(sectionOpenButton).attr("openSectionID") 
+        $("#" + sectionName).show() 
+        $(sectionOpenButton).hide()
+    }
 
-//-------------------------Open/Close Buttons
+    function closeSection(sectionCloseButton){
+        sectionName = $(sectionCloseButton).attr("closeSectionID")
+        sectionOpenButton = $("#showButtonSection").find("button[openSectionID=\'" + sectionName + "\']")
+        $("#" + sectionName).hide()
+        $(sectionOpenButton).show()
 
-function openSearchManually(sectionName){
-    $("#" + sectionName).show() 
-    sectionOpenButton = $("#showButtonSection").find("button[openSectionID=\'" + sectionName + "\']")
-    $(sectionOpenButton).hide()
-}
+        /*
+        //the non sloppy version that would not work for some reason
+        slider = $("#" + sectionName + " > .sliderClass")
+        if(slider.length != 0) //we are adding a slider
+        */
+        if(sectionName == "rentSection"
+        || sectionName == "squareFootageSection"
+        || sectionName == "bedSection"
+        || sectionName == "bathSection"){
+            //find the text boxes that hold the values
+            minText = $("#" + sectionName).find("div > div > .minText")
+            maxText = $("#" + sectionName).find("div > div > .maxText")
 
-function openSearchFromButton(sectionOpenButton){
-    sectionName = $(sectionOpenButton).attr("openSectionID") 
-    $("#" + sectionName).show() 
-    $(sectionOpenButton).hide()
-}
+            //reset the text boxes
+            $(minText).val("")
+            $(maxText).val("")
 
-function closeSearch(sectionCloseButton){
-    sectionName = $(sectionCloseButton).attr("closeSectionID")
-    sectionOpenButton = $("#showButtonSection").find("button[openSectionID=\'" + sectionName + "\']")
-    $("#" + sectionName).hide()
-    $(sectionOpenButton).show()
-}
+            //have the slider found out values are reset
+            passCorrectedValuesToSliderAndGetThem(minText, true)
+            passCorrectedValuesToSliderAndGetThem(maxText, false)
 
-$(".sectionOpenButton").click(function(){
-    openSearchFromButton(this)  
-})
+            //-----remove the params from the url
 
-$(".sectionCloseButton").click(function(){
-    closeSearch(this)
+            //remove "section" from the name
+            sectionName = sectionName.substring(0, (sectionName.length - 7))
+            var searchParams = new URLSearchParams(url.search.slice(1))
+
+            //delete the params
+            searchParams.delete(sectionName + "Min")
+            searchParams.delete(sectionName + "Max")
+
+            //load up new url
+            var newUrl = "?" + searchParams.toString()
+            window.location.replace(newUrl)
+        }
+        else{
+            console.log(" DOES NOT have slider")
+        }
+    }
+
+    $(".sectionOpenButton").click(function(){
+        openSectionFromButton(this)  
+    })
+
+    $(".sectionCloseButton").click(function(){
+        closeSection(this)
+    })
 })
 
 //-------------------------Objects-------------------------

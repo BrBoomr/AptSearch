@@ -106,3 +106,25 @@
 .sectionAddButton {
     margin: 5px;
 }
+
+/*-----add spacing between sections-----*/
+
+#allSections > div {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#allSections > #locationSections, #allSections > #listSections {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#allSections > #listSections > div {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#allSections > #locationSections > div {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
