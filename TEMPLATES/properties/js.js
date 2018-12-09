@@ -434,16 +434,4 @@ $(document).ready(function() {
     }
 })
 
-function getEncodedURL(){
-    console.log(encodeURIComponent(url))
-}
-
-function getDecodedURL(){
-    console.log(decodeURIComponent(url))
-}
-
-function getURL(){
-    console.log(url)
-}
-
 //-------------------------Objects-------------------------

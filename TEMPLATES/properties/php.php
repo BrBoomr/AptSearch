@@ -252,8 +252,9 @@ $app->get('/', function ($request, $response, $args) {
 $app->post('/getID', function ($request, $response, $args) {
 	$paramName = (isset($_POST['paramName'])) ? $_POST['paramName'] : null;
 	$tagName = (isset($_POST['tagName'])) ? $_POST['tagName'] : null;
+	$addTag = (isset($_POST['addTag'])) ? $_POST['addTag'] : null;
 
-	if($paramName && $tagName) {
+	if($paramName && $tagName && $addTag) {
 		//grab the appropiate id
 		$tagID = null;
 		if($paramName == "applianceTypeIDs"){
@@ -275,22 +276,54 @@ $app->post('/getID', function ($request, $response, $args) {
 
 		//if the id doesnt exists create the tag
 		if(is_null($tagID)){
-			$newTag = null;
-			if($paramName == "applianceTypeIDs") $newTag = new ApplianceType();
-			else if($paramName == "utilityTypeIDs") $newTag = new UtilityType();
-			else if($paramName == "perkTypeIDs") $newTag = new PerkType();
-			else $newTag = new AmenityType();
-			$newTag->setName($tagName);
-			$newTag->save();
-			$tagID = $newTag->getId();
+			if($addTag){
+				$newTag = null;
+				if($paramName == "applianceTypeIDs") $newTag = new ApplianceType();
+				else if($paramName == "utilityTypeIDs") $newTag = new UtilityType();
+				else if($paramName == "perkTypeIDs") $newTag = new PerkType();
+				else $newTag = new AmenityType();
+				$newTag->setName($tagName);
+				$newTag->save();
+				$tagID = $newTag->getId();
+			}
+			else $tagID = -1;
 		}
 
 		//return required data
 		return json_encode(array(
-			'newParamName' => $paramName,
-			'newTagID' => $tagID
+			'paramName' => $paramName,
+			'tagName' => $tagName,
+			'tagID' => $tagID
 		));
 	}
+});
+
+$app->post('/getList', function ($request, $response, $args) {
+	$sectionName = (isset($_POST['sectionName'])) ? $_POST['sectionName'] : null;
+
+	if($sectionName){
+		$items = null;
+		if($sectionName == "appliancesSection") $items = AppliancetypeQuery::create()->select('name')->find();
+		else if($sectionName == "utilitiesSection") $items = UtilitytypeQuery::create()->select('name')->find();
+		else if($sectionName == "perksSection") $items = PerktypeQuery::create()->select('name')->find();
+		else $items = AmenitytypeQuery::create()->select('name')->find();
+
+		//for some reason this works over returning the $items array 
+		//because aparently that isnt an array? 
+		//perhaps a similar to issue to require ->find() in only some querries
+		$allWords = array_fill(0, count($items), 0);
+		for($i = 0; $i < count($items); $i++){
+			$allWords[$i] = $items[$i];
+		}
+
+		//TODO... sort words on use count
+
+		return json_encode(array(
+			'allWords' => $allWords,
+			'sectionName' => $sectionName
+		));
+	}
+	else return "REQUIRE VARIABLE";
 });
 
 //--------------------------------------------------Manage Page--------------------------------------------------

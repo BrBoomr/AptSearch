@@ -75,6 +75,10 @@
     background-color: #6c757d !important;
 }
 
+.dropdown-item {
+    color: white !important;
+}
+
 .editor > .editorDropdownOuter {
     display: none;
 }

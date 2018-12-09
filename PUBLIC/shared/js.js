@@ -30,8 +30,6 @@ $(".passwordShowHide > .input-group > .input-group-append > .showHide").on("clic
     var hideEye = $(this).find(".hide") 
     var password = $(this).parent().parent().find("input") 
 
-    console.log("show " + $(showEye).css("display"))
-    console.log("hide " + $(hideEye).css("display"))
     if($(showEye).css("display") == "none"){ //user wants to hide
         $(password).attr('type', 'password')
         $(hideEye).css("display","none")
@@ -203,8 +201,6 @@ function addIDtoParamList(id, paramName){
     if(arrayOfIDs == null) arrayOfIDs = []
     arrayOfIDs.push(id);
 
-    console.log("new array " + arrayOfIDs)
-
     if(arrayOfIDs.length != 0){
         setOrAppendParam(paramName, JSON.stringify(arrayOfIDs))
     }
@@ -218,14 +214,14 @@ function getSuggestions(word, allWords){
 
     //We Need to have the ENTIRE word inside of our suggestion for it be a proper suggestion
     var wordIndex
-    var suggestionIndices = []
+    var suggestionWords = []
     for(wordIndex = 0; wordIndex < allWords.length; wordIndex++){
         var thisWord = allWords[wordIndex].toLowerCase()
-        if(thisWord.includes(word)) suggestionIndices.push(wordIndex)
+        if(thisWord.includes(word)) suggestionWords.push(thisWord)
     }
     
     //return all exact matches
-    return suggestionIndices
+    return suggestionWords
 }
 
 function submitSearch(searchBar){
@@ -239,46 +235,77 @@ function submitSearch(searchBar){
         url: baseurl + "/getID",
         data: {
             "paramName" : paramName,
-            "tagName" : tagName
+            "tagName" : tagName,
+            "addTag" : true
         },
         success: function (response) {
             response = JSON.parse(response)
-            var newParamName = response["newParamName"]
-            var newTagID = parseInt(response["newTagID"])
+            var paramName = response["paramName"]
+            var tagID = parseInt(response["tagID"])
 
-            addIDtoParamList(newTagID, newParamName)
+            addIDtoParamList(tagID, paramName)
         }
     });
 }
 
-function addOption(select, text, id){
+function addOption(select, text, isSelected = false){
     var newOption = "<option class=\"dropdown-item\""
-    + "id=\"" + id + "\"" + ">" 
+    + ((isSelected) ? "selected" : "") + ">" 
     + text + "</div>"
     $(select).append(newOption);
 }
 
+//set the maximum ammount of suggestions displayed
+var maxSuggestions = 3
+
 $(".editor > .editorSearchBar > div > input").on("change keyup paste", function(){
-    //wipe all of the data in the editor select
+    //make the connections to all the data we will require
     var dropdownContainer = $(this).parent().parent().parent().find(".editorDropdownOuter")
+    var dropdownSelect = $(dropdownContainer).find(".editorDropdownInner")
+
+    //wipe all previous suggestions
+    $(dropdownSelect).empty()
 
     if($(this).val() != ""){
+
         $(dropdownContainer).show()
-        var dropdownSelect = $(dropdownContainer).find(".editorDropdownInner")
-        $(dropdownSelect).empty()
-        addOption(dropdownSelect, $(this).val(), -1)
+        var sectionName = $(this).parent().parent().parent().parent().attr('id')
+
+        $.ajax({
+            method: "POST",
+            url: baseurl + "/getList",
+            data: {
+                "sectionName" : sectionName
+            },
+            success: function (response) {
+                //get params from post
+                response = JSON.parse(response)
+                var sectionName = response["sectionName"]
+                var allWords = response["allWords"]
+
+                //derive some params from post
+                var inputTag = $("#" + sectionName).find(".editor > .editorSearchBar > div > input")
+                var dropdownSelect = $("#" + sectionName).find(".editor > .editorDropdownOuter > .editorDropdownInner")
+                var word = $(inputTag).val()
+
+                //use params to make suggestions
+                var suggestions = getSuggestions(word, allWords)
+
+                //insert the word that we have typed as the first option
+                addOption(dropdownSelect, word, true)
+
+                //insert all the other suggestions
+                var suggestionCount = 0
+                var index
+                for(index = 0; index < suggestions.length; index++){
+                    if(suggestions[index] != word){
+                        addOption(dropdownSelect, suggestions[index], false)
+                        suggestionCount++
+                        if(suggestionCount >= maxSuggestions) break;
+                    }
+                }
+            }
+        });
     }
     else $(dropdownContainer).hide()
-
-    //grab param list name from id of editor
-
-    //param list name tells us what table to requestion suggestions from
-
-    //make sure you dont show a suggestion that is equivalent to what you typed
-    //in other words... only show what you type additional to the suggestions
-    //IFF it hasnt been found in the suggestions
-
-    //the filled in suggestions are also buttons that let you submit data to be added or used
-
-    //TODO... get all the suggestions
 })
