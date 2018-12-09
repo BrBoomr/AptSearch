@@ -315,9 +315,19 @@ $(document).ready(function() {
         $(chipButton).on("click", function(){
             sectionName = $(chipButton).parent().parent().attr('id')
             chipID = $(chipButton).parent().attr('id')
+            chipIDInt = parseInt(chipID)
             paramName = chipSectionID_to_paramName[sectionName]
 
-            console.log("removing id " + chipID + " from param " + paramName)
+            var searchParams = new URLSearchParams(url.search.slice(1))
+            var paramValue = searchParams.get(paramName)
+            var arrayOfIDs = JSON.parse(paramValue)
+            var index = arrayOfIDs.indexOf(chipIDInt)
+            arrayOfIDs.splice(index, 1)
+
+            if(arrayOfIDs.length != 0){
+                setOrAppendParam(paramName, JSON.stringify(arrayOfIDs))
+            }
+            else deleteParam(paramName)
         })
     }
 
