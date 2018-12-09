@@ -11,20 +11,30 @@ var chipSectionID_to_paramName = {
     "amenitiesSection" :"amenityTypeIDs" 
 };
 
+//make sure the url stay user readable
+function toNewURL(newURL){
+    newURL = decodeURIComponent(newURL)
+    window.location.replace(newURL)
+}
+
+function setOrAppendParam(name, value){
+    var searchParams = new URLSearchParams(url.search.slice(1))
+
+    //set or add the parameter depending on the result
+    if(searchParams.has(name)) searchParams.set(name, value)
+    else searchParams.append(name, value)
+
+    //load up new url
+    var newUrl = "?" + searchParams.toString()
+    toNewURL(newUrl)
+}
+
 //-------------------------Repeated in SHARED.JS end
 
 var url = new URL(window.location.href);
 
 //wait for our document to load so that we can read the min and max of our sliders from the dom
 $(document).ready(function() {
-
-    //-------------------------Helper Data Structs
-
-    //make sure the url stay user readable
-    function toNewURL(newURL){
-        newURL = decodeURIComponent(newURL)
-        window.location.replace(newURL)
-    }
 
     //-------------------------Database Objects
 
@@ -355,18 +365,6 @@ $(document).ready(function() {
     createChipRemovers(amenityChipButtons)
 
     //-------------------------Parameters Setting Or Appending
-
-    function setOrAppendParam(name, value){
-        var searchParams = new URLSearchParams(url.search.slice(1))
-
-        //set or add the parameter depending on the result
-        if(searchParams.has(name)) searchParams.set(name, value)
-        else searchParams.append(name, value)
-
-        //load up new url
-        var newUrl = "?" + searchParams.toString()
-        toNewURL(newUrl)
-    }
 
     function addOrSetNewSliderValue(sectionName, value, isMin){
         //remove "section" from the name

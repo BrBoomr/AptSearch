@@ -5,6 +5,24 @@ var chipSectionID_to_paramName = {
     "amenitiesSection" :"amenityTypeIDs" 
 };
 
+//make sure the url stay user readable
+function toNewURL(newURL){
+    newURL = decodeURIComponent(newURL)
+    window.location.replace(newURL)
+}
+
+function setOrAppendParam(name, value){
+    var searchParams = new URLSearchParams(url.search.slice(1))
+
+    //set or add the parameter depending on the result
+    if(searchParams.has(name)) searchParams.set(name, value)
+    else searchParams.append(name, value)
+
+    //load up new url
+    var newUrl = "?" + searchParams.toString()
+    toNewURL(newUrl)
+}
+
 /*-------------------------show hide password-------------------------*/
 
 $(".passwordShowHide > .input-group > .input-group-append > .showHide").on("click", function(){
@@ -182,16 +200,15 @@ function addIDtoParamList(id, paramName){
     var searchParams = new URLSearchParams(url.search.slice(1))
     var paramValue = searchParams.get(paramName)
     var arrayOfIDs = JSON.parse(paramValue)
-    var index = arrayOfIDs.indexOf(id)
+    if(arrayOfIDs == null) arrayOfIDs = []
+    arrayOfIDs.push(id);
 
-    console.log("the index of id " + id + " in paramName " + paramName + " and its index of the array is " + index)
+    console.log("new array " + arrayOfIDs)
 
-    /*
     if(arrayOfIDs.length != 0){
-        setOrAppendParam(paramName, JSON.stringify(id))
+        setOrAppendParam(paramName, JSON.stringify(arrayOfIDs))
     }
     else deleteParam(paramName)
-    */
 }
 
 //NOTE: at the moment this includes only exact matches

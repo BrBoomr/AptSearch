@@ -253,7 +253,7 @@ $app->post('/getID', function ($request, $response, $args) {
 	$paramName = (isset($_POST['paramName'])) ? $_POST['paramName'] : null;
 	$tagName = (isset($_POST['tagName'])) ? $_POST['tagName'] : null;
 
-	if($paramName) {
+	if($paramName && $tagName) {
 		//grab the appropiate id
 		$tagID = null;
 		if($paramName == "applianceTypeIDs"){
@@ -274,13 +274,13 @@ $app->post('/getID', function ($request, $response, $args) {
 		}
 
 		//if the id doesnt exists create the tag
-		if($tagID){
+		if(is_null($tagID)){
 			$newTag = null;
 			if($paramName == "applianceTypeIDs") $newTag = new ApplianceType();
 			else if($paramName == "utilityTypeIDs") $newTag = new UtilityType();
 			else if($paramName == "perkTypeIDs") $newTag = new PerkType();
 			else $newTag = new AmenityType();
-			$newTag->setName($paramName);
+			$newTag->setName($tagName);
 			$newTag->save();
 			$tagID = $newTag->getId();
 		}
