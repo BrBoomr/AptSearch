@@ -9,13 +9,6 @@ $(document).ready(function() {
 
     //-------------------------Helper Data Structs
 
-    var chipSectionID_to_paramName = {
-        "appliancesSection" : "applianceTypeIDs", 
-        "utilitiesSection" :"utilityTypeIDs",
-        "perksSection" :"perkTypeIDs",
-        "amenitiesSection" :"amenityTypeIDs" 
-    };
-
     //make sure the url stay user readable
     function toNewURL(newURL){
         newURL = decodeURIComponent(newURL)

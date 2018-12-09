@@ -1,4 +1,9 @@
-//console.log("length " + JSON.stringify(properties))
+var chipSectionID_to_paramName = {
+    "appliancesSection" : "applianceTypeIDs", 
+    "utilitiesSection" :"utilityTypeIDs",
+    "perksSection" :"perkTypeIDs",
+    "amenitiesSection" :"amenityTypeIDs" 
+};
 
 /*-------------------------show hide password-------------------------*/
 
@@ -191,49 +196,55 @@ function getSuggestions(word, allWords){
 }
 
 function submitSearch(searchBar){
-    console.log("add tag: " + $(searchBar).val())
-
     //grab param list name for id of editor
+    var sectionName = $(searchBar).parent().parent().parent().parent().attr('id')
+    var paramName = chipSectionID_to_paramName[sectionName]
+    var tagName = $(searchBar).val()
 
-    //grab the id of the param by using a post request
-    //if the id doesnt exists then we add the tag [OPTION]
+    $.ajax({
+        method: "POST",
+        url: baseurl + "/getID",
+        data: {
+            "paramName" : paramName,
+            "tagName" : tagName
+        },
+        success: function (response) {
+            response = JSON.parse(response)
+            var newParamName = response["newParamName"]
+            var newTagID = response["newTagID"]
 
-    //get back the id of the new or old tag from the post request
-    //if the id is valid then change up the param list with the code below
-    //else just reload the same exact page [only if we are not allowed to add tags]
-    
-    /*
-    sectionName = $(chipButton).parent().parent().attr('id')
-    chipID = $(chipButton).parent().attr('id')
-    chipIDInt = parseInt(chipID)
-    paramName = chipSectionID_to_paramName[sectionName]
+            var searchParams = new URLSearchParams(url.search.slice(1))
+            var paramValue = searchParams.get(newParamName)
+            var arrayOfIDs = JSON.parse(paramValue)
+            var index = arrayOfIDs.indexOf(newTagID)
+            arrayOfIDs.splice(index, 1)
 
-    var searchParams = new URLSearchParams(url.search.slice(1))
-    var paramValue = searchParams.get(paramName)
-    var arrayOfIDs = JSON.parse(paramValue)
-    var index = arrayOfIDs.indexOf(chipIDInt)
-    arrayOfIDs.splice(index, 1)
-
-    if(arrayOfIDs.length != 0){
-        setOrAppendParam(paramName, JSON.stringify(arrayOfIDs))
-    }
-    else deleteParam(paramName)
-    */
+            if(arrayOfIDs.length != 0){
+                setOrAppendParam(newParamName, JSON.stringify(newTagID))
+            }
+            else deleteParam(newParamName)
+        }
+    });
 }
 
 function addOption(select, text, id){
     var newOption = "<option class=\"dropdown-item\""
     + "id=\"" + id + "\"" + ">" 
-    + $(this).val() + "</div>"
-    $(dropdownSelect).append(newOption);
+    + text + "</div>"
+    $(select).append(newOption);
 }
 
 $(".editor > .editorSearchBar > div > input").on("change keyup paste", function(){
     //wipe all of the data in the editor select
-    var dropdownSelect = $(this).parent().parent().parent().find(".editorDropdownOuter > .editorDropdownInner")
-    $(dropdownSelect).empty()
+    var dropdownContainer = $(this).parent().parent().parent().find(".editorDropdownOuter")
 
-    addOption(dropdownSelect, $(this).val(), -1)
+    if($(this).val() != ""){
+        $(dropdownContainer).show()
+        var dropdownSelect = $(dropdownContainer).find(".editorDropdownInner")
+        $(dropdownSelect).empty()
+        addOption(dropdownSelect, $(this).val(), -1)
+    }
+    else $(dropdownContainer).hide()
 
     //grab param list name from id of editor
 

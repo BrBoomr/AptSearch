@@ -249,6 +249,50 @@ $app->get('/', function ($request, $response, $args) {
 	return $response;
 });
 
+$app->post('/getID', function ($request, $response, $args) {
+	$paramName = (isset($_POST['paramName'])) ? $_POST['paramName'] : null;
+	$tagName = (isset($_POST['tagName'])) ? $_POST['tagName'] : null;
+
+	if($paramName) {
+		//grab the appropiate id
+		$tagID = null;
+		if($paramName == "applianceTypeIDs"){
+			$applianceType = AppliancetypeQuery::create()->findOneByName($tagName);
+			if($applianceType) $tagID = $applianceType->getId();
+		}
+		else if($paramName == "utilityTypeIDs"){
+			$utilityType = UtilitytypeQuery::create()->findOneByName($tagName);
+			if($utilityType) $tagID = $utilityType->getId();
+		}
+		else if($paramName == "perkTypeIDs"){
+			$perkType = PerktypeQuery::create()->findOneByName($tagName);
+			if($perkType) $tagID = $perkType->getId();
+		}
+		else{
+			$amenityType = AmenitytypeQuery::create()->findOneByName($tagName);
+			if($amenityType) $tagID = $amenityType->getId();
+		}
+
+		//if the id doesnt exists create the tag
+		if($tagID){
+			$newTag = null;
+			if($paramName == "applianceTypeIDs") $newTag = new ApplianceType();
+			else if($paramName == "utilityTypeIDs") $newTag = new UtilityType();
+			else if($paramName == "perkTypeIDs") $newTag = new PerkType();
+			else $newTag = new AmenityType();
+			$newTag->setName($paramName);
+			$newTag->save();
+			$tagID = $newTag->getId();
+		}
+
+		//return required data
+		return json_encode(array(
+			'newParamName' => $paramName,
+			'newTagID' => $tagID
+		));
+	}
+});
+
 //--------------------------------------------------Manage Page--------------------------------------------------
 
 //(1) Page is bookmarkable
