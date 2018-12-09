@@ -16,10 +16,7 @@
     display: block;
     height: auto;
     padding: 0px;
-
-    
     border-radius: 30px !important;
-    
     padding-left: 5px; /*must match other LEFT*/
     padding-right: 5px; /*must match other RIGHT*/
 }
@@ -45,7 +42,7 @@
 }
 
 
-.editor > .editorDropdownOuter > .editorDropdownInner > div {
+.editor > .editorDropdownOuter > .editorDropdownInner > option {
     padding: 10px;
 }
 
@@ -71,6 +68,10 @@
     box-shadow: none !important;
     outline-offset: 0px !important;
     outline: none !important;
+}
+
+.editor > .editorDropdownOuter > .editorDropdownInner {
+    background-color: #6c757d !important;
 }
 
 .editor > .editorDropdownOuter {

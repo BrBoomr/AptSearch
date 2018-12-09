@@ -57,27 +57,6 @@ function closeSearchBar(searchBar){
     $(openSearchBarButton).show()
 }
 
-function submitSearch(searchBar){
-    console.log("add tag: " + $(searchBar).val())
-}
-
-//NOTE: at the moment this includes only exact matches
-function getSuggestions(word, allWords){
-    //convert word to lower case for simplicity
-    word = word.toLowerCase()
-
-    //We Need to have the ENTIRE word inside of our suggestion for it be a proper suggestion
-    var wordIndex
-    var suggestionIndices = []
-    for(wordIndex = 0; wordIndex < allWords.length; wordIndex++){
-        var thisWord = allWords[wordIndex].toLowerCase()
-        if(thisWord.includes(word)) suggestionIndices.push(wordIndex)
-    }
-    
-    //return all exact matches
-    return suggestionIndices
-}
-
 /*-------------------------show/hide search bar-------------------------*/
 
 //very complicated CLICK listener
@@ -103,7 +82,16 @@ $("#allContent").on('click', function(event) {
 
     //-------------------------handle plus button => open search bar
 
-    if(plusButtonClicked != null) openSearchBar(plusButtonClicked)
+    if(plusButtonClicked != null){
+        //close all search bars
+        var searchBars = $(listSections).find(".editor >  .editorSearchBar > div > input")
+        $(searchBars).each(function(index, searchBar){
+            closeSearchBar(searchBar)
+        })
+
+        //open this one
+        openSearchBar(plusButtonClicked)
+    }
     else {
         //-------------------------search bar open ?
 
@@ -185,33 +173,50 @@ $(listSections).each(function(index, listSection){
 
 /*-------------------------search suggestions-------------------------*/
 
+//NOTE: at the moment this includes only exact matches
+function getSuggestions(word, allWords){
+    //convert word to lower case for simplicity
+    word = word.toLowerCase()
+
+    //We Need to have the ENTIRE word inside of our suggestion for it be a proper suggestion
+    var wordIndex
+    var suggestionIndices = []
+    for(wordIndex = 0; wordIndex < allWords.length; wordIndex++){
+        var thisWord = allWords[wordIndex].toLowerCase()
+        if(thisWord.includes(word)) suggestionIndices.push(wordIndex)
+    }
+    
+    //return all exact matches
+    return suggestionIndices
+}
+
+function submitSearch(searchBar){
+    console.log("add tag: " + $(searchBar).val())
+}
+
+function addOption(select, text, id){
+    var newOption = "<option class=\"dropdown-item\""
+    + "id=\"" + id + "\"" + ">" 
+    + $(this).val() + "</div>"
+    $(dropdownSelect).append(newOption);
+}
+
 $(".editor > .editorSearchBar > div > input").on("change keyup paste", function(){
+    //wipe all of the data in the editor select
+    var dropdownSelect = $(this).parent().parent().parent().find(".editorDropdownOuter > .editorDropdownInner")
+    $(dropdownSelect).empty()
 
-    console.log("length " + properties.length)
-    /*
-    console.log("new value is " + $(this).val())
+    addOption(dropdownSelect, $(this).val(), -1)
 
-    //return all indices of matches
-    getSuggestions($(this).val(), dbTable)
-    */
+    //grab param list name from id of editor
 
-    //<div class="dropdown-item">text1</div>
+    //param list name tells us what table to requestion suggestions from
+
+    //make sure you dont show a suggestion that is equivalent to what you typed
+    //in other words... only show what you type additional to the suggestions
+    //IFF it hasnt been found in the suggestions
+
+    //the filled in suggestions are also buttons that let you submit data to be added or used
+
+    //TODO... get all the suggestions
 })
-
-
-/*
-$(listSections).each(function(listSection, index){
-    searchbar = $(listSection).find(".editor > .editorSearchBar > div > input")
-
-    //when we change the content on a search bar stuff should happen
-    $(textBox).on("change keyup paste", function(){
-        console.log("stuff should be happeing")
-    })
-
-    //when we unfocus the search bar search bar
-    //1. hide and reset search bar
-    //2. show the open search bar button
-
-    //when we press enter while on the search bar
-})
-*/
