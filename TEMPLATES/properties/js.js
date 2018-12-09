@@ -2,6 +2,17 @@
 
 //-------------------------Logic-------------------------
 
+//-------------------------Repeated in SHARED.JS start
+
+var chipSectionID_to_paramName = {
+    "appliancesSection" : "applianceTypeIDs", 
+    "utilitiesSection" :"utilityTypeIDs",
+    "perksSection" :"perkTypeIDs",
+    "amenitiesSection" :"amenityTypeIDs" 
+};
+
+//-------------------------Repeated in SHARED.JS end
+
 var url = new URL(window.location.href);
 
 //wait for our document to load so that we can read the min and max of our sliders from the dom
@@ -304,6 +315,19 @@ $(document).ready(function() {
 
     //-------------------------Appliance, Utility, Perk, and Amenity
 
+    function removeIDfromParamList(id, paramName){
+        var searchParams = new URLSearchParams(url.search.slice(1))
+        var paramValue = searchParams.get(paramName)
+        var arrayOfIDs = JSON.parse(paramValue)
+        var index = arrayOfIDs.indexOf(id)
+        arrayOfIDs.splice(index, 1)
+    
+        if(arrayOfIDs.length != 0){
+            setOrAppendParam(paramName, JSON.stringify(arrayOfIDs))
+        }
+        else deleteParam(paramName)
+    }
+
     function chipRemove(chipButton){
         $(chipButton).on("click", function(){
             sectionName = $(chipButton).parent().parent().attr('id')
@@ -311,16 +335,7 @@ $(document).ready(function() {
             chipIDInt = parseInt(chipID)
             paramName = chipSectionID_to_paramName[sectionName]
 
-            var searchParams = new URLSearchParams(url.search.slice(1))
-            var paramValue = searchParams.get(paramName)
-            var arrayOfIDs = JSON.parse(paramValue)
-            var index = arrayOfIDs.indexOf(chipIDInt)
-            arrayOfIDs.splice(index, 1)
-
-            if(arrayOfIDs.length != 0){
-                setOrAppendParam(paramName, JSON.stringify(arrayOfIDs))
-            }
-            else deleteParam(paramName)
+            removeIDfromParamList(chipIDInt, paramName)
         })
     }
 

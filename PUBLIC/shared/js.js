@@ -178,6 +178,22 @@ $(listSections).each(function(index, listSection){
 
 /*-------------------------search suggestions-------------------------*/
 
+function addIDtoParamList(id, paramName){
+    var searchParams = new URLSearchParams(url.search.slice(1))
+    var paramValue = searchParams.get(paramName)
+    var arrayOfIDs = JSON.parse(paramValue)
+    var index = arrayOfIDs.indexOf(id)
+
+    console.log("the index of id " + id + " in paramName " + paramName + " and its index of the array is " + index)
+
+    /*
+    if(arrayOfIDs.length != 0){
+        setOrAppendParam(paramName, JSON.stringify(id))
+    }
+    else deleteParam(paramName)
+    */
+}
+
 //NOTE: at the moment this includes only exact matches
 function getSuggestions(word, allWords){
     //convert word to lower case for simplicity
@@ -211,18 +227,9 @@ function submitSearch(searchBar){
         success: function (response) {
             response = JSON.parse(response)
             var newParamName = response["newParamName"]
-            var newTagID = response["newTagID"]
+            var newTagID = parseInt(response["newTagID"])
 
-            var searchParams = new URLSearchParams(url.search.slice(1))
-            var paramValue = searchParams.get(newParamName)
-            var arrayOfIDs = JSON.parse(paramValue)
-            var index = arrayOfIDs.indexOf(newTagID)
-            arrayOfIDs.splice(index, 1)
-
-            if(arrayOfIDs.length != 0){
-                setOrAppendParam(newParamName, JSON.stringify(newTagID))
-            }
-            else deleteParam(newParamName)
+            addIDtoParamList(newTagID, newParamName)
         }
     });
 }
