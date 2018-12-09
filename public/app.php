@@ -11,6 +11,7 @@ require_once '../generated-conf/config.php';
 //-------------------------SETUP-------------------------
 //start our session
 session_start();
+error_reporting(0);
 // adding an external config file to show errors
 $settings = ['displayErrorDetails' => true];
 $app = new \Slim\App(['settings' => $settings]);
