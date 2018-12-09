@@ -192,6 +192,33 @@ function getSuggestions(word, allWords){
 
 function submitSearch(searchBar){
     console.log("add tag: " + $(searchBar).val())
+
+    //grab param list name for id of editor
+
+    //grab the id of the param by using a post request
+    //if the id doesnt exists then we add the tag [OPTION]
+
+    //get back the id of the new or old tag from the post request
+    //if the id is valid then change up the param list with the code below
+    //else just reload the same exact page [only if we are not allowed to add tags]
+    
+    /*
+    sectionName = $(chipButton).parent().parent().attr('id')
+    chipID = $(chipButton).parent().attr('id')
+    chipIDInt = parseInt(chipID)
+    paramName = chipSectionID_to_paramName[sectionName]
+
+    var searchParams = new URLSearchParams(url.search.slice(1))
+    var paramValue = searchParams.get(paramName)
+    var arrayOfIDs = JSON.parse(paramValue)
+    var index = arrayOfIDs.indexOf(chipIDInt)
+    arrayOfIDs.splice(index, 1)
+
+    if(arrayOfIDs.length != 0){
+        setOrAppendParam(paramName, JSON.stringify(arrayOfIDs))
+    }
+    else deleteParam(paramName)
+    */
 }
 
 function addOption(select, text, id){
