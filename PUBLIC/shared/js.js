@@ -199,12 +199,17 @@ function addIDtoParamList(id, paramName){
     var paramValue = searchParams.get(paramName)
     var arrayOfIDs = JSON.parse(paramValue)
     if(arrayOfIDs == null) arrayOfIDs = []
-    arrayOfIDs.push(id);
+    var index = arrayOfIDs.indexOf(id)
 
-    if(arrayOfIDs.length != 0){
-        setOrAppendParam(paramName, JSON.stringify(arrayOfIDs))
+    //make sure we are not adding the same id twice
+    if(index == -1){
+        arrayOfIDs.push(id);
+
+        if(arrayOfIDs.length != 0){
+            setOrAppendParam(paramName, JSON.stringify(arrayOfIDs))
+        }
+        else deleteParam(paramName)
     }
-    else deleteParam(paramName)
 }
 
 //NOTE: at the moment this includes only exact matches
@@ -293,6 +298,17 @@ $(".editor > .editorSearchBar > div > input").on("change keyup paste", function(
 
                 //insert the word that we have typed as the first option
                 addOption(dropdownSelect, word, true)
+
+                //get all the names of the current tags to we dont continue to suggest them
+                var chips = $("#" + sectionName).find(".chip")
+                var index 
+                for(index = 0; index < chips.length; index++){
+                    //get the word inside of this chip
+                    var chipWord = ($(chips).eq(index).text()).trim()
+                    //remove this word from potential suggestions
+                    var chipIndex = suggestions.indexOf(chipWord)
+                    if(chipIndex != -1) suggestions.splice(chipIndex, 1)
+                }
 
                 //insert all the other suggestions
                 var suggestionCount = 0

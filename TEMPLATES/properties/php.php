@@ -49,8 +49,8 @@ function failsListFilter($filters, $property, $field){
 			//grab the proper information
 			if($field == "appliance") $propertyValues = ApplianceQuery::create()->filterByPropertyid($property->getId())->filterByAppliancetypeid($filter)->find();
 			else if($field == "utility") $propertyValues = UtilityQuery::create()->filterByPropertyid($property->getId())->filterByUtilitytypeid($filter)->find();
-			else if($field == "perk") $propertyValues = PerkQuery::create()->filterByPropertyid($property->getId())->filterByPerktypeid($perkTypeID)->find();
-			else $propertyValues = AmenityQuery::create()->filterByPropertyid($property->getId())->filterByAmenitytypeid($amenityTypeID)->find();
+			else if($field == "perk") $propertyValues = PerkQuery::create()->filterByPropertyid($property->getId())->filterByPerktypeid($filter)->find();
+			else $propertyValues = AmenityQuery::create()->filterByPropertyid($property->getId())->filterByAmenitytypeid($filter)->find();
 
 			if(count($propertyValues) == 0) return true;
 		}
@@ -156,6 +156,22 @@ function filter($properties, $returnParams = false){
 	else return $filteredPropertyIDs;
 }
 
+function useCountUpdate($array, $source){
+	for($i = 0; $i < count($array); $i++){
+		$item = null;
+
+		//find what table I am trying to update the count for
+		if($source == "appliance") $item = AppliancetypeQuery::create()->findOneById($array[$i]);
+		else if($source == "utility") $item = AppliancetypeQuery::create()->findOneById($array[$i]);
+		else if($source == "perk") $item = AppliancetypeQuery::create()->findOneById($array[$i]);
+		else $item = AppliancetypeQuery::create()->findOneById($array[$i]);
+
+		//update the count for the table
+		$item->setUsecount($item->getUsecount() + 1);
+		$item->save();
+	}
+}
+
 //--------------------------------------------------Search Page--------------------------------------------------
 
 //-----INITIAL SEARCH
@@ -167,6 +183,13 @@ $app->get('/', function ($request, $response, $args) {
 
 	$properties = PropertyQuery::create()->filterByAvailable(true)->find(); //only show properties that are currently available
 	$result = filter($properties, true);
+
+	//-------------------------Increase the use count of each tag
+
+	useCountUpdate($result["applianceTypeIDs"], "appliance");
+	useCountUpdate($result["utilityTypeIDs"], "utility");
+	useCountUpdate($result["perkTypeIDs"], "perk");
+	useCountUpdate($result["amenityTypeIDs"], "amenity");
 
 	//-------------------------calculate min max of sliders
 
@@ -189,7 +212,7 @@ $app->get('/', function ($request, $response, $args) {
 
 		//variables from property
 		//--Rent
-		'rentMin'=>$result["rentMin"],
+		'rentMin'=> $result["rentMin"],
 		'rentMax'=>$result["rentMax"],
 		//--Square Footage
 		'squareFootageMin'=>$result["squareFootageMin"],
@@ -254,6 +277,9 @@ $app->post('/getID', function ($request, $response, $args) {
 	$tagName = (isset($_POST['tagName'])) ? $_POST['tagName'] : null;
 	$addTag = (isset($_POST['addTag'])) ? $_POST['addTag'] : null;
 
+	//make the tag lower case to increase the chances of a match and to keep things standard
+	$tagName = strtolower($tagName);
+
 	if($paramName && $tagName && $addTag) {
 		//grab the appropiate id
 		$tagID = null;
@@ -303,10 +329,10 @@ $app->post('/getList', function ($request, $response, $args) {
 
 	if($sectionName){
 		$items = null;
-		if($sectionName == "appliancesSection") $items = AppliancetypeQuery::create()->select('name')->find();
-		else if($sectionName == "utilitiesSection") $items = UtilitytypeQuery::create()->select('name')->find();
-		else if($sectionName == "perksSection") $items = PerktypeQuery::create()->select('name')->find();
-		else $items = AmenitytypeQuery::create()->select('name')->find();
+		if($sectionName == "appliancesSection") $items = AppliancetypeQuery::create()->select('name')->orderByUsecount('desc')->find();
+		else if($sectionName == "utilitiesSection") $items = UtilitytypeQuery::create()->select('name')->orderByUsecount('desc')->find();
+		else if($sectionName == "perksSection") $items = PerktypeQuery::create()->select('name')->orderByUsecount('desc')->find();
+		else $items = AmenitytypeQuery::create()->select('name')->orderByUsecount('desc')->find();
 
 		//for some reason this works over returning the $items array 
 		//because aparently that isnt an array? 
