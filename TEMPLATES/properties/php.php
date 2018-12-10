@@ -157,18 +157,22 @@ function filter($properties, $returnParams = false){
 }
 
 function useCountUpdate($array, $source){
-	for($i = 0; $i < count($array); $i++){
-		$item = null;
-
-		//find what table I am trying to update the count for
-		if($source == "appliance") $item = AppliancetypeQuery::create()->findOneById($array[$i]);
-		else if($source == "utility") $item = AppliancetypeQuery::create()->findOneById($array[$i]);
-		else if($source == "perk") $item = AppliancetypeQuery::create()->findOneById($array[$i]);
-		else $item = AppliancetypeQuery::create()->findOneById($array[$i]);
-
-		//update the count for the table
-		$item->setUsecount($item->getUsecount() + 1);
-		$item->save();
+	if($array){
+		foreach($array as &$value){
+			$item = null;
+	
+			//find what table I am trying to update the count for
+			if($source == "appliance") $item = AppliancetypeQuery::create()->findOneById($value);
+			else if($source == "utility") $item = AppliancetypeQuery::create()->findOneById($value);
+			else if($source == "perk") $item = AppliancetypeQuery::create()->findOneById($value);
+			else $item = AppliancetypeQuery::create()->findOneById($value);
+	
+			//update the count for the table
+			if($item){
+				$item->setUsecount($item->getUsecount() + 1);
+				$item->save();
+			}
+		}
 	}
 }
 
@@ -334,20 +338,22 @@ $app->post('/getList', function ($request, $response, $args) {
 		else if($sectionName == "perksSection") $items = PerktypeQuery::create()->select('name')->orderByUsecount('desc')->find();
 		else $items = AmenitytypeQuery::create()->select('name')->orderByUsecount('desc')->find();
 
-		//for some reason this works over returning the $items array 
-		//because aparently that isnt an array? 
-		//perhaps a similar to issue to require ->find() in only some querries
-		$allWords = array_fill(0, count($items), 0);
-		for($i = 0; $i < count($items); $i++){
-			$allWords[$i] = $items[$i];
+		if($items){
+			//for some reason this works over returning the $items array 
+			//because aparently that isnt an array? 
+			//perhaps a similar to issue to require ->find() in only some querries
+			$allWords = array_fill(0, count($items), 0);
+			for($i = 0; $i < count($items); $i++){
+				$allWords[$i] = $items[$i];
+			}
+
+			//TODO... sort words on use count
+
+			return json_encode(array(
+				'allWords' => $allWords,
+				'sectionName' => $sectionName
+			));
 		}
-
-		//TODO... sort words on use count
-
-		return json_encode(array(
-			'allWords' => $allWords,
-			'sectionName' => $sectionName
-		));
 	}
 	else return "REQUIRE VARIABLE";
 });

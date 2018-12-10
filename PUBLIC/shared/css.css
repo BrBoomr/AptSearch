@@ -79,6 +79,19 @@
     color: white !important;
 }
 
+.dropdown-item:hover {
+    background-color: transparent;
+}
+
+.dropdown-item:active, .dropdown-item:focus, .dropdown-item-selected {
+    background-color: black !important;
+}
+
+.dropdown-item:active, .dropdown-item:focus, .dropdown-item:hover, .dropdown-item-selected{
+    color: white !important;
+    /*cursor: pointer !important;*/
+}
+
 .editor > .editorDropdownOuter {
     display: none;
 }

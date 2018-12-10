@@ -2,37 +2,6 @@
 
 {% block content %}
 
-    <h1>VIEW PROPERTY PAGE</h1>
-    <br>
-    Because we have access to the property tuple we have access to its id which is: {{ property.getId() }}
-    <br>
-    Because we have access to properties address(and we also passed continent and country name based on that) we can tell you its: 
-    <br>
-    continent: {{ continent.getName() }} | country: {{ country.getName() }} | state: {{ address.getState() }} | locality {{ address.getLocality() }}
-    <br>
-    street name: {{ address.getStreetname() }} | building identifier: {{ address.getBuildingidentifier() }} | apartment identifier : {{ address.getApartmentidentifier() }} | zipCode: {{ address.getZipcode() }}
-    <br>
-    Because we have access to this property's pictures we can tell you there are {{ pictures|length }} " pictures"
-    <br>
-    Because we have access to this property's appliances we can tell you there are {{ appliances|length }} " appliances"
-    <br>
-    Because we have access to this property's utilities we can tell you there are {{ utilities|length }} "utilities"
-    <br>
-    Because we have access to this property's amenities we can tell you there are {{ amenities|length }} "amenities"
-    <br>
-    Because we have access to this property's perks we can tell you there are {{ perks|length }} "perks"
-    <br>
-    Because we have access to this property's issues we can tell you there are {{ issues|length }} "issues"
-    <br>
-    The owner of this property is {{ owner.getName() }} and has email {{ owner.getEmail() }} and has {{ phones|length }} phones
-    <br>
-    <br>
-    <br>
-    <h1>UI MOCK UP BELOW</h1>
-    <br>
-    <br>
-    <br>
-
     {% if pictures|length > 0 %}
         <div class="col-md-auto" id="imageColumn">
             <div class="carousel slide" id="slideShow{{ property.getId() }}" data-ride="carousel">
@@ -149,7 +118,6 @@
         </h5>
         <p class="card-text">
             <!-- All of this source code is in an .html file -->
-            <!-- { } is the syntax used to call php code in slim -->
             <!-- property is the object passed after querying the database -->
             <!-- If there are any details in the property row, then display the details -->
             {% if property.getDetails() %}
