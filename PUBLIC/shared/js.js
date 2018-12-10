@@ -50,9 +50,9 @@ function resetSearchBar(searchBar, searchBarOptions){
     //reset search bar
     $(searchBar).val("") //clear search bar
     //delete all possible items the search bar could have created
-    $(searchBarOptions).each(function(searchBarOption, index){
-        $(searchBarOption).remove()
-    })
+    $(searchBarOptions).empty()
+    //the the container that holds drop down options
+    $(searchBarOptions).parent().hide()
 }
 
 function openSearchBar(openSearchBarButton){
@@ -61,7 +61,7 @@ function openSearchBar(openSearchBarButton){
     var searchBar = $(searchBarContainer).find(".editorSearchBar > div > input")
     var searchBarOptions = $(searchBarContainer).find(".editorDropdownOuter > .editorDropdownInner")
     //reset search bar
-    resetSearchBar(searchBar)
+    resetSearchBar(searchBar, searchBarOptions)
     //show and hide objects
     $(searchBarContainer).show() //show the search bar
     $(openSearchBarButton).hide() //hide the open search bar button
@@ -161,38 +161,37 @@ $("#allContent").on('click', function(event) {
 //TODO... ONLY do this when this list item is the same one the search bar originally had
 $(listSections).each(function(index, listSection){
     var searchBar = $(listSection).find(".editor > .editorSearchBar > div > input")
-    $(searchBar).keypress(function(key) {
+    $(searchBar).keyup(function(key) {
         if (event.which == 27 ) { //Esc key
-            closeSearchBar(searchBar)
+            var options = $(searchBar).parent().parent().parent().find(".editorDropdownOuter >  .editorDropdownInner > option")
+            var firstOption = $(options).eq(0)
+
+            if($(firstOption).hasClass("dropdown-item-selected")){
+                closeSearchBar(searchBar)
+            }
+            else{
+                //remove the selected class from all the options
+                var i
+                for(i=0; i<options.length; i++){
+                    $(options).eq(i).removeClass("dropdown-item-selected")
+                }
+
+                //add the class to the first option
+                $(firstOption).addClass("dropdown-item-selected")
+
+                //grab its OLD value from its ID
+                var oldVal = $(searchBar).attr('id')
+                $(searchBar).attr('id',"")
+
+                //set the new value
+                $(searchBar).val(oldVal)
+            }
+
         }
     });
 })
 
 /*-------------------------search submission-------------------------*/
-
-$(listSections).each(function(index, listSection){
-    //if you press the search icon 
-    //the search will execute and the search bar will close
-    var searchButton = $(listSection).find(".editor > .editorSearchBar > div > button")
-    $(searchButton).on("click", function(event){
-        event.preventDefault()
-        searchBar = $(this).parent().parent().find("div > input")
-        submitSearch(searchBar)
-        closeSearchBar(searchBar)
-    })
-
-    //if you press enter within the search bar
-    //the search will execute and the search bar will close
-    var searchBar = $(listSection).find(".editor > .editorSearchBar > div > input")
-    $(searchBar).keypress(function(key) {
-        if (event.which == 13 ) { //Enter key
-            submitSearch(searchBar)
-            closeSearchBar(searchBar)
-        }
-    });
-})
-
-/*-------------------------search suggestions-------------------------*/
 
 function addIDtoParamList(id, paramName){
     var searchParams = new URLSearchParams(url.search.slice(1))
@@ -210,23 +209,6 @@ function addIDtoParamList(id, paramName){
         }
         else deleteParam(paramName)
     }
-}
-
-//NOTE: at the moment this includes only exact matches
-function getSuggestions(word, allWords){
-    //convert word to lower case for simplicity
-    word = word.toLowerCase()
-
-    //We Need to have the ENTIRE word inside of our suggestion for it be a proper suggestion
-    var wordIndex
-    var suggestionWords = []
-    for(wordIndex = 0; wordIndex < allWords.length; wordIndex++){
-        var thisWord = allWords[wordIndex].toLowerCase()
-        if(thisWord.includes(word)) suggestionWords.push(thisWord)
-    }
-    
-    //return all exact matches
-    return suggestionWords
 }
 
 function submitSearch(searchBar){
@@ -253,9 +235,50 @@ function submitSearch(searchBar){
     });
 }
 
+$(listSections).each(function(index, listSection){
+    //if you press the search icon 
+    //the search will execute and the search bar will close
+    var searchButton = $(listSection).find(".editor > .editorSearchBar > div > button")
+    $(searchButton).on("click", function(event){
+        event.preventDefault()
+        searchBar = $(this).parent().parent().find("div > input")
+        submitSearch(searchBar)
+        closeSearchBar(searchBar)
+    })
+
+    //if you press enter within the search bar
+    //the search will execute and the search bar will close
+    var searchBar = $(listSection).find(".editor > .editorSearchBar > div > input")
+    $(searchBar).keypress(function(key) {
+        if (event.which == 13 ) { //Enter key
+            submitSearch(searchBar)
+            closeSearchBar(searchBar)
+        }
+    });
+})
+
+/*-------------------------search suggestions-------------------------*/
+
+//NOTE: at the moment this includes only exact matches
+function getSuggestions(word, allWords){
+    //convert word to lower case for simplicity
+    word = word.toLowerCase()
+
+    //We Need to have the ENTIRE word inside of our suggestion for it be a proper suggestion
+    var wordIndex
+    var suggestionWords = []
+    for(wordIndex = 0; wordIndex < allWords.length; wordIndex++){
+        var thisWord = allWords[wordIndex].toLowerCase()
+        if(thisWord.includes(word)) suggestionWords.push(thisWord)
+    }
+    
+    //return all exact matches
+    return suggestionWords
+}
+
 function addOption(select, text, isSelected = false){
-    var newOption = "<option class=\"dropdown-item\""
-    + ((isSelected) ? "selected" : "") + ">" 
+    var newOption = "<option class=\"dropdown-item"
+    + ((isSelected) ? " dropdown-item-selected" : "") + "\">" 
     + text + "</div>"
     $(select).append(newOption);
 }
@@ -263,65 +286,117 @@ function addOption(select, text, isSelected = false){
 //set the maximum ammount of suggestions displayed
 var maxSuggestions = 3
 
-$(".editor > .editorSearchBar > div > input").on("change keyup paste", function(){
-    //make the connections to all the data we will require
-    var dropdownContainer = $(this).parent().parent().parent().find(".editorDropdownOuter")
-    var dropdownSelect = $(dropdownContainer).find(".editorDropdownInner")
+$(".editor > .editorSearchBar > div > input").keyup(function(key) {
+    if (event.which != 27 && event.which != 38 && event.which != 40) {
+        //make the connections to all the data we will require
+        var dropdownContainer = $(this).parent().parent().parent().find(".editorDropdownOuter")
+        var dropdownSelect = $(dropdownContainer).find(".editorDropdownInner")
 
-    //wipe all previous suggestions
-    $(dropdownSelect).empty()
+        //wipe all previous suggestions
+        $(dropdownSelect).empty()
 
-    if($(this).val() != ""){
+        if($(this).val() != ""){
 
-        $(dropdownContainer).show()
-        var sectionName = $(this).parent().parent().parent().parent().attr('id')
+            $(dropdownContainer).show()
+            var sectionName = $(this).parent().parent().parent().parent().attr('id')
 
-        $.ajax({
-            method: "POST",
-            url: baseurl + "/getList",
-            data: {
-                "sectionName" : sectionName
-            },
-            success: function (response) {
-                //get params from post
-                response = JSON.parse(response)
-                var sectionName = response["sectionName"]
-                var allWords = response["allWords"]
+            $.ajax({
+                method: "POST",
+                url: baseurl + "/getList",
+                data: {
+                    "sectionName" : sectionName
+                },
+                success: function (response) {
+                    //get params from post
+                    response = JSON.parse(response)
+                    var sectionName = response["sectionName"]
+                    var allWords = response["allWords"]
 
-                //derive some params from post
-                var inputTag = $("#" + sectionName).find(".editor > .editorSearchBar > div > input")
-                var dropdownSelect = $("#" + sectionName).find(".editor > .editorDropdownOuter > .editorDropdownInner")
-                var word = $(inputTag).val()
+                    //derive some params from post
+                    var inputTag = $("#" + sectionName).find(".editor > .editorSearchBar > div > input")
+                    var dropdownSelect = $("#" + sectionName).find(".editor > .editorDropdownOuter > .editorDropdownInner")
+                    var word = $(inputTag).val()
 
-                //use params to make suggestions
-                var suggestions = getSuggestions(word, allWords)
+                    //use params to make suggestions
+                    var suggestions = getSuggestions(word, allWords)
 
-                //insert the word that we have typed as the first option
-                addOption(dropdownSelect, word, true)
+                    //insert the word that we have typed as the first option
+                    addOption(dropdownSelect, word, true)
 
-                //get all the names of the current tags to we dont continue to suggest them
-                var chips = $("#" + sectionName).find(".chip")
-                var index 
-                for(index = 0; index < chips.length; index++){
-                    //get the word inside of this chip
-                    var chipWord = ($(chips).eq(index).text()).trim()
-                    //remove this word from potential suggestions
-                    var chipIndex = suggestions.indexOf(chipWord)
-                    if(chipIndex != -1) suggestions.splice(chipIndex, 1)
-                }
+                    //get all the names of the current tags to we dont continue to suggest them
+                    var chips = $("#" + sectionName).find(".chip")
+                    var index 
+                    for(index = 0; index < chips.length; index++){
+                        //get the word inside of this chip
+                        var chipWord = ($(chips).eq(index).text()).trim()
+                        //remove this word from potential suggestions
+                        var chipIndex = suggestions.indexOf(chipWord)
+                        if(chipIndex != -1) suggestions.splice(chipIndex, 1)
+                    }
 
-                //insert all the other suggestions
-                var suggestionCount = 0
-                var index
-                for(index = 0; index < suggestions.length; index++){
-                    if(suggestions[index] != word){
-                        addOption(dropdownSelect, suggestions[index], false)
-                        suggestionCount++
-                        if(suggestionCount >= maxSuggestions) break;
+                    //insert all the other suggestions
+                    var suggestionCount = 0
+                    var index
+                    for(index = 0; index < suggestions.length; index++){
+                        if(suggestions[index] != word){
+                            addOption(dropdownSelect, suggestions[index], false)
+                            suggestionCount++
+                            if(suggestionCount >= maxSuggestions) break;
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
+        else $(dropdownContainer).hide()
     }
-    else $(dropdownContainer).hide()
+})
+
+/*-------------------------search suggestion navigation-------------------------*/
+
+$(".editor > .editorSearchBar > div > input").keyup(function() {
+    if(event.which == 38 || event.which == 40){
+        var options = $(this).parent().parent().parent().find(".editorDropdownOuter > .editorDropdownInner > .dropdown-item")
+
+        var i
+        var indexOfCurrSelected
+        for(i=0; i<options.length; i++){
+            if($(options).eq(i).hasClass("dropdown-item-selected")){
+                indexOfCurrSelected = i
+                break;
+            }
+        }
+
+        //naively set the index of the next selected item
+        var indexOfNextSelected
+        if (event.which == 38) indexOfNextSelected = indexOfCurrSelected - 1
+        else if(event.which == 40) indexOfNextSelected = indexOfCurrSelected + 1
+
+        //make sure the naively selected item exists
+        if(0 <= indexOfNextSelected && indexOfNextSelected <= (options.length - 1)){
+            //if we are moving away from the option we typed
+            //save its value in id so we can go back to it
+            if(indexOfCurrSelected == 0){
+                $(this).attr('id', $(this).val())
+            }
+
+            //if we are moving towards the option we typed
+            //remove its id to not cause any issues where we cant close the search bar by tapping esc
+            if(indexOfNextSelected == 0){
+                $(this).removeAttr('id')
+            }
+
+            //remove the selected class from our curr selected
+            $(options).eq(indexOfCurrSelected).removeClass("dropdown-item-selected")
+
+            //add the selected class to our next selected
+            $(options).eq(indexOfNextSelected).addClass("dropdown-item-selected")
+
+            //pass the value from this option into the search bar
+            $(this).val(($(options).eq(indexOfNextSelected).text()).trim())
+        }
+    }
+
+    //find the selected class... 
+    //shift it (up/down) if possible... 
+    //replace whatever is at that option with the text in the input field
 })

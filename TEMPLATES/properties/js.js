@@ -141,12 +141,11 @@ $(document).ready(function() {
         slider = $("#" + sectionName + " > .sliderClass")
         if(slider.length != 0) //we are adding a slider
         */
-        if(sectionName == "rentSection"
-        || sectionName == "squareFootageSection"
-        || sectionName == "bedSection"
-        || sectionName == "bathSection"){
+        if(sectionName == "rent"
+        || sectionName == "squareFootage"
+        || sectionName == "bed"
+        || sectionName == "bath"){
 
-            /*
             //NOTE: client side code that would have let the search happen without reloading
 
             //find the text boxes that hold the values
@@ -161,7 +160,6 @@ $(document).ready(function() {
             passCorrectedValuesToSliderAndGetThem(minText, true) //correct without knowing max
             passCorrectedValuesToSliderAndGetThem(maxText, false) //correct with knowing min
             passCorrectedValuesToSliderAndGetThem(minText, true) //correct with know max
-            */
             
             delete2Params(sectionName + "Min", sectionName + "Max")
         }
