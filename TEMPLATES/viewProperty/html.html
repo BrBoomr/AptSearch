@@ -149,7 +149,7 @@
         </h5>
         <p class="card-text">
             <!-- All of this source code is in an .html file -->
-            <!-- {% %} is the syntax used to call php code in slim -->
+            <!-- { } is the syntax used to call php code in slim -->
             <!-- property is the object passed after querying the database -->
             <!-- If there are any details in the property row, then display the details -->
             {% if property.getDetails() %}
@@ -198,8 +198,11 @@
             <div class="row">
                 <!-- Get all the amenities from this property -->
                 <div class="sectionTitle"><h3>Amenities</h3></div>
+                <!-- If there were multiple results for amenities -->
+                <!-- Then loop through them using Twig -->
                 {% for amenity in amenities %}
                     <div class="chip">
+                        <!-- Displayes the information for this result -->
                         {{ amenity.getAmenity() }}
                     </div>
                 {% endfor %}
