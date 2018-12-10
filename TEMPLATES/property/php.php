@@ -43,17 +43,26 @@ $app->post('/verifyProperty', function ($request, $response, $args) {
 	return json_encode(['valid'=>'true']);
 });
 
+// This function is used to create a new property under the userid of the landlord
 function createProperty($fields,$appliance,$utility,$perk,$amenity){
 	//Address Values
+	// By using Propel, we declare a new Address
+	// This will be a new instance of a row in the Address table
 	$newAddr = new Address();
+	// $newAddr->setColumnName will set the value of that column for
+	// the new row or entry in the Database
+	// Sets the continenttypeID for the row
 	$newAddr->setContinenttypeid(1); //DEFAULT US
 	$newAddr->setCountrytypeid(321); //DEFAULT US
+	// Sets the state of where this property is located
+	// These values are retrieved from the $fields variable passed to this function
 	$newAddr->setState($fields['state']);
 	$newAddr->setLocality($fields['locality']);
 	$newAddr->setZipcode($fields['zip']);
 	$newAddr->setStreetname($fields['street']);
 	$newAddr->setBuildingindentifier($fields['buildNum']);
 	$newAddr->setApartmentidentifier($fields['aptNum']);
+	// This finalizes the entry and inserts it into the database
 	$newAddr->save();
 	//Property Values
 	$newProperty = new Property();

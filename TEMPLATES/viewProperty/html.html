@@ -148,10 +148,15 @@
             {{ formattedAddress }}
         </h5>
         <p class="card-text">
+            <!-- All of this source code is in an .html file -->
+            <!-- {% %} is the syntax used to call php code in slim -->
+            <!-- property is the object passed after querying the database -->
+            <!-- If there are any details in the property row, then display the details -->
             {% if property.getDetails() %}
                 <h5>{{ property.getDetails() }}</h5>
             {% endif %}
             <br>
+            <!-- This code will display information to the user based on the query passed to this page -->
             <div class="row">
                 <div class="col">$<span><h4>{{ property.getExpectedrentpermonth() }}</h4></span></div> |
                 <div class="col"><span><h4>{{ property.getSquarefootage() }}</h4></span>&nbsp;sqrft</div> |
