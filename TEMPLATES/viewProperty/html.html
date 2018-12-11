@@ -166,8 +166,11 @@
             <div class="row">
                 <!-- Get all the amenities from this property -->
                 <div class="sectionTitle"><h3>Amenities</h3></div>
+                <!-- If there were multiple results for amenities -->
+                <!-- Then loop through them using Twig -->
                 {% for amenity in amenities %}
                     <div class="chip">
+                        <!-- Displayes the information for this result -->
                         {{ amenity.getAmenity() }}
                     </div>
                 {% endfor %}
