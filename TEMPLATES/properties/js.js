@@ -164,16 +164,16 @@ $(document).ready(function() {
             delete2Params(sectionName + "Min", sectionName + "Max")
         }
         else{
-            if(sectionName == "continentSection" || sectionName == "countrySection"){
+            if(sectionName == "continent" || sectionName == "country"){
                 deleteParam(sectionName + "TypeID")
             }
             else{
-                if(sectionName == "stateSection"
-                || sectionName == "localitySection"
-                || sectionName == "zipCodeSection"){
+                if(sectionName == "state"
+                || sectionName == "locality"
+                || sectionName == "zipCode"){
                     deleteParam(sectionName)
                 }
-                else{
+                else{ //tag sections
                     deleteParam(chipSectionID_to_paramName[sectionName+"Section"])
                 }
             }
